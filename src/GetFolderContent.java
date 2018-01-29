@@ -7,19 +7,14 @@ public class GetFolderContent{
 	{
 		Scanner scan = new Scanner(System.in);
 		String filename;
+		@SuppressWarnings("unused")
 		MetadataToExcel excelCreater;
 		
 		System.out.println("Give a name for the excelfile: ");
 		filename = scan.nextLine();
-		
 		excelCreater = new MetadataToExcel(filename);
-		
 		//excelCreater.createExcel();
-		
-		scan.close();
-		
+		scan.close();	
 	}
-	
-
 	
 }

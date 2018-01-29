@@ -24,7 +24,6 @@ public class FileDuration {
 	
 
 	public void CheckFileDuration (String filePath){
-		BasicConfigurator.configure();
 		/*IContainer audioContainer = IContainer.make();
 	int audioResult = audioContainer.open(fileName, IContainer.Type.READ, null);
 	long audioDuration = audioContainer.getDuration();*/
@@ -54,14 +53,12 @@ public class FileDuration {
 	/*System.out.println("-------------------------------");
 	System.out.println("Video length in seconds: " + videoSeconds);
 	System.out.println("Video lenght in minutes: " + videoMinutes); */
-
-
+		BasicConfigurator.configure();
 		IContainer fileContainer = IContainer.make();
 		int fileResult = fileContainer.open(filePath, IContainer.Type.READ, null);
 		long fileDuration = fileContainer.getDuration();
 		double fileSeconds = fileDuration / 1000000;
 		audioVideoFiles =  String.valueOf(fileSeconds);
-
 		audioVideoList.add(audioVideoFiles);
 
 	}
