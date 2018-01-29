@@ -1,5 +1,6 @@
 MetadataToExcel.class
 GetFolderContent.class
 InputStreamReaderDecoder.class
+FileDuration.class
 Test/code/InputStreamReaderDemo.class
 MetadataToExcel$1.class

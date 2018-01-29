@@ -34,6 +34,7 @@ public class MetadataToExcel {
 	 private String windowsCharset = "Cp1252", standardCharset = "UTF-8";
 	 
 	 private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
+	 private FileDuration fileDuration = new FileDuration();
 	 //private static ArrayList<String> fileExtention = new ArrayList<String>();
 	
 	
@@ -105,20 +106,32 @@ public class MetadataToExcel {
 			   for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) {
 				 
 				   decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
-				  
-			     String files = fList.get(numberOfFilesInFolder).getName();
+			    
+				 String files = fList.get(numberOfFilesInFolder).getName();
+				 //sSystem.out.println("Current file " + files );
+				 
+			     if(files.endsWith(".mov")||files.endsWith(".mp4")||files.endsWith(".mp3"))
+			     {
+			    	 	
+			   	 fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath() + "/" + files);
+			    			
+			     }
+			     
 			     
 			    	 String fPath;//, testPath;
 			    	 fileSize = fList.get(numberOfFilesInFolder).length();
 			    	 
 			    	 
 			    	 fPath = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
+			    	 //System.out.println("current path" + fPath);
 			    	 fPath = fPath.replace(sourceFolderPath, "");
 			    	 
 			      aList.add(files);
 			      sizeList.add(fileSize);
 			      filePathList.add(fPath);
 			      decoder.getUtfList().add(decoder.getUtfString());
+			      //fileDuration.getAudioVideoList().add(fileDuration.getAudioVideoFiles());
+			 
 			      //fileCount++;
 			      
 				   System.out.println("File size: " + fileSize);
@@ -303,6 +316,10 @@ public class MetadataToExcel {
 		     String fileExtention = FilenameUtils.getExtension(aList.get(rowNumber));
 		    // FilenameUtils.get
 		     
+		    
+		     Label fileDurationLabel = new Label (5,0, "Speltid");
+		    Label durationLabel = new Label(5, rowNumber+1, fileDuration.getAudioVideoList().get(rowNumber));
+		     
 		     Label utfLabelName = new Label(4,0, "Teckenuppsättning");
 			 Label utfLabel = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
 		     
@@ -331,6 +348,8 @@ public class MetadataToExcel {
 		     excelSheet.addCell(fileSizeLabel);
 		     excelSheet.addCell(utfLabelName);
 		     excelSheet.addCell(utfLabel);
+		     excelSheet.addCell(fileDurationLabel);
+		     excelSheet.addCell(durationLabel);
 		    }
 		   } else {
 		    System.out.println("No matching files found");
