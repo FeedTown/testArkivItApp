@@ -25,8 +25,8 @@ public class MetadataToExcel {
 	 private String excelFileName = "standard.xls";
 	 private long fileSize;
 	 private String filePath;
-	 private String targetexcelFilepath = "F:\\backup\\test\\Test_work";  // generated excel file location
-	 private String sourceFolderPath = "F:\\Skola\\Svenska"; // source Directory
+	 private String targetexcelFilepath = "/Users/RobertoBlanco/hej";  // generated excel file location
+	 private String sourceFolderPath = "/Users/RobertoBlanco/Desktop"; // source Directory
 	 private int totalFileCount = 0, tCount= 0; // variable to store total file count
 	 private int fileCount = 0; // variable to store required files count
 	 private ArrayList<String> aList = new ArrayList<String>();
@@ -64,7 +64,7 @@ public class MetadataToExcel {
 			{
 				filec++;
 				fList.add(file);
-				System.out.println("Nr " + filec + " : " + file.getName());
+//				System.out.println("Nr " + filec + " : " + file.getName());
 			}
 			else if(file.isDirectory())
 			{
