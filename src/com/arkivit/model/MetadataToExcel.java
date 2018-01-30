@@ -70,7 +70,6 @@ public class MetadataToExcel {
 
 		for(File file : listOfFilesInDirectory)
 		{
-			
 			if(file.isFile())
 			{
 				filec++;

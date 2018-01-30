@@ -34,7 +34,7 @@ public class ExcelAppGUI {
 	BufferedWriter readFile;
 	JButton btnOpenFile = new JButton("Select file...");
 	JButton btnSaveAs = new JButton("Save As...");
-	JButton btnConvert = new JButton("Convert");
+	JButton btnConvert = new JButton("Create");
 	JFileChooser chooser = new JFileChooser();
 	JFileChooser saveFile = new JFileChooser();
 	private final JTextField openTxtField = new JTextField();

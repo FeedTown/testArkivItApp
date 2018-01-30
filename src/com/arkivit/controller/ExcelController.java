@@ -66,10 +66,13 @@ public class ExcelController {
 		   String path;
 		   
 			if(returnValue == JFileChooser.APPROVE_OPTION) {
-				model.setMyFile(view.getChooser().getSelectedFile());
-				model.setSourceFolderPath(view.getChooser().getSelectedFile().getAbsolutePath());
+				//model.setMyFile(view.getChooser().getSelectedFile());
+				//1model.setSourceFolderPath(view.getChooser().getSelectedFile().getAbsolutePath());
 				//model.getSourceFolderPath() = model.getMyFile().getAbsolutePath();
-				view.getOpenTxtField().setText(view.getChooser().getSelectedFile().getAbsolutePath());
+				//2view.getOpenTxtField().setText(view.getChooser().getSelectedFile().getAbsolutePath());
+				model.setMyFile(view.getChooser().getSelectedFile());
+				model.setSourceFolderPath(model.getMyFile().getAbsolutePath());
+				view.getOpenTxtField().setText(model.getMyFile().getAbsolutePath());
 
 			}
 			if(returnValue == JFileChooser.CANCEL_OPTION) {
@@ -84,10 +87,14 @@ public class ExcelController {
 	   public void saveButton(ActionEvent e) {
 		   int returnSaveVal = view.getSaveFile().showSaveDialog(null);
 			if(returnSaveVal == JFileChooser.APPROVE_OPTION) {
-				model.setMyFile2(view.getSaveFile().getSelectedFile());
-				model.setTargetexcelFilepath(view.getSaveFile().getSelectedFile().getAbsolutePath());
+				//model.setMyFile2(view.getSaveFile().getSelectedFile());
+				/*model.setTargetexcelFilepath(view.getSaveFile().getSelectedFile().getAbsolutePath());
 				model.setExcelFileName(view.getSaveFile().getParent() + ".xls");
-				view.getSaveTxtField().setText(view.getSaveFile().getSelectedFile().getName());
+				view.getSaveTxtField().setText(view.getSaveFile().getSelectedFile().getName());*/
+				model.setMyFile2(view.getSaveFile().getSelectedFile());
+				model.setTargetexcelFilepath(model.getMyFile2().getParent());
+				model.setExcelFileName(view.getSaveFile().getName(model.getMyFile2()) + ".xls");
+				view.getSaveTxtField().setText(model.getMyFile2().getAbsolutePath());
 
 			}
 			if(returnSaveVal == JFileChooser.CANCEL_OPTION) {
