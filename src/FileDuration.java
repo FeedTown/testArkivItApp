@@ -49,7 +49,6 @@ public class FileDuration {
 	double videoSeconds = videoDuration / 1000000;
 	videoLengthSeconds = String.valueOf(videoSeconds);*(
 	//double videoMinutes = videoSeconds / 60;
-
 	/*System.out.println("-------------------------------");
 	System.out.println("Video length in seconds: " + videoSeconds);
 	System.out.println("Video lenght in minutes: " + videoMinutes); */

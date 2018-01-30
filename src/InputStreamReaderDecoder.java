@@ -55,6 +55,5 @@ public class InputStreamReaderDecoder {
 		this.utfString = utfString;
 	}
 
-	
 
 }
