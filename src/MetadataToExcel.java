@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.Objects;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.write.Label;
@@ -31,7 +33,7 @@ public class MetadataToExcel {
 	private ArrayList<File> fList;// = new ArrayList<File>();
 	//private int folderCounter = 0;
 	private int filec = 0;
-	private String windowsCharset = "Cp1252", standardCharset = "UTF-8";
+	//private String windowsCharset = "Cp1252", standardCharset = "UTF-8";
 
 	private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
 	private FileDuration fileDuration = new FileDuration();
@@ -104,20 +106,9 @@ public class MetadataToExcel {
 			if(!fList.isEmpty())
 			{
 				for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) {
-
-					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), 
-							fList.get(numberOfFilesInFolder).getName());  
+					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
 
 					String files = fList.get(numberOfFilesInFolder).getName();
-					//System.out.println("Current file " + files );
-
-					if(files.endsWith(".mov")||files.endsWith(".mp4")||files.endsWith(".mp3"))
-					{
-
-						fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
-								+ "/" + files);
-
-					}
 
 
 					String fPath;//, testPath;
@@ -125,14 +116,12 @@ public class MetadataToExcel {
 
 
 					fPath = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
-					//System.out.println("current path" + fPath);
 					fPath = fPath.replace(sourceFolderPath, "");
 
 					aList.add(files);
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					decoder.getUtfList().add(decoder.getUtfString());
-					//fileDuration.getAudioVideoList().add(fileDuration.getAudioVideoFiles());
 					//fileCount++;
 
 					System.out.println("File size: " + fileSize);
@@ -150,7 +139,9 @@ public class MetadataToExcel {
 			e.printStackTrace();
 		}
 
-		createExcelFileAndGetContent();
+
+		createExcelFile();
+
 
 	}
 
@@ -290,8 +281,8 @@ public class MetadataToExcel {
 		  createExcelFileAndGetContent();
 	}*/
 
-	public void createExcelFileAndGetContent() {
 
+	public void createExcelFile() {
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
 
 		try {
@@ -307,15 +298,22 @@ public class MetadataToExcel {
 
 					/*CellView cell = workbook.getSheet(0).getColumnView(rowNumber);
 		    	cell.setSize(14000);
-		    	workbook.getSheet(0).setColumnView(0, cell);*/
-
-
-
+		    	workbook.getSheet(0).setColumnView(0, cell);*/						
+					String tempString = aList.get(rowNumber);
+					
+					if(tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö")
+							|| tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö") 
+							|| tempString.contains("ü") || tempString.contains("Ü"))
+					{
+						tempString = replaceIllegalChars(tempString);
+					}
+					
 					//System.out.println(aList.get(rowNumber));
 
 					String sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
 					String fileExtention = FilenameUtils.getExtension(aList.get(rowNumber));
 					// FilenameUtils.get
+
 
 					Label label2 = new Label(0, 0, "Filename");
 					Label label = new Label(0, rowNumber+1, aList.get(rowNumber));
@@ -336,9 +334,6 @@ public class MetadataToExcel {
 					Label filePathLabelName = new Label(6, 0, "FilePath(path,url)");
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
 
-					
-
-
 					excelSheet.setColumnView(0, getLargestString(aList));
 					excelSheet.setColumnView(6, getLargestString(filePathList));
 					excelSheet.addCell(filePathLabelName);
@@ -353,6 +348,7 @@ public class MetadataToExcel {
 					excelSheet.addCell(utfLabel);
 					excelSheet.addCell(fileDurationLabel);
 					excelSheet.addCell(durationLabel);
+
 				}
 			} else {
 				System.out.println("No matching files found");
@@ -375,16 +371,23 @@ public class MetadataToExcel {
 
 	}
 
-	private int getLargestString(ArrayList<String> aList2) {
+	private String replaceIllegalChars(String string) {
+		String newString = StringUtils.replaceEach (string, 
+				new String[] {"å", "ä", "ö", "ü","Å", "Ä", "Ö", "Ü", " "}, 
+				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
+		return newString;
+	}
 
-		int largestString = aList2.get(0).length();
+	private int getLargestString(ArrayList<String> stringList) {
+
+		int largestString = stringList.get(0).length();
 		int index = 0;
 
-		for(int i = 0; i < aList2.size(); i++)
+		for(int i = 0; i < stringList.size(); i++)
 		{
-			if(aList2.get(i).length() > largestString)
+			if(stringList.get(i).length() > largestString)
 			{
-				largestString = aList2.get(i).length();
+				largestString = stringList.get(i).length();
 				index = i;
 			}
 		}
