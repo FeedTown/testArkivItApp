@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-import com.arkivit.model.MetadataToExcel;
+import com.arkivit.model.MetadataToExcelGUI;
 
 public class GetFolderContent{
  
@@ -10,11 +10,11 @@ public class GetFolderContent{
 		Scanner scan = new Scanner(System.in);
 		String filename;
 		@SuppressWarnings("unused")
-		MetadataToExcel excelCreater;
+		MetadataToExcelGUI excelCreater;
 		
 		System.out.println("Give a name for the excelfile: ");
 		filename = scan.nextLine();
-		excelCreater = new MetadataToExcel(filename);
+		excelCreater = new MetadataToExcelGUI(filename);
 		//excelCreater.createExcel();
 		scan.close();	
 	}

@@ -8,15 +8,15 @@ import java.nio.file.Path;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import com.arkivit.model.MetadataToExcel;
+import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUI;
 
 public class ExcelController {
 	
-	private MetadataToExcel model;
+	private MetadataToExcelGUI model;
 	private ExcelAppGUI view;
 	
-	public ExcelController(MetadataToExcel model, ExcelAppGUI view){
+	public ExcelController(MetadataToExcelGUI model, ExcelAppGUI view){
 		
 		this.model = model;
 		this.view = view;
