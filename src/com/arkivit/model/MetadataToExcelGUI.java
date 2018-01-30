@@ -22,7 +22,7 @@ import jxl.write.biff.RowsExceededException;
 
 
 
-public class MetadataToExcel {
+public class MetadataToExcelGUI {
 
 	 private String excelFileName; //= "standard.xls";
 	 private long fileSize;
@@ -41,16 +41,17 @@ public class MetadataToExcel {
 	 File myFile2;
 	 File destinationFile;
 	 private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
+	 private FileDuration fileDuration = new FileDuration();
 	 //private static ArrayList<String> fileExtention = new ArrayList<String>();
 	
 	
 	
-	public MetadataToExcel()
+	public MetadataToExcelGUI()
 	{
 		
 	}
 	
-	public MetadataToExcel(String excelFileName)
+	public MetadataToExcelGUI(String excelFileName)
 	{   
 		
 	}
@@ -108,7 +109,7 @@ public class MetadataToExcel {
 				}
 
 			}});
-
+			String duration;
 		try {
 
 			if(!fList.isEmpty())
@@ -116,8 +117,24 @@ public class MetadataToExcel {
 				for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) {
 
 					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
-
+					duration = "";
 					String files = fList.get(numberOfFilesInFolder).getName();
+
+					/*fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(),
+							files); */
+					if(files.endsWith(".mov") || 
+							files.endsWith(".mp4") || 
+							files.endsWith(".mp3") || 
+							files.endsWith("m4v"))
+					{
+
+						fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
+								+ "/" + files);
+						duration = fileDuration.getAudioVideoDuration();
+
+					}
+					
+					//String files = fList.get(numberOfFilesInFolder).getName();
 
 					String fPath;//, testPath;
 					fileSize = fList.get(numberOfFilesInFolder).length();
@@ -130,8 +147,8 @@ public class MetadataToExcel {
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					decoder.getUtfList().add(decoder.getUtfString());
+					fileDuration.getAudioVideoList().add(duration);
 					//fileCount++;
-
 					System.out.println("File size: " + fileSize);
 
 				}
@@ -151,147 +168,12 @@ public class MetadataToExcel {
 
 	}
 
-	/*public void createExcelTest(ArrayList<File> fileList)
-	{
-		/*
-		  Arrays.sort(listOfFilesInDirectory, new Comparator<Object>() {
-		      public int compare(final Object o1, final Object o2) {
-		          String s1 = ((File) o1).getName().toLowerCase();
-		          String s2 = ((File) o2).getName().toLowerCase();
-		          final int s1Dot = s1.lastIndexOf('.');
-		          final int s2Dot = s2.lastIndexOf('.');
-		          // 
-		          if ((s1Dot == -1) == (s2Dot == -1)) { // both or neither
-		              s1 = s1.substring(s1Dot + 1);
-		              s2 = s2.substring(s2Dot + 1);
-		              return s1.compareTo(s2);
-		          } else if (s1Dot == -1) { // only s2 has an extension, so s1 goes first
-		              return -1;
-		          } else { // only s1 has an extension, so s1 goes second
-		              return 1;
-		          }
-		      }
-		    });*/
-
-
-	/*  try {
-			   for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fileList.size(); numberOfFilesInFolder++) {
-
-			     String files = fileList.get(numberOfFilesInFolder).getName();
-
-			    	 String fPath;
-			    	 fileSize = fileList.get(numberOfFilesInFolder).length();
-
-
-			    	 fPath = fileList.get(numberOfFilesInFolder).getAbsolutePath();
-			    	 fPath = fPath.replace(sourceFolderPath, "");
-
-
-			      aList.add(files);
-			      sizeList.add(fileSize);
-			      filePathList.add(fPath);
-			      //fileCount++;
-
-				   System.out.println("File size: " + fileSize);
-
-			     }
-
-
-			  } catch (Exception e) {
-			   // TODO Auto-generated catch block
-			   e.printStackTrace();
-			  }
-
-		  createExcelFileAndGetContent();
-
-	}
-
-	public void createExcel()
-	{
-		// TODO Auto-generated method stub
-		  // to get file names
-		Path path;
-		String pathTest;
-		  File folder = new File(sourceFolderPath);
-		  File[] listOfFilesInDirectory = folder.listFiles();
-
-		  Arrays.sort(listOfFilesInDirectory, new Comparator<Object>() {
-		      public int compare(final Object o1, final Object o2) {
-		          String s1 = ((File) o1).getName().toLowerCase();
-		          String s2 = ((File) o2).getName().toLowerCase();
-		          final int s1Dot = s1.lastIndexOf('.');
-		          final int s2Dot = s2.lastIndexOf('.');
-		          // 
-		          if ((s1Dot == -1) == (s2Dot == -1)) { // both or neither
-		              s1 = s1.substring(s1Dot + 1);
-		              s2 = s2.substring(s2Dot + 1);
-		              return s1.compareTo(s2);
-		          } else if (s1Dot == -1) { // only s2 has an extension, so s1 goes first
-		              return -1;
-		          } else { // only s1 has an extension, so s1 goes second
-		              return 1;
-		          }
-		      }
-		    });
-
-		 /* for(File file : listOfFilesInDirectory)
-		  {
-			  if (file.isFile())
-			   {
-				  tCount++;
-				  System.out.println(file.getAbsolutePath());
-			   }
-			  else if(file.isDirectory())
-			  {
-				  folderCounter++;
-			  }
-
-		  }
-
-		  System.out.println("Total file count = " + tCount);
-		  System.out.println("Total folder count = " + folderCounter);*/
-
-	/*try {
-		   for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < listOfFilesInDirectory.length; numberOfFilesInFolder++) {
-
-		     String files = listOfFilesInDirectory[numberOfFilesInFolder]
-		       .getName();
-
-		    	 String fPath;
-		    	 fileSize = listOfFilesInDirectory[numberOfFilesInFolder].length();
-
-
-		    	 fPath = listOfFilesInDirectory[numberOfFilesInFolder].getParentFile().getAbsolutePath();
-		    	 fPath = fPath.replace(sourceFolderPath, "");
-
-
-		      aList.add(files);
-		      sizeList.add(fileSize);
-		      filePathList.add(fPath);
-		      //fileCount++;
-
-			   System.out.println("File size: " + fileSize);
-
-		     }
-
-
-		  } catch (Exception e) {
-		   // TODO Auto-generated catch block
-		   e.printStackTrace();
-		  }
-
-		  System.out.println("Total file count = " + totalFileCount);
-		  System.out.println("Total folder count = " + folderCounter);
-
-
-		  createExcelFileAndGetContent();
-	}*/
-
 	public void createExcelFile() {
 
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
 
 		try {
+			System.out.println("createExcelFile");
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
@@ -308,9 +190,9 @@ public class MetadataToExcel {
 						
 					String tempString = aList.get(rowNumber);
 					
-					if(tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö")
-							|| tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö") 
-							|| tempString.contains("ü") || tempString.contains("Ü"))
+					if(tempString.contains("Ã¥") || tempString.contains("Ã¤") || tempString.contains("Ã¶")
+							|| tempString.contains("Ã…") || tempString.contains("Ã„") || tempString.contains("Ã–") 
+							|| tempString.contains("Ãœ") || tempString.contains("Ã¼"))
 					{
 						tempString = replaceIllegalChars(tempString);
 					}
@@ -322,39 +204,59 @@ public class MetadataToExcel {
 					String fileExtention = FilenameUtils.getExtension(aList.get(rowNumber));
 					// FilenameUtils.get
 
-					Label utfLabelName = new Label(4,0, "Teckenuppsättning");
+					Label label2 = new Label(0, 0, "FILNAMN");
+					Label label = new Label(0, rowNumber+1, aList.get(rowNumber));
+
+					Label fileTypeLabelName = new Label(1,0,"FILTYP");
+					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
+					
+					Label fileTypeVersionName = new Label(2,0, "FILTYPSVERSION");
+					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,)
+
+					Label fileSizeLabelName = new Label(3, 0, "STORLEK (Bytes)");
+					Label fileSizeLabel = new Label(3, rowNumber+1, sizeInString);
+
+
+					Label utfLabelName = new Label(4,0, "TECKENUPPSÃ„TTNING");
 					Label utfLabel = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
 
-					Label filePathLabelName = new Label(6, 0, "FilePath(path,url)");
+					Label fileDurationLabel = new Label (5,0, "SPELTID(endast audio och video)");
+					Label durationLabel = new Label(5, rowNumber+1, fileDuration.getAudioVideoList().get(rowNumber));
 
+					Label filePathLabelName = new Label(6, 0, "SÃ–KVÃ„G(path,url)");
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
 
-					Label label2 = new Label(0, 0, "Filename");
-
-					Label fileTypeLabelName = new Label(1,0,"FileType");
-					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
-					Label fileSizeLabelName = new Label(2, 0, "File Size (in Bytes)");
-					Label fileSizeLabel = new Label(2, rowNumber+1, sizeInString);
-					Label label = new Label(0, rowNumber+1, tempString);
-
-
 					excelSheet.setColumnView(0, getLargestString(aList));
+					excelSheet.setColumnView(2, 16);
+					excelSheet.setColumnView(4, 20);
+					excelSheet.setColumnView(5, 27);
 					excelSheet.setColumnView(6, getLargestString(filePathList));
+					
 					excelSheet.addCell(filePathLabelName);
 					excelSheet.addCell(filePathLabel);
+					
 					excelSheet.addCell(label2);
+					excelSheet.addCell(label);
+					
 					excelSheet.addCell(fileTypeLabelName);
 					excelSheet.addCell(fileTypeLabel);
+					
+					excelSheet.addCell(fileTypeVersionName);
+					
 					excelSheet.addCell(fileSizeLabelName);
-					excelSheet.addCell(label);
 					excelSheet.addCell(fileSizeLabel);
+					
 					excelSheet.addCell(utfLabelName);
 					excelSheet.addCell(utfLabel);
+					
+					excelSheet.addCell(fileDurationLabel);
+					excelSheet.addCell(durationLabel);
 				}
 			} else {
 				System.out.println("No matching files found");
 			}
 			workbook.write();
+			excelSheet = null;
 			workbook.close();
 		} catch (RowsExceededException e) {
 			// TODO Auto-generated catch block
@@ -375,7 +277,7 @@ public class MetadataToExcel {
 
 	private String replaceIllegalChars(String string) {
 		String newString = StringUtils.replaceEach (string, 
-				new String[] {"å", "ä", "ö", "ü","Å", "Ä", "Ö", "Ü", " "}, 
+				new String[] {"Ã¥", "Ã¤", "Ã¶", "Ã¼","Ã…", "Ã„", "Ã–", "Ãœ", " "}, 
 				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
 		return newString;
 	}
