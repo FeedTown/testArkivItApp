@@ -70,7 +70,6 @@ public class MetadataToExcelGUI {
 
 		for(File file : listOfFilesInDirectory)
 		{
-			
 			if(file.isFile())
 			{
 				filec++;
