@@ -114,7 +114,6 @@ public class MetadataToExcel {
 
 					/*fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(),
 							files); */
-					
 					if(files.endsWith(".mov") || 
 							files.endsWith(".mp4") || 
 							files.endsWith(".mp3") || 
@@ -139,8 +138,7 @@ public class MetadataToExcel {
 					filePathList.add(fPath);
 					fileDuration.getAudioVideoList().add(duration);
 					//decoder.getUtfList().add(decoder.getUtfString());
-					//fileCount++;
-
+					//fileCount++
 					System.out.println("File size: " + fileSize);
 
 				}
@@ -195,37 +193,47 @@ public class MetadataToExcel {
 					// FilenameUtils.get
 
 
-					Label label2 = new Label(0, 0, "Filename");
+					Label label2 = new Label(0, 0, "FILNAMN");
 					Label label = new Label(0, rowNumber+1, aList.get(rowNumber));
 
-					Label fileTypeLabelName = new Label(1,0,"FileType");
+					Label fileTypeLabelName = new Label(1,0,"FILTYP");
 					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
+					
+					Label fileTypeVersionName = new Label(2,0, "FILTYPSVERSION");
+					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,)
 
-					Label fileSizeLabelName = new Label(2, 0, "File Size (in Bytes)");
-					Label fileSizeLabel = new Label(2, rowNumber+1, sizeInString);
+					Label fileSizeLabelName = new Label(3, 0, "STORLEK (Bytes)");
+					Label fileSizeLabel = new Label(3, rowNumber+1, sizeInString);
 
 
-					Label utfLabelName = new Label(4,0, "Teckenuppsättning");
+					Label utfLabelName = new Label(4,0, "TECKENUPPSÄTTNING");
 					Label utfLabel = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
 
-					Label fileDurationLabel = new Label (5,0, "Speltid");
+					Label fileDurationLabel = new Label (5,0, "SPELTID(endast audio och video)");
 					Label durationLabel = new Label(5, rowNumber+1, fileDuration.getAudioVideoList().get(rowNumber));
 
-					Label filePathLabelName = new Label(6, 0, "FilePath(path,url)");
+					Label filePathLabelName = new Label(6, 0, "SÖKVÄG(path,url)");
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
 
 					excelSheet.setColumnView(0, getLargestString(aList));
 					excelSheet.setColumnView(6, getLargestString(filePathList));
 					excelSheet.addCell(filePathLabelName);
 					excelSheet.addCell(filePathLabel);
+					
 					excelSheet.addCell(label2);
+					excelSheet.addCell(label);
+					
 					excelSheet.addCell(fileTypeLabelName);
 					excelSheet.addCell(fileTypeLabel);
+					
+					excelSheet.addCell(fileTypeVersionName);
+					
 					excelSheet.addCell(fileSizeLabelName);
-					excelSheet.addCell(label);
 					excelSheet.addCell(fileSizeLabel);
+					
 					excelSheet.addCell(utfLabelName);
 					excelSheet.addCell(utfLabel);
+					
 					excelSheet.addCell(fileDurationLabel);
 					excelSheet.addCell(durationLabel);
 
