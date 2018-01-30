@@ -74,7 +74,7 @@ public class MetadataToExcel {
 			{
 				filec++;
 				fList.add(file);
-				System.out.println("Nr " + filec + " : " + file.getName());
+				//System.out.println("Nr " + filec + " : " + file.getName());
 			}
 			else if(file.isDirectory())
 			{
