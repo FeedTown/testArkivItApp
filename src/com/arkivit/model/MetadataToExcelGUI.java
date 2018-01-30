@@ -41,6 +41,7 @@ public class MetadataToExcelGUI {
 	 File myFile2;
 	 File destinationFile;
 	 private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
+	 private FileDuration fileDuration = new FileDuration();
 	 //private static ArrayList<String> fileExtention = new ArrayList<String>();
 	
 	
@@ -108,7 +109,7 @@ public class MetadataToExcelGUI {
 				}
 
 			}});
-
+			String duration;
 		try {
 
 			if(!fList.isEmpty())
@@ -116,8 +117,24 @@ public class MetadataToExcelGUI {
 				for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) {
 
 					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
-
+					duration = "";
 					String files = fList.get(numberOfFilesInFolder).getName();
+
+					/*fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(),
+							files); */
+					if(files.endsWith(".mov") || 
+							files.endsWith(".mp4") || 
+							files.endsWith(".mp3") || 
+							files.endsWith("m4v"))
+					{
+
+						fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
+								+ "/" + files);
+						duration = fileDuration.getAudioVideoDuration();
+
+					}
+					
+					//String files = fList.get(numberOfFilesInFolder).getName();
 
 					String fPath;//, testPath;
 					fileSize = fList.get(numberOfFilesInFolder).length();
@@ -130,8 +147,8 @@ public class MetadataToExcelGUI {
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					decoder.getUtfList().add(decoder.getUtfString());
+					fileDuration.getAudioVideoList().add(duration);
 					//fileCount++;
-
 					System.out.println("File size: " + fileSize);
 
 				}
@@ -187,39 +204,59 @@ public class MetadataToExcelGUI {
 					String fileExtention = FilenameUtils.getExtension(aList.get(rowNumber));
 					// FilenameUtils.get
 
-					Label utfLabelName = new Label(4,0, "Teckenupps�ttning");
+					Label label2 = new Label(0, 0, "FILNAMN");
+					Label label = new Label(0, rowNumber+1, aList.get(rowNumber));
+
+					Label fileTypeLabelName = new Label(1,0,"FILTYP");
+					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
+					
+					Label fileTypeVersionName = new Label(2,0, "FILTYPSVERSION");
+					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,)
+
+					Label fileSizeLabelName = new Label(3, 0, "STORLEK (Bytes)");
+					Label fileSizeLabel = new Label(3, rowNumber+1, sizeInString);
+
+
+					Label utfLabelName = new Label(4,0, "TECKENUPPSÄTTNING");
 					Label utfLabel = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
 
-					Label filePathLabelName = new Label(6, 0, "FilePath(path,url)");
+					Label fileDurationLabel = new Label (5,0, "SPELTID(endast audio och video)");
+					Label durationLabel = new Label(5, rowNumber+1, fileDuration.getAudioVideoList().get(rowNumber));
 
+					Label filePathLabelName = new Label(6, 0, "SÖKVÄG(path,url)");
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
 
-					Label label2 = new Label(0, 0, "Filename");
-
-					Label fileTypeLabelName = new Label(1,0,"FileType");
-					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
-					Label fileSizeLabelName = new Label(2, 0, "File Size (in Bytes)");
-					Label fileSizeLabel = new Label(2, rowNumber+1, sizeInString);
-					Label label = new Label(0, rowNumber+1, tempString);
-
-
 					excelSheet.setColumnView(0, getLargestString(aList));
+					excelSheet.setColumnView(2, 16);
+					excelSheet.setColumnView(4, 20);
+					excelSheet.setColumnView(5, 27);
 					excelSheet.setColumnView(6, getLargestString(filePathList));
+					
 					excelSheet.addCell(filePathLabelName);
 					excelSheet.addCell(filePathLabel);
+					
 					excelSheet.addCell(label2);
+					excelSheet.addCell(label);
+					
 					excelSheet.addCell(fileTypeLabelName);
 					excelSheet.addCell(fileTypeLabel);
+					
+					excelSheet.addCell(fileTypeVersionName);
+					
 					excelSheet.addCell(fileSizeLabelName);
-					excelSheet.addCell(label);
 					excelSheet.addCell(fileSizeLabel);
+					
 					excelSheet.addCell(utfLabelName);
 					excelSheet.addCell(utfLabel);
+					
+					excelSheet.addCell(fileDurationLabel);
+					excelSheet.addCell(durationLabel);
 				}
 			} else {
 				System.out.println("No matching files found");
 			}
 			workbook.write();
+			excelSheet = null;
 			workbook.close();
 		} catch (RowsExceededException e) {
 			// TODO Auto-generated catch block

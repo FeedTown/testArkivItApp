@@ -153,12 +153,4 @@ public class ExcelController {
 			}
 	   }
 	
-	
-	   /*public void setExcelName(String excelFileName){
-	      model.setExcelFileName(excelFileName);		
-	   }
-
-	   public String getExcelName(){
-	      return model.getExcelFileName();		
-	   }*/
 }

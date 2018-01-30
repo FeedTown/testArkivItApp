@@ -9,8 +9,6 @@ import com.arkivit.view.ExcelAppGUI;
 public class Main {
 	
 	
-	
-	
 	public static void main(String[] args) {
 		ExcelAppGUI view = new ExcelAppGUI();
 		MetadataToExcelGUI model = new MetadataToExcelGUI();
