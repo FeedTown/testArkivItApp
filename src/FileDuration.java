@@ -11,7 +11,7 @@ public class FileDuration {
 	private String audioLengthSeconds;
 	private String videoLengthSeconds;*/
 	//private String filePath;
-	private String audioVideoFiles;
+	private String audioVideoFile;
 	private ArrayList<String> audioVideoList = new ArrayList<>();
 	
 	
@@ -57,7 +57,7 @@ public class FileDuration {
 		int fileResult = fileContainer.open(filePath, IContainer.Type.READ, null);
 		long fileDuration = fileContainer.getDuration();
 		double fileSeconds = fileDuration / 1000000;
-		audioVideoFiles =  String.valueOf(fileSeconds);
+		audioVideoFile =  String.valueOf(fileSeconds);
 		//audioVideoList.add(audioVideoFiles);
 		
 		if(fileResult<0) {
@@ -71,12 +71,7 @@ public class FileDuration {
 	}
 	
 	public String getAudioVideoDuration() {
-		return audioVideoFiles;
-	}
-
-
-	public void setAudioVideoFiles(String audioVideoFiles) {
-		this.audioVideoFiles = audioVideoFiles;
+		return audioVideoFile;
 	}
 
 }

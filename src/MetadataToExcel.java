@@ -216,7 +216,11 @@ public class MetadataToExcel {
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
 
 					excelSheet.setColumnView(0, getLargestString(aList));
+					excelSheet.setColumnView(2, 16);
+					excelSheet.setColumnView(4, 20);
+					excelSheet.setColumnView(5, 27);
 					excelSheet.setColumnView(6, getLargestString(filePathList));
+					
 					excelSheet.addCell(filePathLabelName);
 					excelSheet.addCell(filePathLabel);
 					
