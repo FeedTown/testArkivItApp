@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import com.arkivit.model.MetadataToExcel;
+
 public class GetFolderContent{
  
 
