@@ -253,7 +253,7 @@ public class MetadataToExcel {
 					Label utfLabelHeader = new Label(4,cellRowForName, "TECKENUPPSÄTTNING");
 					Label utfLabel = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
 					
-					Label durationLabelHeader = new Label(5,cellRowForName, "SPELTID(endast audio och video");
+					Label durationLabelHeader = new Label(5,cellRowForName, "SPELTID(endast audio och video)");
 					Label durationLabel = new Label(5, rowNumber+1, fileDuration.getAudioVideoList().get(rowNumber));
 
 					Label filePathLabelHeader = new Label(6, cellRowForName, "SÖKVÄG(path,url)");
