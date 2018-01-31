@@ -1,7 +1,5 @@
 package com.arkivit.main;
 
-import java.awt.EventQueue;
-
 import com.arkivit.controller.ExcelController;
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUI;

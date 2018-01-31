@@ -211,7 +211,7 @@ public class MetadataToExcelGUI {
 					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
 					
 					Label fileTypeVersionName = new Label(2,0, "FILTYPSVERSION");
-					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,)
+					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
 
 					Label fileSizeLabelName = new Label(3, 0, "STORLEK (Bytes)");
 					Label fileSizeLabel = new Label(3, rowNumber+1, sizeInString);
@@ -225,15 +225,24 @@ public class MetadataToExcelGUI {
 
 					Label filePathLabelName = new Label(6, 0, "SÖKVÄG(path,url)");
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
+					
+					Label confidentialityLabelName = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
+					//Label confidentialityLabel = new Label(7, rowNumber+1,"");
+					
+					Label personalInformationHandelingLabelName = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
+					//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
+					
+					Label commentLabelName = new Label(9,0, "KOMMENTAR");
+					//Label commentLabel = new Label(9, rowNumber+1, "");
 
 					excelSheet.setColumnView(0, getLargestString(aList));
 					excelSheet.setColumnView(2, 16);
 					excelSheet.setColumnView(4, 20);
 					excelSheet.setColumnView(5, 27);
 					excelSheet.setColumnView(6, getLargestString(filePathList));
-					
-					excelSheet.addCell(filePathLabelName);
-					excelSheet.addCell(filePathLabel);
+					excelSheet.setColumnView(7, 33);
+					excelSheet.setColumnView(8, 33);
+					excelSheet.setColumnView(9, 13);
 					
 					excelSheet.addCell(label2);
 					excelSheet.addCell(label);
@@ -241,7 +250,11 @@ public class MetadataToExcelGUI {
 					excelSheet.addCell(fileTypeLabelName);
 					excelSheet.addCell(fileTypeLabel);
 					
+					excelSheet.addCell(filePathLabelName);
+					excelSheet.addCell(filePathLabel);
+					
 					excelSheet.addCell(fileTypeVersionName);
+					//excelSheet.addCell(fileTypeVersionLabel);
 					
 					excelSheet.addCell(fileSizeLabelName);
 					excelSheet.addCell(fileSizeLabel);
@@ -251,6 +264,17 @@ public class MetadataToExcelGUI {
 					
 					excelSheet.addCell(fileDurationLabel);
 					excelSheet.addCell(durationLabel);
+					
+					excelSheet.addCell(confidentialityLabelName);
+					//excelSheet.addCell(confidentialityLabel);
+					
+					excelSheet.addCell(personalInformationHandelingLabelName);
+					//excelSheet.addCell(personalInformationHandelingLabel);
+					
+					excelSheet.addCell(commentLabelName);
+					//excelSheet.addCell(commentLabel);
+					
+					
 				}
 			} else {
 				System.out.println("No matching files found");
