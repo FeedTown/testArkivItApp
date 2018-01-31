@@ -1,4 +1,3 @@
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,14 +19,14 @@ import jxl.write.biff.RowsExceededException;
 
 public class MetadataToExcel {
 
-	private String excelFileName = "standard.xls";
+	private String excelFileName = "standard.xls",folderName = "";
 	private long fileSize;
-	private String filePath;
-	private String targetexcelFilepath = "/Users/RobertoBlanco/Desktop/target";  // generated excel file location
+	//private String filePath;
+	private String targetexcelFilepath = "/Users/RobertoBlanco/Desktop/target" ;  // generated excel file location
 	private String sourceFolderPath = "/Users/RobertoBlanco/Desktop/testing"; // source Directory
-	private int totalFileCount = 0, tCount= 0; // variable to store total file count
-	private int fileCount = 0; // variable to store required files count
-	private ArrayList<String> aList = new ArrayList<String>();
+	//private int totalFileCount = 0, tCount= 0; // variable to store total file count
+	//private int fileCount = 0; // variable to store required files count
+	private ArrayList<String> listOfFileNames = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fList;// = new ArrayList<File>();
@@ -49,6 +48,7 @@ public class MetadataToExcel {
 	public MetadataToExcel(String excelFileName)
 	{   
 		fList = new ArrayList<File>();
+		folderName = new File(sourceFolderPath).getName();
 		this.excelFileName = excelFileName + ".xls";
 		listOfFilesAndDirectory(sourceFolderPath);
 		testFunc();
@@ -59,14 +59,15 @@ public class MetadataToExcel {
 	{
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
-
+		
+		
 		for(File file : listOfFilesInDirectory)
 		{
 			if(file.isFile())
-			{
+			{	
 				filec++;
 				fList.add(file);
-				//				System.out.println("Nr " + filec + " : " + file.getName());
+				System.out.println("Nr " + filec + " : " + file.getName());
 			}
 			else if(file.isDirectory())
 			{
@@ -100,47 +101,55 @@ public class MetadataToExcel {
 				}
 
 			}});
-
 		String duration;
-
 		try {
-
+			String fPath, file, test,currentFolderName="";
 			if(!fList.isEmpty())
 			{
 				for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) {
-					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), 
-							fList.get(numberOfFilesInFolder).getName());
+
+					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
 
 					duration = "";
-					String files = fList.get(numberOfFilesInFolder).getName();
-
-					/*fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(),
-							files); */
-					if(files.endsWith(".mov") || 
-							files.endsWith(".mp4") || 
-							files.endsWith(".mp3") || 
-							files.endsWith("m4v"))
+					file = fList.get(numberOfFilesInFolder).getName();
+					
+					if(file.endsWith(".mov") || 
+							file.endsWith(".mp4") || 
+							file.endsWith(".mp3") || 
+							file.endsWith("m4v"))
 					{
 
 						fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
-								+ "/" + files);
+								+ "/" + file);
 						duration = fileDuration.getAudioVideoDuration();
 
 					}
-
-					String fPath;//, testPath;
+					//String folderName = "";
+					test = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
+					
+					
+					currentFolderName = fList.get(numberOfFilesInFolder).getParentFile().getName();
+					
+					System.out.println("SELECTED FOLDER NAME : " + folderName);
+					System.out.println("CURRENT FILE PATH : " + test);
+					System.out.println("FOLDERNAME? : " + currentFolderName);
+					
+					/*System.out.println("ORIGINAL FILE CHOOSER FOLDER PATH : " + sourceFolderPath);*/
+					//, testPath;
 					fileSize = fList.get(numberOfFilesInFolder).length();
-
+					
+					
 
 					fPath = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
-					fPath = fPath.replace(sourceFolderPath, "");
+					fPath = fPath.replace(sourceFolderPath, folderName);
 
-					aList.add(files);
+					listOfFileNames.add(file);
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
+					decoder.getUtfList().add(decoder.getUtfString());
 					fileDuration.getAudioVideoList().add(duration);
-					//decoder.getUtfList().add(decoder.getUtfString());
-					//fileCount++
+					//fileCount++;
+
 					System.out.println("File size: " + fileSize);
 
 				}
@@ -155,16 +164,46 @@ public class MetadataToExcel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
+		
+		
+		System.out.println("Done with search for files!");
+		
 		createExcelFile();
-
+		//testLabel();
 
 	}
-
+	
+	void testLabel()
+	{
+		String[] colNames = new String[]{"FILNAMN","FILTYP","FIlTYPSVERSION","STORLEK(i bytes)", "TECKENUPPSÄTTNING", "SPELTID","FILSÖKVÄG"};
+		ArrayList<String> _colNames = new ArrayList<String>();
+		
+		
+		for(int i = 0; i < colNames.length; i++)
+		{
+			_colNames.add(colNames[i]);
+		}
+		
+		System.out.println(_colNames);
+		
+	}
+	
 	public void createExcelFile() {
+		
+		/*String[] colNames = new String[]{"FILNAMN","FILTYP","FIlTYPSVERSION","STORLEK(i bytes)", "TECKENUPPSÄTTNING", "SPELTID","FILSÖKVÄG"};
+		ArrayList<String> _colNames = new ArrayList<String>();
+		
+		
+		for(int i = 0; i < colNames.length; i++)
+		{
+			_colNames.add(colNames[i]);
+		}*/
+		
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
+
 		try {
+			int cellRowForName = 0;// cellCol[] = new int[_colNames.size()];
+			String tempString,sizeInString,fileExtention;
 			
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
@@ -173,11 +212,14 @@ public class MetadataToExcel {
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
 			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(0);
-			
-			if (!aList.isEmpty()) {
-				for (int rowNumber = 0; rowNumber < aList.size(); rowNumber++) {
+			if (!listOfFileNames.isEmpty()) {
+				for (int rowNumber = 0; rowNumber < listOfFileNames.size(); rowNumber++) {
 
-					String tempString = aList.get(rowNumber);
+					/*CellView cell = workbook.getSheet(0).getColumnView(rowNumber);
+		    	cell.setSize(14000);
+		    	workbook.getSheet(0).setColumnView(0, cell);*/
+						
+					tempString = listOfFileNames.get(rowNumber);
 					
 					if(tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö")
 							|| tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö") 
@@ -185,84 +227,70 @@ public class MetadataToExcel {
 					{
 						tempString = replaceIllegalChars(tempString);
 					}
+					
+					
 					//System.out.println(aList.get(rowNumber));
 
-					String sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
-					String fileExtention = FilenameUtils.getExtension(aList.get(rowNumber));
+					sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
+					fileExtention = FilenameUtils.getExtension(listOfFileNames.get(rowNumber));
 					// FilenameUtils.get
+					
+					
 
+					
+					Label fileNameLabelHeader = new Label(0, cellRowForName, "FILNAMN");
+					Label fileNameLabel = new Label(0, rowNumber+1, tempString);
 
-					Label label2 = new Label(0, 0, "FILNAMN");
-					Label label = new Label(0, rowNumber+1, aList.get(rowNumber));
-
-					Label fileTypeLabelName = new Label(1,0,"FILTYP");
+					Label fileTypeLabelHeader = new Label(1,cellRowForName,"FILTYP");
 					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
 					
-					Label fileTypeVersionName = new Label(2,0, "FILTYPSVERSION");
-					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
-
-					Label fileSizeLabelName = new Label(3, 0, "STORLEK (Bytes)");
+					Label fileTypeVersionLabelHeader = new Label(2,cellRowForName,"FILTYPSVERSION");
+					//Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
+					
+					Label fileSizeLabelHeader = new Label(3, cellRowForName, "STORLEK(Bytes)");
 					Label fileSizeLabel = new Label(3, rowNumber+1, sizeInString);
-
-
-					Label utfLabelName = new Label(4,0, "TECKENUPPSÄTTNING");
+					
+					Label utfLabelHeader = new Label(4,cellRowForName, "TECKENUPPSÄTTNING");
 					Label utfLabel = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
-
-					Label fileDurationLabel = new Label (5,0, "SPELTID(endast audio och video)");
+					
+					Label durationLabelHeader = new Label(5,cellRowForName, "SPELTID(endast audio och video");
 					Label durationLabel = new Label(5, rowNumber+1, fileDuration.getAudioVideoList().get(rowNumber));
 
-					Label filePathLabelName = new Label(6, 0, "SÖKVÄG(path,url)");
+					Label filePathLabelHeader = new Label(6, cellRowForName, "SÖKVÄG(path,url)");
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
-					
-					Label confidentialityLabelName = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
-					//Label confidentialityLabel = new Label(7, rowNumber+1,"");
-					
-					Label personalInformationHandelingLabelName = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
-					//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
-					
-					Label commentLabelName = new Label(9,0, "KOMMENTAR");
-					//Label commentLabel = new Label(9, rowNumber+1, "");
 
-					excelSheet.setColumnView(0, getLargestString(aList));
+
+					excelSheet.setColumnView(0, getLargestString(listOfFileNames));
 					excelSheet.setColumnView(2, 16);
+					excelSheet.setColumnView(3, 16);
 					excelSheet.setColumnView(4, 20);
-					excelSheet.setColumnView(5, 27);
+					excelSheet.setColumnView(5, 33);
 					excelSheet.setColumnView(6, getLargestString(filePathList));
-					excelSheet.setColumnView(7, 33);
+					/*excelSheet.setColumnView(7, 33);
 					excelSheet.setColumnView(8, 33);
-					excelSheet.setColumnView(9, 13);
+					excelSheet.setColumnView(9, 13);*/
 					
-					excelSheet.addCell(label2);
-					excelSheet.addCell(label);
+					excelSheet.addCell(fileNameLabelHeader);
+					excelSheet.addCell(fileNameLabel);
 					
-					excelSheet.addCell(fileTypeLabelName);
+					excelSheet.addCell(fileTypeLabelHeader);
 					excelSheet.addCell(fileTypeLabel);
 					
-					excelSheet.addCell(filePathLabelName);
-					excelSheet.addCell(filePathLabel);
+					excelSheet.addCell(fileTypeVersionLabelHeader);
 					
-					excelSheet.addCell(fileTypeVersionName);
-					//excelSheet.addCell(fileTypeVersionLabel);
 					
-					excelSheet.addCell(fileSizeLabelName);
+					excelSheet.addCell(fileSizeLabelHeader);
 					excelSheet.addCell(fileSizeLabel);
 					
-					excelSheet.addCell(utfLabelName);
+					excelSheet.addCell(utfLabelHeader);
 					excelSheet.addCell(utfLabel);
 					
-					excelSheet.addCell(fileDurationLabel);
+					excelSheet.addCell(durationLabelHeader);
 					excelSheet.addCell(durationLabel);
 					
-					excelSheet.addCell(confidentialityLabelName);
-					//excelSheet.addCell(confidentialityLabel);
+					excelSheet.addCell(filePathLabelHeader);
+					excelSheet.addCell(filePathLabel);
 					
-					excelSheet.addCell(personalInformationHandelingLabelName);
-					//excelSheet.addCell(personalInformationHandelingLabel);
-					
-					excelSheet.addCell(commentLabelName);
-					//excelSheet.addCell(commentLabel);
-					
-
 				}
 			} else {
 				System.out.println("No matching files found");

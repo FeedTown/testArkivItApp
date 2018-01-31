@@ -58,7 +58,7 @@ public class FileDuration {
 		long fileDuration = fileContainer.getDuration();
 		double fileSeconds = fileDuration / 1000000;
 		audioVideoFile =  String.valueOf(fileSeconds);
-		//audioVideoList.add(audioVideoFiles);
+		//audioVideoList.add(audioVideoFile);
 		
 		if(fileResult<0) {
 			System.out.println("Problem with the file...");

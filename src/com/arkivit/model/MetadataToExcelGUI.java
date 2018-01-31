@@ -24,46 +24,46 @@ import jxl.write.biff.RowsExceededException;
 
 public class MetadataToExcelGUI {
 
-	 private String excelFileName; //= "standard.xls";
-	 private long fileSize;
-	 private String filePath;
-	 private String targetexcelFilepath;  // generated excel file location
-	 private String sourceFolderPath; // source Directory
-	 private int totalFileCount = 0, tCount= 0; // variable to store total file count
-	 private int fileCount = 0; // variable to store required files count
-	 private ArrayList<String> aList = new ArrayList<String>();
-	 private ArrayList<String> filePathList = new ArrayList<String>();
-	 private ArrayList<Long> sizeList = new ArrayList<Long>();
-	 private ArrayList<File> fList;// = new ArrayList<File>();
-	 private int folderCounter = 0;
-	 private int filec = 0;
-	 File myFile;
-	 File myFile2;
-	 File destinationFile;
-	 private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
-	 private FileDuration fileDuration = new FileDuration();
-	 //private static ArrayList<String> fileExtention = new ArrayList<String>();
-	
-	
-	
+	private String excelFileName; //= "standard.xls";
+	private long fileSize;
+	private String filePath;
+	private String targetexcelFilepath;  // generated excel file location
+	private String sourceFolderPath; // source Directory
+	private int totalFileCount = 0, tCount= 0; // variable to store total file count
+	private int fileCount = 0; // variable to store required files count
+	private ArrayList<String> aList = new ArrayList<String>();
+	private ArrayList<String> filePathList = new ArrayList<String>();
+	private ArrayList<Long> sizeList = new ArrayList<Long>();
+	private ArrayList<File> fList;// = new ArrayList<File>();
+	private int folderCounter = 0;
+	private int filec = 0;
+	File myFile;
+	File myFile2;
+	File destinationFile;
+	private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
+	private FileDuration fileDuration = new FileDuration();
+	//private static ArrayList<String> fileExtention = new ArrayList<String>();
+
+
+
 	public MetadataToExcelGUI()
 	{
-		
+
 	}
-	
+
 	public MetadataToExcelGUI(String excelFileName)
 	{   
-		
+
 	}
-	
+
 	public void testMeth() {
 		fList = new ArrayList<File>();
 		//this.excelFileName = excelFileName + ".xls";
 		listOfFilesAndDirectory(sourceFolderPath);
 		testFunc();
 	}
-	
-	
+
+
 	public void listOfFilesAndDirectory(String folderPathName/*, ArrayList<File> fList*/)
 	{
 		File folder = new File(folderPathName);
@@ -109,7 +109,7 @@ public class MetadataToExcelGUI {
 				}
 
 			}});
-			String duration;
+		String duration;
 		try {
 
 			if(!fList.isEmpty())
@@ -133,7 +133,7 @@ public class MetadataToExcelGUI {
 						duration = fileDuration.getAudioVideoDuration();
 
 					}
-					
+
 					//String files = fList.get(numberOfFilesInFolder).getName();
 
 					String fPath;//, testPath;
@@ -187,9 +187,9 @@ public class MetadataToExcelGUI {
 					/*CellView cell = workbook.getSheet(0).getColumnView(rowNumber);
 		    	cell.setSize(14000);
 		    	workbook.getSheet(0).setColumnView(0, cell);*/
-						
+
 					String tempString = aList.get(rowNumber);
-					
+
 					if(tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö")
 							|| tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö") 
 							|| tempString.contains("Ü") || tempString.contains("ü"))
@@ -197,8 +197,6 @@ public class MetadataToExcelGUI {
 						System.out.println("INSIDE replaceILLEGALE");
 						tempString = replaceIllegalChars(tempString);
 					}
-					
-					
 					//System.out.println(aList.get(rowNumber));
 
 					String sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
@@ -210,7 +208,7 @@ public class MetadataToExcelGUI {
 
 					Label fileTypeLabelName = new Label(1,0,"FILTYP");
 					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
-					
+
 					Label fileTypeVersionName = new Label(2,0, "FILTYPSVERSION");
 					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
 
@@ -226,13 +224,13 @@ public class MetadataToExcelGUI {
 
 					Label filePathLabelName = new Label(6, 0, "SÖKVÄG(path,url)");
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
-					
+
 					Label confidentialityLabelName = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
 					//Label confidentialityLabel = new Label(7, rowNumber+1,"");
-					
+
 					Label personalInformationHandelingLabelName = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
 					//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
-					
+
 					Label commentLabelName = new Label(9,0, "KOMMENTAR");
 					//Label commentLabel = new Label(9, rowNumber+1, "");
 
@@ -244,44 +242,43 @@ public class MetadataToExcelGUI {
 					excelSheet.setColumnView(7, 33);
 					excelSheet.setColumnView(8, 33);
 					excelSheet.setColumnView(9, 13);
-					
+
 					excelSheet.addCell(label2);
 					excelSheet.addCell(label);
-					
+
 					excelSheet.addCell(fileTypeLabelName);
 					excelSheet.addCell(fileTypeLabel);
-					
+
 					excelSheet.addCell(filePathLabelName);
 					excelSheet.addCell(filePathLabel);
-					
+
 					excelSheet.addCell(fileTypeVersionName);
 					//excelSheet.addCell(fileTypeVersionLabel);
-					
+
 					excelSheet.addCell(fileSizeLabelName);
 					excelSheet.addCell(fileSizeLabel);
-					
+
 					excelSheet.addCell(utfLabelName);
 					excelSheet.addCell(utfLabel);
-					
+
 					excelSheet.addCell(fileDurationLabel);
 					excelSheet.addCell(durationLabel);
-					
+
 					excelSheet.addCell(confidentialityLabelName);
 					//excelSheet.addCell(confidentialityLabel);
-					
+
 					excelSheet.addCell(personalInformationHandelingLabelName);
 					//excelSheet.addCell(personalInformationHandelingLabel);
-					
+
 					excelSheet.addCell(commentLabelName);
 					//excelSheet.addCell(commentLabel);
-					
-					
+
+
 				}
 			} else {
 				System.out.println("No matching files found");
 			}
 			workbook.write();
-			excelSheet = null;
 			workbook.close();
 		} catch (RowsExceededException e) {
 			// TODO Auto-generated catch block
@@ -459,10 +456,10 @@ public class MetadataToExcelGUI {
 	public void setDestinationFile(File destinationFile) {
 		this.destinationFile = destinationFile;
 	}
-	
-	
-	
-	 
-	 
-	 
+
+
+
+
+
+
 }
