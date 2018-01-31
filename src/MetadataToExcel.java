@@ -100,7 +100,9 @@ public class MetadataToExcel {
 				}
 
 			}});
-			String duration;
+
+		String duration;
+
 		try {
 
 			if(!fList.isEmpty())
@@ -162,8 +164,8 @@ public class MetadataToExcel {
 
 	public void createExcelFile() {
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
-
 		try {
+			
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
@@ -171,21 +173,18 @@ public class MetadataToExcel {
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
 			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(0);
+			
 			if (!aList.isEmpty()) {
 				for (int rowNumber = 0; rowNumber < aList.size(); rowNumber++) {
 
-					/*CellView cell = workbook.getSheet(0).getColumnView(rowNumber);
-		    	cell.setSize(14000);
-		    	workbook.getSheet(0).setColumnView(0, cell);*/						
 					String tempString = aList.get(rowNumber);
-
+					
 					if(tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö")
 							|| tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö") 
 							|| tempString.contains("ü") || tempString.contains("Ü"))
 					{
 						tempString = replaceIllegalChars(tempString);
 					}
-
 					//System.out.println(aList.get(rowNumber));
 
 					String sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
@@ -200,7 +199,7 @@ public class MetadataToExcel {
 					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
 					
 					Label fileTypeVersionName = new Label(2,0, "FILTYPSVERSION");
-					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,)
+					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
 
 					Label fileSizeLabelName = new Label(3, 0, "STORLEK (Bytes)");
 					Label fileSizeLabel = new Label(3, rowNumber+1, sizeInString);
@@ -214,15 +213,24 @@ public class MetadataToExcel {
 
 					Label filePathLabelName = new Label(6, 0, "SÖKVÄG(path,url)");
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
+					
+					Label confidentialityLabelName = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
+					//Label confidentialityLabel = new Label(7, rowNumber+1,"");
+					
+					Label personalInformationHandelingLabelName = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
+					//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
+					
+					Label commentLabelName = new Label(9,0, "KOMMENTAR");
+					//Label commentLabel = new Label(9, rowNumber+1, "");
 
 					excelSheet.setColumnView(0, getLargestString(aList));
 					excelSheet.setColumnView(2, 16);
 					excelSheet.setColumnView(4, 20);
 					excelSheet.setColumnView(5, 27);
 					excelSheet.setColumnView(6, getLargestString(filePathList));
-					
-					excelSheet.addCell(filePathLabelName);
-					excelSheet.addCell(filePathLabel);
+					excelSheet.setColumnView(7, 33);
+					excelSheet.setColumnView(8, 33);
+					excelSheet.setColumnView(9, 13);
 					
 					excelSheet.addCell(label2);
 					excelSheet.addCell(label);
@@ -230,7 +238,11 @@ public class MetadataToExcel {
 					excelSheet.addCell(fileTypeLabelName);
 					excelSheet.addCell(fileTypeLabel);
 					
+					excelSheet.addCell(filePathLabelName);
+					excelSheet.addCell(filePathLabel);
+					
 					excelSheet.addCell(fileTypeVersionName);
+					//excelSheet.addCell(fileTypeVersionLabel);
 					
 					excelSheet.addCell(fileSizeLabelName);
 					excelSheet.addCell(fileSizeLabel);
@@ -240,6 +252,16 @@ public class MetadataToExcel {
 					
 					excelSheet.addCell(fileDurationLabel);
 					excelSheet.addCell(durationLabel);
+					
+					excelSheet.addCell(confidentialityLabelName);
+					//excelSheet.addCell(confidentialityLabel);
+					
+					excelSheet.addCell(personalInformationHandelingLabelName);
+					//excelSheet.addCell(personalInformationHandelingLabel);
+					
+					excelSheet.addCell(commentLabelName);
+					//excelSheet.addCell(commentLabel);
+					
 
 				}
 			} else {

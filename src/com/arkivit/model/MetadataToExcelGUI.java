@@ -194,6 +194,7 @@ public class MetadataToExcelGUI {
 							|| tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö") 
 							|| tempString.contains("Ü") || tempString.contains("ü"))
 					{
+						System.out.println("INSIDE replaceILLEGALE");
 						tempString = replaceIllegalChars(tempString);
 					}
 					
