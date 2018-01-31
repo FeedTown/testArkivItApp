@@ -32,14 +32,13 @@ public class MetadataToExcelGUI {
 	 private ArrayList<String> filePathList = new ArrayList<String>();
 	 private ArrayList<Long> sizeList = new ArrayList<Long>();
 	 private ArrayList<File> fList;// = new ArrayList<File>();
-	 
 	 private int filec = 0;
 	 private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
 	 private FileDuration fileDuration = new FileDuration();
 
 	public MetadataToExcelGUI()
 	{
-		
+		fList = new ArrayList<File>();
 	}
 	
 	public MetadataToExcelGUI(String excelFileName)
@@ -48,8 +47,8 @@ public class MetadataToExcelGUI {
 	}
 	
 	public void testMeth() {
+		
 		folderName = new File(sourceFolderPath).getName();
-		fList = new ArrayList<File>();
 		listOfFilesAndDirectory(sourceFolderPath);
 		testFunc();
 	}
@@ -100,25 +99,24 @@ public class MetadataToExcelGUI {
 				}
 
 			}});
-			String duration;
+		String duration,fPath,currentFileName;
 		try {
-			String fPath,file;
 			if(!fList.isEmpty())
 			{
 				for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) {
 
 					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
 					duration = "";
-					file = fList.get(numberOfFilesInFolder).getName();
+					currentFileName = fList.get(numberOfFilesInFolder).getName();
 
-					if(file.endsWith(".mov") || 
-							file.endsWith(".mp4") || 
-							file.endsWith(".mp3") || 
-							file.endsWith("m4v"))
+					if(currentFileName.endsWith(".mov") || 
+							currentFileName.endsWith(".mp4") || 
+							currentFileName.endsWith(".mp3") || 
+							currentFileName.endsWith("m4v"))
 					{
 
 						fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
-								+ "/" + file);
+								+ "/" + currentFileName);
 						duration = fileDuration.getAudioVideoDuration();
 
 					}
@@ -130,7 +128,7 @@ public class MetadataToExcelGUI {
 					fPath = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
 					fPath = fPath.replace(sourceFolderPath, folderName);
 
-					aList.add(file);
+					aList.add(currentFileName);
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					decoder.getUtfList().add(decoder.getUtfString());
