@@ -15,7 +15,7 @@ public class GetFolderContent{
 		System.out.println("Give a name for the excelfile: ");
 		filename = scan.nextLine();
 		excelCreater = new MetadataToExcelGUI(filename);
-		excelCreater.testMeth();
+		//excelCreater.testMeth();
 		scan.close();	
 	}
 	
