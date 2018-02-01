@@ -5,9 +5,19 @@ import org.apache.log4j.BasicConfigurator;
 import com.xuggle.xuggler.IContainer;
 
 public class FileDuration {
+	
+	/*public static void main (String[] args) {
+		
+		String path = "/Users/RobertoBlanco/Desktop/source/PersonligtBrev.pdf";
+		
+		FileDuration file = new FileDuration();
+		file.CheckFileDuration(path);
+		System.out.println(file.getAudioVideoDuration());
+		
+	}*/
 
 	/*private final static String fileName = "/Users/RobertoBlanco/Desktop/front-desk-bells-daniel_simon.mp3";
-	private final static String fileName1 = "/Users/RobertoBlanco/Desktop/MinaKvarter.mov";
+	private final static String fileName1 = "/Users/RobertoBlanco/Desktop//MinaKvarter.mov";
 	private String audioLengthSeconds;
 	private String videoLengthSeconds;*/
 	//private String filePath;
