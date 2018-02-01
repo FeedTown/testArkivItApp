@@ -25,6 +25,20 @@ public class ExcelController {
 
 	public void init() {
 		view.setVisible(true);
+		//done button in panelForm
+				view.getBtnDone().addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+						doneButton();
+						
+
+					}
+
+				});
+	
+		
 		//select folder button
 		view.getBtnOpenFile().addActionListener(new ActionListener() {
 
@@ -59,6 +73,12 @@ public class ExcelController {
 			}
 
 		});
+	}
+	
+	public void doneButton() {
+		view.getPanelForm().setVisible(false);
+		view.getPanel().setVisible(true);
+		
 	}
 
 	public void openButton(ActionEvent e) {
