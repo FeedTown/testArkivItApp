@@ -26,11 +26,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.JCheckBox;
 
-public class ExcelAppGUI {
+public class ExcelAppGUI extends JFrame{
 
-
-
-	private JFrame frame;
+	//private JFrame frame;
 	BufferedWriter readFile;
 	JButton btnOpenFile = new JButton("Select file...");
 	JButton btnSaveAs = new JButton("Save As...");
@@ -72,18 +70,18 @@ public class ExcelAppGUI {
 	 */
 	private void initialize()  {
 
-		frame = new JFrame();
-		frame.setTitle("ArkivitApp");
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 663, 276);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setLocationRelativeTo(null);
+		//frame = new JFrame();
+		this.setTitle("ArkivitApp");
+		this.setResizable(false);
+		this.setBounds(100, 100, 663, 276);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
+		this.setLocationRelativeTo(null);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.GRAY);
 		panel.setBounds(0, 0, 699, 285);
-		frame.getContentPane().add(panel);
+		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		btnSaveAs.setEnabled(false);
 		btnConvert.setEnabled(false);
@@ -142,22 +140,6 @@ public class ExcelAppGUI {
 		this.btnOpenFile = btnOpenFile;
 	}
 
-	public JFrame getFrame() {
-		return frame;
-	}
-
-	public void setFrame(JFrame frame) {
-		this.frame = frame;
-	}
-
-	public BufferedWriter getReadFile() {
-		return readFile;
-	}
-
-	public void setReadFile(BufferedWriter readFile) {
-		this.readFile = readFile;
-	}
-
 	public JButton getBtnSaveAs() {
 		return btnSaveAs;
 	}
@@ -200,17 +182,9 @@ public class ExcelAppGUI {
 		return saveTxtField;
 	}
 
-	public JLabel getLblNewLabel() {
-		return lblNewLabel;
-	}
 
-	public JLabel getLblOutput() {
-		return lblOutput;
-	}
 
-	public JLabel getLblColumns() {
-		return lblColumns;
-	}
+
 	
 	
 

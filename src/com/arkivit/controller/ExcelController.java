@@ -24,7 +24,7 @@ public class ExcelController {
 	}
 
 	public void init() {
-		view.getFrame().setVisible(true);
+		view.setVisible(true);
 		//select folder button
 		view.getBtnOpenFile().addActionListener(new ActionListener() {
 
@@ -77,6 +77,8 @@ public class ExcelController {
 				view.getOpenTxtField().setText(model.getMyFile().getAbsolutePath());*/
 
 			model.setSourceFolderPath(view.getChooser().getSelectedFile().getAbsolutePath());
+			
+		//model.setText(view.getTextbox.getText)
 			view.getOpenTxtField().setText(model.getSourceFolderPath());
 
 		}

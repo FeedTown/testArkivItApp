@@ -26,8 +26,8 @@ public class MetadataToExcelGUI {
 	 private String excelFileName,folderName = ""; //= "standard.xls";
 	 private long fileSize;
 	
-	 private String targetexcelFilepath = "F:\\backup\\test\\Test_work";  // generated excel file location
-	 private String sourceFolderPath = "F:\\My map\\Documents"; // source Directory
+	 private String targetexcelFilepath;// = "F:\\backup\\test\\Test_work";  // generated excel file location
+	 private String sourceFolderPath ;//= "F:\\My map\\Documents"; // source Directory
 	 private ArrayList<String> aList = new ArrayList<String>();
 	 private ArrayList<String> filePathList = new ArrayList<String>();
 	 private ArrayList<Long> sizeList = new ArrayList<Long>();
@@ -166,10 +166,13 @@ public class MetadataToExcelGUI {
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
-			workbook.createSheet("File Names", 0);
+			workbook.createSheet("ALLMÄNT", 0);
+			workbook.createSheet("File Names", 1);
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
-			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(0);
+			
+			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(1);
+			WritableSheet excelSheet2 = (WritableSheet) workbook.getSheet(0);
 			if (!aList.isEmpty()) {
 				for (int rowNumber = 0; rowNumber < aList.size(); rowNumber++) {
 
@@ -267,6 +270,7 @@ public class MetadataToExcelGUI {
 			}
 			workbook.write();
 			excelSheet = null;
+			excelSheet2 = null;
 			workbook.close();
 		} catch (RowsExceededException e) {
 			// TODO Auto-generated catch block

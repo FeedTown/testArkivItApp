@@ -22,7 +22,7 @@ public class testClass {
 		//ExcelController controller = new ExcelController(model,view);
 
 
-		view.getFrame().setVisible(true);
+		view.setVisible(true);
 
 		view.getBtnOpenFile().addActionListener(new ActionListener() {
 
