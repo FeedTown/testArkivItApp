@@ -31,7 +31,7 @@ public class MetadataToExcelGUI {
 	private String sourceFolderPath; // source Directory
 	private int totalFileCount = 0, tCount= 0; // variable to store total file count
 	private int fileCount = 0; // variable to store required files count
-	private ArrayList<String> aList = new ArrayList<String>();
+	private ArrayList<String> listOfFileNames = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fList;// = new ArrayList<File>();
@@ -143,7 +143,7 @@ public class MetadataToExcelGUI {
 					fPath = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
 					fPath = fPath.replace(sourceFolderPath, "");
 
-					aList.add(files);
+					listOfFileNames.add(files);
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					decoder.getUtfList().add(decoder.getUtfString());
@@ -174,6 +174,7 @@ public class MetadataToExcelGUI {
 
 		try {
 			System.out.println("createExcelFile");
+			String tempString,sizeInString,fileExtention;
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
@@ -181,30 +182,29 @@ public class MetadataToExcelGUI {
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
 			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(0);
-			if (!aList.isEmpty()) {
-				for (int rowNumber = 0; rowNumber < aList.size(); rowNumber++) {
+			if (!listOfFileNames.isEmpty()) {
+				for (int rowNumber = 0; rowNumber < listOfFileNames.size(); rowNumber++) {
 
 					/*CellView cell = workbook.getSheet(0).getColumnView(rowNumber);
 		    	cell.setSize(14000);
 		    	workbook.getSheet(0).setColumnView(0, cell);*/
 
-					String tempString = aList.get(rowNumber);
-
-					if(tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö")
-							|| tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö") 
-							|| tempString.contains("Ü") || tempString.contains("ü"))
+					tempString = listOfFileNames.get(rowNumber);
+					
+					if(tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö")
+							|| tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö") 
+							|| tempString.contains("ü") || tempString.contains("Ü"))
 					{
-						System.out.println("INSIDE replaceILLEGALE");
 						tempString = replaceIllegalChars(tempString);
-					}
-					//System.out.println(aList.get(rowNumber));
+					}	
+					//System.out.println(listOfFileNames.get(rowNumber));
 
-					String sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
-					String fileExtention = FilenameUtils.getExtension(aList.get(rowNumber));
+					 sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
+					 fileExtention = FilenameUtils.getExtension(listOfFileNames.get(rowNumber));
 					// FilenameUtils.get
 
 					Label label2 = new Label(0, 0, "FILNAMN");
-					Label label = new Label(0, rowNumber+1, aList.get(rowNumber));
+					Label label = new Label(0, rowNumber+1, listOfFileNames.get(rowNumber));
 
 					Label fileTypeLabelName = new Label(1,0,"FILTYP");
 					Label fileTypeLabel = new Label(1, rowNumber+1, fileExtention);
@@ -225,23 +225,23 @@ public class MetadataToExcelGUI {
 					Label filePathLabelName = new Label(6, 0, "SÖKVÄG(path,url)");
 					Label filePathLabel = new Label(6, rowNumber+1, filePathList.get(rowNumber));
 
-					Label confidentialityLabelName = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
-					//Label confidentialityLabel = new Label(7, rowNumber+1,"");
+					/*Label confidentialityLabelName = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
+					Label confidentialityLabel = new Label(7, rowNumber+1,"");
 
 					Label personalInformationHandelingLabelName = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
-					//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
+					Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
 
 					Label commentLabelName = new Label(9,0, "KOMMENTAR");
-					//Label commentLabel = new Label(9, rowNumber+1, "");
+					Label commentLabel = new Label(9, rowNumber+1, ""); */
 
-					excelSheet.setColumnView(0, getLargestString(aList));
+					excelSheet.setColumnView(0, getLargestString(listOfFileNames));
 					excelSheet.setColumnView(2, 16);
 					excelSheet.setColumnView(4, 20);
 					excelSheet.setColumnView(5, 27);
 					excelSheet.setColumnView(6, getLargestString(filePathList));
-					excelSheet.setColumnView(7, 33);
+					/*excelSheet.setColumnView(7, 33);
 					excelSheet.setColumnView(8, 33);
-					excelSheet.setColumnView(9, 13);
+					excelSheet.setColumnView(9, 13); */
 
 					excelSheet.addCell(label2);
 					excelSheet.addCell(label);
@@ -264,13 +264,13 @@ public class MetadataToExcelGUI {
 					excelSheet.addCell(fileDurationLabel);
 					excelSheet.addCell(durationLabel);
 
-					excelSheet.addCell(confidentialityLabelName);
+					//excelSheet.addCell(confidentialityLabelName);
 					//excelSheet.addCell(confidentialityLabel);
 
-					excelSheet.addCell(personalInformationHandelingLabelName);
+					//excelSheet.addCell(personalInformationHandelingLabelName);
 					//excelSheet.addCell(personalInformationHandelingLabel);
 
-					excelSheet.addCell(commentLabelName);
+					//excelSheet.addCell(commentLabelName);
 					//excelSheet.addCell(commentLabel);
 
 
@@ -385,12 +385,12 @@ public class MetadataToExcelGUI {
 		this.fileCount = fileCount;
 	}
 
-	public ArrayList<String> getaList() {
-		return aList;
+	public ArrayList<String> getlistOfFileNames() {
+		return listOfFileNames;
 	}
 
-	public void setaList(ArrayList<String> aList) {
-		this.aList = aList;
+	public void setlistOfFileNames(ArrayList<String> listOfFileNames) {
+		this.listOfFileNames = listOfFileNames;
 	}
 
 	public ArrayList<String> getFilePathList() {
