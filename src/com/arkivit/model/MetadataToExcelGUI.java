@@ -166,7 +166,7 @@ public class MetadataToExcelGUI {
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
-			workbook.createSheet("ALLMÄNT", 0);
+			workbook.createSheet("ALLMÃ„NT", 0);
 			workbook.createSheet("File Names", 1);
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
@@ -179,11 +179,10 @@ public class MetadataToExcelGUI {
 						
 					tempString = aList.get(rowNumber);
 					
-					if(tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö")
-							|| tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö") 
-							|| tempString.contains("Ü") || tempString.contains("ü"))
+					if(tempString.contains("Ã¥") || tempString.contains("Ã¤") || tempString.contains("Ã¶")
+							|| tempString.contains("Ã¼") || tempString.contains("Ã…") || tempString.contains("Ã„") 
+							|| tempString.contains("Ã–") || tempString.contains("Ãœ") || tempString.contains(" "))
 					{
-						System.out.println("INSIDE replaceILLEGALE");
 						tempString = replaceIllegalChars(tempString);
 					}
 					
@@ -194,7 +193,7 @@ public class MetadataToExcelGUI {
 					// FilenameUtils.get
 
 					fileNameRow = new Label(0, 0, "FILNAMN");
-					fileNameColl = new Label(0, rowNumber+1, aList.get(rowNumber));
+					fileNameColl = new Label(0, rowNumber+1, tempString);
 
 					fileTypeNameRow = new Label(1,0,"FILTYP");
 					fileTypeNameColl = new Label(1, rowNumber+1, fileExtention);
@@ -206,13 +205,13 @@ public class MetadataToExcelGUI {
 					fileSizeNameColl = new Label(3, rowNumber+1, sizeInString);
 
 
-					charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
+					charsetNameRow = new Label(4,0, "TECKENUPPSÃ„TTNING");
 					charsetNameColl = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
 
 					fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
 					fileDurationColl = new Label(5, rowNumber+1, fileDuration.getAudioVideoList().get(rowNumber));
 
-					filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
+					filePathNameRow = new Label(6, 0, "SÃ–KVÃ„G(path,url)");
 					filePathNameColl = new Label(6, rowNumber+1, filePathList.get(rowNumber));
 					
 					confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
@@ -291,7 +290,7 @@ public class MetadataToExcelGUI {
 
 	private String replaceIllegalChars(String string) {
 		String newString = StringUtils.replaceEach (string, 
-				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
+				new String[] { "Ã¥",  "Ã¤",  "Ã¶",  "Ã¼", "Ã…",  "Ã„",  "Ã–", "Ãœ", " "}, 
 				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
 		return newString;
 	}
