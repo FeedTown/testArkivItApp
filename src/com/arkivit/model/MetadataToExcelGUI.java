@@ -184,8 +184,8 @@ public class MetadataToExcelGUI {
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
-			workbook.createSheet("ALLMÄNT", 0);
-			workbook.createSheet("File Names", 1);
+			workbook.createSheet("Allmänt", 0);
+			workbook.createSheet("Filnamn", 1);
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
 
