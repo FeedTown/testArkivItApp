@@ -163,29 +163,9 @@ public class MetadataToExcelGUI {
 			e.printStackTrace();
 		}
 
-
-		//testForillegelChar();
 		createExcelFile();
 
 	}
-
-	/*private void testForillegelChar() {
-		String tempString;
-		for(String list : fileNameList)
-		{tempString = list;
-
-		if(tempString.contains("�") || tempString.contains("�") || tempString.contains("�")
-				|| tempString.contains("�") || tempString.contains("�") || tempString.contains("�") 
-				|| tempString.contains("�") || tempString.contains("�"))
-		{
-			System.out.println("Current string with illegal char : " + tempString);
-			//System.out.println("INSIDE replaceILLEGALE");
-			tempString = replaceIllegalChars(tempString);
-			System.out.println("Current string after convertion of illegal char" + tempString);
-		}
-		}
-
-	}*/
 
 	private void createExcelFile() {
 
@@ -210,18 +190,8 @@ public class MetadataToExcelGUI {
 			if (!fileNameList.isEmpty()) {
 				for (int rowNumber = 0; rowNumber < fileNameList.size(); rowNumber++) {
 
-
-					tempString = fileNameList.get(rowNumber);
+					tempString = replaceIllegalChars(fileNameList.get(rowNumber));
 					
-					if(tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö")
-							|| tempString.contains("ü") || tempString.contains("Å") || tempString.contains("Ä") 
-							|| tempString.contains("Ö") || tempString.contains("Ü") || tempString.contains(" "))
-					{
-						tempString = replaceIllegalChars(tempString);
-					}
-
-
-
 					sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
 					fileExtention = FilenameUtils.getExtension(fileNameList.get(rowNumber));
 					// FilenameUtils.get
@@ -322,14 +292,20 @@ public class MetadataToExcelGUI {
 
 	}
 
-
-	private String replaceIllegalChars(String string) {
-		String newString = StringUtils.replaceEach (string, 
+	private String replaceIllegalChars(String replaceIllegalChars) {	
+		
+		if(replaceIllegalChars.contains("å") || replaceIllegalChars.contains("ä") || replaceIllegalChars.contains("ö")
+			|| replaceIllegalChars.contains("ü") || replaceIllegalChars.contains("Å") || replaceIllegalChars.contains("Ä") 
+			|| replaceIllegalChars.contains("Ö") || replaceIllegalChars.contains("Ü") || replaceIllegalChars.contains(" ")) 
+		{
+		
+			replaceIllegalChars = StringUtils.replaceEach (replaceIllegalChars, 
 				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
-		return newString;
+		}
+		return replaceIllegalChars;
 	}
-
+	
 	private int getLargestString(ArrayList<String> stringList) {
 
 		int largestString = stringList.get(0).length();
