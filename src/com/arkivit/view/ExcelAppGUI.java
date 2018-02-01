@@ -139,7 +139,7 @@ public class ExcelAppGUI extends JFrame{
 	public void setBtnOpenFile(JButton btnOpenFile) {
 		this.btnOpenFile = btnOpenFile;
 	}
-//afafasf
+	//afafasf
 	public JButton getBtnSaveAs() {
 		return btnSaveAs;
 	}
