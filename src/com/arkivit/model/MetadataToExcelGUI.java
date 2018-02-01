@@ -203,11 +203,11 @@ public class MetadataToExcelGUI {
 					// FilenameUtils.get
 
 					fileNameRow = new Label(0, 0, "FILNAMN");
-<<<<<<< Updated upstream
+
 					fileNameColl = new Label(0, rowNum+1, tempString);
-=======
-					fileNameColl = new Label(0, rowNumber+1, tempString);
->>>>>>> Stashed changes
+
+					
+
 
 					fileTypeNameRow = new Label(1,0,"FILTYP");
 					fileTypeNameColl = new Label(1, rowNum+1, fileExtention);
