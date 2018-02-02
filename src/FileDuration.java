@@ -1,20 +1,40 @@
+import java.io.File;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
+import javax.activation.MimeType;
+import javax.activation.MimetypesFileTypeMap;
+import javax.activation.FileTypeMap;
+
 import org.apache.log4j.BasicConfigurator;
+import org.apache.tika.Tika;
 
 import com.xuggle.xuggler.IContainer;
 
 public class FileDuration {
 	
-	/*public static void main (String[] args) {
+	public static void main (String[] args) {
 		
-		String path = "/Users/RobertoBlanco/Desktop/source/PersonligtBrev.pdf";
+		String path = "/Users/RobertoBlanco/Desktop/source/MinaKvarter.mov";
+		 //String file = "/Users/RobertoBlanco/Desktop/source/robertosimon.m4v";;
+		File newFile = new File("/Users/RobertoBlanco/Desktop/source/MjölkbackSlideLiljeholemn.mp4");
 		
-		FileDuration file = new FileDuration();
-		file.CheckFileDuration(path);
-		System.out.println(file.getAudioVideoDuration());
+		FileDuration fileDuration = new FileDuration();
+		String video = newFile.toString();
+		String test = fileDuration.getMimeType(path);
+		/*System.out.println(test);
 		
-	}*/
+		if(fileDuration.isVideo(path)) {
+			System.out.println("The file is a video.");
+	
+		} */
+		
+		System.out.println("This is a tika file detector: " + fileDuration.getFileType(path));
+		
+		
+		
+		
+	}
 
 	/*private final static String fileName = "/Users/RobertoBlanco/Desktop/front-desk-bells-daniel_simon.mp3";
 	private final static String fileName1 = "/Users/RobertoBlanco/Desktop//MinaKvarter.mov";
@@ -22,17 +42,42 @@ public class FileDuration {
 	private String videoLengthSeconds;*/
 	//private String filePath;
 	private String audioVideoFile;
+	private File file;
 	private ArrayList<String> audioVideoList = new ArrayList<>();
+	private Tika defaultTika = new Tika();
 	
+	public String getFileType(String fileUrl) {
+		return defaultTika.detect(fileUrl);
+	}
 	
-	
-	
+
 	public FileDuration() {
 		//this.filePath = filePath;
 		//CheckFileDuration();
 	}
 	
-
+	/*public static String getMimeType(String fileUrl) {
+		MimeType mimeType = new MimeType();
+	    fileUrl = mimeType.getPrimaryType();
+	  	
+		return fileUrl;
+	}*/
+	
+	public  String getMimeType(String fileUrl) {
+		MimetypesFileTypeMap m = new MimetypesFileTypeMap();
+		MimeType mimeType = new MimeType();
+		//String fileType =  m.getContentType(fileUrl.getName());
+		String fileType =  m.getContentType(fileUrl);
+		
+		
+		return fileType;
+	} 
+	
+	public boolean isVideo(String path) {
+		String mimeType = URLConnection.guessContentTypeFromName(path);
+		return mimeType != null && mimeType.startsWith("video");
+	}
+	
 	public void CheckFileDuration (String filePath){
 		/*IContainer audioContainer = IContainer.make();
 	int audioResult = audioContainer.open(fileName, IContainer.Type.READ, null);
@@ -74,6 +119,10 @@ public class FileDuration {
 			System.out.println("Problem with the file...");
 		}
 
+	}
+	
+	public File getFile() {
+		return file;
 	}
 
 	public ArrayList<String> getAudioVideoList(){

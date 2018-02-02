@@ -343,7 +343,8 @@ public class MetadataToExcelGUI {
 	}
 	private WritableSheet createGeneralSheet(WritableSheet generalSheet) throws RowsExceededException, WriteException {
 
-		Label headerLabel, contentLabel, archiveDiareNum, 
+		Label headerLabel, contentLabel, 
+		archiveDiareNum, 
 		archiveDiareNumDeliv,
 		descDelivery,
 		archiveCreator,
@@ -447,7 +448,7 @@ public class MetadataToExcelGUI {
 
 		return largestString;
 	}
-
+	
 	public String getExcelFileName() {
 		return excelFileName;
 	}
