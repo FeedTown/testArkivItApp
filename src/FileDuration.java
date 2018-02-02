@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.tika.Tika;
 
 import com.xuggle.xuggler.IContainer;
 
@@ -13,7 +14,7 @@ public class FileDuration {
 	//private String filePath;
 	private String audioVideoFile;
 	private ArrayList<String> audioVideoList = new ArrayList<>();
-	
+	private Tika masala = new Tika();
 	
 	
 	
@@ -22,7 +23,19 @@ public class FileDuration {
 		//CheckFileDuration();
 	}
 	
-
+	public static void main(String[] args) {
+		String path = "/Users/RobertoBlanco/Desktop/source/0963.wav";
+		
+		
+		System.out.println(new FileDuration().giveMyFile(path));
+	}
+	
+	public String giveMyFile(String path)
+	{
+		return masala.detect(path);
+		
+	}
+	
 	public void CheckFileDuration (String filePath){
 		/*IContainer audioContainer = IContainer.make();
 	int audioResult = audioContainer.open(fileName, IContainer.Type.READ, null);

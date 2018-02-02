@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tika.Tika;
 
 import jxl.Workbook;
 import jxl.WorkbookSettings;
@@ -35,6 +36,7 @@ public class MetadataToExcelGUI {
 	private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
 	private FileDuration fileDuration = new FileDuration();
 	private GeneralBean genaralBean = new GeneralBean();
+	private Tika fileType = new Tika();
 
 	public MetadataToExcelGUI()
 	{
@@ -119,7 +121,7 @@ public class MetadataToExcelGUI {
 			}});
 		
 		
-		String duration,fPath,currentFileName;
+		String duration,fPath,currentFileName, tempString, tempPath, newFileString;
 		try {
 			if(!fList.isEmpty())
 			{
@@ -129,10 +131,11 @@ public class MetadataToExcelGUI {
 					duration = "";
 					currentFileName = file.getName();
 					
-					if(currentFileName.endsWith(".mov") || 
-							currentFileName.endsWith(".mp4") || 
-							currentFileName.endsWith(".mp3") || 
-							currentFileName.endsWith("m4v"))
+					tempPath = file.getParentFile().getAbsolutePath() + "/"+ currentFileName;
+					tempString = checkVideoAudioFiles(tempPath);
+					newFileString = tempString.replaceAll(".*/", "");
+					
+					if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
 					{
 						fileDuration.CheckFileDuration(file.getParentFile().getAbsolutePath()
 								+ "/" + currentFileName);
@@ -141,6 +144,7 @@ public class MetadataToExcelGUI {
 					
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
+					System.out.println(fPath);
 					fPath = fPath.replace(sourceFolderPath, folderName);
 					
 					
@@ -153,6 +157,7 @@ public class MetadataToExcelGUI {
 					System.out.println("File size: " + fileSize);
 					
 				}
+				
 			}
 			else
 			{
@@ -170,8 +175,11 @@ public class MetadataToExcelGUI {
 		createExcelFile();
 
 	}
-
-
+	
+	private String checkVideoAudioFiles(String fileType) {
+		return this.fileType.detect(fileType);
+	}
+	
 	private void createExcelFile() {
 
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
@@ -181,7 +189,7 @@ public class MetadataToExcelGUI {
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
-			workbook.createSheet("Allmänt", 0);
+			workbook.createSheet("Allmï¿½nt", 0);
 			workbook.createSheet("Filer", 1);
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
@@ -246,14 +254,14 @@ public class MetadataToExcelGUI {
 			fileSizeNameRow = new Label(3, 0, "STORLEK (Bytes)");
 			fileSizeNameColl = new Label(3, rowNum+1, sizeInString);
 
-			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
+			charsetNameRow = new Label(4,0, "TECKENUPPSï¿½TTNING");
 			charsetNameColl = new Label(4, rowNum+1, decoder.getUtfList().get(rowNum));
 
 
 			fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
 			fileDurationColl = new Label(5, rowNum+1, fileDuration.getAudioVideoList().get(rowNum));
 
-			filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
+			filePathNameRow = new Label(6, 0, "Sï¿½KVï¿½G(path,url)");
 			filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
 
 			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
@@ -373,19 +381,19 @@ public class MetadataToExcelGUI {
 		
 		headerLabel = new Label(0, 0, "RUBRIK");
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
-		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse");
+		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransï¿½verkommelse");
 		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans");
 		descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
 		archiveCreator = new Label(0, 4, "Arkivbildare"); 
 		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
 		delivGov = new Label(0, 6, "Levererande myndighet");
 		oNumDelivGov = new Label(0, 7, "Organisationsnummer levererande myndighet");
-		consultantBureau = new Label(0, 8, "Servicebyrå/Konsult");
-		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans");
+		consultantBureau = new Label(0, 8, "Servicebyrï¿½/Konsult");
+		contactPersonDeliv = new Label(0, 9, "Kontaktperson fï¿½r leverans");
 		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson");
 		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson");
-		costCenter  = new Label(0, 12, "Kostnadsställe");
-		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering");
+		costCenter  = new Label(0, 12, "Kostnadsstï¿½lle");
+		eBillingContactPerson  = new Label(0, 13, "Kontaktperson fï¿½r e-fakturering");
 		archiveName  = new Label(0, 14, "Arkivets namn");
 		systemName  = new Label(0, 15, "Systemets namn");
 		withdrawalDate  = new Label(0, 16, "Uttagsdatum");
@@ -421,7 +429,7 @@ public class MetadataToExcelGUI {
 		
 		
 		
-		contentLabel = new Label(1,0,"INNEHÅLL");
+		contentLabel = new Label(1,0,"INNEHï¿½LL");
 		generalSheet.addCell(contentLabel);
 		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
 		return generalSheet;
@@ -429,12 +437,12 @@ public class MetadataToExcelGUI {
 
 	}
 	private String replaceIllegalChars(String currentString) {
-		if(currentString.contains("Å") || currentString.contains("Ä") || currentString.contains("Ö")
-				|| currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö") 
-				|| currentString.contains("Ü") || currentString.contains("ü"))
+		if(currentString.contains("ï¿½") || currentString.contains("ï¿½") || currentString.contains("ï¿½")
+				|| currentString.contains("ï¿½") || currentString.contains("ï¿½") || currentString.contains("ï¿½") 
+				|| currentString.contains("ï¿½") || currentString.contains("ï¿½"))
 		{
 			currentString = StringUtils.replaceEach (currentString, 
-					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
+					new String[] { "ï¿½",  "ï¿½",  "ï¿½",  "ï¿½", "ï¿½",  "ï¿½",  "ï¿½", "ï¿½", " "}, 
 					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
 		}
 
@@ -496,9 +504,9 @@ public class MetadataToExcelGUI {
 
 		//tempString = replaceIllegalChars(fileNameList.get(rowNumber));
 
-		/*if(tempString.contains("Å") || tempString.contains("Ä") || tempString.contains("Ö")
-					|| tempString.contains("å") || tempString.contains("ä") || tempString.contains("ö") 
-					|| tempString.contains("Ü") || tempString.contains("ü"))
+		/*if(tempString.contains("ï¿½") || tempString.contains("ï¿½") || tempString.contains("ï¿½")
+					|| tempString.contains("ï¿½") || tempString.contains("ï¿½") || tempString.contains("ï¿½") 
+					|| tempString.contains("ï¿½") || tempString.contains("ï¿½"))
 			{
 				System.out.println("INSIDE replaceILLEGALE");
 				tempString = replaceIllegalChars(tempString);
@@ -523,13 +531,13 @@ public class MetadataToExcelGUI {
 			fileSizeNameColl = new Label(3, rowNumber+1, sizeInString);
 
 
-			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
+			charsetNameRow = new Label(4,0, "TECKENUPPSï¿½TTNING");
 			charsetNameColl = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
 
 			fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
 			fileDurationColl = new Label(5, rowNumber+1, fileDuration.getAudioVideoList().get(rowNumber));
 
-			filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
+			filePathNameRow = new Label(6, 0, "Sï¿½KVï¿½G(path,url)");
 			filePathNameColl = new Label(6, rowNumber+1, filePathList.get(rowNumber));
 
 			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
