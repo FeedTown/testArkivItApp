@@ -76,6 +76,19 @@ public class ExcelController {
 	}
 	
 	public void doneButton() {
+		view.getDescriptionDeliveryTxt().getText();
+		view.getArchiveCreatorTxt().getText();
+		view.getoNumArchiveCreatorTxt().getText();
+		view.getDelivGovernmentTxt().getText();
+		view.getoNumDelivGovernmentTxt().getText();
+		view.getConsultantBureauTxt().getText();
+		view.getContactPersonDelivTxt().getText();
+		view.getTelContactPersonTxt().getText();
+		view.getMailContactPersonTxt().getText();
+		view.getArchiveNameTxt().getText();
+		view.getSystemNameTxt().getText();
+		view.getWithdrawalDateTxt().getText();
+		view.getCommentTxt().getText();
 		view.getPanelForm().setVisible(false);
 		view.getPanel().setVisible(true);
 		
