@@ -76,19 +76,34 @@ public class ExcelController {
 	}
 	
 	public void doneButton() {
-		view.getDescriptionDeliveryTxt().getText();
-		view.getArchiveCreatorTxt().getText();
-		view.getoNumArchiveCreatorTxt().getText();
-		view.getDelivGovernmentTxt().getText();
-		view.getoNumDelivGovernmentTxt().getText();
-		view.getConsultantBureauTxt().getText();
-		view.getContactPersonDelivTxt().getText();
-		view.getTelContactPersonTxt().getText();
-		view.getMailContactPersonTxt().getText();
-		view.getArchiveNameTxt().getText();
-		view.getSystemNameTxt().getText();
-		view.getWithdrawalDateTxt().getText();
-		view.getCommentTxt().getText();
+		
+		model.getGenaralBean().setDescDelivery(view.getDescriptionDeliveryTxt().getText());
+		
+		model.getGenaralBean().setArchiveCreator(view.getArchiveCreatorTxt().getText());
+		
+		model.getGenaralBean().setArchiveCreatorNum(view.getoNumArchiveCreatorTxt().getText());
+		
+		model.getGenaralBean().setArchiveName(view.getArchiveNameTxt().getText());
+		
+		model.getGenaralBean().setComment(view.getCommentTxt().getText());
+		
+		model.getGenaralBean().setConsultantBur(view.getConsultantBureauTxt().getText());
+		
+		model.getGenaralBean().setEmail(view.getMailContactPersonTxt().getText());
+		
+		model.getGenaralBean().setContactDelivPerson(view.getContactPersonDelivTxt().getText());
+		
+		model.getGenaralBean().setDelivGov(view.getDelivGovernmentTxt().getText());
+		
+		model.getGenaralBean().setDelivGovNum(view.getoNumDelivGovernmentTxt().getText());
+		
+		model.getGenaralBean().setSystemName(view.getSystemNameTxt().getText());
+		
+		model.getGenaralBean().setTelContactPerson(view.getTelContactPersonTxt().getText());
+		
+		model.getGenaralBean().setWithdrawDate(view.getWithdrawalDateTxt().getText());
+				
+		
 		view.getPanelForm().setVisible(false);
 		view.getPanel().setVisible(true);
 		

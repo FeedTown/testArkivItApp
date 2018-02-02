@@ -11,8 +11,10 @@ public class Main {
 		ExcelAppGUI view = new ExcelAppGUI();
 		MetadataToExcelGUI model = new MetadataToExcelGUI();
 		ExcelController controller = new ExcelController(model, view);
+
 		
 		controller.init();
+		
 	}
 	
 }

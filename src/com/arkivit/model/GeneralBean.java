@@ -2,7 +2,7 @@ package com.arkivit.model;
 
 public class GeneralBean {
 	
-	String archiveName, email, contactDelivPerson, delivGov, descDelivery, consultantBur, 
+	private String archiveName, email, contactDelivPerson, delivGov, descDelivery, consultantBur, 
 		   delivGovNum, archiveCreatorNum, comment, systemName, telContactPerson, withdrawDate, archiveCreator;
 	
 	public GeneralBean()

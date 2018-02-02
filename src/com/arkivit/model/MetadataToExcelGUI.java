@@ -34,6 +34,7 @@ public class MetadataToExcelGUI {
 	private int filec = 0;
 	private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
 	private FileDuration fileDuration = new FileDuration();
+	private GeneralBean genaralBean = new GeneralBean();
 
 	public MetadataToExcelGUI()
 	{
@@ -152,39 +153,6 @@ public class MetadataToExcelGUI {
 					System.out.println("File size: " + fileSize);
 					
 				}
-				
-				/*for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) 
-				{
-
-					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
-					duration = "";
-					currentFileName = fList.get(numberOfFilesInFolder).getName();
-
-					if(currentFileName.endsWith(".mov") || 
-							currentFileName.endsWith(".mp4") || 
-							currentFileName.endsWith(".mp3") || 
-							currentFileName.endsWith("m4v"))
-					{
-
-						fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
-								+ "/" + currentFileName);
-						duration = fileDuration.getAudioVideoDuration();
-
-					}
-
-					fileSize = fList.get(numberOfFilesInFolder).length();
-					fPath = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
-					fPath = fPath.replace(sourceFolderPath, folderName);
-
-					fileNameList.add(currentFileName);
-					sizeList.add(fileSize);
-					filePathList.add(fPath);
-					decoder.getUtfList().add(decoder.getUtfString());
-					fileDuration.getAudioVideoList().add(duration);
-
-					System.out.println("File size: " + fileSize);
-
-				}*/
 			}
 			else
 			{
@@ -343,7 +311,36 @@ public class MetadataToExcelGUI {
 
 	}
 	private WritableSheet createGeneralSheet(WritableSheet generalSheet) throws RowsExceededException, WriteException {
-
+		
+		int generalListSize = 1;
+		
+		ArrayList<String> inneHallList = new ArrayList<String>();
+		
+		
+		inneHallList.add(0, "");
+		inneHallList.add(1, "");
+		inneHallList.add(2, genaralBean.getDescDelivery());
+		inneHallList.add(3, genaralBean.getArchiveCreator());
+		inneHallList.add(4, genaralBean.getArchiveCreatorNum());
+		inneHallList.add(5, genaralBean.getDelivGov());
+		inneHallList.add(6, genaralBean.getDelivGovNum());
+		inneHallList.add(7, genaralBean.getConsultantBur());
+		inneHallList.add(8, genaralBean.getContactDelivPerson());
+		inneHallList.add(9, genaralBean.getTelContactPerson());
+		inneHallList.add(10, genaralBean.getEmail());
+		inneHallList.add(11, "");
+		inneHallList.add(12, "");
+		inneHallList.add(13, genaralBean.getArchiveName());
+		inneHallList.add(14, genaralBean.getSystemName());
+		inneHallList.add(15, genaralBean.getWithdrawDate());
+		inneHallList.add(16, genaralBean.getComment());
+		inneHallList.add(17, "");
+		inneHallList.add(18, "");
+		inneHallList.add(19, "");
+	
+		
+		
+		
 		Label headerLabel, contentLabel, archiveDiareNum, 
 		archiveDiareNumDeliv,
 		descDelivery,
@@ -364,6 +361,15 @@ public class MetadataToExcelGUI {
 		projectCode,
 		accessId,
 		batchId;
+		
+		
+		for(String infoList : inneHallList)
+		{
+			contentLabel = new Label(1, generalListSize, infoList);
+			generalSheet.addCell(contentLabel);
+			generalListSize++;
+			
+		}
 		
 		headerLabel = new Label(0, 0, "RUBRIK");
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
@@ -475,7 +481,10 @@ public class MetadataToExcelGUI {
 	public void setSourceFolderPath(String sourceFolderPath) {
 		this.sourceFolderPath = sourceFolderPath;
 	}
-
+	
+	public GeneralBean getGenaralBean() {
+		return genaralBean;
+	}
 
 	private void junkCodes()
 	{
@@ -573,8 +582,40 @@ public class MetadataToExcelGUI {
 		 */
 
 		//}
+		
+		
+		/*for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) 
+		{
+
+			decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
+			duration = "";
+			currentFileName = fList.get(numberOfFilesInFolder).getName();
+
+			if(currentFileName.endsWith(".mov") || 
+					currentFileName.endsWith(".mp4") || 
+					currentFileName.endsWith(".mp3") || 
+					currentFileName.endsWith("m4v"))
+			{
+
+				fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
+						+ "/" + currentFileName);
+				duration = fileDuration.getAudioVideoDuration();
+
+			}
+
+			fileSize = fList.get(numberOfFilesInFolder).length();
+			fPath = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
+			fPath = fPath.replace(sourceFolderPath, folderName);
+
+			fileNameList.add(currentFileName);
+			sizeList.add(fileSize);
+			filePathList.add(fPath);
+			decoder.getUtfList().add(decoder.getUtfString());
+			fileDuration.getAudioVideoList().add(duration);
+
+			System.out.println("File size: " + fileSize);
+
+		}*/
 	}
-
-
 
 }
