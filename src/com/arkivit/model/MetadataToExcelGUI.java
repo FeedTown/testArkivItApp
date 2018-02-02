@@ -77,6 +77,7 @@ public class MetadataToExcelGUI {
 
 		for(File file : listOfFilesInDirectory)
 		{
+
 			if(file.isFile())
 			{
 				filec++;
@@ -115,11 +116,45 @@ public class MetadataToExcelGUI {
 				}
 
 			}});
+		
+		
 		String duration,fPath,currentFileName;
 		try {
 			if(!fList.isEmpty())
 			{
-				for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) {
+				for(File file : fList)
+				{
+					decoder.fileEncoder(file.getParentFile().getAbsolutePath(), file.getName());  
+					duration = "";
+					currentFileName = file.getName();
+					
+					if(currentFileName.endsWith(".mov") || 
+							currentFileName.endsWith(".mp4") || 
+							currentFileName.endsWith(".mp3") || 
+							currentFileName.endsWith("m4v"))
+					{
+						fileDuration.CheckFileDuration(file.getParentFile().getAbsolutePath()
+								+ "/" + currentFileName);
+						duration = fileDuration.getAudioVideoDuration();
+					}
+					
+					fileSize = file.length();
+					fPath = file.getParentFile().getAbsolutePath();
+					fPath = fPath.replace(sourceFolderPath, folderName);
+					
+					
+					fileNameList.add(currentFileName);
+					sizeList.add(fileSize);
+					filePathList.add(fPath);
+					decoder.getUtfList().add(decoder.getUtfString());
+					fileDuration.getAudioVideoList().add(duration);
+
+					System.out.println("File size: " + fileSize);
+					
+				}
+				
+				/*for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) 
+				{
 
 					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
 					duration = "";
@@ -149,7 +184,7 @@ public class MetadataToExcelGUI {
 
 					System.out.println("File size: " + fileSize);
 
-				}
+				}*/
 			}
 			else
 			{
@@ -172,118 +207,30 @@ public class MetadataToExcelGUI {
 	private void createExcelFile() {
 
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
-		String sizeInString,fileExtention,tempString;
-		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
-		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
-		fileDurationRow,fileDurationColl,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,personalInformationHandelingNameRow,
-		commentLabelName,commentRow;
-		int rowNum = 0;
-		
+
 		try {
 			System.out.println("createExcelFile");
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
 			workbook.createSheet("Allmänt", 0);
-			workbook.createSheet("Filnamn", 1);
+
+			workbook.createSheet("Filer", 1);
+
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
 
+			WritableSheet generalSheet = (WritableSheet) workbook.getSheet(0);
 			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(1);
-			WritableSheet excelSheet2 = (WritableSheet) workbook.getSheet(0);
+			
 			if (!fileNameList.isEmpty()) {
-
-				for(String filename : fileNameList)
-				{
-					tempString = replaceIllegalChars(filename);
-
-
-					sizeInString = Objects.toString(sizeList.get(rowNum), null); 
-					fileExtention = FilenameUtils.getExtension(filename);
-					// FilenameUtils.get
-
-					fileNameRow = new Label(0, 0, "FILNAMN");
-
-					fileNameColl = new Label(0, rowNum+1, tempString);
-
-					
-
-
-					fileTypeNameRow = new Label(1,0,"FILTYP");
-					fileTypeNameColl = new Label(1, rowNum+1, fileExtention);
-
-					fileTypeVersionNameRow = new Label(2,0, "FILTYPSVERSION");
-					//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
-
-					fileSizeNameRow = new Label(3, 0, "STORLEK (Bytes)");
-					fileSizeNameColl = new Label(3, rowNum+1, sizeInString);
-
-
-					charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
-					charsetNameColl = new Label(4, rowNum+1, decoder.getUtfList().get(rowNum));
-
-					fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
-					fileDurationColl = new Label(5, rowNum, fileDuration.getAudioVideoList().get(rowNum));
-
-					filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
-					filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
-
-					confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
-					//Label confidentialityLabel = new Label(7, rowNumber+1,"");
-
-					personalInformationHandelingNameRow = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
-					//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
-
-					commentLabelName = new Label(9,0, "KOMMENTAR");
-					//Label commentLabel = new Label(9, rowNumber+1, "");
-
-					excelSheet.setColumnView(0, getLargestString(fileNameList));
-					excelSheet.setColumnView(2, 16);
-					excelSheet.setColumnView(4, 20);
-					excelSheet.setColumnView(5, 27);
-					excelSheet.setColumnView(6, getLargestString(filePathList));
-					excelSheet.setColumnView(7, 33);
-					excelSheet.setColumnView(8, 33);
-					excelSheet.setColumnView(9, 13);
-
-					excelSheet.addCell(fileNameRow);
-					excelSheet.addCell(fileNameColl);
-
-					excelSheet.addCell(fileTypeNameRow);
-					excelSheet.addCell(fileTypeNameColl);
-
-					excelSheet.addCell(filePathNameRow);
-					excelSheet.addCell(filePathNameColl);
-
-					excelSheet.addCell(fileTypeVersionNameRow);
-					//excelSheet.addCell(fileTypeVersionLabel);
-
-					excelSheet.addCell(fileSizeNameRow);
-					excelSheet.addCell(fileSizeNameColl);
-
-					excelSheet.addCell(charsetNameRow);
-					excelSheet.addCell(charsetNameColl);
-
-					excelSheet.addCell(fileDurationRow);
-					excelSheet.addCell(fileDurationColl);
-
-					excelSheet.addCell(confidentialityRow);
-					//excelSheet.addCell(confidentialityColl);
-
-					excelSheet.addCell(personalInformationHandelingNameRow);
-					//excelSheet.addCell(personalInformationHandelingLabel);
-
-					excelSheet.addCell(commentLabelName);
-					//excelSheet.addCell(commentLabel);
-					rowNum++;
-				}
+				generalSheet = createGeneralSheet(generalSheet);
+				excelSheet = createMetadataExcelSheet(excelSheet);
 
 			} else {
 				System.out.println("No matching files found");
 			}
 			workbook.write();
-			excelSheet = null;
-			excelSheet2 = null;
 			workbook.close();
 			clearArrList();
 		} catch (RowsExceededException e) {
@@ -303,6 +250,180 @@ public class MetadataToExcelGUI {
 	}
 
 
+	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
+		
+		String sizeInString,fileExtention,tempString;
+		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
+		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
+		fileDurationRow,fileDurationColl,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,personalInformationHandelingNameRow,
+		commentLabelName,commentRow;
+		int rowNum = 0;
+
+		for(String filename : fileNameList)
+		{
+			tempString = replaceIllegalChars(filename);
+
+
+			sizeInString = Objects.toString(sizeList.get(rowNum), null); 
+			fileExtention = FilenameUtils.getExtension(filename);
+
+			fileNameRow = new Label(0, 0, "FILNAMN");
+
+			fileNameColl = new Label(0, rowNum+1, tempString);
+
+			fileTypeNameRow = new Label(1,0,"FILTYP");
+			fileTypeNameColl = new Label(1, rowNum+1, fileExtention);
+
+			fileTypeVersionNameRow = new Label(2,0, "FILTYPSVERSION");
+			//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
+
+			fileSizeNameRow = new Label(3, 0, "STORLEK (Bytes)");
+			fileSizeNameColl = new Label(3, rowNum+1, sizeInString);
+
+			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
+			charsetNameColl = new Label(4, rowNum+1, decoder.getUtfList().get(rowNum));
+
+
+			fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
+			fileDurationColl = new Label(5, rowNum+1, fileDuration.getAudioVideoList().get(rowNum));
+
+			filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
+			filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
+
+			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
+			//Label confidentialityLabel = new Label(7, rowNumber+1,"");
+
+			personalInformationHandelingNameRow = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
+			//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
+
+			commentLabelName = new Label(9,0, "KOMMENTAR");
+			//Label commentLabel = new Label(9, rowNumber+1, "");
+
+			excelSheet.setColumnView(0, getLargestString(fileNameList));
+			excelSheet.setColumnView(2, 16);
+			excelSheet.setColumnView(4, 20);
+			excelSheet.setColumnView(5, 27);
+			excelSheet.setColumnView(6, getLargestString(filePathList));
+			excelSheet.setColumnView(7, 33);
+			excelSheet.setColumnView(8, 33);
+			excelSheet.setColumnView(9, 13);
+
+			excelSheet.addCell(fileNameRow);
+			excelSheet.addCell(fileNameColl);
+
+			excelSheet.addCell(fileTypeNameRow);
+			excelSheet.addCell(fileTypeNameColl);
+
+			excelSheet.addCell(filePathNameRow);
+			excelSheet.addCell(filePathNameColl);
+
+			excelSheet.addCell(fileTypeVersionNameRow);
+			//excelSheet.addCell(fileTypeVersionLabel);
+
+			excelSheet.addCell(fileSizeNameRow);
+			excelSheet.addCell(fileSizeNameColl);
+
+			excelSheet.addCell(charsetNameRow);
+			excelSheet.addCell(charsetNameColl);
+
+			excelSheet.addCell(fileDurationRow);
+			excelSheet.addCell(fileDurationColl);
+
+			excelSheet.addCell(confidentialityRow);
+			//excelSheet.addCell(confidentialityColl);
+
+			excelSheet.addCell(personalInformationHandelingNameRow);
+			//excelSheet.addCell(personalInformationHandelingLabel);
+
+			excelSheet.addCell(commentLabelName);
+			//excelSheet.addCell(commentLabel);
+			rowNum++;
+		}
+		
+		return excelSheet;
+
+
+	}
+	private WritableSheet createGeneralSheet(WritableSheet generalSheet) throws RowsExceededException, WriteException {
+
+		Label headerLabel, contentLabel, archiveDiareNum, 
+		archiveDiareNumDeliv,
+		descDelivery,
+		archiveCreator,
+		oNumArchiveCreator,
+		delivGov,
+		oNumDelivGov,
+		consultantBureau,
+		contactPersonDeliv,
+		telContactPerson,
+		mailContactPerson,
+		costCenter,
+		eBillingContactPerson,
+		archiveName,
+		systemName,
+		withdrawalDate,
+		comment,
+		projectCode,
+		accessId,
+		batchId;
+		
+		headerLabel = new Label(0, 0, "RUBRIK");
+		//headerLabelCol = new Label(0, rowNum+1, tempString);
+		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse");
+		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans");
+		descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
+		archiveCreator = new Label(0, 4, "Arkivbildare"); 
+		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
+		delivGov = new Label(0, 6, "Levererande myndighet");
+		oNumDelivGov = new Label(0, 7, "Organisationsnummer levererande myndighet");
+		consultantBureau = new Label(0, 8, "Servicebyrå/Konsult");
+		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans");
+		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson");
+		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson");
+		costCenter  = new Label(0, 12, "Kostnadsställe");
+		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering");
+		archiveName  = new Label(0, 14, "Arkivets namn");
+		systemName  = new Label(0, 15, "Systemets namn");
+		withdrawalDate  = new Label(0, 16, "Uttagsdatum");
+		comment  = new Label(0, 17, "Kommentar");
+		projectCode  = new Label(0, 18, "Projektkod");
+		accessId  = new Label(0, 19, "Accessions-ID");
+		batchId  = new Label(0, 20, "Batch-ID");
+		
+		generalSheet.setColumnView(0, 40);
+		
+		generalSheet.addCell(headerLabel);
+		generalSheet.addCell(archiveDiareNum);
+		generalSheet.addCell(archiveDiareNumDeliv);
+		generalSheet.addCell(descDelivery);
+		generalSheet.addCell(archiveCreator);
+		generalSheet.addCell(oNumArchiveCreator);
+		generalSheet.addCell(delivGov);
+		generalSheet.addCell(oNumDelivGov);
+		generalSheet.addCell(consultantBureau);
+		generalSheet.addCell(contactPersonDeliv);
+		generalSheet.addCell(telContactPerson);
+		generalSheet.addCell(mailContactPerson);
+		generalSheet.addCell(costCenter);
+		generalSheet.addCell(eBillingContactPerson);
+		generalSheet.addCell(archiveName);
+		generalSheet.addCell(systemName);
+		generalSheet.addCell(withdrawalDate);
+		generalSheet.addCell(comment);
+		generalSheet.addCell(projectCode);
+		generalSheet.addCell(accessId);
+		generalSheet.addCell(batchId);
+		
+		
+		
+		
+		contentLabel = new Label(1,0,"INNEHÅLL");
+		generalSheet.addCell(contentLabel);
+		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
+		return generalSheet;
+
+
+	}
 	private String replaceIllegalChars(String currentString) {
 		if(currentString.contains("Å") || currentString.contains("Ä") || currentString.contains("Ö")
 				|| currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö") 
@@ -360,9 +481,9 @@ public class MetadataToExcelGUI {
 
 	private void junkCodes()
 	{
-		
+
 		//This code snipped is from CreateExcelFile function wich is replaced by for-each loop
-		
+
 		//for (int rowNumber = 0; rowNumber < fileNameList.size(); rowNumber++) {
 
 
