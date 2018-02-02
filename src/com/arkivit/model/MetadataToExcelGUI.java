@@ -77,6 +77,7 @@ public class MetadataToExcelGUI {
 
 		for(File file : listOfFilesInDirectory)
 		{
+
 			if(file.isFile())
 			{
 				filec++;
@@ -121,7 +122,39 @@ public class MetadataToExcelGUI {
 		try {
 			if(!fList.isEmpty())
 			{
-				for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) {
+				for(File file : fList)
+				{
+					decoder.fileEncoder(file.getParentFile().getAbsolutePath(), file.getName());  
+					duration = "";
+					currentFileName = file.getName();
+					
+					if(currentFileName.endsWith(".mov") || 
+							currentFileName.endsWith(".mp4") || 
+							currentFileName.endsWith(".mp3") || 
+							currentFileName.endsWith("m4v"))
+					{
+						fileDuration.CheckFileDuration(file.getParentFile().getAbsolutePath()
+								+ "/" + currentFileName);
+						duration = fileDuration.getAudioVideoDuration();
+					}
+					
+					fileSize = file.length();
+					fPath = file.getParentFile().getAbsolutePath();
+					fPath = fPath.replace(sourceFolderPath, folderName);
+					
+					
+					fileNameList.add(currentFileName);
+					sizeList.add(fileSize);
+					filePathList.add(fPath);
+					decoder.getUtfList().add(decoder.getUtfString());
+					fileDuration.getAudioVideoList().add(duration);
+
+					System.out.println("File size: " + fileSize);
+					
+				}
+				
+				/*for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) 
+				{
 
 					decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
 					duration = "";
@@ -151,7 +184,7 @@ public class MetadataToExcelGUI {
 
 					System.out.println("File size: " + fileSize);
 
-				}
+				}*/
 			}
 			else
 			{
@@ -178,6 +211,7 @@ public class MetadataToExcelGUI {
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
+
 			workbook.createSheet("Allmänt", 0);
 			workbook.createSheet("Filer", 1);
 			System.out.println("Excel file is created in path -- "
@@ -189,6 +223,7 @@ public class MetadataToExcelGUI {
 			if (!fileNameList.isEmpty()) {
 				generalSheet = createGeneralSheet(generalSheet);
 				excelSheet = createMetadataExcelSheet(excelSheet);
+
 
 			} else {
 				System.out.println("No matching files found");
@@ -211,7 +246,6 @@ public class MetadataToExcelGUI {
 		}
 
 	}
-
 
 	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
 		
@@ -378,13 +412,10 @@ public class MetadataToExcelGUI {
 		generalSheet.addCell(batchId);
 		
 		
-		
-		
 		contentLabel = new Label(1,0,"INNEHÅLL");
 		generalSheet.addCell(contentLabel);
 		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
 		return generalSheet;
-
 
 	}
 	private String replaceIllegalChars(String replaceIllegalChars) {	
@@ -393,7 +424,6 @@ public class MetadataToExcelGUI {
 				|| replaceIllegalChars.contains("ü") || replaceIllegalChars.contains("Å") || replaceIllegalChars.contains("Ä") 
 				|| replaceIllegalChars.contains("Ö") || replaceIllegalChars.contains("Ü") || replaceIllegalChars.contains(" ")) 
 		{
-
 			replaceIllegalChars = StringUtils.replaceEach (replaceIllegalChars, 
 					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
