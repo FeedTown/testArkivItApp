@@ -114,19 +114,8 @@ public class ExcelController {
 		String path;
 
 		if(returnValue == JFileChooser.APPROVE_OPTION) {
-			//model.setMyFile(view.getChooser().getSelectedFile());
-			//1model.setSourceFolderPath(view.getChooser().getSelectedFile().getAbsolutePath());
-			//model.getSourceFolderPath() = model.getMyFile().getAbsolutePath();
-			//2view.getOpenTxtField().setText(view.getChooser().getSelectedFile().getAbsolutePath());
-			//model.setTargetexcelFilepath(view.getChooser().getSelectedFile().getAbsolutePath());
-
-			/*model.setMyFile(view.getChooser().getSelectedFile());
-				model.setSourceFolderPath(model.getMyFile().getAbsolutePath());
-				view.getOpenTxtField().setText(model.getMyFile().getAbsolutePath());*/
 
 			model.setSourceFolderPath(view.getChooser().getSelectedFile().getAbsolutePath());
-			
-		//model.setText(view.getTextbox.getText)
 			view.getOpenTxtField().setText(model.getSourceFolderPath());
 
 		}
@@ -142,41 +131,27 @@ public class ExcelController {
 	public void saveButton(ActionEvent e) {
 		int returnSaveVal = view.getSaveFile().showSaveDialog(null);
 		if(returnSaveVal == JFileChooser.APPROVE_OPTION) {
-			//model.setMyFile2(view.getSaveFile().getSelectedFile());
-			/*model.setTargetexcelFilepath(view.getSaveFile().getSelectedFile().getAbsolutePath());
-				model.setExcelFileName(view.getSaveFile().getParent() + ".xls");
-				view.getSaveTxtField().setText(view.getSaveFile().getSelectedFile().getName());*/
-			/*model.setMyFile2(view.getSaveFile().getSelectedFile());
-				model.setTargetexcelFilepath(model.getMyFile2().getParent());
-				model.setExcelFileName(view.getSaveFile().getName(model.getMyFile2()) + ".xls");
-				view.getSaveTxtField().setText(model.getMyFile2().getAbsolutePath());*/
-
+	
 			model.setTargetexcelFilepath(view.getSaveFile().getSelectedFile().getParentFile().getAbsolutePath());
-
 			model.setExcelFileName(view.getSaveFile().getSelectedFile().getName() + ".xls");
 			view.getSaveTxtField().setText(model.getTargetexcelFilepath());
 
 		}
 		if(returnSaveVal == JFileChooser.CANCEL_OPTION) {
+			
 			view.getSaveTxtField().setText("");
 			view.getBtnConvert().setEnabled(false);
 		}
 		if(e.getSource() == view.getBtnSaveAs() && returnSaveVal == JFileChooser.APPROVE_OPTION) {
+			
 			view.getBtnConvert().setEnabled(true);
 		}
 	}
 
 	public void createButton(ActionEvent e) {
-		/*File sourceFile = new File(view.getOpenTxtField().getText());
-		model.setDestinationFile(new File(view.getSaveTxtField().getText()));
-		Path sourcePath = sourceFile.toPath();
-		Path destinationPath = model.getDestinationFile().toPath();*/
-		//sourcePath.relativize(destinationPath);
-
 		try {
 			boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 			if(!check) {
-				//Files.copy(sourcePath, destinationPath);
 				model.testMeth();
 				JOptionPane.showMessageDialog(null, "File was successfully created", 
 						"Success", JOptionPane.INFORMATION_MESSAGE);
