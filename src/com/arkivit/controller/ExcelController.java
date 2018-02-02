@@ -26,19 +26,19 @@ public class ExcelController {
 	public void init() {
 		view.setVisible(true);
 		//done button in panelForm
-				view.getBtnDone().addActionListener(new ActionListener() {
+		view.getBtnDone().addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						
-						doneButton();
-						
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-					}
+				doneButton();
 
-				});
-	
-		
+
+			}
+
+		});
+
+
 		//select folder button
 		view.getBtnOpenFile().addActionListener(new ActionListener() {
 
@@ -73,40 +73,51 @@ public class ExcelController {
 			}
 
 		});
+		//back button
+		view.getBtnBack().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				backButton(e);
+
+
+			}
+
+		});
 	}
-	
+
 	public void doneButton() {
-		
+
 		model.getGenaralBean().setDescDelivery(view.getDescriptionDeliveryTxt().getText());
-		
+
 		model.getGenaralBean().setArchiveCreator(view.getArchiveCreatorTxt().getText());
-		
+
 		model.getGenaralBean().setArchiveCreatorNum(view.getoNumArchiveCreatorTxt().getText());
-		
+
 		model.getGenaralBean().setArchiveName(view.getArchiveNameTxt().getText());
-		
+
 		model.getGenaralBean().setComment(view.getCommentTxt().getText());
-		
+
 		model.getGenaralBean().setConsultantBur(view.getConsultantBureauTxt().getText());
-		
+
 		model.getGenaralBean().setEmail(view.getMailContactPersonTxt().getText());
-		
+
 		model.getGenaralBean().setContactDelivPerson(view.getContactPersonDelivTxt().getText());
-		
+
 		model.getGenaralBean().setDelivGov(view.getDelivGovernmentTxt().getText());
-		
+
 		model.getGenaralBean().setDelivGovNum(view.getoNumDelivGovernmentTxt().getText());
-		
+
 		model.getGenaralBean().setSystemName(view.getSystemNameTxt().getText());
-		
+
 		model.getGenaralBean().setTelContactPerson(view.getTelContactPersonTxt().getText());
-		
+
 		model.getGenaralBean().setWithdrawDate(view.getWithdrawalDateTxt().getText());
-				
-		
+
+
 		view.getPanelForm().setVisible(false);
 		view.getPanel().setVisible(true);
-		
+
 	}
 
 	public void openButton(ActionEvent e) {
@@ -125,8 +136,8 @@ public class ExcelController {
 				view.getOpenTxtField().setText(model.getMyFile().getAbsolutePath());*/
 
 			model.setSourceFolderPath(view.getChooser().getSelectedFile().getAbsolutePath());
-			
-		//model.setText(view.getTextbox.getText)
+
+			//model.setText(view.getTextbox.getText)
 			view.getOpenTxtField().setText(model.getSourceFolderPath());
 
 		}
@@ -180,7 +191,9 @@ public class ExcelController {
 				model.testMeth();
 				JOptionPane.showMessageDialog(null, "File was successfully created", 
 						"Success", JOptionPane.INFORMATION_MESSAGE);
-
+				resetForm();
+				view.getPanel().setVisible(false);
+				view.getPanelForm().setVisible(true);
 				view.getOpenTxtField().setText("");
 				view.getSaveTxtField().setText("");
 				view.getBtnSaveAs().setEnabled(false);
@@ -211,6 +224,27 @@ public class ExcelController {
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
 		}
+	}
+
+	private void resetForm() {
+		view.getDescriptionDeliveryTxt().setText("");
+		view.getArchiveCreatorTxt().setText("");
+		view.getoNumArchiveCreatorTxt().setText("");
+		view.getArchiveNameTxt().setText("");
+		view.getCommentTxt().setText("");
+		view.getConsultantBureauTxt().setText("");
+		view.getMailContactPersonTxt().setText("");
+		view.getContactPersonDelivTxt().setText("");
+		view.getDelivGovernmentTxt().setText("");
+		view.getoNumDelivGovernmentTxt().setText("");
+		view.getSystemNameTxt().setText("");
+		view.getTelContactPersonTxt().setText("");
+		view.getWithdrawalDateTxt().setText("");
+	}
+
+	public void backButton(ActionEvent e) {
+		view.getPanel().setVisible(false);
+		view.getPanelForm().setVisible(true);
 	}
 
 }

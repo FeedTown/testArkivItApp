@@ -27,6 +27,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.JCheckBox;
 import java.awt.CardLayout;
 import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class ExcelAppGUI extends JFrame{
 
@@ -35,7 +36,9 @@ public class ExcelAppGUI extends JFrame{
 	JButton btnOpenFile = new JButton("Select file...");
 	JButton btnSaveAs = new JButton("Save As...");
 	JButton btnConvert = new JButton("Create");
+	JButton btnBack = new JButton("<- Back");
 	JButton btnDone = new JButton("Done");
+	JCheckBox checkBox = new JCheckBox("");
 	JFileChooser chooser = new JFileChooser();
 	JFileChooser saveFile = new JFileChooser();
 	JPanel panelForm = new JPanel();
@@ -71,21 +74,6 @@ public class ExcelAppGUI extends JFrame{
 	private final JLabel withdrawalDateLabel = new JLabel("Uttagsdatum");
 	private final JLabel commentLabel = new JLabel("Kommentar");
 
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ExcelAppGUI window = new ExcelAppGUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the application.
@@ -111,6 +99,7 @@ public class ExcelAppGUI extends JFrame{
 		panelForm.setBackground(Color.GRAY);
 		getContentPane().add(panelForm, "name_157896301514130");
 		panelForm.setLayout(null);
+		btnDone.setBorder(null);
 		
 		
 		btnDone.setBounds(293, 663, 89, 23);
@@ -240,11 +229,14 @@ public class ExcelAppGUI extends JFrame{
 		panel.setBackground(Color.GRAY);
 		this.getContentPane().add(panel, "name_157896014914099");
 		panel.setLayout(null);
+		btnSaveAs.setBorder(null);
 		btnSaveAs.setEnabled(false);
+		btnConvert.setBorder(null);
 		btnConvert.setEnabled(false);
 
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		saveFile.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		btnOpenFile.setBorder(null);
 
 		btnOpenFile.setBounds(374, 232, 103, 23);
 		panel.add(btnOpenFile);
@@ -282,20 +274,21 @@ public class ExcelAppGUI extends JFrame{
 
 		panel.add(lblColumns);
 
-		JCheckBox checkBox = new JCheckBox("");
+		
 		checkBox.setContentAreaFilled(false);
 		checkBox.setBorderPaintedFlat(true);
 		checkBox.setBounds(215, 278, 21, 18);
 		panel.add(checkBox);
 		
 		
+		btnBack.setBounds(0, 0, 69, 23);
+		panel.add(btnBack);
+		
+		
 		
 	}
 	
 	//getters and setters for form panel
-	
-	
-	
 	public JButton getBtnDone() {
 		return btnDone;
 	}
@@ -389,6 +382,25 @@ public class ExcelAppGUI extends JFrame{
 	public void setBtnConvert(JButton btnConvert) {
 		this.btnConvert = btnConvert;
 	}
+	
+	
+	
+	public JButton getBtnBack() {
+		return btnBack;
+	}
+
+	public void setBtnBack(JButton btnBack) {
+		this.btnBack = btnBack;
+	}
+
+	public JCheckBox getCheckBox() {
+		return checkBox;
+	}
+
+	public void setCheckBox(JCheckBox checkBox) {
+		this.checkBox = checkBox;
+	}
+
 
 	public JFileChooser getChooser() {
 		return chooser;
@@ -422,7 +434,6 @@ public class ExcelAppGUI extends JFrame{
 	public void setPanel(JPanel panel) {
 		this.panel = panel;
 	}
-	
 }
 
 
