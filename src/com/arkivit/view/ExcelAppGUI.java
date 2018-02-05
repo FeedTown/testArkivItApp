@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -22,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.JCheckBox;
@@ -41,7 +44,7 @@ public class ExcelAppGUI extends JFrame{
 	JPanel panelForm = new JPanel();
 	JPanel panel = new JPanel();
 	JPanel borderPanel = new JPanel();
-	Font font = new Font("Tahoma", Font.PLAIN, 15);
+	JPanel buttonPanel = new JPanel();
 	private final JTextField openTxtField = new JTextField();
 	private final JTextField saveTxtField = new JTextField();
 	
@@ -101,7 +104,6 @@ public class ExcelAppGUI extends JFrame{
 	 */
 	private void initialize()  {
 
-		//frame = new JFrame();
 		this.setTitle("ArkivitApp");
 		this.setResizable(false);
 		this.setBounds(100, 100, 707, 752);
@@ -109,14 +111,19 @@ public class ExcelAppGUI extends JFrame{
 		this.setLocationRelativeTo(null);
 		getContentPane().setLayout(new CardLayout(0, 0));
 		
-		
 		panelForm.setBackground(Color.WHITE);
 		borderPanel.setBackground(Color.CYAN);
 		getContentPane().add(panelForm, "name_157896301514130");
 		panelForm.setLayout(null);
 		
-		
 		btnDone.setBounds(293, 663, 89, 23);
+		//btnDone.setContentAreaFilled(true);
+		//btnDone.setFocusPainted(true);
+	    //btnDone.setBorder(BorderFactory.createBevelBorder(1, Color.red, Color.blue));
+		btnDone.setBorder(BorderFactory.createBevelBorder(0, Color.BLACK, Color.BLACK));
+		btnSaveAs.setBorder(BorderFactory.createBevelBorder(0, Color.BLACK, Color.BLACK));
+		btnOpenFile.setBorder(BorderFactory.createBevelBorder(0, Color.BLACK, Color.BLACK));
+		btnConvert.setBorder(BorderFactory.createBevelBorder(0, Color.BLACK, Color.BLACK));
 		panelForm.add(btnDone);
 		
 		borderPanel.add(descriptionDeliveryTxt);;
@@ -185,7 +192,7 @@ public class ExcelAppGUI extends JFrame{
 		panelForm.add(commentTxt);
 		
 		JLabel descriptionDeliveryLabel = new JLabel("Beskrivning av leveransen");
-		descriptionDeliveryLabel.setFont(font);
+		descriptionDeliveryLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		descriptionDeliveryLabel.setBounds(61, 110, 260, 28);
 		panelForm.add(descriptionDeliveryLabel);
 		
@@ -239,7 +246,7 @@ public class ExcelAppGUI extends JFrame{
 		panelForm.add(commentLabel);
 
 		
-		panel.setBackground(Color.GRAY);
+		panel.setBackground(Color.WHITE);
 		this.getContentPane().add(panel, "name_157896014914099");
 		panel.setLayout(null);
 		btnSaveAs.setEnabled(false);
