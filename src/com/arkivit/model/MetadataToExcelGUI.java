@@ -24,10 +24,10 @@ import jxl.write.biff.RowsExceededException;
 
 public class MetadataToExcelGUI {
 
-	private String excelFileName,folderName = ""; //= "standard.xls";
+	private String excelFileName,folderName = ""; 
 	private long fileSize;
-	private String targetexcelFilepath; //= "F:\\backup\\test\\Test_work";  // generated excel file location
-	private String sourceFolderPath ;//= "F:\\Skola\\Svenska"; // source Directory
+	private String targetexcelFilepath; 
+	private String sourceFolderPath ;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
@@ -35,8 +35,10 @@ public class MetadataToExcelGUI {
 	private int filec = 0;
 	private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
 	private FileDuration fileDuration = new FileDuration();
-	private GeneralBean genaralBean = new GeneralBean();
+	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
+	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
+	File file;
 
 	public MetadataToExcelGUI()
 	{
@@ -120,8 +122,6 @@ public class MetadataToExcelGUI {
 
 			}});
 		
-		
-		String duration,fPath,currentFileName, tempString, tempPath, newFileString;
 		try {
 			if(!fList.isEmpty())
 			{
@@ -140,7 +140,7 @@ public class MetadataToExcelGUI {
 						fileDuration.CheckFileDuration(file.getParentFile().getAbsolutePath()
 								+ "/" + currentFileName);
 						duration = fileDuration.getAudioVideoDuration();
-					}
+					} 
 					
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
@@ -189,7 +189,7 @@ public class MetadataToExcelGUI {
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
-			workbook.createSheet("Allm�nt", 0);
+			workbook.createSheet("Allmänt", 0);
 			workbook.createSheet("Filer", 1);
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
@@ -254,14 +254,14 @@ public class MetadataToExcelGUI {
 			fileSizeNameRow = new Label(3, 0, "STORLEK (Bytes)");
 			fileSizeNameColl = new Label(3, rowNum+1, sizeInString);
 
-			charsetNameRow = new Label(4,0, "TECKENUPPS�TTNING");
+			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
 			charsetNameColl = new Label(4, rowNum+1, decoder.getUtfList().get(rowNum));
 
 
 			fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
 			fileDurationColl = new Label(5, rowNum+1, fileDuration.getAudioVideoList().get(rowNum));
 
-			filePathNameRow = new Label(6, 0, "S�KV�G(path,url)");
+			filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
 			filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
 
 			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
@@ -327,21 +327,21 @@ public class MetadataToExcelGUI {
 		
 		inneHallList.add(0, "");
 		inneHallList.add(1, "");
-		inneHallList.add(2, genaralBean.getDescDelivery());
-		inneHallList.add(3, genaralBean.getArchiveCreator());
-		inneHallList.add(4, genaralBean.getArchiveCreatorNum());
-		inneHallList.add(5, genaralBean.getDelivGov());
-		inneHallList.add(6, genaralBean.getDelivGovNum());
-		inneHallList.add(7, genaralBean.getConsultantBur());
-		inneHallList.add(8, genaralBean.getContactDelivPerson());
-		inneHallList.add(9, genaralBean.getTelContactPerson());
-		inneHallList.add(10, genaralBean.getEmail());
+		inneHallList.add(2, generalBean.getDescDelivery());
+		inneHallList.add(3, generalBean.getArchiveCreator());
+		inneHallList.add(4, generalBean.getArchiveCreatorNum());
+		inneHallList.add(5, generalBean.getDelivGov());
+		inneHallList.add(6, generalBean.getDelivGovNum());
+		inneHallList.add(7, generalBean.getConsultantBur());
+		inneHallList.add(8, generalBean.getContactDelivPerson());
+		inneHallList.add(9, generalBean.getTelContactPerson());
+		inneHallList.add(10, generalBean.getEmail());
 		inneHallList.add(11, "");
 		inneHallList.add(12, "");
-		inneHallList.add(13, genaralBean.getArchiveName());
-		inneHallList.add(14, genaralBean.getSystemName());
-		inneHallList.add(15, genaralBean.getWithdrawDate());
-		inneHallList.add(16, genaralBean.getComment());
+		inneHallList.add(13, generalBean.getArchiveName());
+		inneHallList.add(14, generalBean.getSystemName());
+		inneHallList.add(15, generalBean.getWithdrawDate());
+		inneHallList.add(16, generalBean.getComment());
 		inneHallList.add(17, "");
 		inneHallList.add(18, "");
 		inneHallList.add(19, "");
@@ -381,19 +381,19 @@ public class MetadataToExcelGUI {
 		
 		headerLabel = new Label(0, 0, "RUBRIK");
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
-		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leverans�verkommelse");
+		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse");
 		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans");
 		descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
 		archiveCreator = new Label(0, 4, "Arkivbildare"); 
 		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
 		delivGov = new Label(0, 6, "Levererande myndighet");
 		oNumDelivGov = new Label(0, 7, "Organisationsnummer levererande myndighet");
-		consultantBureau = new Label(0, 8, "Servicebyr�/Konsult");
-		contactPersonDeliv = new Label(0, 9, "Kontaktperson f�r leverans");
+		consultantBureau = new Label(0, 8, "Servicebyrå/Konsult");
+		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans");
 		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson");
 		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson");
-		costCenter  = new Label(0, 12, "Kostnadsst�lle");
-		eBillingContactPerson  = new Label(0, 13, "Kontaktperson f�r e-fakturering");
+		costCenter  = new Label(0, 12, "Kostnadsställe");
+		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering");
 		archiveName  = new Label(0, 14, "Arkivets namn");
 		systemName  = new Label(0, 15, "Systemets namn");
 		withdrawalDate  = new Label(0, 16, "Uttagsdatum");
@@ -429,7 +429,7 @@ public class MetadataToExcelGUI {
 		
 		
 		
-		contentLabel = new Label(1,0,"INNEH�LL");
+		contentLabel = new Label(1,0,"INNEHÅLL");
 		generalSheet.addCell(contentLabel);
 		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
 		return generalSheet;
@@ -437,12 +437,12 @@ public class MetadataToExcelGUI {
 
 	}
 	private String replaceIllegalChars(String currentString) {
-		if(currentString.contains("�") || currentString.contains("�") || currentString.contains("�")
-				|| currentString.contains("�") || currentString.contains("�") || currentString.contains("�") 
-				|| currentString.contains("�") || currentString.contains("�"))
+		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
+				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
+				|| currentString.contains("Ö") || currentString.contains("Ü"))
 		{
 			currentString = StringUtils.replaceEach (currentString, 
-					new String[] { "�",  "�",  "�",  "�", "�",  "�",  "�", "�", " "}, 
+					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
 		}
 
@@ -490,8 +490,8 @@ public class MetadataToExcelGUI {
 		this.sourceFolderPath = sourceFolderPath;
 	}
 	
-	public GeneralBean getGenaralBean() {
-		return genaralBean;
+	public GeneralBean getGeneralBean() {
+		return generalBean;
 	}
 
 	private void junkCodes()
