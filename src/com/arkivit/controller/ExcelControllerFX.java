@@ -1,7 +1,6 @@
 package com.arkivit.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.io.File;
 import java.nio.file.Path;
 
@@ -12,36 +11,43 @@ import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUI;
 import com.arkivit.view.ExcelAppGUIFX;
 
-public class ExcelController {
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+
+public class ExcelControllerFX {
 
 	private MetadataToExcelGUI model;
-	private ExcelAppGUI view;
+	private ExcelAppGUIFX view;
 
-	public ExcelController(MetadataToExcelGUI model, ExcelAppGUI view){
+	public ExcelControllerFX(MetadataToExcelGUI model, ExcelAppGUIFX view){
 
 		this.model = model;
 		this.view = view;
+		Application.launch(this.view.getClass());
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void init() {
-		view.setVisible(true);
-		//done button in panelForm
-				view.getBtnDone().addActionListener(new ActionListener() {
+		
+		//done button in panelForm	
+			view.getSaveButton().setOnAction(new EventHandler<ActionEvent>() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						
-						doneButton();
-						
-
-					}
-
-				});
+				@Override
+				public void handle(ActionEvent event) {
+					System.out.println("SAVEN B");
+					doneButton();
+					model.testMeth();
+					
+					
+				}});
+			
 	
 		
 		//select folder button
-		view.getBtnOpenFile().addActionListener(new ActionListener() {
+		/*view.getBtnOpenFile().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -73,44 +79,45 @@ public class ExcelController {
 
 			}
 
-		});
+		});*/
 	}
 	
 	public void doneButton() {
 		
-		model.getGeneralBean().setDescDelivery(view.getDescriptionDeliveryTxt().getText());
+		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
 		
-		model.getGeneralBean().setArchiveCreator(view.getArchiveCreatorTxt().getText());
+		model.getGeneralBean().setArchiveCreator(view.getAKtxt().getText());
 		
-		model.getGeneralBean().setArchiveCreatorNum(view.getoNumArchiveCreatorTxt().getText());
+		model.getGeneralBean().setArchiveCreatorNum(view.getOAtxt().getText());
 		
-		model.getGeneralBean().setArchiveName(view.getArchiveNameTxt().getText());
+		model.getGeneralBean().setArchiveName(view.getLMtxt().getText());
 		
-		model.getGeneralBean().setComment(view.getCommentTxt().getText());
+		model.getGeneralBean().setComment(view.getOLMtxt().getText());
 		
-		model.getGeneralBean().setConsultantBur(view.getConsultantBureauTxt().getText());
+		model.getGeneralBean().setConsultantBur(view.getSKtxt().getText());
 		
-		model.getGeneralBean().setEmail(view.getMailContactPersonTxt().getText());
+		model.getGeneralBean().setEmail(view.getKFLtxt().getText());
 		
-		model.getGeneralBean().setContactDelivPerson(view.getContactPersonDelivTxt().getText());
+		model.getGeneralBean().setContactDelivPerson(view.getTTKtxt().getText());
 		
-		model.getGeneralBean().setDelivGov(view.getDelivGovernmentTxt().getText());
+		model.getGeneralBean().setDelivGov(view.getEKtxt().getText());
 		
-		model.getGeneralBean().setDelivGovNum(view.getoNumDelivGovernmentTxt().getText());
+		model.getGeneralBean().setDelivGovNum(view.getANtxt().getText());
 		
-		model.getGeneralBean().setSystemName(view.getSystemNameTxt().getText());
+		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
 		
-		model.getGeneralBean().setTelContactPerson(view.getTelContactPersonTxt().getText());
+		model.getGeneralBean().setTelContactPerson(view.getUDtxt().getText());
 		
-		model.getGeneralBean().setWithdrawDate(view.getWithdrawalDateTxt().getText());
+		model.getGeneralBean().setWithdrawDate(view.getKOMtxt().getText());
 				
 		
-		view.getPanelForm().setVisible(false);
-		view.getPanel().setVisible(true);
+		//view.getPanelForm().setVisible(false);
+		//view.getPanel().setVisible(true);
+		
 		
 	}
 
-	public void openButton(ActionEvent e) {
+	/*public void openButton(ActionEvent e) {
 		int returnValue = view.getChooser().showOpenDialog(null);
 		String path;
 
@@ -187,6 +194,6 @@ public class ExcelController {
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
 		}
-	}
+	}*/
 
 }
