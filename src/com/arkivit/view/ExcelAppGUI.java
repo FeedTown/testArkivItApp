@@ -40,13 +40,15 @@ public class ExcelAppGUI extends JFrame{
 	JFileChooser saveFile = new JFileChooser();
 	JPanel panelForm = new JPanel();
 	JPanel panel = new JPanel();
+	JPanel borderPanel = new JPanel();
+	Font font = new Font("Tahoma", Font.PLAIN, 15);
 	private final JTextField openTxtField = new JTextField();
 	private final JTextField saveTxtField = new JTextField();
 	
 	private final JLabel lblNewLabel = new JLabel("Directory");
 	private final JLabel lblOutput = new JLabel("Output");
 	private final JLabel lblColumns = new JLabel("Map");
-	private JTextField descriptionDeliveryTxt;
+	private final JTextField descriptionDeliveryTxt = new JTextField();
 	private final JTextField archiveCreatorTxt = new JTextField();
 	private final JTextField oNumArchiveCreatorTxt = new JTextField();
 	private final JTextField delivGovernmentTxt = new JTextField();
@@ -70,7 +72,7 @@ public class ExcelAppGUI extends JFrame{
 	private final JLabel systemNameLabel = new JLabel("Systemets namn");
 	private final JLabel withdrawalDateLabel = new JLabel("Uttagsdatum");
 	private final JLabel commentLabel = new JLabel("Kommentar");
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -108,7 +110,8 @@ public class ExcelAppGUI extends JFrame{
 		getContentPane().setLayout(new CardLayout(0, 0));
 		
 		
-		panelForm.setBackground(Color.GRAY);
+		panelForm.setBackground(Color.WHITE);
+		borderPanel.setBackground(Color.CYAN);
 		getContentPane().add(panelForm, "name_157896301514130");
 		panelForm.setLayout(null);
 		
@@ -116,74 +119,73 @@ public class ExcelAppGUI extends JFrame{
 		btnDone.setBounds(293, 663, 89, 23);
 		panelForm.add(btnDone);
 		
-		descriptionDeliveryTxt = new JTextField();
-		descriptionDeliveryTxt.setBorder(null);
+		borderPanel.add(descriptionDeliveryTxt);;
 		descriptionDeliveryTxt.setBounds(373, 112, 260, 28);
-		panelForm.add(descriptionDeliveryTxt);
 		descriptionDeliveryTxt.setColumns(10);
+		panelForm.add(descriptionDeliveryTxt);
+		
+		borderPanel.add(archiveCreatorTxt);
 		archiveCreatorTxt.setColumns(10);
-		archiveCreatorTxt.setBorder(null);
 		archiveCreatorTxt.setBounds(373, 149, 260, 28);
-		
 		panelForm.add(archiveCreatorTxt);
+		
+		borderPanel.add(oNumArchiveCreatorTxt);
 		oNumArchiveCreatorTxt.setColumns(10);
-		oNumArchiveCreatorTxt.setBorder(null);
 		oNumArchiveCreatorTxt.setBounds(373, 188, 260, 28);
-		
 		panelForm.add(oNumArchiveCreatorTxt);
+		
+		borderPanel.add(delivGovernmentTxt);
 		delivGovernmentTxt.setColumns(10);
-		delivGovernmentTxt.setBorder(null);
 		delivGovernmentTxt.setBounds(373, 228, 260, 28);
-		
 		panelForm.add(delivGovernmentTxt);
+		
+		borderPanel.add(oNumDelivGovernmentTxt);
 		oNumDelivGovernmentTxt.setColumns(10);
-		oNumDelivGovernmentTxt.setBorder(null);
 		oNumDelivGovernmentTxt.setBounds(373, 267, 260, 28);
-		
 		panelForm.add(oNumDelivGovernmentTxt);
+		
+		borderPanel.add(consultantBureauTxt);
 		consultantBureauTxt.setColumns(10);
-		consultantBureauTxt.setBorder(null);
 		consultantBureauTxt.setBounds(373, 306, 260, 28);
-		
 		panelForm.add(consultantBureauTxt);
+		
+		borderPanel.add(contactPersonDelivTxt);
 		contactPersonDelivTxt.setColumns(10);
-		contactPersonDelivTxt.setBorder(null);
 		contactPersonDelivTxt.setBounds(373, 345, 260, 28);
-		
 		panelForm.add(contactPersonDelivTxt);
+		
+		borderPanel.add(telContactPersonTxt);
 		telContactPersonTxt.setColumns(10);
-		telContactPersonTxt.setBorder(null);
 		telContactPersonTxt.setBounds(373, 384, 260, 28);
-		
 		panelForm.add(telContactPersonTxt);
+		
+		borderPanel.add(mailContactPersonTxt);
 		mailContactPersonTxt.setColumns(10);
-		mailContactPersonTxt.setBorder(null);
 		mailContactPersonTxt.setBounds(373, 423, 260, 28);
-		
 		panelForm.add(mailContactPersonTxt);
+		
+		borderPanel.add(archiveNameTxt);
 		archiveNameTxt.setColumns(10);
-		archiveNameTxt.setBorder(null);
 		archiveNameTxt.setBounds(373, 462, 260, 28);
-		
 		panelForm.add(archiveNameTxt);
+		
+		borderPanel.add(systemNameTxt);
 		systemNameTxt.setColumns(10);
-		systemNameTxt.setBorder(null);
 		systemNameTxt.setBounds(373, 501, 260, 28);
-		
 		panelForm.add(systemNameTxt);
+		
+		borderPanel.add(withdrawalDateTxt);
 		withdrawalDateTxt.setColumns(10);
-		withdrawalDateTxt.setBorder(null);
 		withdrawalDateTxt.setBounds(373, 540, 260, 28);
-		
 		panelForm.add(withdrawalDateTxt);
-		commentTxt.setColumns(10);
-		commentTxt.setBorder(null);
-		commentTxt.setBounds(373, 579, 260, 28);
 		
+		borderPanel.add(commentTxt);
+		commentTxt.setColumns(10);
+		commentTxt.setBounds(373, 579, 260, 28);
 		panelForm.add(commentTxt);
 		
 		JLabel descriptionDeliveryLabel = new JLabel("Beskrivning av leveransen");
-		descriptionDeliveryLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		descriptionDeliveryLabel.setFont(font);
 		descriptionDeliveryLabel.setBounds(61, 110, 260, 28);
 		panelForm.add(descriptionDeliveryLabel);
 		
@@ -302,10 +304,6 @@ public class ExcelAppGUI extends JFrame{
 
 	public JTextField getDescriptionDeliveryTxt() {
 		return descriptionDeliveryTxt;
-	}
-
-	public void setDescriptionDeliveryTxt(JTextField descriptionDeliveryTxt) {
-		this.descriptionDeliveryTxt = descriptionDeliveryTxt;
 	}
 
 	public JTextField getArchiveCreatorTxt() {
