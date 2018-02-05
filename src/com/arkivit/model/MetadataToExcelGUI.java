@@ -176,6 +176,7 @@ public class MetadataToExcelGUI {
 
 	}
 	
+	
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
 	}
@@ -426,9 +427,6 @@ public class MetadataToExcelGUI {
 		generalSheet.addCell(accessId);
 		generalSheet.addCell(batchId);
 		
-		
-		
-		
 		contentLabel = new Label(1,0,"INNEHÅLL");
 		generalSheet.addCell(contentLabel);
 		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
@@ -436,6 +434,7 @@ public class MetadataToExcelGUI {
 
 
 	}
+	
 	private String replaceIllegalChars(String currentString) {
 		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
 				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
