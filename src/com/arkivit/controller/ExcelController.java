@@ -77,31 +77,31 @@ public class ExcelController {
 	
 	public void doneButton() {
 		
-		model.getGenaralBean().setDescDelivery(view.getDescriptionDeliveryTxt().getText());
+		model.getGeneralBean().setDescDelivery(view.getDescriptionDeliveryTxt().getText());
 		
-		model.getGenaralBean().setArchiveCreator(view.getArchiveCreatorTxt().getText());
+		model.getGeneralBean().setArchiveCreator(view.getArchiveCreatorTxt().getText());
 		
-		model.getGenaralBean().setArchiveCreatorNum(view.getoNumArchiveCreatorTxt().getText());
+		model.getGeneralBean().setArchiveCreatorNum(view.getoNumArchiveCreatorTxt().getText());
 		
-		model.getGenaralBean().setArchiveName(view.getArchiveNameTxt().getText());
+		model.getGeneralBean().setArchiveName(view.getArchiveNameTxt().getText());
 		
-		model.getGenaralBean().setComment(view.getCommentTxt().getText());
+		model.getGeneralBean().setComment(view.getCommentTxt().getText());
 		
-		model.getGenaralBean().setConsultantBur(view.getConsultantBureauTxt().getText());
+		model.getGeneralBean().setConsultantBur(view.getConsultantBureauTxt().getText());
 		
-		model.getGenaralBean().setEmail(view.getMailContactPersonTxt().getText());
+		model.getGeneralBean().setEmail(view.getMailContactPersonTxt().getText());
 		
-		model.getGenaralBean().setContactDelivPerson(view.getContactPersonDelivTxt().getText());
+		model.getGeneralBean().setContactDelivPerson(view.getContactPersonDelivTxt().getText());
 		
-		model.getGenaralBean().setDelivGov(view.getDelivGovernmentTxt().getText());
+		model.getGeneralBean().setDelivGov(view.getDelivGovernmentTxt().getText());
 		
-		model.getGenaralBean().setDelivGovNum(view.getoNumDelivGovernmentTxt().getText());
+		model.getGeneralBean().setDelivGovNum(view.getoNumDelivGovernmentTxt().getText());
 		
-		model.getGenaralBean().setSystemName(view.getSystemNameTxt().getText());
+		model.getGeneralBean().setSystemName(view.getSystemNameTxt().getText());
 		
-		model.getGenaralBean().setTelContactPerson(view.getTelContactPersonTxt().getText());
+		model.getGeneralBean().setTelContactPerson(view.getTelContactPersonTxt().getText());
 		
-		model.getGenaralBean().setWithdrawDate(view.getWithdrawalDateTxt().getText());
+		model.getGeneralBean().setWithdrawDate(view.getWithdrawalDateTxt().getText());
 				
 		
 		view.getPanelForm().setVisible(false);
