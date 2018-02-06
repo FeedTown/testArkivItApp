@@ -7,19 +7,24 @@ import com.arkivit.view.ExcelAppGUI;
 import com.arkivit.view.ExcelAppGUIFX;
 
 import javafx.application.Application;
+import javafx.stage.Stage;
 
 public class Main {
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		//ExcelAppGUI view = new ExcelAppGUI();
-		MetadataToExcelGUI model = new MetadataToExcelGUI();
 		//ExcelController controller = new ExcelController(model, view);
+		MetadataToExcelGUI model = new MetadataToExcelGUI();
+		
 		ExcelAppGUIFX viewFx = new ExcelAppGUIFX();
 		
 		ExcelControllerFX controllerFx = new ExcelControllerFX(model,viewFx);
 		//Application.launch(viewFx.getClass(), args);
-		controllerFx.init();
+		//Application.launch(controllerFx.getClass());
+		//new MainController();
+		
+		//Application.launch(controllerFx.getClass(),args);
 		
 	}
 	

@@ -24,10 +24,10 @@ import jxl.write.biff.RowsExceededException;
 
 public class MetadataToExcelGUI {
 
-	private String excelFileName = "standard.xls",folderName = ""; 
+	private String excelFileName /*= "standard.xls"*/,folderName = ""; 
 	private long fileSize;
-	private String targetexcelFilepath = "/Users/RobertoBlanco/Desktop/target" ; 
-	private String sourceFolderPath = "/Users/RobertoBlanco/Desktop/source";
+	private String targetexcelFilepath;// = "F:\\Skola\\" ; 
+	private String sourceFolderPath;// = "F:\\Skola\\Svenska";
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
@@ -68,6 +68,7 @@ public class MetadataToExcelGUI {
 			fileNameList.clear();
 			sizeList.clear();
 			filePathList.clear();
+			fileDuration.getAudioVideoList().clear();
 		}
 		else
 		{
