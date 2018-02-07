@@ -13,18 +13,22 @@ public class Main {
 	
 	
 	public static void main(String[] args) throws Exception {
-		//ExcelAppGUI view = new ExcelAppGUI();
-		//ExcelController controller = new ExcelController(model, view);
+		
 		MetadataToExcelGUI model = new MetadataToExcelGUI();
 		
 		ExcelAppGUIFX viewFx = new ExcelAppGUIFX();
 		
-		ExcelControllerFX controllerFx = new ExcelControllerFX(model,viewFx);
-		//Application.launch(viewFx.getClass(), args);
-		//Application.launch(controllerFx.getClass());
-		//new MainController();
+		ExcelAppGUI view = new ExcelAppGUI();
 		
-		//Application.launch(controllerFx.getClass(),args);
+		
+		ExcelController controller = new ExcelController(model,view);
+		
+		ExcelControllerFX controllerFx = new ExcelControllerFX(model,viewFx);
+		
+		ExcelControllerFX.launch(ExcelControllerFX.class,args);
+		
+		controller.init();
+	
 		
 	}
 	
