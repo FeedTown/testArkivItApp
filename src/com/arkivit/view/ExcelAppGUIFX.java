@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -228,12 +229,12 @@ public class ExcelAppGUIFX{
 		checkBox = new CheckBox("");
 
 		//setUpGridPane(gridSecondScene);
-		
+
 		gridSecondScene = new GridPane();
 		gridSecondScene.setAlignment(Pos.CENTER);
 		gridSecondScene.setHgap(10);
 		gridSecondScene.setVgap(10);
-		gridSecondScene.setPadding(new Insets(25, 25, 25, 25));
+		gridSecondScene.setPadding(new Insets(200, 200, 200, 200));
 
 		//Open dir components
 		gridSecondScene.add(dirLabel, 0, 0);
@@ -252,7 +253,7 @@ public class ExcelAppGUIFX{
 		//Create Excel button
 
 		gridSecondScene.add(btnConvert, 1, 3);
-
+		
 		root2.getChildren().add(gridSecondScene);
 		secondScene = new Scene(root2, 800, 600);
 	}
@@ -260,7 +261,7 @@ public class ExcelAppGUIFX{
 
 
 
-	
+
 	public Button getBtnOpenFile() {
 		return btnOpenFile;
 	}
