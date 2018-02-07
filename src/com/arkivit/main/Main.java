@@ -18,7 +18,7 @@ public class Main {
 		
 		ExcelAppGUI view = new ExcelAppGUI();
 		
-		
+		@SuppressWarnings("unused")
 		ExcelController controller = new ExcelController(model,view);
 		
 		ExcelControllerFX controllerFx = new ExcelControllerFX(model,viewFx);

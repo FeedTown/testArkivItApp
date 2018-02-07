@@ -1,13 +1,11 @@
 package com.arkivit.model;
 
-import javafx.scene.control.DatePicker;
 
 public class GeneralBean {
 	
 	private String archiveName, email, contactDelivPerson, delivGov, descDelivery, consultantBur, 
 		   delivGovNum, archiveCreatorNum, comment, systemName, telContactPerson, withdrawDate, archiveCreator, date;
-	
-	private DatePicker datePicker;
+
 	
 	public GeneralBean()
 	{

@@ -2,8 +2,6 @@ package com.arkivit.controller;
 
 
 import java.io.File;
-import java.util.ArrayList;
-
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUIFX;
 
