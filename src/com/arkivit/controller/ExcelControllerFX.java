@@ -98,8 +98,9 @@ public class ExcelControllerFX extends Application {
 			boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 			if(!check) {
 				model.testMeth();
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setTitle("Success");
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("ArkivIT");
+				alert.setHeaderText("");
 				alert.setContentText("File was successfully created");
 				alert.showAndWait();
 				view.getOpenTxtField().setText("");
@@ -195,7 +196,6 @@ public class ExcelControllerFX extends Application {
 
 		//13
 		model.getGeneralBean().setComment(view.getKOMtxt().getText());
-
 
 
 		//view.getPanelForm().setVisible(false);
