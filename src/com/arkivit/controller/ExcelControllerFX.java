@@ -2,25 +2,15 @@ package com.arkivit.controller;
 
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Path;
-
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
 
 import com.arkivit.model.MetadataToExcelGUI;
-import com.arkivit.view.ExcelAppGUI;
 import com.arkivit.view.ExcelAppGUIFX;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -31,7 +21,7 @@ public class ExcelControllerFX extends Application {
 	private MetadataToExcelGUI model;
 	private ExcelAppGUIFX view;
 	private Stage stage;
-
+	private ArrayList<String> contentList = new ArrayList<String>();
 
 	public ExcelControllerFX()
 	{
@@ -53,8 +43,8 @@ public class ExcelControllerFX extends Application {
 		view.start();
 		view.startSecondScene();
 		this.stage = primaryStage;
-		primaryStage.setScene(view.getScene());
-		primaryStage.show();
+		stage.setScene(view.getScene());
+		stage.show();
 		view.addActionListenerForButton(new ActionListen());
 
 
@@ -192,7 +182,15 @@ public class ExcelControllerFX extends Application {
 		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
 
 		//12
-		model.getGeneralBean().setDatePicker(view.getDatePicker());
+		if(view.getDatePicker().getValue() == null)
+		{
+			System.out.println("No value at date");
+			model.getGeneralBean().setDate("");
+		}
+		else
+		{
+			model.getGeneralBean().setDate(view.getDatePicker().getValue().toString());
+		}
 
 		//13
 		model.getGeneralBean().setComment(view.getKOMtxt().getText());
@@ -218,13 +216,13 @@ public class ExcelControllerFX extends Application {
 
 		}
 		if(selectedDir == null) {
-			view.getOpenTxtField().setText("");
-			view.getBtnSaveAs().setDisable(true);
+			//view.getOpenTxtField().setText("");
+			//view.getBtnSaveAs().setDisable(true);
 		}
 
-		/*if(e.getSource() == view.getBtnOpenFile() && selectedDir != null) {
-			//view.getBtnSaveAs().setEnabled(true);
-		}*/
+		if(e.getSource() == view.getBtnOpenFile() && selectedDir != null) {
+			view.getBtnSaveAs().setDisable(false);
+		}
 	}
 
 
@@ -254,6 +252,8 @@ public class ExcelControllerFX extends Application {
 			else if(event.getSource().equals(view.getBtnConvert()))
 			{
 				createButton(event);
+				stage.setScene(view.getScene());
+				view.resetTextField();
 			}
 
 		}
@@ -261,6 +261,7 @@ public class ExcelControllerFX extends Application {
 	}
 
 
+	@SuppressWarnings("unused")
 	private void junkCodes()
 	{
 		/*public void saveButton(ActionEvent e) {

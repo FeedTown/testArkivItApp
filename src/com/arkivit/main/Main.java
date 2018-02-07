@@ -6,8 +6,6 @@ import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUI;
 import com.arkivit.view.ExcelAppGUIFX;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 public class Main {
 	
@@ -25,9 +23,9 @@ public class Main {
 		
 		ExcelControllerFX controllerFx = new ExcelControllerFX(model,viewFx);
 		
-		ExcelControllerFX.launch(ExcelControllerFX.class,args);
+		ExcelControllerFX.launch(controllerFx.getClass(),args);
 		
-		controller.init();
+		//controller.init();
 	
 		
 	}

@@ -5,7 +5,7 @@ import javafx.scene.control.DatePicker;
 public class GeneralBean {
 	
 	private String archiveName, email, contactDelivPerson, delivGov, descDelivery, consultantBur, 
-		   delivGovNum, archiveCreatorNum, comment, systemName, telContactPerson, withdrawDate, archiveCreator;
+		   delivGovNum, archiveCreatorNum, comment, systemName, telContactPerson, withdrawDate, archiveCreator, date;
 	
 	private DatePicker datePicker;
 	
@@ -102,14 +102,6 @@ public class GeneralBean {
 		this.telContactPerson = telContactPerson;
 	}
 	
-	public DatePicker getDatePicker() {
-		return datePicker;
-	}
-
-	public void setDatePicker(DatePicker datePicker) {
-		this.datePicker = datePicker;
-	}
-
 	public String getWithdrawDate() {
 		return withdrawDate;
 	}
@@ -124,6 +116,14 @@ public class GeneralBean {
 
 	public void setArchiveCreator(String archiveCreator) {
 		this.archiveCreator = archiveCreator;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 }

@@ -3,14 +3,13 @@ package com.arkivit.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.nio.file.Path;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUI;
-import com.arkivit.view.ExcelAppGUIFX;
+
 
 public class ExcelController {
 
@@ -110,6 +109,7 @@ public class ExcelController {
 		
 	}
 
+	@SuppressWarnings("unused")
 	public void openButton(ActionEvent e) {
 		int returnValue = view.getChooser().showOpenDialog(null);
 		String path;

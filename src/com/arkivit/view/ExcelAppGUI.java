@@ -1,40 +1,25 @@
 package com.arkivit.view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.JCheckBox;
 import java.awt.CardLayout;
 import java.awt.Font;
 
 public class ExcelAppGUI extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//private JFrame frame;
-	BufferedWriter readFile;
 	JButton btnOpenFile = new JButton("Select file...");
 	JButton btnSaveAs = new JButton("Save As...");
 	JButton btnConvert = new JButton("Create");

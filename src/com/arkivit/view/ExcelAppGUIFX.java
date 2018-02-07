@@ -2,33 +2,24 @@ package com.arkivit.view;
 
 import javafx.scene.control.Label;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import java.util.ArrayList;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextField;
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
+
 
 public class ExcelAppGUIFX{
 
@@ -42,13 +33,14 @@ public class ExcelAppGUIFX{
 	/*ExcelAppGUIFX(String args){
 		launch(args);
 	}*/
-
+	
+	private ArrayList<TextField> content;
 	private GridPane grid,gridSecondScene;// = new GridPane();
 	//Text scenetitle = new Text("Welcome");
 	private Scene secondScene;
 	private Label BAL;
 	private TextField BALtxt;
-
+	
 	private Label AK;
 	private TextField AKtxt;
 
@@ -123,6 +115,7 @@ public class ExcelAppGUIFX{
 		SN = new Label("Systemts namn");
 		UD = new Label("Uttagsdatum:");
 		KOM = new Label("Kommentar");
+		
 		BALtxt = new TextField();
 		AKtxt = new TextField();
 		OAtxt = new TextField();
@@ -137,11 +130,12 @@ public class ExcelAppGUIFX{
 		//UDtxt = new TextField();
 		datePicker = new DatePicker();
 		KOMtxt = new TextField();
-
+		addContentToList();
 
 		//setUpGridPane(grid);
 		//  scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 		//grid.add(scenetitle, 0, 0, 2, 1);
+		
 		grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
@@ -212,6 +206,23 @@ public class ExcelAppGUIFX{
 
 	}*/
 
+	private void addContentToList() {
+		content = new ArrayList<TextField>();
+		content.add(BALtxt);
+		content.add(AKtxt);
+		content.add(OAtxt);
+		content.add(LMtxt);
+		content.add(OLMtxt);
+		content.add(SKtxt);
+		content.add(KFLtxt);
+		content.add(TTKtxt);
+		content.add(EKtxt);
+		content.add(ANtxt);
+		content.add(SNtxt);
+		content.add(KOMtxt);
+		
+	}
+	
 	public void startSecondScene()
 	{
 		VBox root2 = new VBox();
@@ -259,6 +270,24 @@ public class ExcelAppGUIFX{
 		btnSaveAs.setOnAction(listenForEvent);
 		btnConvert.setOnAction(listenForEvent);
 	}
+	
+	public void resetTextField()
+	{
+		for(TextField tField : content)
+		{
+			if(!tField.getText().isEmpty())
+			{
+				tField.setText("");
+			}
+		}
+		if(datePicker.getValue() != null)
+		{
+			datePicker.setValue(null);
+		}
+	}
+	
+	
+	//GETTER AND SETTERS
 	
 	public Button getBtnOpenFile() {
 		return btnOpenFile;

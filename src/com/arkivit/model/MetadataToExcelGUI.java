@@ -2,9 +2,7 @@ package com.arkivit.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -122,7 +120,7 @@ public class MetadataToExcelGUI {
 				}
 
 			}});
-		
+
 		try {
 			if(!fList.isEmpty())
 			{
@@ -131,24 +129,24 @@ public class MetadataToExcelGUI {
 					decoder.fileEncoder(file.getParentFile().getAbsolutePath(), file.getName());  
 					duration = "";
 					currentFileName = file.getName();
-					
+
 					tempPath = file.getParentFile().getAbsolutePath() + "/"+ currentFileName;
 					tempString = checkVideoAudioFiles(tempPath);
 					newFileString = tempString.replaceAll(".*/", "");
-					
+
 					if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
 					{
 						fileDuration.CheckFileDuration(file.getParentFile().getAbsolutePath()
 								+ "/" + currentFileName);
 						duration = fileDuration.getAudioVideoDuration();
 					} 
-					
+
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
 					System.out.println(fPath);
 					fPath = fPath.replace(sourceFolderPath, folderName);
-					
-					
+
+
 					fileNameList.add(currentFileName);
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
@@ -156,9 +154,9 @@ public class MetadataToExcelGUI {
 					fileDuration.getAudioVideoList().add(duration);
 
 					System.out.println("File size: " + fileSize);
-					
+
 				}
-				
+
 			}
 			else
 			{
@@ -176,12 +174,12 @@ public class MetadataToExcelGUI {
 		createExcelFile();
 
 	}
-	
-	
+
+
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
 	}
-	
+
 	private void createExcelFile() {
 
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
@@ -198,7 +196,7 @@ public class MetadataToExcelGUI {
 
 			WritableSheet generalSheet = (WritableSheet) workbook.getSheet(0);
 			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(1);
-			
+
 			if (!fileNameList.isEmpty()) {
 				generalSheet = createGeneralSheet(generalSheet);
 				excelSheet = createMetadataExcelSheet(excelSheet);
@@ -228,7 +226,7 @@ public class MetadataToExcelGUI {
 
 	@SuppressWarnings("unused")
 	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
-		
+
 		String sizeInString,fileExtention,tempString;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
 		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
@@ -316,18 +314,18 @@ public class MetadataToExcelGUI {
 			//excelSheet.addCell(commentLabel);
 			rowNum++;
 		}
-		
+
 		return excelSheet;
 
 
 	}
 	private WritableSheet createGeneralSheet(WritableSheet generalSheet) throws RowsExceededException, WriteException {
-		
+
 		int generalListSize = 1;
-		
+
 		ArrayList<String> inneHallList = new ArrayList<String>();
-		
-		
+
+
 		inneHallList.add(0, "");
 		inneHallList.add(1, "");
 		inneHallList.add(2, generalBean.getDescDelivery());
@@ -343,15 +341,15 @@ public class MetadataToExcelGUI {
 		inneHallList.add(12, "");
 		inneHallList.add(13, generalBean.getArchiveName());
 		inneHallList.add(14, generalBean.getSystemName());
-		inneHallList.add(15, generalBean.getDatePicker().getValue().toString());
+		inneHallList.add(15, generalBean.getDate());
 		inneHallList.add(16, generalBean.getComment());
 		inneHallList.add(17, "");
 		inneHallList.add(18, "");
 		inneHallList.add(19, "");
-	
-		
-		
-		
+
+
+
+
 		Label headerLabel, contentLabel, archiveDiareNum, 
 		archiveDiareNumDeliv,
 		descDelivery,
@@ -372,16 +370,16 @@ public class MetadataToExcelGUI {
 		projectCode,
 		accessId,
 		batchId;
-		
-		
+
+
 		for(String infoList : inneHallList)
 		{
 			contentLabel = new Label(1, generalListSize, infoList);
 			generalSheet.addCell(contentLabel);
 			generalListSize++;
-			
+
 		}
-		
+
 		headerLabel = new Label(0, 0, "RUBRIK");
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
 		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse");
@@ -404,9 +402,9 @@ public class MetadataToExcelGUI {
 		projectCode  = new Label(0, 18, "Projektkod");
 		accessId  = new Label(0, 19, "Accessions-ID");
 		batchId  = new Label(0, 20, "Batch-ID");
-		
+
 		generalSheet.setColumnView(0, 40);
-		
+
 		generalSheet.addCell(headerLabel);
 		generalSheet.addCell(archiveDiareNum);
 		generalSheet.addCell(archiveDiareNumDeliv);
@@ -428,7 +426,7 @@ public class MetadataToExcelGUI {
 		generalSheet.addCell(projectCode);
 		generalSheet.addCell(accessId);
 		generalSheet.addCell(batchId);
-		
+
 		contentLabel = new Label(1,0,"INNEHÅLL");
 		generalSheet.addCell(contentLabel);
 		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
@@ -436,7 +434,7 @@ public class MetadataToExcelGUI {
 
 
 	}
-	
+
 	private String replaceIllegalChars(String currentString) {
 		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
 				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
@@ -450,6 +448,7 @@ public class MetadataToExcelGUI {
 		return currentString;
 	}
 
+	@SuppressWarnings("unused")
 	private int getLargestString(ArrayList<String> stringList) {
 
 		int largestString = stringList.get(0).length();
@@ -490,11 +489,13 @@ public class MetadataToExcelGUI {
 	public void setSourceFolderPath(String sourceFolderPath) {
 		this.sourceFolderPath = sourceFolderPath;
 	}
-	
+
 	public GeneralBean getGeneralBean() {
 		return generalBean;
 	}
 
+
+	@SuppressWarnings("unused")
 	private void junkCodes()
 	{
 
@@ -591,8 +592,8 @@ public class MetadataToExcelGUI {
 		 */
 
 		//}
-		
-		
+
+
 		/*for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) 
 		{
 

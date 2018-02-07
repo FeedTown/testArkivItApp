@@ -22,11 +22,11 @@ public class MetadataToExcel {
 
 	private String excelFileName = "standard.xls";
 	private long fileSize;
-	private String filePath;
+	
 	private String targetexcelFilepath = "/Users/RobertoBlanco/Desktop/target";  // generated excel file location
 	private String sourceFolderPath = "/Users/RobertoBlanco/Desktop/testing"; // source Directory
-	private int totalFileCount = 0, tCount= 0; // variable to store total file count
-	private int fileCount = 0; // variable to store required files count
+	//private int totalFileCount = 0, tCount= 0; // variable to store total file count
+	//private int fileCount = 0; // variable to store required files count
 	private ArrayList<String> aList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
@@ -292,6 +292,7 @@ public class MetadataToExcel {
 		return newString;
 	}
 
+	@SuppressWarnings("unused")
 	private int getLargestString(ArrayList<String> stringList) {
 
 		int largestString = stringList.get(0).length();
