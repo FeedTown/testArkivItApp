@@ -50,11 +50,11 @@ public class MetadataToExcelGUI {
 		//testMeth();
 	}
 
-	public void testMeth() {
+	public void init() {
 
 		folderName = new File(sourceFolderPath).getName();
 		listOfFilesAndDirectory(sourceFolderPath);
-		testFunc();
+		getAndAddFileDataToList();
 	}
 
 
@@ -97,29 +97,13 @@ public class MetadataToExcelGUI {
 		System.out.println(filec);
 
 	}
-
-	private void testFunc() 
+	
+	
+	//sortGetContentAndAddToList
+	private void getAndAddFileDataToList() 
 	{
 
-		fList.sort(new Comparator<File>() {
-			@Override
-			public int compare(File o1, File o2) {
-				String s1 = o1.getName().toLowerCase();
-				String s2 = o2.getName().toLowerCase();
-				final int s1Dot = s1.lastIndexOf('.');
-				final int s2Dot = s2.lastIndexOf('.');
-				// 
-				if ((s1Dot == -1) == (s2Dot == -1)) { // both or neither
-					s1 = s1.substring(s1Dot + 1);
-					s2 = s2.substring(s2Dot + 1);
-					return s1.compareTo(s2);
-				} else if (s1Dot == -1) { // only s2 has an extension, so s1 goes first
-					return -1;
-				} else { // only s1 has an extension, so s1 goes second
-					return 1;
-				}
-
-			}});
+		sortFileList();
 
 		try {
 			if(!fList.isEmpty())
@@ -127,25 +111,13 @@ public class MetadataToExcelGUI {
 				for(File file : fList)
 				{
 					decoder.fileEncoder(file.getParentFile().getAbsolutePath(), file.getName());  
-					duration = "";
-					currentFileName = file.getName();
-
-					tempPath = file.getParentFile().getAbsolutePath() + "/"+ currentFileName;
-					tempString = checkVideoAudioFiles(tempPath);
-					newFileString = tempString.replaceAll(".*/", "");
-
-					if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
-					{
-						fileDuration.CheckFileDuration(file.getParentFile().getAbsolutePath()
-								+ "/" + currentFileName);
-						duration = fileDuration.getAudioVideoDuration();
-					} 
+					
+					checkForAudioVideoDuration(file);
 
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
 					System.out.println(fPath);
 					fPath = fPath.replace(sourceFolderPath, folderName);
-
 
 					fileNameList.add(currentFileName);
 					sizeList.add(fileSize);
@@ -175,6 +147,44 @@ public class MetadataToExcelGUI {
 
 	}
 
+	private void checkForAudioVideoDuration(File currentfile) {
+		duration = "";
+		currentFileName = currentfile.getName();
+		tempPath = currentfile.getParentFile().getAbsolutePath() + "/"+ currentFileName;
+		tempString = checkVideoAudioFiles(tempPath);
+		newFileString = tempString.replaceAll(".*/", "");
+
+		if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
+		{
+			fileDuration.CheckFileDuration(currentfile.getParentFile().getAbsolutePath()
+					+ "/" + currentFileName);
+			duration = fileDuration.getAudioVideoDuration();
+		} 
+		
+	}
+
+	private void sortFileList() {
+		fList.sort(new Comparator<File>() {
+			@Override
+			public int compare(File o1, File o2) {
+				String s1 = o1.getName().toLowerCase();
+				String s2 = o2.getName().toLowerCase();
+				final int s1Dot = s1.lastIndexOf('.');
+				final int s2Dot = s2.lastIndexOf('.');
+				// 
+				if ((s1Dot == -1) == (s2Dot == -1)) { // both or neither
+					s1 = s1.substring(s1Dot + 1);
+					s2 = s2.substring(s2Dot + 1);
+					return s1.compareTo(s2);
+				} else if (s1Dot == -1) { // only s2 has an extension, so s1 goes first
+					return -1;
+				} else { // only s1 has an extension, so s1 goes second
+					return 1;
+				}
+
+			}});
+		
+	}
 
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
@@ -223,15 +233,14 @@ public class MetadataToExcelGUI {
 
 	}
 
-
 	@SuppressWarnings("unused")
 	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
 
 		String sizeInString,fileExtention,tempString;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
 		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
-		fileDurationRow,fileDurationColl,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,personalInformationHandelingNameRow,
-		commentLabelName,commentRow;
+		fileDurationRow,fileDurationColl,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
+		personalInformationHandelingNameRow,commentLabelName,commentRow;
 		int rowNum = 0;
 
 		for(String filename : fileNameList)
@@ -324,7 +333,6 @@ public class MetadataToExcelGUI {
 		int generalListSize = 1;
 
 		ArrayList<String> inneHallList = new ArrayList<String>();
-
 
 		inneHallList.add(0, "");
 		inneHallList.add(1, "");

@@ -21,7 +21,6 @@ public class ExcelControllerFX extends Application {
 	private MetadataToExcelGUI model;
 	private ExcelAppGUIFX view;
 	private Stage stage;
-	private ArrayList<String> contentList = new ArrayList<String>();
 
 	public ExcelControllerFX()
 	{
@@ -42,6 +41,7 @@ public class ExcelControllerFX extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		view.start();
 		view.startSecondScene();
+		primaryStage.setTitle("ArkivIT");
 		this.stage = primaryStage;
 		stage.setScene(view.getScene());
 		stage.show();
@@ -49,69 +49,62 @@ public class ExcelControllerFX extends Application {
 
 
 	}
-
-	/*public void firstScene(Stage stage) {
-
-
-		//done button	
-		view.getSaveButton().setOnAction((event) -> {
-			doneButton();
-			view.startSecondScene();
-			stage.setScene(view.getSecondScene());
-			secondSceneEventHandler(stage);			
-		});
-
+	
+	public void savaContentButton() {
+		//1
+		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
+		//2
+		model.getGeneralBean().setArchiveCreator(view.getAKtxt().getText());
+		//3
+		model.getGeneralBean().setArchiveCreatorNum(view.getOAtxt().getText());
+		//4
+		model.getGeneralBean().setDelivGov(view.getLMtxt().getText());
+		//5
+		model.getGeneralBean().setDelivGovNum(view.getOLMtxt().getText());
+		//6
+		model.getGeneralBean().setConsultantBur(view.getSKtxt().getText());
+		//7
+		model.getGeneralBean().setContactDelivPerson(view.getKFLtxt().getText());
+		//8
+		model.getGeneralBean().setTelContactPerson(view.getTTKtxt().getText());
+		//9
+		model.getGeneralBean().setEmail(view.getEKtxt().getText());
+		//10
+		model.getGeneralBean().setArchiveName(view.getANtxt().getText());
+		//11
+		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
+		//12
+		if(view.getDatePicker().getValue() == null)
+		{
+			System.out.println("No value at date");
+			model.getGeneralBean().setDate("");
+		}
+		else
+		{
+			model.getGeneralBean().setDate(view.getDatePicker().getValue().toString());
+		}
+		//13
+		model.getGeneralBean().setComment(view.getKOMtxt().getText());
 
 	}
-
-	private void secondSceneEventHandler(Stage stage) {
-		//select folder button
-		view.getBtnSaveAs().setDisable(true);
-		view.getBtnConvert().setDisable(true);
-
-		view.getBtnOpenFile().setOnAction((event) -> {
-			openButton(event, stage);
-
-		});
-
-		view.getBtnSaveAs().setOnAction((event) -> {
-			saveButton(event,stage);
-		});
-
-		view.getBtnConvert().setOnAction((event) -> {
-			createButton(event);
-		});
-
-	}
-
-
-	}*/
-
+	
 	private void createButton(ActionEvent event) {
 
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
-			model.testMeth();
+			model.init();
 			setAlert();
-			//stage.setScene(view.getScene());
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
-			//view.getBtnSaveAs().setEnabled(false);
-			//view.getBtnConvert().setEnabled(false);
+		
 		}
 		else if(check){
-			model.testMeth();
+			model.init();
 			setAlert();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
-			/*if(event.getSource() == view.getBtnConvert()) {
-					//view.getBtnSaveAs().setEnabled(false);
-					//view.getBtnConvert().setEnabled(false);
-
-				} */
+		
 		}
-
-
 
 
 	}
@@ -150,58 +143,6 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 
-	public void doneButton() {
-		//1
-		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
-		//2
-		model.getGeneralBean().setArchiveCreator(view.getAKtxt().getText());
-		//3
-		model.getGeneralBean().setArchiveCreatorNum(view.getOAtxt().getText());
-
-		//4
-		model.getGeneralBean().setDelivGov(view.getLMtxt().getText());
-		//5
-		model.getGeneralBean().setDelivGovNum(view.getOLMtxt().getText());
-
-		//6
-		model.getGeneralBean().setConsultantBur(view.getSKtxt().getText());
-
-		//7
-		model.getGeneralBean().setContactDelivPerson(view.getKFLtxt().getText());
-
-		//8
-		model.getGeneralBean().setTelContactPerson(view.getTTKtxt().getText());
-
-		//9
-		model.getGeneralBean().setEmail(view.getEKtxt().getText());
-
-		//10
-		model.getGeneralBean().setArchiveName(view.getANtxt().getText());
-
-		//11
-		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
-
-		//12
-		if(view.getDatePicker().getValue() == null)
-		{
-			System.out.println("No value at date");
-			model.getGeneralBean().setDate("");
-		}
-		else
-		{
-			model.getGeneralBean().setDate(view.getDatePicker().getValue().toString());
-		}
-
-		//13
-		model.getGeneralBean().setComment(view.getKOMtxt().getText());
-
-
-		//view.getPanelForm().setVisible(false);
-		//view.getPanel().setVisible(true);
-
-
-	}
-
 	public void openButton(ActionEvent e, Stage stage) {
 		File selectedDir = view.getDirectoryChooser().showDialog(stage);
 		String path;
@@ -225,8 +166,6 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 
-
-
 	class ActionListen implements EventHandler<ActionEvent>
 	{
 
@@ -235,7 +174,7 @@ public class ExcelControllerFX extends Application {
 
 			if(event.getSource().equals(view.getSaveButton()))
 			{
-				doneButton();
+				savaContentButton();
 				//view.startSecondScene();
 				stage.setScene(view.getSecondScene());
 				view.getBtnConvert().setDisable(true);
@@ -261,6 +200,7 @@ public class ExcelControllerFX extends Application {
 	}
 
 
+	
 	@SuppressWarnings("unused")
 	private void junkCodes()
 	{
@@ -323,6 +263,44 @@ public class ExcelControllerFX extends Application {
 			view.getSaveTxtField().setText("");
 		}
 	}*/
+		
+		/*public void firstScene(Stage stage) {
+
+
+		//done button	
+		view.getSaveButton().setOnAction((event) -> {
+			doneButton();
+			view.startSecondScene();
+			stage.setScene(view.getSecondScene());
+			secondSceneEventHandler(stage);			
+		});
+
+
+	}
+
+	private void secondSceneEventHandler(Stage stage) {
+		//select folder button
+		view.getBtnSaveAs().setDisable(true);
+		view.getBtnConvert().setDisable(true);
+
+		view.getBtnOpenFile().setOnAction((event) -> {
+			openButton(event, stage);
+
+		});
+
+		view.getBtnSaveAs().setOnAction((event) -> {
+			saveButton(event,stage);
+		});
+
+		view.getBtnConvert().setOnAction((event) -> {
+			createButton(event);
+		});
+
+	}
+
+
+	}*/
+
 	}
 
 }

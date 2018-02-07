@@ -262,14 +262,6 @@ public class ExcelAppGUIFX{
 		root2.getChildren().add(gridSecondScene);
 		secondScene = new Scene(root2, 800, 600);
 	}
-
-	public void addActionListenerForButton(EventHandler<ActionEvent> listenForEvent)
-	{
-		saveButton.setOnAction(listenForEvent);
-		btnOpenFile.setOnAction(listenForEvent);
-		btnSaveAs.setOnAction(listenForEvent);
-		btnConvert.setOnAction(listenForEvent);
-	}
 	
 	public void resetTextField()
 	{
@@ -285,6 +277,22 @@ public class ExcelAppGUIFX{
 			datePicker.setValue(null);
 		}
 	}
+	
+	public void addActionListenerForButton(EventHandler<ActionEvent> listenForEvent)
+	{
+		saveButton.setOnAction(listenForEvent);
+		btnOpenFile.setOnAction(listenForEvent);
+		btnSaveAs.setOnAction(listenForEvent);
+		btnConvert.setOnAction(listenForEvent);
+	}
+	
+
+	
+	
+	
+	
+	
+	
 	
 	
 	//GETTER AND SETTERS
