@@ -53,6 +53,7 @@ public class ExcelControllerFX extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		view.start();
+		primaryStage.setTitle("ArkivIt");
 		primaryStage.setScene(view.getScene());
 		primaryStage.show();
 		firstScene(primaryStage);
@@ -110,17 +111,17 @@ public class ExcelControllerFX extends Application {
 
 			}
 			else if(check){
-				System.out.println("CATCH IF");		
-
+				model.testMeth();
 				view.getOpenTxtField().setText("");
 				view.getSaveTxtField().setText("");
-				if(event.getSource() == view.getBtnConvert()) {
+				/*if(event.getSource() == view.getBtnConvert()) {
 					//view.getBtnSaveAs().setEnabled(false);
 					//view.getBtnConvert().setEnabled(false);
 
-				}
+				} */
 			}
 		}
+		
 		catch(Exception e1){
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "You can't overwrite file", 

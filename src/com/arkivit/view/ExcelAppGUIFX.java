@@ -103,8 +103,6 @@ public class ExcelAppGUIFX{
 
 
 	public void start() {
-		//primaryStage.setTitle("ArkivIt");
-
 		BAL = new Label("Beskrivning av leverans");
 		AK = new Label("Arkivbildare");
 		OA = new Label("Organisationsnummer arkivbildare");
