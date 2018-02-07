@@ -100,14 +100,21 @@ public class ExcelAppGUIFX{
 	private CheckBox checkBox;// = new CheckBox("");
 
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
-
+	
+	
+	public ExcelAppGUIFX()
+	{
+		
+	}
 
 	public void start() {
+		
+		saveButton = new Button("SAVE");
 		BAL = new Label("Beskrivning av leverans");
 		AK = new Label("Arkivbildare");
 		OA = new Label("Organisationsnummer arkivbildare");
 		LM = new Label("Levererande myndighet");
-		Label OLM = new Label("Organisationsnummer levererande myndighet");
+	    OLM = new Label("Organisationsnummer levererande myndighet");
 		KFL = new Label("Kontaktperson för leverans");
 		SK = new Label("Servicebyrå/Konsult");
 		TTK = new Label("Telefonnummer till kontaktperson");
@@ -116,32 +123,19 @@ public class ExcelAppGUIFX{
 		SN = new Label("Systemts namn");
 		UD = new Label("Uttagsdatum:");
 		KOM = new Label("Kommentar");
-		saveButton = new Button("SAVE");
 		BALtxt = new TextField();
-
 		AKtxt = new TextField();
-
 		OAtxt = new TextField();
-
 		LMtxt = new TextField();
-
 		OLMtxt = new TextField();
-
 		SKtxt = new TextField();
-
 		KFLtxt = new TextField();
-
 		TTKtxt = new TextField();
-
 		EKtxt = new TextField();
-
 		ANtxt = new TextField();
-
 		SNtxt = new TextField();
-
 		//UDtxt = new TextField();
 		datePicker = new DatePicker();
-
 		KOMtxt = new TextField();
 
 
@@ -203,6 +197,7 @@ public class ExcelAppGUIFX{
 		//root.getChildren().add(hbBtn);
 
 		firstScene = new Scene(root, 800, 600);
+		
 
 
 
@@ -220,18 +215,15 @@ public class ExcelAppGUIFX{
 	public void startSecondScene()
 	{
 		VBox root2 = new VBox();
-		btnOpenFile = new Button("Select file...");
-		btnSaveAs = new Button("Save As...");
-		btnConvert = new Button("Create");
 		openTxtField = new TextField();
 		saveTxtField = new TextField();
 		dirLabel = new Label("Directory");
 		outputLabel = new Label("Output");
 		mapLabel = new Label("Map");
 		checkBox = new CheckBox("");
-
-		//setUpGridPane(gridSecondScene);
-
+		btnOpenFile = new Button("Select file...");
+		btnSaveAs = new Button("Save As...");
+		btnConvert = new Button("Create");
 		gridSecondScene = new GridPane();
 		gridSecondScene.setAlignment(Pos.CENTER);
 		gridSecondScene.setHgap(10);
@@ -260,10 +252,14 @@ public class ExcelAppGUIFX{
 		secondScene = new Scene(root2, 800, 600);
 	}
 
-
-
-
-
+	public void addActionListenerForButton(EventHandler<ActionEvent> listenForEvent)
+	{
+		saveButton.setOnAction(listenForEvent);
+		btnOpenFile.setOnAction(listenForEvent);
+		btnSaveAs.setOnAction(listenForEvent);
+		btnConvert.setOnAction(listenForEvent);
+	}
+	
 	public Button getBtnOpenFile() {
 		return btnOpenFile;
 	}

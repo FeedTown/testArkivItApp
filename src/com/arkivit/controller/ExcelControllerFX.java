@@ -30,12 +30,14 @@ public class ExcelControllerFX extends Application {
 
 	private MetadataToExcelGUI model;
 	private ExcelAppGUIFX view;
-
+	private Stage stage;
+	
 
 	public ExcelControllerFX()
 	{
 		model = new MetadataToExcelGUI();
 		view = new ExcelAppGUIFX();
+		//launch();
 	}
 
 	public ExcelControllerFX(MetadataToExcelGUI model, ExcelAppGUIFX view){
@@ -43,26 +45,24 @@ public class ExcelControllerFX extends Application {
 		this.model = model;
 		this.view = view;
 		//this.view.start();
-		launch();
-
 	}
-
-
 
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		view.start();
-		primaryStage.setTitle("ArkivIt");
-		primaryStage.setScene(view.getScene());
-		primaryStage.show();
-		firstScene(primaryStage);
-
+		view.startSecondScene();
+		this.stage = primaryStage;
+        primaryStage.setScene(view.getScene());
+        primaryStage.show();
+        view.addActionListenerForButton(new ActionListen());
+        
+		
 	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void firstScene(Stage stage) {
-
+	
+	/*public void firstScene(Stage stage) {
+		
+>>>>>>> 3b9d82d2afc33c240c8cd00eec24ebdb26fbda67
 		//done button	
 		view.getSaveButton().setOnAction((event) -> {
 			doneButton();
@@ -91,8 +91,12 @@ public class ExcelControllerFX extends Application {
 		view.getBtnConvert().setOnAction((event) -> {
 			createButton(event);
 		});
+<<<<<<< HEAD
 
 	}
+=======
+		
+	}*/
 
 	private void createButton(ActionEvent event) {
 		try {
@@ -205,7 +209,6 @@ public class ExcelControllerFX extends Application {
 
 	}
 
-
 	public void openButton(ActionEvent e, Stage stage) {
 		File selectedDir = view.getDirectoryChooser().showDialog(stage);
 		String path;
@@ -216,6 +219,7 @@ public class ExcelControllerFX extends Application {
 			view.getOpenTxtField().setText(model.getSourceFolderPath());
 			path = selectedDir.getAbsolutePath();
 			System.out.println(path);
+			view.getBtnSaveAs().setDisable(false);
 
 		}
 		if(selectedDir == null) {
@@ -228,7 +232,41 @@ public class ExcelControllerFX extends Application {
 		}*/
 	}
 
-	/*public void saveButton(ActionEvent e) {
+	
+	
+	class ActionListen implements EventHandler<ActionEvent>
+	{
+
+		@Override
+		public void handle(ActionEvent event) {
+			
+			if(event.getSource().equals(view.getSaveButton()))
+    		{
+    			doneButton();
+    			//view.startSecondScene();
+    			stage.setScene(view.getSecondScene());
+    		}
+    		else if(event.getSource().equals(view.getBtnOpenFile()))
+    		{
+    			openButton(event, stage);
+    		}
+    		else if(event.getSource().equals(view.getBtnSaveAs()))
+    		{
+    			saveButton(event, stage);
+    		}
+    		else if(event.getSource().equals(view.getBtnConvert()))
+    		{
+    			createButton(event);
+    		}
+			
+		}
+		
+	}
+	
+	
+	private void junkCodes()
+	{
+		/*public void saveButton(ActionEvent e) {
 		int returnSaveVal = view.getSaveFile().showSaveDialog(null);
 		if(returnSaveVal == JFileChooser.APPROVE_OPTION) {
 
@@ -287,5 +325,7 @@ public class ExcelControllerFX extends Application {
 			view.getSaveTxtField().setText("");
 		}
 	}*/
-
+	}
+	
 }
+
