@@ -134,7 +134,7 @@ public class ExcelControllerFX extends Application {
 		FileChooser fileChooser = new FileChooser();
 		String fileName = "";
         //Set extension filter to .xlsx files
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
         fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog
