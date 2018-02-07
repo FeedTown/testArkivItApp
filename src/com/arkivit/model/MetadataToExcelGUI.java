@@ -342,7 +342,7 @@ public class MetadataToExcelGUI {
 		inneHallList.add(12, "");
 		inneHallList.add(13, generalBean.getArchiveName());
 		inneHallList.add(14, generalBean.getSystemName());
-		inneHallList.add(15, generalBean.getWithdrawDate());
+		inneHallList.add(15, generalBean.getDatePicker().getValue().toString());
 		inneHallList.add(16, generalBean.getComment());
 		inneHallList.add(17, "");
 		inneHallList.add(18, "");

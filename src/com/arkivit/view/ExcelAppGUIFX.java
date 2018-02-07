@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -79,6 +80,7 @@ public class ExcelAppGUIFX{
 	private TextField SNtxt;
 
 	private Label UD;
+	private DatePicker datePicker;
 	private TextField UDtxt;
 
 	private Label KOM;
@@ -139,7 +141,8 @@ public class ExcelAppGUIFX{
 
 		SNtxt = new TextField();
 
-		UDtxt = new TextField();
+		//UDtxt = new TextField();
+		datePicker = new DatePicker();
 
 		KOMtxt = new TextField();
 
@@ -187,7 +190,7 @@ public class ExcelAppGUIFX{
 		grid.add(SNtxt, 1, 11);
 
 		grid.add(UD, 0, 12);
-		grid.add(UDtxt, 1, 12);
+		grid.add(datePicker, 1, 12);
 
 		grid.add(KOM, 0, 13);
 		grid.add(KOMtxt, 1, 13);
@@ -214,6 +217,14 @@ public class ExcelAppGUIFX{
 		grid.setPadding(new Insets(25, 25, 25, 25));
 
 	}*/
+
+	public DatePicker getDatePicker() {
+		return datePicker;
+	}
+
+	public void setDatePicker(DatePicker datePicker) {
+		this.datePicker = datePicker;
+	}
 
 	public void startSecondScene()
 	{

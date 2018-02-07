@@ -187,7 +187,7 @@ public class ExcelControllerFX extends Application {
 		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
 		
 		//12
-		model.getGeneralBean().setWithdrawDate(view.getUDtxt().getText());
+		model.getGeneralBean().setDatePicker(view.getDatePicker());
 		
 		//13
 		model.getGeneralBean().setComment(view.getKOMtxt().getText());
