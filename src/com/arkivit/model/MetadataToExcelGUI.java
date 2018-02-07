@@ -226,6 +226,7 @@ public class MetadataToExcelGUI {
 	}
 
 
+	@SuppressWarnings("unused")
 	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
 		
 		String sizeInString,fileExtention,tempString;

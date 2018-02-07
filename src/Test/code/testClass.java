@@ -4,9 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFileChooser;
-import javax.swing.text.View;
-
-import com.arkivit.controller.ExcelController;
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUI;
 

@@ -31,7 +31,7 @@ public class ExcelControllerFX extends Application {
 	private MetadataToExcelGUI model;
 	private ExcelAppGUIFX view;
 	private Stage stage;
-	
+
 
 	public ExcelControllerFX()
 	{
@@ -53,16 +53,16 @@ public class ExcelControllerFX extends Application {
 		view.start();
 		view.startSecondScene();
 		this.stage = primaryStage;
-        primaryStage.setScene(view.getScene());
-        primaryStage.show();
-        view.addActionListenerForButton(new ActionListen());
-        
-		
+		primaryStage.setScene(view.getScene());
+		primaryStage.show();
+		view.addActionListenerForButton(new ActionListen());
+
+
 	}
-	
+
 	/*public void firstScene(Stage stage) {
-		
->>>>>>> 3b9d82d2afc33c240c8cd00eec24ebdb26fbda67
+
+
 		//done button	
 		view.getSaveButton().setOnAction((event) -> {
 			doneButton();
@@ -91,52 +91,47 @@ public class ExcelControllerFX extends Application {
 		view.getBtnConvert().setOnAction((event) -> {
 			createButton(event);
 		});
-<<<<<<< HEAD
 
 	}
-=======
-		
+
+
 	}*/
 
 	private void createButton(ActionEvent event) {
-		try {
-			boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
-			if(!check) {
-				model.testMeth();
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("ArkivIT");
-				alert.setHeaderText("");
-				alert.setContentText("File was successfully created");
-				alert.showAndWait();
-				view.getOpenTxtField().setText("");
-				view.getSaveTxtField().setText("");
-				//view.getBtnSaveAs().setEnabled(false);
-				//view.getBtnConvert().setEnabled(false);
 
-			}
-			else if(check){
-				model.testMeth();
-				view.getOpenTxtField().setText("");
-				view.getSaveTxtField().setText("");
-				/*if(event.getSource() == view.getBtnConvert()) {
+		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
+		if(!check) {
+			model.testMeth();
+			setAlert();
+			//stage.setScene(view.getScene());
+			view.getOpenTxtField().setText("");
+			view.getSaveTxtField().setText("");
+			//view.getBtnSaveAs().setEnabled(false);
+			//view.getBtnConvert().setEnabled(false);
+		}
+		else if(check){
+			model.testMeth();
+			setAlert();
+			view.getOpenTxtField().setText("");
+			view.getSaveTxtField().setText("");
+			/*if(event.getSource() == view.getBtnConvert()) {
 					//view.getBtnSaveAs().setEnabled(false);
 					//view.getBtnConvert().setEnabled(false);
 
 				} */
-			}
-		}
-		
-		catch(Exception e1){
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "You can't overwrite file", 
-					"INFO", 
-					JOptionPane.INFORMATION_MESSAGE);
-			//view.getBtnSaveAs().setEnabled(false);
-			//view.getBtnConvert().setEnabled(false);
-			view.getOpenTxtField().setText("");
-			view.getSaveTxtField().setText("");
 		}
 
+
+
+
+	}
+
+	private void setAlert() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("ArkivIT");
+		alert.setHeaderText("");
+		alert.setContentText("File was successfully created");
+		alert.showAndWait();
 	}
 
 	private void saveButton(ActionEvent event, Stage stage) {
@@ -232,38 +227,40 @@ public class ExcelControllerFX extends Application {
 		}*/
 	}
 
-	
-	
+
+
 	class ActionListen implements EventHandler<ActionEvent>
 	{
 
 		@Override
 		public void handle(ActionEvent event) {
-			
+
 			if(event.getSource().equals(view.getSaveButton()))
-    		{
-    			doneButton();
-    			//view.startSecondScene();
-    			stage.setScene(view.getSecondScene());
-    		}
-    		else if(event.getSource().equals(view.getBtnOpenFile()))
-    		{
-    			openButton(event, stage);
-    		}
-    		else if(event.getSource().equals(view.getBtnSaveAs()))
-    		{
-    			saveButton(event, stage);
-    		}
-    		else if(event.getSource().equals(view.getBtnConvert()))
-    		{
-    			createButton(event);
-    		}
-			
+			{
+				doneButton();
+				//view.startSecondScene();
+				stage.setScene(view.getSecondScene());
+				view.getBtnConvert().setDisable(true);
+				view.getBtnSaveAs().setDisable(true);
+			}
+			else if(event.getSource().equals(view.getBtnOpenFile()))
+			{
+				openButton(event, stage);
+			}
+			else if(event.getSource().equals(view.getBtnSaveAs()))
+			{
+				saveButton(event, stage);
+			}
+			else if(event.getSource().equals(view.getBtnConvert()))
+			{
+				createButton(event);
+			}
+
 		}
-		
+
 	}
-	
-	
+
+
 	private void junkCodes()
 	{
 		/*public void saveButton(ActionEvent e) {
@@ -286,7 +283,7 @@ public class ExcelControllerFX extends Application {
 		}
 	}*/
 
-	/*public void createButton(ActionEvent e) {
+		/*public void createButton(ActionEvent e) {
 		try {
 			boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 			if(!check) {
@@ -326,6 +323,6 @@ public class ExcelControllerFX extends Application {
 		}
 	}*/
 	}
-	
+
 }
 
