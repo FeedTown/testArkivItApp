@@ -30,38 +30,38 @@ public class ExcelControllerFX extends Application {
 
 	private MetadataToExcelGUI model;
 	private ExcelAppGUIFX view;
-	
-	
+
+
 	public ExcelControllerFX()
 	{
 		model = new MetadataToExcelGUI();
 		view = new ExcelAppGUIFX();
 	}
-	
+
 	public ExcelControllerFX(MetadataToExcelGUI model, ExcelAppGUIFX view){
 
 		this.model = model;
 		this.view = view;
 		//this.view.start();
 		launch();
-		
+
 	}
-	
+
 
 
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		view.start();
-        primaryStage.setScene(view.getScene());
-        primaryStage.show();
-        firstScene(primaryStage);
-		
+		primaryStage.setScene(view.getScene());
+		primaryStage.show();
+		firstScene(primaryStage);
+
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void firstScene(Stage stage) {
-		
+
 		//done button	
 		view.getSaveButton().setOnAction((event) -> {
 			doneButton();
@@ -69,25 +69,28 @@ public class ExcelControllerFX extends Application {
 			stage.setScene(view.getSecondScene());
 			secondSceneEventHandler(stage);			
 		});
-		
+
 
 	}
-	
+
 	private void secondSceneEventHandler(Stage stage) {
 		//select folder button
+		view.getBtnSaveAs().setDisable(true);
+		view.getBtnConvert().setDisable(true);
+
 		view.getBtnOpenFile().setOnAction((event) -> {
-				openButton(event, stage);
+			openButton(event, stage);
 
 		});
-		
+
 		view.getBtnSaveAs().setOnAction((event) -> {
 			saveButton(event,stage);
 		});
-		
+
 		view.getBtnConvert().setOnAction((event) -> {
 			createButton(event);
 		});
-		
+
 	}
 
 	private void createButton(ActionEvent event) {
@@ -107,7 +110,7 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(check){
 				System.out.println("CATCH IF");		
-				
+
 				view.getOpenTxtField().setText("");
 				view.getSaveTxtField().setText("");
 				if(event.getSource() == view.getBtnConvert()) {
@@ -127,32 +130,33 @@ public class ExcelControllerFX extends Application {
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
 		}
-		
+
 	}
 
 	private void saveButton(ActionEvent event, Stage stage) {
 		FileChooser fileChooser = new FileChooser();
 		String fileName = "";
-        //Set extension filter to .xlsx files
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
-        fileChooser.getExtensionFilters().add(extFilter);
+		//Set extension filter to .xlsx files
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
+		fileChooser.getExtensionFilters().add(extFilter);
 
-        //Show save file dialog
-        File file = fileChooser.showSaveDialog(stage);
+		//Show save file dialog
+		File file = fileChooser.showSaveDialog(stage);
 
-        //If file is not null, write to file using output stream.
-        if (file != null) {
-        	model.setTargetexcelFilepath(file.getParent());
-        	
-        	System.out.println("PATH : " + file.getParent());
-        	
+		//If file is not null, write to file using output stream.
+		if (file != null) {
+			model.setTargetexcelFilepath(file.getParent());
+
+			System.out.println("PATH : " + file.getParent());
+
 			model.setExcelFileName(file.getName());
-        	
+
 			fileName = file.getName();
-        	System.out.println(fileName);
-        	
+			System.out.println(fileName);
+
 			view.getSaveTxtField().setText(model.getTargetexcelFilepath());
-        }
+			view.getBtnConvert().setDisable(false);
+		}
 	}
 
 	public void doneButton() {
@@ -162,42 +166,42 @@ public class ExcelControllerFX extends Application {
 		model.getGeneralBean().setArchiveCreator(view.getAKtxt().getText());
 		//3
 		model.getGeneralBean().setArchiveCreatorNum(view.getOAtxt().getText());
-		
+
 		//4
 		model.getGeneralBean().setDelivGov(view.getLMtxt().getText());
 		//5
 		model.getGeneralBean().setDelivGovNum(view.getOLMtxt().getText());
-		
+
 		//6
 		model.getGeneralBean().setConsultantBur(view.getSKtxt().getText());
-		
+
 		//7
 		model.getGeneralBean().setContactDelivPerson(view.getKFLtxt().getText());
-		
+
 		//8
 		model.getGeneralBean().setTelContactPerson(view.getTTKtxt().getText());
-		
+
 		//9
 		model.getGeneralBean().setEmail(view.getEKtxt().getText());
-		
+
 		//10
 		model.getGeneralBean().setArchiveName(view.getANtxt().getText());
-		
+
 		//11
 		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
-		
+
 		//12
 		model.getGeneralBean().setDatePicker(view.getDatePicker());
-		
+
 		//13
 		model.getGeneralBean().setComment(view.getKOMtxt().getText());
-		
-				
-		
+
+
+
 		//view.getPanelForm().setVisible(false);
 		//view.getPanel().setVisible(true);
-		
-		
+
+
 	}
 
 
@@ -217,7 +221,7 @@ public class ExcelControllerFX extends Application {
 			view.getOpenTxtField().setText("");
 			view.getBtnSaveAs().setDisable(true);
 		}
-		
+
 		/*if(e.getSource() == view.getBtnOpenFile() && selectedDir != null) {
 			//view.getBtnSaveAs().setEnabled(true);
 		}*/
@@ -226,19 +230,19 @@ public class ExcelControllerFX extends Application {
 	/*public void saveButton(ActionEvent e) {
 		int returnSaveVal = view.getSaveFile().showSaveDialog(null);
 		if(returnSaveVal == JFileChooser.APPROVE_OPTION) {
-	
+
 			model.setTargetexcelFilepath(view.getSaveFile().getSelectedFile().getParentFile().getAbsolutePath());
 			model.setExcelFileName(view.getSaveFile().getSelectedFile().getName() + ".xls");
 			view.getSaveTxtField().setText(model.getTargetexcelFilepath());
 
 		}
 		if(returnSaveVal == JFileChooser.CANCEL_OPTION) {
-			
+
 			view.getSaveTxtField().setText("");
 			view.getBtnConvert().setEnabled(false);
 		}
 		if(e.getSource() == view.getBtnSaveAs() && returnSaveVal == JFileChooser.APPROVE_OPTION) {
-			
+
 			view.getBtnConvert().setEnabled(true);
 		}
 	}*/
