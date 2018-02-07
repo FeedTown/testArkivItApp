@@ -222,7 +222,7 @@ public class ExcelAppGUIFX{
 		content.add(KOMtxt);
 		
 	}
-	
+	//.
 	public void startSecondScene()
 	{
 		VBox root2 = new VBox();
