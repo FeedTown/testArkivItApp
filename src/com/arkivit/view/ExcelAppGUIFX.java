@@ -193,7 +193,7 @@ public class ExcelAppGUIFX{
 		
 		//root.getChildren().add(hbBtn);
 		
-		firstScene = new Scene(root, 800, 600);
+		firstScene = new Scene(root, 800, 620);
 		firstScene.getStylesheets().add("resources/style/style.css");
 		
 		
