@@ -102,19 +102,19 @@ public class ExcelAppGUIFX{
 	public void start() {
 		
 		saveButton = new Button("SAVE");
-		BAL = new Label("Beskrivning av leverans");
-		AK = new Label("Arkivbildare");
-		OA = new Label("Organisationsnummer arkivbildare");
-		LM = new Label("Levererande myndighet");
-	    OLM = new Label("Organisationsnummer levererande myndighet");
-		KFL = new Label("Kontaktperson för leverans");
-		SK = new Label("Servicebyrå/Konsult");
-		TTK = new Label("Telefonnummer till kontaktperson");
-		EK = new Label("E-post-adress till kontakperson");
-		AN = new Label("Arkivets namn");
-		SN = new Label("Systemts namn");
+		BAL = new Label("*Beskrivning av leverans:");
+		AK = new Label("*Arkivbildare:");
+		OA = new Label("*Organisationsnummer arkivbildare:");
+		LM = new Label("*Levererande myndighet:");
+	    OLM = new Label("*Organisationsnummer levererande myndighet:");
+		KFL = new Label("*Kontaktperson för leverans:");
+		SK = new Label("Servicebyrå/Konsult:");
+		TTK = new Label("*Telefonnummer till kontaktperson:");
+		EK = new Label("*E-post-adress till kontakperson:");
+		AN = new Label("*Arkivets namn:");
+		SN = new Label("*Systemts namn:");
 		UD = new Label("Uttagsdatum:");
-		KOM = new Label("Kommentar");
+		KOM = new Label("Kommentar:");
 		
 		BALtxt = new TextField();
 		AKtxt = new TextField();
@@ -142,55 +142,59 @@ public class ExcelAppGUIFX{
 		grid.setVgap(10);
 		grid.setPadding(new Insets(25, 25, 25, 25));
 
-		grid.add(BAL, 0, 1);
-		grid.add(BALtxt, 1, 1);
+		grid.add(BAL, 0, 8);
+		grid.add(BALtxt, 1, 8);
 
-		grid.add(AK, 0, 2);
-		grid.add(AKtxt, 1, 2);
+		grid.add(AK, 0, 9);
+		grid.add(AKtxt, 1, 9);
 
-		grid.add(OA, 0, 3);
-		grid.add(OAtxt, 1, 3);
+		grid.add(OA, 0, 10);
+		grid.add(OAtxt, 1, 10);
 
-		grid.add(LM, 0, 4);
-		grid.add(LMtxt, 1, 4);
+		grid.add(LM, 0, 11);
+		grid.add(LMtxt, 1, 11);
 
-		grid.add(OLM, 0, 5);
-		grid.add(OLMtxt, 1, 5);
+		grid.add(OLM, 0, 12);
+		grid.add(OLMtxt, 1, 12);
 
-		grid.add(SK, 0, 6);
-		grid.add(SKtxt, 1, 6);
+		grid.add(SK, 0, 13);
+		grid.add(SKtxt, 1, 13);
 
-		grid.add(KFL, 0, 7);
-		grid.add(KFLtxt, 1, 7);
+		grid.add(KFL, 0, 14);
+		grid.add(KFLtxt, 1, 14);
 
-		grid.add(TTK, 0, 8);
-		grid.add(TTKtxt, 1, 8);
+		grid.add(TTK, 0, 15);
+		grid.add(TTKtxt, 1, 15);
 
-		grid.add(EK, 0, 9);
-		grid.add(EKtxt, 1, 9);
+		grid.add(EK, 0, 16);
+		grid.add(EKtxt, 1, 16);
 
-		grid.add(AN, 0, 10);
-		grid.add(ANtxt, 1, 10);
+		grid.add(AN, 0, 17);
+		grid.add(ANtxt, 1, 17);
 
-		grid.add(SN, 0, 11);
-		grid.add(SNtxt, 1, 11);
+		grid.add(SN, 0, 18);
+		grid.add(SNtxt, 1, 18);
 
-		grid.add(UD, 0, 12);
-		grid.add(datePicker, 1, 12);
+		grid.add(UD, 0, 19);
+		grid.add(datePicker, 1, 19);
 		datePicker.setEditable(false);
 
-		grid.add(KOM, 0, 13);
-		grid.add(KOMtxt, 1, 13);
+		grid.add(KOM, 0, 20);
+		grid.add(KOMtxt, 1, 20);
 
 		HBox hbBtn = new HBox(10);
 		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtn.getChildren().add(saveButton);
-		grid.add(hbBtn, 1, 14);
-
+		grid.add(hbBtn, 1, 21);
+		
 		root.getChildren().add(grid);
+		
+		
 		//root.getChildren().add(hbBtn);
-
+		
 		firstScene = new Scene(root, 800, 600);
+		firstScene.getStylesheets().add("resources/style/style.css");
+		
 		
 
 
@@ -261,6 +265,7 @@ public class ExcelAppGUIFX{
 		
 		root2.getChildren().add(gridSecondScene);
 		secondScene = new Scene(root2, 800, 600);
+		secondScene.getStylesheets().add("resources/style/style.css");
 	}
 	
 	public void resetTextField()

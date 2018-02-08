@@ -110,7 +110,7 @@ public class ExcelControllerFX extends Application {
 	private void setAlert() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("ArkivIT");
-		alert.setHeaderText("");
+		alert.setHeaderText(null);
 		alert.setContentText("File was successfully created");
 		alert.showAndWait();
 	}
@@ -141,6 +141,59 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 
+	public void doneButton() {
+		
+		//1
+		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
+		//2
+		model.getGeneralBean().setArchiveCreator(view.getAKtxt().getText());
+		//3
+		model.getGeneralBean().setArchiveCreatorNum(view.getOAtxt().getText());
+
+		//4
+		model.getGeneralBean().setDelivGov(view.getLMtxt().getText());
+		//5
+		model.getGeneralBean().setDelivGovNum(view.getOLMtxt().getText());
+
+		//6
+		model.getGeneralBean().setConsultantBur(view.getSKtxt().getText());
+
+		//7
+		model.getGeneralBean().setContactDelivPerson(view.getKFLtxt().getText());
+
+		//8
+		model.getGeneralBean().setTelContactPerson(view.getTTKtxt().getText());
+
+		//9
+		model.getGeneralBean().setEmail(view.getEKtxt().getText());
+
+		//10
+		model.getGeneralBean().setArchiveName(view.getANtxt().getText());
+
+		//11
+		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
+
+		//12
+		if(view.getDatePicker().getValue() == null)
+		{
+			System.out.println("No value at date");
+			model.getGeneralBean().setDate("");
+		}
+		else
+		{
+			model.getGeneralBean().setDate(view.getDatePicker().getValue().toString());
+		}
+
+		//13
+		model.getGeneralBean().setComment(view.getKOMtxt().getText());
+
+
+		//view.getPanelForm().setVisible(false);
+		//view.getPanel().setVisible(true);
+
+
+	}
+
 	public void openButton(ActionEvent e, Stage stage) {
 		File selectedDir = view.getDirectoryChooser().showDialog(stage);
 		String path;
@@ -163,6 +216,24 @@ public class ExcelControllerFX extends Application {
 			view.getBtnSaveAs().setDisable(false);
 		}
 	}
+	
+	 public boolean checkRequestedFields()
+     {
+		 boolean checkFields = true;
+       if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || view.getOAtxt().getText().isEmpty() || 
+    		   view.getLMtxt().getText().isEmpty() || view.getOLMtxt().getText().isEmpty() ||
+    		   view.getKFLtxt().getText().isEmpty() || view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
+    		   view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
+             Alert alert = new Alert(Alert.AlertType.ERROR);
+             alert.setTitle("ArkivIT");
+             alert.setContentText("Please fill all required fields");
+             alert.setHeaderText(null);
+             alert.showAndWait();
+             checkFields = false;
+         }
+       return checkFields;
+        
+     }
 
 	class ActionListen implements EventHandler<ActionEvent>
 	{
@@ -174,7 +245,10 @@ public class ExcelControllerFX extends Application {
 			{
 				savaContentButton();
 				//view.startSecondScene();
-				stage.setScene(view.getSecondScene());
+				if(checkRequestedFields()) {
+					stage.setScene(view.getSecondScene());
+				}
+				
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);
 			}
