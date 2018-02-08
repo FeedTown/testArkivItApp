@@ -11,6 +11,13 @@ public class InputStreamReaderDecoder {
 	InputStreamReader inputStreamReader = null;
 	ArrayList<String> utfList = new ArrayList<>();
 	String utfString;
+	
+	
+	
+	public static void main(String[] args)
+	{
+		
+	}
 
 	public void fileEncoder(String sourcePath, String destinationPath)  {
 		try {
@@ -41,6 +48,7 @@ public class InputStreamReaderDecoder {
 			}
 		}   
 	}
+	
 
 	public ArrayList<String> getUtfList() {
 		return utfList;

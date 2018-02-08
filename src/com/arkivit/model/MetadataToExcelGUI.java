@@ -23,7 +23,7 @@ import jxl.write.biff.RowsExceededException;
 
 
 public class MetadataToExcelGUI {
-
+	
 	private String excelFileName /*= "standard.xls"*/,folderName = ""; 
 	private long fileSize;
 	private String targetexcelFilepath;// = "F:\\Skola\\" ; 
@@ -51,7 +51,8 @@ public class MetadataToExcelGUI {
 		//fList = new ArrayList<File>();
 		//testMeth();
 	}
-
+	
+	
 	public void init() {
 
 		folderName = new File(sourceFolderPath).getName();
