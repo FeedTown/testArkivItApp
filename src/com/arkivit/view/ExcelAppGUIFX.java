@@ -102,19 +102,19 @@ public class ExcelAppGUIFX{
 	public void start() {
 		
 		saveButton = new Button("SAVE");
-		BAL = new Label("Beskrivning av leverans");
-		AK = new Label("Arkivbildare");
-		OA = new Label("Organisationsnummer arkivbildare");
-		LM = new Label("Levererande myndighet");
-	    OLM = new Label("Organisationsnummer levererande myndighet");
-		KFL = new Label("Kontaktperson för leverans");
-		SK = new Label("Servicebyrå/Konsult");
-		TTK = new Label("Telefonnummer till kontaktperson");
-		EK = new Label("E-post-adress till kontakperson");
-		AN = new Label("Arkivets namn");
-		SN = new Label("Systemts namn");
+		BAL = new Label("*Beskrivning av leverans:");
+		AK = new Label("*Arkivbildare:");
+		OA = new Label("*Organisationsnummer arkivbildare:");
+		LM = new Label("*Levererande myndighet:");
+	    OLM = new Label("*Organisationsnummer levererande myndighet:");
+		KFL = new Label("*Kontaktperson för leverans:");
+		SK = new Label("Servicebyrå/Konsult:");
+		TTK = new Label("*Telefonnummer till kontaktperson:");
+		EK = new Label("*E-post-adress till kontakperson:");
+		AN = new Label("*Arkivets namn:");
+		SN = new Label("*Systemts namn:");
 		UD = new Label("Uttagsdatum:");
-		KOM = new Label("Kommentar");
+		KOM = new Label("Kommentar:");
 		
 		BALtxt = new TextField();
 		AKtxt = new TextField();

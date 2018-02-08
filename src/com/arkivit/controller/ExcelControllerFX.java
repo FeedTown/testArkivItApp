@@ -119,7 +119,7 @@ public class ExcelControllerFX extends Application {
 	private void setAlert() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("ArkivIT");
-		alert.setHeaderText("");
+		alert.setHeaderText(null);
 		alert.setContentText("File was successfully created");
 		alert.showAndWait();
 	}
@@ -151,6 +151,7 @@ public class ExcelControllerFX extends Application {
 	}
 
 	public void doneButton() {
+		
 		//1
 		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
 		//2
@@ -224,6 +225,24 @@ public class ExcelControllerFX extends Application {
 			view.getBtnSaveAs().setDisable(false);
 		}
 	}
+	
+	 public boolean checkRequestedFields()
+     {
+		 boolean checkFields = true;
+       if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || view.getOAtxt().getText().isEmpty() || 
+    		   view.getLMtxt().getText().isEmpty() || view.getOLMtxt().getText().isEmpty() || view.getSKtxt().getText().isEmpty() ||
+    		   view.getKFLtxt().getText().isEmpty() || view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
+    		   view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
+             Alert alert = new Alert(Alert.AlertType.ERROR);
+             alert.setTitle("Error");
+             alert.setContentText("Please fill all requested fields");
+             alert.setHeaderText(null);
+             alert.showAndWait();
+             checkFields = false;
+         }
+       return checkFields;
+        
+     }
 
 
 
@@ -237,7 +256,10 @@ public class ExcelControllerFX extends Application {
 			{
 				doneButton();
 				//view.startSecondScene();
-				stage.setScene(view.getSecondScene());
+				if(checkRequestedFields()) {
+					stage.setScene(view.getSecondScene());
+				}
+				
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);
 			}
