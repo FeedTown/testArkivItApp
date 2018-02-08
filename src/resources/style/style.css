@@ -2,3 +2,18 @@
 	-fx-background-image: url("arkivitbg.jpg");
 	-fx-background-repeat: no-repeat;
 }
+
+/*#saveButton{
+	 -fx-background-color: 
+        linear-gradient(#FCCC00, #FCCC00),
+        linear-gradient(#FCCC00, #FCCC00),
+        linear-gradient(#FCCC00, #FCCC00),
+        linear-gradient(#FCCC00 0%, #FCCC00 50%, #FCCC00 100%),
+        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 5 20 5 20;
+}*/
