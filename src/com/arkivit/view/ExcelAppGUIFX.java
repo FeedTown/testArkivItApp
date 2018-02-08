@@ -102,6 +102,7 @@ public class ExcelAppGUIFX{
 	public void start() {
 		
 		saveButton = new Button("SAVE");
+		saveButton.setId("saveButton");
 		BAL = new Label("*Beskrivning av leverans:");
 		AK = new Label("*Arkivbildare:");
 		OA = new Label("*Organisationsnummer arkivbildare:");
@@ -195,9 +196,6 @@ public class ExcelAppGUIFX{
 		firstScene = new Scene(root, 800, 620);
 		firstScene.getStylesheets().add("resources/style/style.css");
 		
-		
-
-
 
 	}
 
@@ -237,8 +235,11 @@ public class ExcelAppGUIFX{
 		mapLabel = new Label("Map");
 		checkBox = new CheckBox("");
 		btnOpenFile = new Button("Select file...");
+		btnOpenFile.setId("saveButton");
 		btnSaveAs = new Button("Save As...");
+		btnSaveAs.setId("saveButton");
 		btnConvert = new Button("Create");
+		btnConvert.setId("saveButton");
 		gridSecondScene = new GridPane();
 		gridSecondScene.setAlignment(Pos.CENTER);
 		gridSecondScene.setHgap(10);
@@ -290,14 +291,6 @@ public class ExcelAppGUIFX{
 		btnSaveAs.setOnAction(listenForEvent);
 		btnConvert.setOnAction(listenForEvent);
 	}
-	
-
-	
-	
-	
-	
-	
-	
 	
 	
 	//GETTER AND SETTERS

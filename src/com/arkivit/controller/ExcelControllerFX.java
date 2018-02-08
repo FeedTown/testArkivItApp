@@ -4,6 +4,7 @@ package com.arkivit.controller;
 import java.io.File;
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUIFX;
+import com.sun.prism.paint.Color;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -41,13 +42,18 @@ public class ExcelControllerFX extends Application {
 		view.startSecondScene();
 		primaryStage.setTitle("ArkivIT");
 		this.stage = primaryStage;
+	
+		
+		view.getScene().getStylesheets().add(
+			    getClass().getClassLoader().getResource("resources/style/style.css").toString());
+		
 		stage.setScene(view.getScene());
 		stage.show();
 		view.addActionListenerForButton(new ActionListen());
 
 
 	}
-	
+
 	public void savaContentButton() {
 		//1
 		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
@@ -85,7 +91,7 @@ public class ExcelControllerFX extends Application {
 		model.getGeneralBean().setComment(view.getKOMtxt().getText());
 
 	}
-	
+
 	private void createButton(ActionEvent event) {
 
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
@@ -94,14 +100,14 @@ public class ExcelControllerFX extends Application {
 			setAlert();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
-		
+
 		}
 		else if(check){
 			model.init();
 			setAlert();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
-		
+
 		}
 
 
@@ -142,7 +148,7 @@ public class ExcelControllerFX extends Application {
 	}
 
 	public void doneButton() {
-		
+
 		//1
 		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
 		//2
@@ -216,24 +222,30 @@ public class ExcelControllerFX extends Application {
 			view.getBtnSaveAs().setDisable(false);
 		}
 	}
-	
-	 public boolean checkRequestedFields()
-     {
-		 boolean checkFields = true;
-       if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || view.getOAtxt().getText().isEmpty() || 
-    		   view.getLMtxt().getText().isEmpty() || view.getOLMtxt().getText().isEmpty() ||
-    		   view.getKFLtxt().getText().isEmpty() || view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
-    		   view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
-             Alert alert = new Alert(Alert.AlertType.ERROR);
-             alert.setTitle("ArkivIT");
-             alert.setContentText("Please fill all required fields");
-             alert.setHeaderText(null);
-             alert.showAndWait();
-             checkFields = false;
-         }
-       return checkFields;
-        
-     }
+
+	public boolean checkRequestedFields()
+	{
+		boolean checkFields = true;
+		if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || 
+				view.getOAtxt().getText().isEmpty() || 
+				view.getLMtxt().getText().isEmpty() || 
+				view.getOLMtxt().getText().isEmpty() ||
+				view.getKFLtxt().getText().isEmpty() ||
+				view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
+				view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("ArkivIT");
+			alert.setContentText("Please fill all required fields");
+			alert.setHeaderText(null);
+			alert.showAndWait();
+			view.getBALtxt().getStyleClass().add("error");
+			
+			checkFields = false;
+			
+		}
+		return checkFields;
+
+	}
 
 	class ActionListen implements EventHandler<ActionEvent>
 	{
@@ -247,8 +259,9 @@ public class ExcelControllerFX extends Application {
 				//view.startSecondScene();
 				if(checkRequestedFields()) {
 					stage.setScene(view.getSecondScene());
+					view.getBALtxt().getStyleClass().remove("error");
 				}
-				
+
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);
 			}
@@ -272,7 +285,7 @@ public class ExcelControllerFX extends Application {
 	}
 
 
-	
+
 	@SuppressWarnings("unused")
 	private void junkCodes()
 	{
@@ -335,7 +348,7 @@ public class ExcelControllerFX extends Application {
 			view.getSaveTxtField().setText("");
 		}
 	}*/
-		
+
 		/*public void firstScene(Stage stage) {
 
 
