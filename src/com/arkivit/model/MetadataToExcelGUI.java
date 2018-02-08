@@ -10,9 +10,17 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
 
+import com.sun.prism.paint.Color;
+
 import jxl.Workbook;
 import jxl.WorkbookSettings;
+import jxl.format.CellFormat;
+import jxl.format.Colour;
 import jxl.write.Label;
+import jxl.write.WritableCell;
+import jxl.write.WritableCellFeatures;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
@@ -50,11 +58,11 @@ public class MetadataToExcelGUI {
 		//testMeth();
 	}
 
-	public void testMeth() {
+	public void init() {
 
 		folderName = new File(sourceFolderPath).getName();
 		listOfFilesAndDirectory(sourceFolderPath);
-		testFunc();
+		getAndAddFileDataToList();
 	}
 
 
@@ -97,29 +105,13 @@ public class MetadataToExcelGUI {
 		System.out.println(filec);
 
 	}
-
-	private void testFunc() 
+	
+	
+	//sortGetContentAndAddToList
+	private void getAndAddFileDataToList() 
 	{
 
-		fList.sort(new Comparator<File>() {
-			@Override
-			public int compare(File o1, File o2) {
-				String s1 = o1.getName().toLowerCase();
-				String s2 = o2.getName().toLowerCase();
-				final int s1Dot = s1.lastIndexOf('.');
-				final int s2Dot = s2.lastIndexOf('.');
-				// 
-				if ((s1Dot == -1) == (s2Dot == -1)) { // both or neither
-					s1 = s1.substring(s1Dot + 1);
-					s2 = s2.substring(s2Dot + 1);
-					return s1.compareTo(s2);
-				} else if (s1Dot == -1) { // only s2 has an extension, so s1 goes first
-					return -1;
-				} else { // only s1 has an extension, so s1 goes second
-					return 1;
-				}
-
-			}});
+		sortFileList();
 
 		try {
 			if(!fList.isEmpty())
@@ -127,25 +119,13 @@ public class MetadataToExcelGUI {
 				for(File file : fList)
 				{
 					decoder.fileEncoder(file.getParentFile().getAbsolutePath(), file.getName());  
-					duration = "";
-					currentFileName = file.getName();
-
-					tempPath = file.getParentFile().getAbsolutePath() + "/"+ currentFileName;
-					tempString = checkVideoAudioFiles(tempPath);
-					newFileString = tempString.replaceAll(".*/", "");
-
-					if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
-					{
-						fileDuration.CheckFileDuration(file.getParentFile().getAbsolutePath()
-								+ "/" + currentFileName);
-						duration = fileDuration.getAudioVideoDuration();
-					} 
+					
+					checkForAudioVideoDuration(file);
 
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
 					System.out.println(fPath);
 					fPath = fPath.replace(sourceFolderPath, folderName);
-
 
 					fileNameList.add(currentFileName);
 					sizeList.add(fileSize);
@@ -175,6 +155,44 @@ public class MetadataToExcelGUI {
 
 	}
 
+	private void checkForAudioVideoDuration(File currentfile) {
+		duration = "";
+		currentFileName = currentfile.getName();
+		tempPath = currentfile.getParentFile().getAbsolutePath() + "/"+ currentFileName;
+		tempString = checkVideoAudioFiles(tempPath);
+		newFileString = tempString.replaceAll(".*/", "");
+
+		if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
+		{
+			fileDuration.CheckFileDuration(currentfile.getParentFile().getAbsolutePath()
+					+ "/" + currentFileName);
+			duration = fileDuration.getAudioVideoDuration();
+		} 
+		
+	}
+
+	private void sortFileList() {
+		fList.sort(new Comparator<File>() {
+			@Override
+			public int compare(File o1, File o2) {
+				String s1 = o1.getName().toLowerCase();
+				String s2 = o2.getName().toLowerCase();
+				final int s1Dot = s1.lastIndexOf('.');
+				final int s2Dot = s2.lastIndexOf('.');
+				// 
+				if ((s1Dot == -1) == (s2Dot == -1)) { // both or neither
+					s1 = s1.substring(s1Dot + 1);
+					s2 = s2.substring(s2Dot + 1);
+					return s1.compareTo(s2);
+				} else if (s1Dot == -1) { // only s2 has an extension, so s1 goes first
+					return -1;
+				} else { // only s1 has an extension, so s1 goes second
+					return 1;
+				}
+
+			}});
+		
+	}
 
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
@@ -223,17 +241,18 @@ public class MetadataToExcelGUI {
 
 	}
 
-
 	@SuppressWarnings("unused")
 	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
 
 		String sizeInString,fileExtention,tempString;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
 		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
-		fileDurationRow,fileDurationColl,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,personalInformationHandelingNameRow,
-		commentLabelName,commentRow;
+		fileDurationRow,fileDurationColl,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
+		personalInformationHandelingNameRow,commentLabelName,commentRow;
 		int rowNum = 0;
 
+		excelSheet.getSettings().setProtected(true);
+		
 		for(String filename : fileNameList)
 		{
 			tempString = replaceIllegalChars(filename);
@@ -325,7 +344,6 @@ public class MetadataToExcelGUI {
 
 		ArrayList<String> inneHallList = new ArrayList<String>();
 
-
 		inneHallList.add(0, "");
 		inneHallList.add(1, "");
 		inneHallList.add(2, generalBean.getDescDelivery());
@@ -370,20 +388,28 @@ public class MetadataToExcelGUI {
 		projectCode,
 		accessId,
 		batchId;
-
+		
+		generalSheet.getSettings().setProtected(true);
+		WritableCellFormat unLocked = new WritableCellFormat();
+		unLocked.setLocked(false);
 
 		for(String infoList : inneHallList)
 		{
-			contentLabel = new Label(1, generalListSize, infoList);
+			contentLabel = new Label(1, generalListSize, infoList, unLocked);
 			generalSheet.addCell(contentLabel);
 			generalListSize++;
 
 		}
-
+		
+		WritableFont redFont = new WritableFont(WritableFont.ARIAL, 10);
+		redFont.setColour(Colour.RED);
+		
+		WritableCellFormat fontColor = new WritableCellFormat(redFont);
+		
 		headerLabel = new Label(0, 0, "RUBRIK");
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
-		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse");
-		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans");
+		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
+		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans", fontColor);
 		descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
 		archiveCreator = new Label(0, 4, "Arkivbildare"); 
 		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
@@ -393,15 +419,15 @@ public class MetadataToExcelGUI {
 		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans");
 		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson");
 		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson");
-		costCenter  = new Label(0, 12, "Kostnadsställe");
-		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering");
+		costCenter  = new Label(0, 12, "Kostnadsställe", fontColor);
+		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering", fontColor);
 		archiveName  = new Label(0, 14, "Arkivets namn");
 		systemName  = new Label(0, 15, "Systemets namn");
 		withdrawalDate  = new Label(0, 16, "Uttagsdatum");
 		comment  = new Label(0, 17, "Kommentar");
-		projectCode  = new Label(0, 18, "Projektkod");
-		accessId  = new Label(0, 19, "Accessions-ID");
-		batchId  = new Label(0, 20, "Batch-ID");
+		projectCode  = new Label(0, 18, "Projektkod", fontColor);
+		accessId  = new Label(0, 19, "Accessions-ID", fontColor);
+		batchId  = new Label(0, 20, "Batch-ID", fontColor);
 
 		generalSheet.setColumnView(0, 40);
 
