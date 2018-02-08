@@ -244,6 +244,8 @@ public class MetadataToExcelGUI {
 		personalInformationHandelingNameRow,commentLabelName,commentRow;
 		int rowNum = 0;
 
+		excelSheet.getSettings().setProtected(true);
+		
 		for(String filename : fileNameList)
 		{
 			tempString = replaceIllegalChars(filename);
@@ -378,11 +380,14 @@ public class MetadataToExcelGUI {
 		projectCode,
 		accessId,
 		batchId;
-
+		
+		generalSheet.getSettings().setProtected(true);
+		WritableCellFormat unLocked = new WritableCellFormat();
+		unLocked.setLocked(false);
 
 		for(String infoList : inneHallList)
 		{
-			contentLabel = new Label(1, generalListSize, infoList);
+			contentLabel = new Label(1, generalListSize, infoList, unLocked);
 			generalSheet.addCell(contentLabel);
 			generalListSize++;
 
@@ -393,7 +398,6 @@ public class MetadataToExcelGUI {
 		
 		WritableCellFormat fontColor = new WritableCellFormat(redFont);
 		
-	
 		headerLabel = new Label(0, 0, "RUBRIK");
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
 		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
