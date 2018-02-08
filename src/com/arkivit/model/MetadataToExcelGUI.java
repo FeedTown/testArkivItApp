@@ -9,13 +9,10 @@ import java.util.Objects;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
-
 import jxl.Workbook;
 import jxl.WorkbookSettings;
-import jxl.format.CellFormat;
 import jxl.format.Colour;
 import jxl.write.Label;
-import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
@@ -390,11 +387,17 @@ public class MetadataToExcelGUI {
 			generalListSize++;
 
 		}
-
+		
+		WritableFont redFont = new WritableFont(WritableFont.ARIAL, 10);
+		redFont.setColour(Colour.RED);
+		
+		WritableCellFormat fontColor = new WritableCellFormat(redFont);
+		
+	
 		headerLabel = new Label(0, 0, "RUBRIK");
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
-		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse");
-		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans");
+		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
+		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans", fontColor);
 		descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
 		archiveCreator = new Label(0, 4, "Arkivbildare"); 
 		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
@@ -404,19 +407,23 @@ public class MetadataToExcelGUI {
 		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans");
 		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson");
 		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson");
-		costCenter  = new Label(0, 12, "Kostnadsställe");
-		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering");
+		costCenter  = new Label(0, 12, "Kostnadsställe", fontColor);
+		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering", fontColor);
 		archiveName  = new Label(0, 14, "Arkivets namn");
 		systemName  = new Label(0, 15, "Systemets namn");
 		withdrawalDate  = new Label(0, 16, "Uttagsdatum");
 		comment  = new Label(0, 17, "Kommentar");
-		projectCode  = new Label(0, 18, "Projektkod");
-		accessId  = new Label(0, 19, "Accessions-ID");
-		batchId  = new Label(0, 20, "Batch-ID");
+
 		
-		generalSheet.getSettings().setProtected(true);
+		
 		generalSheet.setColumnView(1, 40);
 		generalSheet.setColumnView(0, 45);
+
+		projectCode  = new Label(0, 18, "Projektkod", fontColor);
+		accessId  = new Label(0, 19, "Accessions-ID", fontColor);
+		batchId  = new Label(0, 20, "Batch-ID", fontColor);
+
+		generalSheet.setColumnView(0, 40);
 		generalSheet.addCell(headerLabel);
 		generalSheet.addCell(archiveDiareNum);
 		generalSheet.addCell(archiveDiareNumDeliv);
