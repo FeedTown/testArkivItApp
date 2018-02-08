@@ -12,7 +12,12 @@ import org.apache.tika.Tika;
 
 import jxl.Workbook;
 import jxl.WorkbookSettings;
+import jxl.format.CellFormat;
+import jxl.format.Colour;
 import jxl.write.Label;
+import jxl.write.WritableCell;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
@@ -235,7 +240,6 @@ public class MetadataToExcelGUI {
 
 	@SuppressWarnings("unused")
 	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
-
 		String sizeInString,fileExtention,tempString;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
 		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
@@ -266,7 +270,6 @@ public class MetadataToExcelGUI {
 
 			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
 			charsetNameColl = new Label(4, rowNum+1, decoder.getUtfList().get(rowNum));
-
 
 			fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
 			fileDurationColl = new Label(5, rowNum+1, fileDuration.getAudioVideoList().get(rowNum));
@@ -410,9 +413,10 @@ public class MetadataToExcelGUI {
 		projectCode  = new Label(0, 18, "Projektkod");
 		accessId  = new Label(0, 19, "Accessions-ID");
 		batchId  = new Label(0, 20, "Batch-ID");
-
-		generalSheet.setColumnView(0, 40);
-
+		
+		generalSheet.getSettings().setProtected(true);
+		generalSheet.setColumnView(1, 40);
+		generalSheet.setColumnView(0, 45);
 		generalSheet.addCell(headerLabel);
 		generalSheet.addCell(archiveDiareNum);
 		generalSheet.addCell(archiveDiareNumDeliv);
@@ -442,7 +446,7 @@ public class MetadataToExcelGUI {
 
 
 	}
-
+	
 	private String replaceIllegalChars(String currentString) {
 		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
 				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 

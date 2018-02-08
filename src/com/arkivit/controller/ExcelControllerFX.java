@@ -26,14 +26,14 @@ public class ExcelControllerFX extends Application {
 	{
 		model = new MetadataToExcelGUI();
 		view = new ExcelAppGUIFX();
-		//launch();
+		
 	}
 
 	public ExcelControllerFX(MetadataToExcelGUI model, ExcelAppGUIFX view){
 
 		this.model = model;
 		this.view = view;
-		//this.view.start();
+		
 	}
 
 
