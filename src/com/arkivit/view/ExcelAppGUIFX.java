@@ -84,6 +84,7 @@ public class ExcelAppGUIFX{
 	private Button btnOpenFile;
 	private Button btnSaveAs;
 	private Button btnConvert;
+	private Button btnBack;
 	private TextField openTxtField;// = new TextField();
 	private TextField saveTxtField; //= new TextField();
 	private Label dirLabel;// = new Label("Directory");
@@ -238,8 +239,13 @@ public class ExcelAppGUIFX{
 		mapLabel = new Label("Map");
 		checkBox = new CheckBox("");
 		btnOpenFile = new Button("Select file...");
+		btnOpenFile.setId("saveButton");
 		btnSaveAs = new Button("Save As...");
+		btnSaveAs.setId("saveButton");
 		btnConvert = new Button("Create");
+		btnConvert.setId("saveButton");
+		btnBack = new Button("Back");
+		btnBack.setId("backButton");
 		gridSecondScene = new GridPane();
 		gridSecondScene.setAlignment(Pos.CENTER);
 		gridSecondScene.setHgap(10);
@@ -259,6 +265,9 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(outputLabel, 0, 2);
 		gridSecondScene.add(saveTxtField, 1, 2);
 		gridSecondScene.add(btnSaveAs, 2, 2);
+		
+		//back button
+		gridSecondScene.add(btnBack, 0, 15);
 
 		//Create Excel button
 

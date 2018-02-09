@@ -2,6 +2,9 @@ package com.arkivit.controller;
 
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUIFX;
 
@@ -235,6 +238,23 @@ public class ExcelControllerFX extends Application {
        return checkFields;
         
      }
+	 
+	 private boolean validateEmail() {
+		 Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
+		 Matcher m = p.matcher(view.getEKtxt().getText());
+		 if(m.find() && m.group().equals(view.getEKtxt().getText())) {
+			 return true;
+		 }
+		 else {
+			 Alert alert = new Alert(AlertType.WARNING);
+			 alert.setTitle("Not a valid email adress");
+			 alert.setHeaderText(null);
+			 alert.setContentText("Pleas enter a valid email form");
+			 alert.showAndWait();
+			 
+			 return false;
+		 }
+	 }
 
 	class ActionListen implements EventHandler<ActionEvent>
 	{
@@ -246,7 +266,7 @@ public class ExcelControllerFX extends Application {
 			{
 				savaContentButton();
 				//view.startSecondScene();
-				if(checkRequestedFields()) {
+				if(checkRequestedFields() && validateEmail() == true) {
 					stage.setScene(view.getSecondScene());
 				}
 				
