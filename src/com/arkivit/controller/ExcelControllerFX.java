@@ -257,10 +257,11 @@ public class ExcelControllerFX extends Application {
 			{
 				savaContentButton();
 				//view.startSecondScene();
-				if(checkRequestedFields()) {
+				/*if(checkRequestedFields()) {
 					stage.setScene(view.getSecondScene());
 					view.getBALtxt().getStyleClass().remove("error");
-				}
+				}*/
+				stage.setScene(view.getSecondScene());
 
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);
