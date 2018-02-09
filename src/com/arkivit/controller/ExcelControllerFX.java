@@ -42,11 +42,11 @@ public class ExcelControllerFX extends Application {
 		view.startSecondScene();
 		primaryStage.setTitle("ArkivIT");
 		this.stage = primaryStage;
-	
-		
+
+
 		view.getScene().getStylesheets().add(
-			    getClass().getClassLoader().getResource("resources/style/style.css").toString());
-		
+				getClass().getClassLoader().getResource("resources/style/style.css").toString());
+
 		stage.setScene(view.getScene());
 		stage.show();
 		view.addActionListenerForButton(new ActionListen());
@@ -225,27 +225,47 @@ public class ExcelControllerFX extends Application {
 
 	public boolean checkRequestedFields()
 	{
+
 		boolean checkFields = true;
-		if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || 
+		if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty()/* || 
 				view.getOAtxt().getText().isEmpty() || 
 				view.getLMtxt().getText().isEmpty() || 
 				view.getOLMtxt().getText().isEmpty() ||
 				view.getKFLtxt().getText().isEmpty() ||
 				view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
-				view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
+				view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()*/){
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("ArkivIT");
 			alert.setContentText("Please fill all required fields");
 			alert.setHeaderText(null);
 			alert.showAndWait();
 			view.getBALtxt().getStyleClass().add("error");
-			
+			view.getAKtxt().getStyleClass().add("error");
+			System.out.println("EMPTY");
 			checkFields = false;
-			
+
+
+		}
+
+		if(!(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() /*|| 
+				view.getOAtxt().getText().isEmpty() || 
+				view.getLMtxt().getText().isEmpty() || 
+				view.getOLMtxt().getText().isEmpty() ||
+				view.getKFLtxt().getText().isEmpty() ||
+				view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
+				view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()*/)) {
+			System.out.println("NOT EMPTY");
+			view.getBALtxt().getStyleClass().remove("error");
+			view.getAKtxt().getStyleClass().remove("error");
+			//view.getBALtxt().setText("");
+			checkFields = false;
+
 		}
 		return checkFields;
 
 	}
+	
+	
 
 	class ActionListen implements EventHandler<ActionEvent>
 	{
@@ -259,7 +279,7 @@ public class ExcelControllerFX extends Application {
 				//view.startSecondScene();
 				if(checkRequestedFields()) {
 					stage.setScene(view.getSecondScene());
-					view.getBALtxt().getStyleClass().remove("error");
+					//view.getBALtxt().getStyleClass().remove("error");
 				}
 
 				view.getBtnConvert().setDisable(true);

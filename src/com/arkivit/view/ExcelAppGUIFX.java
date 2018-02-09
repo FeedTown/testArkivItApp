@@ -35,6 +35,7 @@ public class ExcelAppGUIFX{
 	}*/
 	
 	private ArrayList<TextField> content;
+	private ArrayList<TextField> mandatoryFields;
 	private GridPane grid,gridSecondScene;// = new GridPane();
 	//Text scenetitle = new Text("Welcome");
 	private Scene secondScene;
@@ -222,6 +223,23 @@ public class ExcelAppGUIFX{
 		content.add(ANtxt);
 		content.add(SNtxt);
 		content.add(KOMtxt);
+		
+	}
+	
+	public ArrayList<TextField> getMandatoryFieldsList() {
+		mandatoryFields = new ArrayList<TextField>();
+		mandatoryFields.add(BALtxt);
+		mandatoryFields.add(AKtxt);
+		mandatoryFields.add(OAtxt);
+		mandatoryFields.add(LMtxt);
+		mandatoryFields.add(OLMtxt);
+		mandatoryFields.add(KFLtxt);
+		mandatoryFields.add(TTKtxt);
+		mandatoryFields.add(EKtxt);
+		mandatoryFields.add(ANtxt);
+		mandatoryFields.add(SNtxt);
+		
+		return mandatoryFields;
 		
 	}
 	
