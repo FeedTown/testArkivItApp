@@ -238,25 +238,25 @@ public class ExcelControllerFX extends Application {
              alert.setContentText("Please fill all requested fields");
              alert.setHeaderText(null);
              alert.showAndWait();
-             view.getBALtxt().getStyleClass().add("error");
- 			view.getAKtxt().getStyleClass().add("error");
+            // view.getBALtxt().getStyleClass().add("error");
+ 			//view.getAKtxt().getStyleClass().add("error");
              checkFields = false;
          }
        
-       if(!(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() /*|| 
+      /* if(!(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || 
 				view.getOAtxt().getText().isEmpty() || 
 				view.getLMtxt().getText().isEmpty() || 
 				view.getOLMtxt().getText().isEmpty() ||
 				view.getKFLtxt().getText().isEmpty() ||
 				view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
-				view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()*/)) {
+				view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty())) {
 			System.out.println("NOT EMPTY");
 			view.getBALtxt().getStyleClass().remove("error");
 			view.getAKtxt().getStyleClass().remove("error");
 			//view.getBALtxt().setText("");
 			checkFields = false;
 
-		}
+		} */
        return checkFields;
         
      }
