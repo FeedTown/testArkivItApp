@@ -43,6 +43,7 @@ public class ExcelControllerFX extends Application {
 		view.start();
 		view.startSecondScene();
 		primaryStage.setTitle("ArkivIT");
+		primaryStage.setResizable(false);
 		this.stage = primaryStage;
 		stage.setScene(view.getScene());
 		stage.show();
@@ -143,6 +144,8 @@ public class ExcelControllerFX extends Application {
 			view.getBtnConvert().setDisable(false);
 		}
 	}
+	
+	
 
 	public void doneButton() {
 		
@@ -286,6 +289,10 @@ public class ExcelControllerFX extends Application {
 				createButton(event);
 				stage.setScene(view.getScene());
 				view.resetTextField();
+			}
+			else if(event.getSource().equals(view.getBtnBack())){
+				stage.setScene(view.getScene());
+				
 			}
 
 		}
