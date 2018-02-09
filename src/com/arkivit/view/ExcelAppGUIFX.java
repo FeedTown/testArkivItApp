@@ -272,6 +272,7 @@ public class ExcelAppGUIFX{
 		//Open dir components
 		gridSecondScene.add(dirLabel, 0, 0);
 		gridSecondScene.add(openTxtField, 1, 0);
+		openTxtField.setEditable(false);
 		gridSecondScene.add(btnOpenFile, 2, 0);
 
 		//mapp
@@ -281,6 +282,7 @@ public class ExcelAppGUIFX{
 		//Out dir components
 		gridSecondScene.add(outputLabel, 0, 2);
 		gridSecondScene.add(saveTxtField, 1, 2);
+		saveTxtField.setEditable(false);
 		gridSecondScene.add(btnSaveAs, 2, 2);
 		
 		//back button
