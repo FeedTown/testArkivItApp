@@ -85,6 +85,7 @@ public class ExcelAppGUIFX{
 	private Button btnOpenFile;
 	private Button btnSaveAs;
 	private Button btnConvert;
+	private Button btnBack;
 	private TextField openTxtField;// = new TextField();
 	private TextField saveTxtField; //= new TextField();
 	private Label dirLabel;// = new Label("Directory");
@@ -142,52 +143,52 @@ public class ExcelAppGUIFX{
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(25, 25, 25, 25));
+		grid.setPadding(new Insets(93, 25, 25, 25));
+		
+		grid.add(BAL, 0, 1);
+		grid.add(BALtxt, 1, 1);
 
-		grid.add(BAL, 0, 8);
-		grid.add(BALtxt, 1, 8);
+		grid.add(AK, 0, 2);
+		grid.add(AKtxt, 1, 2);
 
-		grid.add(AK, 0, 9);
-		grid.add(AKtxt, 1, 9);
+		grid.add(OA, 0, 3);
+		grid.add(OAtxt, 1, 3);
 
-		grid.add(OA, 0, 10);
-		grid.add(OAtxt, 1, 10);
+		grid.add(LM, 0, 4);
+		grid.add(LMtxt, 1, 4);
 
-		grid.add(LM, 0, 11);
-		grid.add(LMtxt, 1, 11);
+		grid.add(OLM, 0, 5);
+		grid.add(OLMtxt, 1, 5);
 
-		grid.add(OLM, 0, 12);
-		grid.add(OLMtxt, 1, 12);
+		grid.add(SK, 0, 6);
+		grid.add(SKtxt, 1, 6);
 
-		grid.add(SK, 0, 13);
-		grid.add(SKtxt, 1, 13);
+		grid.add(KFL, 0, 7);
+		grid.add(KFLtxt, 1, 7);
 
-		grid.add(KFL, 0, 14);
-		grid.add(KFLtxt, 1, 14);
+		grid.add(TTK, 0, 8);
+		grid.add(TTKtxt, 1, 8);
 
-		grid.add(TTK, 0, 15);
-		grid.add(TTKtxt, 1, 15);
+		grid.add(EK, 0, 9);
+		grid.add(EKtxt, 1, 9);
 
-		grid.add(EK, 0, 16);
-		grid.add(EKtxt, 1, 16);
+		grid.add(AN, 0, 10);
+		grid.add(ANtxt, 1, 10);
 
-		grid.add(AN, 0, 17);
-		grid.add(ANtxt, 1, 17);
+		grid.add(SN, 0, 11);
+		grid.add(SNtxt, 1, 11);
 
-		grid.add(SN, 0, 18);
-		grid.add(SNtxt, 1, 18);
-
-		grid.add(UD, 0, 19);
-		grid.add(datePicker, 1, 19);
+		grid.add(UD, 0, 12);
+		grid.add(datePicker, 1, 12);
 		datePicker.setEditable(false);
 
-		grid.add(KOM, 0, 20);
-		grid.add(KOMtxt, 1, 20);
+		grid.add(KOM, 0, 13);
+		grid.add(KOMtxt, 1, 13);
 
 		HBox hbBtn = new HBox(10);
 		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtn.getChildren().add(saveButton);
-		grid.add(hbBtn, 1, 21);
+		grid.add(hbBtn, 1, 14);
 		
 		root.getChildren().add(grid);
 		
@@ -258,6 +259,10 @@ public class ExcelAppGUIFX{
 		btnSaveAs.setId("saveButton");
 		btnConvert = new Button("Create");
 		btnConvert.setId("saveButton");
+
+		btnBack = new Button("Back");
+		btnBack.setId("backButton");
+
 		gridSecondScene = new GridPane();
 		gridSecondScene.setAlignment(Pos.CENTER);
 		gridSecondScene.setHgap(10);
@@ -277,6 +282,9 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(outputLabel, 0, 2);
 		gridSecondScene.add(saveTxtField, 1, 2);
 		gridSecondScene.add(btnSaveAs, 2, 2);
+		
+		//back button
+		gridSecondScene.add(btnBack, 0, 15);
 
 		//Create Excel button
 
