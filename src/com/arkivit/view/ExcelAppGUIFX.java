@@ -35,8 +35,11 @@ public class ExcelAppGUIFX{
 	}*/
 	
 	private ArrayList<TextField> content;
+
 	private ArrayList<TextField> mandatoryFields;
-	private GridPane grid,gridSecondScene;// = new GridPane();
+
+	private GridPane grid,gridSecondScene, gridThirdScene;// = new GridPane();
+
 	//Text scenetitle = new Text("Welcome");
 	private Scene secondScene;
 	private Label BAL;
@@ -244,6 +247,7 @@ public class ExcelAppGUIFX{
 		
 	}
 	
+
 	public void startSecondScene()
 	{
 		VBox root2 = new VBox();
@@ -259,15 +263,20 @@ public class ExcelAppGUIFX{
 		btnSaveAs.setId("saveButton");
 		btnConvert = new Button("Create");
 		btnConvert.setId("saveButton");
-
-		btnBack = new Button("Back");
-		btnBack.setId("backButton");
-
+		btnBack = new Button("◀ Back");
+		btnBack.setId("saveButton");
 		gridSecondScene = new GridPane();
 		gridSecondScene.setAlignment(Pos.CENTER);
 		gridSecondScene.setHgap(10);
 		gridSecondScene.setVgap(10);
 		gridSecondScene.setPadding(new Insets(200, 200, 200, 200));
+		
+		
+		gridThirdScene = new GridPane();
+		gridThirdScene.setAlignment(Pos.CENTER);
+		gridThirdScene.setHgap(10);
+		gridThirdScene.setVgap(10);
+		gridThirdScene.setPadding(new Insets(20, 700, 0, 0));
 
 		//Open dir components
 		gridSecondScene.add(dirLabel, 0, 0);
@@ -286,13 +295,14 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(btnSaveAs, 2, 2);
 		
 		//back button
-		gridSecondScene.add(btnBack, 0, 15);
+		gridThirdScene.add(btnBack, 0, 0);
 
 		//Create Excel button
 
 		gridSecondScene.add(btnConvert, 1, 3);
 		
 		root2.getChildren().add(gridSecondScene);
+		root2.getChildren().add(gridThirdScene);
 		secondScene = new Scene(root2, 800, 600);
 		secondScene.getStylesheets().add("resources/style/style.css");
 	}
@@ -318,6 +328,7 @@ public class ExcelAppGUIFX{
 		btnOpenFile.setOnAction(listenForEvent);
 		btnSaveAs.setOnAction(listenForEvent);
 		btnConvert.setOnAction(listenForEvent);
+		btnBack.setOnAction(listenForEvent);
 	}
 	
 	
@@ -440,5 +451,14 @@ public class ExcelAppGUIFX{
 	public Button getSaveButton() {
 		return saveButton;
 	}
+
+	public Button getBtnBack() {
+		return btnBack;
+	}
+
+	public void setBtnBack(Button btnBack) {
+		this.btnBack = btnBack;
+	}
+	
 
 }
