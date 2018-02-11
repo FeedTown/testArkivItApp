@@ -181,28 +181,21 @@ public class ExcelControllerFX extends Application {
 
 	public boolean checkRequestedFields()
 	{
-		List<String> textFieldList = new ArrayList<String>();
 		String tmpCss = "-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 4;";
 		boolean checkFields = true;
 		int emptyFields = 0;
-		textFieldList.add(view.getBALtxt().getText());
-		textFieldList.add(view.getAKtxt().getText());
-		textFieldList.add(view.getOAtxt().getText());
-		textFieldList.add(view.getLMtxt().getText());
-		textFieldList.add(view.getOLMtxt().getText());
-		textFieldList.add(view.getKFLtxt().getText());
-		textFieldList.add(view.getTTKtxt().getText());
-		textFieldList.add(view.getEKtxt().getText());
-		textFieldList.add(view.getANtxt().getText());
-		textFieldList.add(view.getSNtxt().getText());
-
-
-		for(String tmp : textFieldList)
+		
+		for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
 		{
-			if(tmp.equals(""))
+			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
+				//view.getMandatoryFieldsList().get(i).getStyleClass().add("error");
+				view.getMandatoryFieldsList().get(i).setStyle(tmpCss);
+				emptyFields = i+1;
+			}
+			else
 			{
-				emptyFields++;
-
+				//view.getMandatoryFieldsList().get(i).getStyleClass().remove("error");
+				view.getMandatoryFieldsList().get(i).setStyle("");
 			}
 		}
 
@@ -216,19 +209,7 @@ public class ExcelControllerFX extends Application {
 			alert.setHeaderText(null);
 			alert.showAndWait();
 
-			for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
-			{
-				if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
-					//view.getMandatoryFieldsList().get(i).getStyleClass().add("error");
-					view.getMandatoryFieldsList().get(i).setStyle(tmpCss);
-				}
-				else
-				{
-					//view.getMandatoryFieldsList().get(i).getStyleClass().remove("error");
-					view.getMandatoryFieldsList().get(i).setStyle("");
-				}
-			}
-
+			
 
 			checkFields = false;
 		}
