@@ -2,6 +2,8 @@ package com.arkivit.controller;
 
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,6 +96,7 @@ public class ExcelControllerFX extends Application {
 		//13
 		model.getGeneralBean().setComment(view.getKOMtxt().getText());
 
+
 	}
 
 	private void createButton(ActionEvent event) {
@@ -151,61 +154,7 @@ public class ExcelControllerFX extends Application {
 			view.getBtnConvert().setDisable(false);
 		}
 	}
-	
-	
 
-	public void doneButton() {
-
-		//1
-		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
-		//2
-		model.getGeneralBean().setArchiveCreator(view.getAKtxt().getText());
-		//3
-		model.getGeneralBean().setArchiveCreatorNum(view.getOAtxt().getText());
-
-		//4
-		model.getGeneralBean().setDelivGov(view.getLMtxt().getText());
-		//5
-		model.getGeneralBean().setDelivGovNum(view.getOLMtxt().getText());
-
-		//6
-		model.getGeneralBean().setConsultantBur(view.getSKtxt().getText());
-
-		//7
-		model.getGeneralBean().setContactDelivPerson(view.getKFLtxt().getText());
-
-		//8
-		model.getGeneralBean().setTelContactPerson(view.getTTKtxt().getText());
-
-		//9
-		model.getGeneralBean().setEmail(view.getEKtxt().getText());
-
-		//10
-		model.getGeneralBean().setArchiveName(view.getANtxt().getText());
-
-		//11
-		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
-
-		//12
-		if(view.getDatePicker().getValue() == null)
-		{
-			System.out.println("No value at date");
-			model.getGeneralBean().setDate("");
-		}
-		else
-		{
-			model.getGeneralBean().setDate(view.getDatePicker().getValue().toString());
-		}
-
-		//13
-		model.getGeneralBean().setComment(view.getKOMtxt().getText());
-
-
-		//view.getPanelForm().setVisible(false);
-		//view.getPanel().setVisible(true);
-
-
-	}
 
 	public void openButton(ActionEvent e, Stage stage) {
 		File selectedDir = view.getDirectoryChooser().showDialog(stage);
@@ -230,57 +179,80 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 
-	 public boolean checkRequestedFields()
-     {
-		 boolean checkFields = true;
-       if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || view.getOAtxt().getText().isEmpty() || 
-    		   view.getLMtxt().getText().isEmpty() || view.getOLMtxt().getText().isEmpty() ||
-    		   view.getKFLtxt().getText().isEmpty() || view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
-    		   view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
-             Alert alert = new Alert(Alert.AlertType.ERROR);
-             alert.setTitle("Error");
-             alert.setContentText("Please fill all requested fields");
-             alert.setHeaderText(null);
-             alert.showAndWait();
-            // view.getBALtxt().getStyleClass().add("error");
- 			//view.getAKtxt().getStyleClass().add("error");
-             checkFields = false;
-         }
-       
-      /* if(!(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || 
-				view.getOAtxt().getText().isEmpty() || 
-				view.getLMtxt().getText().isEmpty() || 
-				view.getOLMtxt().getText().isEmpty() ||
-				view.getKFLtxt().getText().isEmpty() ||
-				view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
-				view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty())) {
-			System.out.println("NOT EMPTY");
-			view.getBALtxt().getStyleClass().remove("error");
-			view.getAKtxt().getStyleClass().remove("error");
-			//view.getBALtxt().setText("");
-			checkFields = false;
+	public boolean checkRequestedFields()
+	{
+		List<String> textFieldList = new ArrayList<String>();
+		String tmpCss = "-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 4;";
+		boolean checkFields = true;
+		int emptyFields = 0;
+		textFieldList.add(view.getBALtxt().getText());
+		textFieldList.add(view.getAKtxt().getText());
+		textFieldList.add(view.getOAtxt().getText());
+		textFieldList.add(view.getLMtxt().getText());
+		textFieldList.add(view.getOLMtxt().getText());
+		textFieldList.add(view.getKFLtxt().getText());
+		textFieldList.add(view.getTTKtxt().getText());
+		textFieldList.add(view.getEKtxt().getText());
+		textFieldList.add(view.getANtxt().getText());
+		textFieldList.add(view.getSNtxt().getText());
 
-		} */
-       return checkFields;
-        
-     }
-	 
-	 private boolean validateEmail() {
-		 Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
-		 Matcher m = p.matcher(view.getEKtxt().getText());
-		 if(m.find() && m.group().equals(view.getEKtxt().getText())) {
-			 return true;
-		 }
-		 else {
-			 Alert alert = new Alert(AlertType.WARNING);
-			 alert.setTitle("Not a valid email adress");
-			 alert.setHeaderText(null);
-			 alert.setContentText("Pleas enter a valid email form");
-			 alert.showAndWait();
-			 
-			 return false;
-		 }
-	 }
+
+		for(String tmp : textFieldList)
+		{
+			if(tmp.equals(""))
+			{
+				emptyFields++;
+
+			}
+		}
+
+		System.out.println("Empty fields : " + emptyFields);
+
+		if(emptyFields >= 1)
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setContentText("Please fill all requested fields");
+			alert.setHeaderText(null);
+			alert.showAndWait();
+
+			for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
+			{
+				if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
+					//view.getMandatoryFieldsList().get(i).getStyleClass().add("error");
+					view.getMandatoryFieldsList().get(i).setStyle(tmpCss);
+				}
+				else
+				{
+					//view.getMandatoryFieldsList().get(i).getStyleClass().remove("error");
+					view.getMandatoryFieldsList().get(i).setStyle("");
+				}
+			}
+
+
+			checkFields = false;
+		}
+
+		return checkFields;
+
+	}
+
+	private boolean validateEmail() {
+		Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
+		Matcher m = p.matcher(view.getEKtxt().getText());
+		if(m.find() && m.group().equals(view.getEKtxt().getText())) {
+			return true;
+		}
+		else {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Not a valid email adress");
+			alert.setHeaderText(null);
+			alert.setContentText("Pleas enter a valid email form");
+			alert.showAndWait();
+
+			return false;
+		}
+	}
 
 
 	class ActionListen implements EventHandler<ActionEvent>
@@ -318,14 +290,12 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(view.getBtnBack())){
 				stage.setScene(view.getScene());
-				
+
 			}
 
 		}
 
 	}
-
-
 
 	@SuppressWarnings("unused")
 	private void junkCodes()
@@ -426,6 +396,36 @@ public class ExcelControllerFX extends Application {
 
 
 	}*/
+
+
+		/* if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || view.getOAtxt().getText().isEmpty() || 
+		   view.getLMtxt().getText().isEmpty() || view.getOLMtxt().getText().isEmpty() ||
+		   view.getKFLtxt().getText().isEmpty() || view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
+		   view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Error");
+      alert.setContentText("Please fill all requested fields");
+      alert.setHeaderText(null);
+      alert.showAndWait();
+     // view.getBALtxt().getStyleClass().add("error");
+		//view.getAKtxt().getStyleClass().add("error");
+      checkFields = false;
+  }*/
+
+		/* if(!(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || 
+			view.getOAtxt().getText().isEmpty() || 
+			view.getLMtxt().getText().isEmpty() || 
+			view.getOLMtxt().getText().isEmpty() ||
+			view.getKFLtxt().getText().isEmpty() ||
+			view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
+			view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty())) {
+		System.out.println("NOT EMPTY");
+		view.getBALtxt().getStyleClass().remove("error");
+		view.getAKtxt().getStyleClass().remove("error");
+		//view.getBALtxt().setText("");
+		checkFields = false;
+
+	} */
 
 	}
 

@@ -34,9 +34,11 @@ public class ExcelAppGUIFX{
 		launch(args);
 	}*/
 	
-	private ArrayList<TextField> content;
+	private ArrayList<TextField> content ; //= new ArrayList<TextField>();;
 
-	private ArrayList<TextField> mandatoryFields;
+	private ArrayList<TextField> mandatoryFields; // = new ArrayList<TextField>();;
+	//content = new ArrayList<TextField>();
+	//mandatoryFields = new ArrayList<TextField>();
 
 	private GridPane grid,gridSecondScene, gridThirdScene;// = new GridPane();
 
@@ -47,7 +49,8 @@ public class ExcelAppGUIFX{
 	
 	private Label AK;
 	private TextField AKtxt;
-
+	private TextField tmp;
+ 
 	private Label OA;
 	private TextField OAtxt;
 
@@ -105,7 +108,6 @@ public class ExcelAppGUIFX{
 	}
 
 	public void start() {
-		
 		saveButton = new Button("SAVE");
 		saveButton.setId("saveButton");
 		BAL = new Label("*Beskrivning av leverans:");
@@ -228,9 +230,6 @@ public class ExcelAppGUIFX{
 		content.add(SNtxt);
 		content.add(KOMtxt);
 		
-	}
-	
-	public ArrayList<TextField> getMandatoryFieldsList() {
 		mandatoryFields = new ArrayList<TextField>();
 		mandatoryFields.add(BALtxt);
 		mandatoryFields.add(AKtxt);
@@ -242,6 +241,10 @@ public class ExcelAppGUIFX{
 		mandatoryFields.add(EKtxt);
 		mandatoryFields.add(ANtxt);
 		mandatoryFields.add(SNtxt);
+		
+	}
+	
+	public ArrayList<TextField> getMandatoryFieldsList() {
 		
 		return mandatoryFields;
 		
@@ -334,8 +337,17 @@ public class ExcelAppGUIFX{
 	
 	//GETTER AND SETTERS
 	
+	
 	public Button getBtnOpenFile() {
 		return btnOpenFile;
+	}
+
+	public TextField getTmp() {
+		return tmp;
+	}
+
+	public void setTmp(TextField tmp) {
+		this.tmp = tmp;
 	}
 
 	public void setBtnOpenFile(Button btnOpenFile) {
@@ -430,7 +442,6 @@ public class ExcelAppGUIFX{
 		return ANtxt;
 	}
 
-
 	public TextField getSNtxt() {
 		return SNtxt;
 	}
@@ -442,7 +453,6 @@ public class ExcelAppGUIFX{
 	public TextField getUDtxt() {
 		return UDtxt;
 	}
-
 
 	public TextField getKOMtxt() {
 		return KOMtxt;
