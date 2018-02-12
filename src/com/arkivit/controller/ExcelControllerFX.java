@@ -49,10 +49,6 @@ public class ExcelControllerFX extends Application {
 		primaryStage.setResizable(false);
 		this.stage = primaryStage;
 
-
-		view.getScene().getStylesheets().add(
-				getClass().getClassLoader().getResource("resources/style/style.css").toString());
-
 		stage.setScene(view.getScene());
 		stage.show();
 		view.addActionListenerForButton(new ActionListen());
@@ -181,25 +177,20 @@ public class ExcelControllerFX extends Application {
 
 	public boolean checkRequestedFields()
 	{
-		String tmpCss = "-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 4;";
 		boolean checkFields = true;
 		int emptyFields = 0;
-		
+
 		for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
-		{
+		{	
 			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
-				//view.getMandatoryFieldsList().get(i).getStyleClass().add("error");
-				view.getMandatoryFieldsList().get(i).setStyle(tmpCss);
-				emptyFields = i+1;
+				view.getMandatoryFieldsList().get(i).setId("error");
+				emptyFields++;
 			}
 			else
 			{
-				//view.getMandatoryFieldsList().get(i).getStyleClass().remove("error");
-				view.getMandatoryFieldsList().get(i).setStyle("");
+				view.getMandatoryFieldsList().get(i).setId("");
 			}
 		}
-
-		System.out.println("Empty fields : " + emptyFields);
 
 		if(emptyFields >= 1)
 		{
@@ -209,14 +200,13 @@ public class ExcelControllerFX extends Application {
 			alert.setHeaderText(null);
 			alert.showAndWait();
 
-			
-
 			checkFields = false;
 		}
 
 		return checkFields;
 
 	}
+
 
 	private boolean validateEmail() {
 		Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");

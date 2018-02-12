@@ -230,6 +230,10 @@ public class ExcelAppGUIFX{
 		content.add(SNtxt);
 		content.add(KOMtxt);
 		
+		
+	}
+	
+	public ArrayList<TextField> getMandatoryFieldsList() {
 		mandatoryFields = new ArrayList<TextField>();
 		mandatoryFields.add(BALtxt);
 		mandatoryFields.add(AKtxt);
@@ -241,11 +245,6 @@ public class ExcelAppGUIFX{
 		mandatoryFields.add(EKtxt);
 		mandatoryFields.add(ANtxt);
 		mandatoryFields.add(SNtxt);
-		
-	}
-	
-	public ArrayList<TextField> getMandatoryFieldsList() {
-		
 		return mandatoryFields;
 		
 	}
