@@ -266,7 +266,7 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(saveTxtField, 1, 2);
 		gridSecondScene.add(btnSaveAs, 2, 2);
 		
-		//back button
+		//back buttonn
 		gridSecondScene.add(btnBack, 0, 15);
 
 		//Create Excel button
