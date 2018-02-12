@@ -26,7 +26,7 @@
     -fx-font-size: 14px;
 }
 
-.text-input.error {
+#error{
     -fx-focus-color: #d35244;
     -fx-faint-focus-color: #d3524422;
 
