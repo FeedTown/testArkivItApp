@@ -306,7 +306,7 @@ public class ExcelAppGUIFX{
 		
 		root2.getChildren().add(gridSecondScene);
 		root2.getChildren().add(gridThirdScene);
-		secondScene = new Scene(root2, 800, 600);
+		secondScene = new Scene(root2, 800, 620);
 		secondScene.getStylesheets().add("resources/style/style.css");
 	}
 	

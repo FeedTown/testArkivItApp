@@ -50,8 +50,7 @@ public class ExcelControllerFX extends Application {
 		this.stage = primaryStage;
 
 
-		view.getScene().getStylesheets().add(
-				getClass().getClassLoader().getResource("resources/style/style.css").toString());
+		//view.getScene().getStylesheets().add("resources/style/style.css");
 
 		stage.setScene(view.getScene());
 		stage.show();
@@ -181,15 +180,14 @@ public class ExcelControllerFX extends Application {
 
 	public boolean checkRequestedFields()
 	{
-		String tmpCss = "-fx-border-color: red; -fx-border-width: 2px; -fx-border-radius: 4;";
+		
 		boolean checkFields = true;
 		int emptyFields = 0;
-		
 		for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
 		{
 			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
 				//view.getMandatoryFieldsList().get(i).getStyleClass().add("error");
-				view.getMandatoryFieldsList().get(i).setStyle(tmpCss);
+				view.getMandatoryFieldsList().get(i).setStyle(getCssStyle());
 				emptyFields = i+1;
 			}
 			else
@@ -216,6 +214,29 @@ public class ExcelControllerFX extends Application {
 
 		return checkFields;
 
+	}
+
+	private String getCssStyle() {
+		
+		String tmpCss = "-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 4;", tmpCss2 = ""
+				+ "-fx-focus-color: #d35244;\n" + 
+				"    -fx-faint-focus-color: #d3524422;\n" + 
+				"\n" + 
+				"    -fx-highlight-fill: -fx-accent;\n" + 
+				"    -fx-highlight-text-fill: white;\n" + 
+				"    -fx-background-color:\n" + 
+				"        -fx-focus-color,\n" + 
+				"        -fx-control-inner-background,\n" + 
+				"        -fx-faint-focus-color,\n" + 
+				"        linear-gradient(from 0px 0px to 0px 5px, "
+				+ "derive(-fx-control-inner-background, -9%), -fx-control-inner-background);\n" + 
+				"    -fx-background-insets: -0.2, 1, -1.4, 3;\n" + 
+				"    -fx-background-radius: 3, 2, 4, 0;\n" + 
+				"    -fx-prompt-text-fill: transparent;";
+		
+		return tmpCss2;
+		
+		
 	}
 
 	private boolean validateEmail() {
