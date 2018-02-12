@@ -41,3 +41,16 @@
     -fx-background-radius: 3, 2, 4, 0;
     -fx-prompt-text-fill: transparent;
 }
+
+.progress-bar > .bar {
+    -fx-accent:#FCCC00;
+    -fx-background-color: linear-gradient(
+        from 0px .75em to .75em 0px,
+        repeat,
+        -fx-accent 0%,
+        -fx-accent 49%,
+        derive(-fx-accent, 30%) 50%,
+        derive(-fx-accent, 30%) 99%
+        );
+        -fx-indeterminate-bar-length: 60;
+}
