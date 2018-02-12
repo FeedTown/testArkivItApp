@@ -17,7 +17,7 @@ public class InputStreamReaderDecoder {
 			// new input stream reader is created 
 			fileInputStream = new FileInputStream(sourcePath + "/" + destinationPath);
 			inputStreamReader = new InputStreamReader(fileInputStream);
-
+			//inputStreamReader.
 			// the name of the character encoding returned
 			utfString = inputStreamReader.getEncoding();
 			utfList.add(utfString);

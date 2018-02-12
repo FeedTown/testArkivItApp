@@ -2,11 +2,14 @@ package com.arkivit.controller;
 
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUIFX;
+import com.sun.prism.paint.Color;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -43,14 +46,19 @@ public class ExcelControllerFX extends Application {
 		view.start();
 		view.startSecondScene();
 		primaryStage.setTitle("ArkivIT");
+		primaryStage.setResizable(false);
 		this.stage = primaryStage;
+
+
+		//view.getScene().getStylesheets().add("resources/style/style.css");
+
 		stage.setScene(view.getScene());
 		stage.show();
 		view.addActionListenerForButton(new ActionListen());
 
 
 	}
-	
+
 	public void savaContentButton() {
 		//1
 		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
@@ -87,8 +95,9 @@ public class ExcelControllerFX extends Application {
 		//13
 		model.getGeneralBean().setComment(view.getKOMtxt().getText());
 
+
 	}
-	
+
 	private void createButton(ActionEvent event) {
 
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
@@ -97,14 +106,14 @@ public class ExcelControllerFX extends Application {
 			setAlert();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
-		
+
 		}
 		else if(check){
 			model.init();
 			setAlert();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
-		
+
 		}
 
 
@@ -121,6 +130,7 @@ public class ExcelControllerFX extends Application {
 	private void saveButton(ActionEvent event, Stage stage) {
 		FileChooser fileChooser = new FileChooser();
 		String fileName = "";
+		fileChooser.setTitle("VA");
 		//Set extension filter to .xlsx files
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
 		fileChooser.getExtensionFilters().add(extFilter);
@@ -142,59 +152,6 @@ public class ExcelControllerFX extends Application {
 			view.getSaveTxtField().setText(model.getTargetexcelFilepath());
 			view.getBtnConvert().setDisable(false);
 		}
-	}
-
-	public void doneButton() {
-		
-		//1
-		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
-		//2
-		model.getGeneralBean().setArchiveCreator(view.getAKtxt().getText());
-		//3
-		model.getGeneralBean().setArchiveCreatorNum(view.getOAtxt().getText());
-
-		//4
-		model.getGeneralBean().setDelivGov(view.getLMtxt().getText());
-		//5
-		model.getGeneralBean().setDelivGovNum(view.getOLMtxt().getText());
-
-		//6
-		model.getGeneralBean().setConsultantBur(view.getSKtxt().getText());
-
-		//7
-		model.getGeneralBean().setContactDelivPerson(view.getKFLtxt().getText());
-
-		//8
-		model.getGeneralBean().setTelContactPerson(view.getTTKtxt().getText());
-
-		//9
-		model.getGeneralBean().setEmail(view.getEKtxt().getText());
-
-		//10
-		model.getGeneralBean().setArchiveName(view.getANtxt().getText());
-
-		//11
-		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
-
-		//12
-		if(view.getDatePicker().getValue() == null)
-		{
-			System.out.println("No value at date");
-			model.getGeneralBean().setDate("");
-		}
-		else
-		{
-			model.getGeneralBean().setDate(view.getDatePicker().getValue().toString());
-		}
-
-		//13
-		model.getGeneralBean().setComment(view.getKOMtxt().getText());
-
-
-		//view.getPanelForm().setVisible(false);
-		//view.getPanel().setVisible(true);
-
-
 	}
 
 
@@ -220,41 +177,85 @@ public class ExcelControllerFX extends Application {
 			view.getBtnSaveAs().setDisable(false);
 		}
 	}
-	
-	 public boolean checkRequestedFields()
-     {
-		 boolean checkFields = true;
-       if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || view.getOAtxt().getText().isEmpty() || 
-    		   view.getLMtxt().getText().isEmpty() || view.getOLMtxt().getText().isEmpty() ||
-    		   view.getKFLtxt().getText().isEmpty() || view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
-    		   view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
-             Alert alert = new Alert(Alert.AlertType.ERROR);
-             alert.setTitle("Error");
-             alert.setContentText("Please fill all requested fields");
-             alert.setHeaderText(null);
-             alert.showAndWait();
-             checkFields = false;
-         }
-       return checkFields;
-        
-     }
-	 
-	 private boolean validateEmail() {
-		 Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
-		 Matcher m = p.matcher(view.getEKtxt().getText());
-		 if(m.find() && m.group().equals(view.getEKtxt().getText())) {
-			 return true;
-		 }
-		 else {
-			 Alert alert = new Alert(AlertType.WARNING);
-			 alert.setTitle("Not a valid email adress");
-			 alert.setHeaderText(null);
-			 alert.setContentText("Pleas enter a valid email form");
-			 alert.showAndWait();
-			 
-			 return false;
-		 }
-	 }
+
+	public boolean checkRequestedFields()
+	{
+		
+		boolean checkFields = true;
+		int emptyFields = 0;
+		for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
+		{
+			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
+				//view.getMandatoryFieldsList().get(i).getStyleClass().add("error");
+				view.getMandatoryFieldsList().get(i).setStyle(getCssStyle());
+				emptyFields = i+1;
+			}
+			else
+			{
+				//view.getMandatoryFieldsList().get(i).getStyleClass().remove("error");
+				view.getMandatoryFieldsList().get(i).setStyle("");
+			}
+		}
+
+		System.out.println("Empty fields : " + emptyFields);
+
+		if(emptyFields >= 1)
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setContentText("Please fill all requested fields");
+			alert.setHeaderText(null);
+			alert.showAndWait();
+
+			
+
+			checkFields = false;
+		}
+
+		return checkFields;
+
+	}
+
+	private String getCssStyle() {
+		
+		String tmpCss = "-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 4;", tmpCss2 = ""
+				+ "-fx-focus-color: #d35244;\n" + 
+				"    -fx-faint-focus-color: #d3524422;\n" + 
+				"\n" + 
+				"    -fx-highlight-fill: -fx-accent;\n" + 
+				"    -fx-highlight-text-fill: white;\n" + 
+				"    -fx-background-color:\n" + 
+				"        -fx-focus-color,\n" + 
+				"        -fx-control-inner-background,\n" + 
+				"        -fx-faint-focus-color,\n" + 
+				"        linear-gradient(from 0px 0px to 0px 5px, "
+				+ "derive(-fx-control-inner-background, -9%), -fx-control-inner-background);\n" + 
+				"    -fx-background-insets: -0.2, 1, -1.4, 3;\n" + 
+				"    -fx-background-radius: 3, 2, 4, 0;\n" + 
+				"    -fx-prompt-text-fill: transparent;";
+		
+		return tmpCss2;
+		
+		
+	}
+
+	private boolean validateEmail() {
+		Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
+		Matcher m = p.matcher(view.getEKtxt().getText());
+		if(m.find() && m.group().equals(view.getEKtxt().getText())) {
+			return true;
+		}
+		else {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Not a valid email adress");
+			alert.setHeaderText(null);
+			alert.setContentText("Pleas enter a valid email form");
+			alert.showAndWait();
+
+			return false;
+		}
+	}
+
 
 	class ActionListen implements EventHandler<ActionEvent>
 	{
@@ -266,10 +267,12 @@ public class ExcelControllerFX extends Application {
 			{
 				savaContentButton();
 				//view.startSecondScene();
+
 				if(checkRequestedFields() && validateEmail() == true) {
 					stage.setScene(view.getSecondScene());
+					//view.getBALtxt().getStyleClass().remove("error");
 				}
-				
+
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);
 			}
@@ -287,13 +290,15 @@ public class ExcelControllerFX extends Application {
 				stage.setScene(view.getScene());
 				view.resetTextField();
 			}
+			else if(event.getSource().equals(view.getBtnBack())){
+				stage.setScene(view.getScene());
+
+			}
 
 		}
 
 	}
 
-
-	
 	@SuppressWarnings("unused")
 	private void junkCodes()
 	{
@@ -356,7 +361,7 @@ public class ExcelControllerFX extends Application {
 			view.getSaveTxtField().setText("");
 		}
 	}*/
-		
+
 		/*public void firstScene(Stage stage) {
 
 
@@ -393,6 +398,36 @@ public class ExcelControllerFX extends Application {
 
 
 	}*/
+
+
+		/* if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || view.getOAtxt().getText().isEmpty() || 
+		   view.getLMtxt().getText().isEmpty() || view.getOLMtxt().getText().isEmpty() ||
+		   view.getKFLtxt().getText().isEmpty() || view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
+		   view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Error");
+      alert.setContentText("Please fill all requested fields");
+      alert.setHeaderText(null);
+      alert.showAndWait();
+     // view.getBALtxt().getStyleClass().add("error");
+		//view.getAKtxt().getStyleClass().add("error");
+      checkFields = false;
+  }*/
+
+		/* if(!(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || 
+			view.getOAtxt().getText().isEmpty() || 
+			view.getLMtxt().getText().isEmpty() || 
+			view.getOLMtxt().getText().isEmpty() ||
+			view.getKFLtxt().getText().isEmpty() ||
+			view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
+			view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty())) {
+		System.out.println("NOT EMPTY");
+		view.getBALtxt().getStyleClass().remove("error");
+		view.getAKtxt().getStyleClass().remove("error");
+		//view.getBALtxt().setText("");
+		checkFields = false;
+
+	} */
 
 	}
 

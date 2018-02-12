@@ -34,8 +34,14 @@ public class ExcelAppGUIFX{
 		launch(args);
 	}*/
 	
-	private ArrayList<TextField> content;
-	private GridPane grid,gridSecondScene;// = new GridPane();
+	private ArrayList<TextField> content ; //= new ArrayList<TextField>();;
+
+	private ArrayList<TextField> mandatoryFields; // = new ArrayList<TextField>();;
+	//content = new ArrayList<TextField>();
+	//mandatoryFields = new ArrayList<TextField>();
+
+	private GridPane grid,gridSecondScene, gridThirdScene;// = new GridPane();
+
 	//Text scenetitle = new Text("Welcome");
 	private Scene secondScene;
 	private Label BAL;
@@ -43,7 +49,8 @@ public class ExcelAppGUIFX{
 	
 	private Label AK;
 	private TextField AKtxt;
-
+	private TextField tmp;
+ 
 	private Label OA;
 	private TextField OAtxt;
 
@@ -101,7 +108,6 @@ public class ExcelAppGUIFX{
 	}
 
 	public void start() {
-		
 		saveButton = new Button("SAVE");
 		saveButton.setId("saveButton");
 		BAL = new Label("*Beskrivning av leverans:");
@@ -197,9 +203,6 @@ public class ExcelAppGUIFX{
 		firstScene = new Scene(root, 800, 620);
 		firstScene.getStylesheets().add("resources/style/style.css");
 		
-		
-
-
 
 	}
 
@@ -227,8 +230,27 @@ public class ExcelAppGUIFX{
 		content.add(SNtxt);
 		content.add(KOMtxt);
 		
+		mandatoryFields = new ArrayList<TextField>();
+		mandatoryFields.add(BALtxt);
+		mandatoryFields.add(AKtxt);
+		mandatoryFields.add(OAtxt);
+		mandatoryFields.add(LMtxt);
+		mandatoryFields.add(OLMtxt);
+		mandatoryFields.add(KFLtxt);
+		mandatoryFields.add(TTKtxt);
+		mandatoryFields.add(EKtxt);
+		mandatoryFields.add(ANtxt);
+		mandatoryFields.add(SNtxt);
+		
 	}
 	
+	public ArrayList<TextField> getMandatoryFieldsList() {
+		
+		return mandatoryFields;
+		
+	}
+	
+
 	public void startSecondScene()
 	{
 		VBox root2 = new VBox();
@@ -244,17 +266,25 @@ public class ExcelAppGUIFX{
 		btnSaveAs.setId("saveButton");
 		btnConvert = new Button("Create");
 		btnConvert.setId("saveButton");
-		btnBack = new Button("Back");
-		btnBack.setId("backButton");
+		btnBack = new Button("◀ Back");
+		btnBack.setId("saveButton");
 		gridSecondScene = new GridPane();
 		gridSecondScene.setAlignment(Pos.CENTER);
 		gridSecondScene.setHgap(10);
 		gridSecondScene.setVgap(10);
 		gridSecondScene.setPadding(new Insets(200, 200, 200, 200));
+		
+		
+		gridThirdScene = new GridPane();
+		gridThirdScene.setAlignment(Pos.CENTER);
+		gridThirdScene.setHgap(10);
+		gridThirdScene.setVgap(10);
+		gridThirdScene.setPadding(new Insets(20, 700, 0, 0));
 
 		//Open dir components
 		gridSecondScene.add(dirLabel, 0, 0);
 		gridSecondScene.add(openTxtField, 1, 0);
+		openTxtField.setEditable(false);
 		gridSecondScene.add(btnOpenFile, 2, 0);
 
 		//mapp
@@ -264,17 +294,20 @@ public class ExcelAppGUIFX{
 		//Out dir components
 		gridSecondScene.add(outputLabel, 0, 2);
 		gridSecondScene.add(saveTxtField, 1, 2);
+		saveTxtField.setEditable(false);
 		gridSecondScene.add(btnSaveAs, 2, 2);
 		
-		//back buttonn
-		gridSecondScene.add(btnBack, 0, 15);
+
+		//back button
+		gridThirdScene.add(btnBack, 0, 0);
 
 		//Create Excel button
 
 		gridSecondScene.add(btnConvert, 1, 3);
 		
 		root2.getChildren().add(gridSecondScene);
-		secondScene = new Scene(root2, 800, 600);
+		root2.getChildren().add(gridThirdScene);
+		secondScene = new Scene(root2, 800, 620);
 		secondScene.getStylesheets().add("resources/style/style.css");
 	}
 	
@@ -299,21 +332,23 @@ public class ExcelAppGUIFX{
 		btnOpenFile.setOnAction(listenForEvent);
 		btnSaveAs.setOnAction(listenForEvent);
 		btnConvert.setOnAction(listenForEvent);
+		btnBack.setOnAction(listenForEvent);
 	}
-	
-
-	
-	
-	
-	
-	
-	
 	
 	
 	//GETTER AND SETTERS
 	
+	
 	public Button getBtnOpenFile() {
 		return btnOpenFile;
+	}
+
+	public TextField getTmp() {
+		return tmp;
+	}
+
+	public void setTmp(TextField tmp) {
+		this.tmp = tmp;
 	}
 
 	public void setBtnOpenFile(Button btnOpenFile) {
@@ -408,7 +443,6 @@ public class ExcelAppGUIFX{
 		return ANtxt;
 	}
 
-
 	public TextField getSNtxt() {
 		return SNtxt;
 	}
@@ -421,7 +455,6 @@ public class ExcelAppGUIFX{
 		return UDtxt;
 	}
 
-
 	public TextField getKOMtxt() {
 		return KOMtxt;
 	}
@@ -429,5 +462,14 @@ public class ExcelAppGUIFX{
 	public Button getSaveButton() {
 		return saveButton;
 	}
+
+	public Button getBtnBack() {
+		return btnBack;
+	}
+
+	public void setBtnBack(Button btnBack) {
+		this.btnBack = btnBack;
+	}
+	
 
 }

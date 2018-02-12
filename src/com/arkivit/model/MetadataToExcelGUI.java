@@ -2,6 +2,7 @@ package com.arkivit.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
@@ -36,6 +37,7 @@ public class MetadataToExcelGUI {
 	private String sourceFolderPath;// = "F:\\Skola\\Svenska";
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
+	private ArrayList<String> fileDecodeList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fList = new ArrayList<File>();
 	private int filec = 0;
@@ -44,6 +46,7 @@ public class MetadataToExcelGUI {
 	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
+	private CharsetDetector checkDecoder = new CharsetDetector();
 	File file;
 
 	public MetadataToExcelGUI()
@@ -105,21 +108,34 @@ public class MetadataToExcelGUI {
 		System.out.println(filec);
 
 	}
-	
-	
+
+
 	//sortGetContentAndAddToList
 	private void getAndAddFileDataToList() 
 	{
-
+		Charset getDecoding;
 		sortFileList();
+
+		String fullPathforCurrentFile = "";
 
 		try {
 			if(!fList.isEmpty())
 			{
 				for(File file : fList)
 				{
-					decoder.fileEncoder(file.getParentFile().getAbsolutePath(), file.getName());  
-					
+					fullPathforCurrentFile = file.getAbsolutePath();
+					getDecoding = null;
+					if(file.getName().endsWith(".html") || file.getName().endsWith(".xhtml") || file.getName().endsWith(".xml") || file.getName().endsWith(".css")
+							|| file.getName().endsWith(".xsd") || file.getName().endsWith(".dtd") || file.getName().endsWith(".xsl") || file.getName().endsWith(".txt")
+							|| file.getName().endsWith(".js")) {
+						getDecoding = getFileDecoder(fullPathforCurrentFile);
+						
+					}
+
+					//System.out.println(file.getName() + " encoding : " + getDecoding);
+
+					//decoder.fileEncoder(file.getParentFile().getAbsolutePath(), file.getName());  
+
 					checkForAudioVideoDuration(file);
 
 					fileSize = file.length();
@@ -127,10 +143,19 @@ public class MetadataToExcelGUI {
 					System.out.println(fPath);
 					fPath = fPath.replace(sourceFolderPath, folderName);
 
+					if(getDecoding == null)
+					{
+						fileDecodeList.add("");
+					}
+					else
+					{
+						fileDecodeList.add(getDecoding.name());
+					}
+
 					fileNameList.add(currentFileName);
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
-					decoder.getUtfList().add(decoder.getUtfString());
+					//decoder.getUtfList().add(decoder.getUtfString());
 					fileDuration.getAudioVideoList().add(duration);
 
 					System.out.println("File size: " + fileSize);
@@ -155,6 +180,15 @@ public class MetadataToExcelGUI {
 
 	}
 
+	private Charset getFileDecoder(String fullPathforCurrentFile) {
+		File currentFile = new File(fullPathforCurrentFile);
+
+		String[] charsetsToBeTested = {"UTF-8", "windows-1253", "ISO-8859-7"};
+		Charset charsetForfile = checkDecoder.detectCharset(currentFile, charsetsToBeTested);
+
+		return charsetForfile;
+	}
+
 	private void checkForAudioVideoDuration(File currentfile) {
 		duration = "";
 		currentFileName = currentfile.getName();
@@ -168,7 +202,7 @@ public class MetadataToExcelGUI {
 					+ "/" + currentFileName);
 			duration = fileDuration.getAudioVideoDuration();
 		} 
-		
+
 	}
 
 	private void sortFileList() {
@@ -191,7 +225,7 @@ public class MetadataToExcelGUI {
 				}
 
 			}});
-		
+
 	}
 
 	private String checkVideoAudioFiles(String fileType) {
@@ -252,7 +286,7 @@ public class MetadataToExcelGUI {
 		int rowNum = 0;
 
 		excelSheet.getSettings().setProtected(true);
-		
+
 		for(String filename : fileNameList)
 		{
 			tempString = replaceIllegalChars(filename);
@@ -275,7 +309,8 @@ public class MetadataToExcelGUI {
 			fileSizeNameColl = new Label(3, rowNum+1, sizeInString);
 
 			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
-			charsetNameColl = new Label(4, rowNum+1, decoder.getUtfList().get(rowNum));
+			//charsetNameColl = new Label(4, rowNum+1, decoder.getUtfList().get(rowNum));
+			charsetNameColl = new Label(4, rowNum+1, fileDecodeList.get(rowNum));
 
 
 			fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
@@ -388,7 +423,7 @@ public class MetadataToExcelGUI {
 		projectCode,
 		accessId,
 		batchId;
-		
+
 		generalSheet.getSettings().setProtected(true);
 		WritableCellFormat unLocked = new WritableCellFormat();
 		unLocked.setLocked(false);
@@ -400,12 +435,12 @@ public class MetadataToExcelGUI {
 			generalListSize++;
 
 		}
-		
+
 		WritableFont redFont = new WritableFont(WritableFont.ARIAL, 10);
 		redFont.setColour(Colour.RED);
-		
+
 		WritableCellFormat fontColor = new WritableCellFormat(redFont);
-		
+
 		headerLabel = new Label(0, 0, "RUBRIK");
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
 		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
