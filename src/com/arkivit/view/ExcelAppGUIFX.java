@@ -1,6 +1,7 @@
 package com.arkivit.view;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -40,7 +41,7 @@ public class ExcelAppGUIFX{
 	//content = new ArrayList<TextField>();
 	//mandatoryFields = new ArrayList<TextField>();
 
-	private GridPane grid,gridSecondScene, gridThirdScene;// = new GridPane();
+	private GridPane grid,gridSecondScene, gridThirdScene, gridFourthScene;// = new GridPane();
 
 	//Text scenetitle = new Text("Welcome");
 	private Scene secondScene;
@@ -98,8 +99,8 @@ public class ExcelAppGUIFX{
 	private Label outputLabel;// = new Label("Output");
 	private Label mapLabel;// = new Label("Map");
 	private CheckBox checkBox;// = new CheckBox("");
-
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
+	private ProgressBar pb;
 	
 	
 	public ExcelAppGUIFX()
@@ -266,6 +267,10 @@ public class ExcelAppGUIFX{
 		btnSaveAs.setId("saveButton");
 		btnConvert = new Button("Create");
 		btnConvert.setId("saveButton");
+		pb = new ProgressBar();
+		pb.setMaxWidth(Double.MAX_VALUE);
+		//pb.setProgress(1.0);
+		//pb.setVisible(false);
 		btnBack = new Button("◀ Back");
 		btnBack.setId("saveButton");
 		gridSecondScene = new GridPane();
@@ -279,7 +284,9 @@ public class ExcelAppGUIFX{
 		gridThirdScene.setAlignment(Pos.CENTER);
 		gridThirdScene.setHgap(10);
 		gridThirdScene.setVgap(10);
-		gridThirdScene.setPadding(new Insets(20, 700, 0, 0));
+		gridThirdScene.setPadding(new Insets(0, 700, 0, 0));
+		
+		
 
 		//Open dir components
 		gridSecondScene.add(dirLabel, 0, 0);
@@ -297,13 +304,15 @@ public class ExcelAppGUIFX{
 		saveTxtField.setEditable(false);
 		gridSecondScene.add(btnSaveAs, 2, 2);
 		
-
+		//Create Excel button
+		gridSecondScene.add(btnConvert, 1, 3);
+		
+		gridSecondScene.add(pb, 1, 5);
+		
 		//back button
 		gridThirdScene.add(btnBack, 0, 0);
 
-		//Create Excel button
-
-		gridSecondScene.add(btnConvert, 1, 3);
+		
 		
 		root2.getChildren().add(gridSecondScene);
 		root2.getChildren().add(gridThirdScene);
@@ -470,6 +479,12 @@ public class ExcelAppGUIFX{
 	public void setBtnBack(Button btnBack) {
 		this.btnBack = btnBack;
 	}
+
+	public ProgressBar getPb() {
+		return pb;
+	}
+	
+	
 	
 
 }

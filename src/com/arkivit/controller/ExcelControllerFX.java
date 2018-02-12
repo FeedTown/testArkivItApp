@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUIFX;
+import com.sun.javafx.tk.Toolkit.Task;
 import com.sun.prism.paint.Color;
 
 import javafx.application.Application;
@@ -46,7 +47,7 @@ public class ExcelControllerFX extends Application {
 		view.start();
 		view.startSecondScene();
 		primaryStage.setTitle("ArkivIT");
-		primaryStage.setResizable(false);
+		primaryStage.setResizable(true);
 		this.stage = primaryStage;
 
 
@@ -58,6 +59,8 @@ public class ExcelControllerFX extends Application {
 
 
 	}
+	
+	
 
 	public void savaContentButton() {
 		//1
@@ -99,7 +102,8 @@ public class ExcelControllerFX extends Application {
 	}
 
 	private void createButton(ActionEvent event) {
-
+		view.getPb().progressProperty(model.init());
+		view.getPb().setVisible(true);
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
 			model.init();
@@ -270,6 +274,7 @@ public class ExcelControllerFX extends Application {
 
 				if(checkRequestedFields() && validateEmail() == true) {
 					stage.setScene(view.getSecondScene());
+					view.getPb().setVisible(false);
 					//view.getBALtxt().getStyleClass().remove("error");
 				}
 
@@ -298,7 +303,8 @@ public class ExcelControllerFX extends Application {
 		}
 
 	}
-
+	
+	
 	@SuppressWarnings("unused")
 	private void junkCodes()
 	{
