@@ -55,7 +55,7 @@ public class ExcelControllerFX extends Application {
 
 	}
 
-	public void savaContentButton() {
+	public void saveContentButton() {
 		//1
 		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
 		//2
@@ -237,7 +237,7 @@ public class ExcelControllerFX extends Application {
 
 			if(event.getSource().equals(view.getSaveButton()))
 			{
-				savaContentButton();
+				saveContentButton();
 				//view.startSecondScene();
 
 				if(checkRequestedFields() && validateEmail() == true) {
