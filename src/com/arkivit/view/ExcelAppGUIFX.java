@@ -216,6 +216,10 @@ public class ExcelAppGUIFX{
 
 	}*/
 
+	public void setEKtxt(TextField eKtxt) {
+		EKtxt = eKtxt;
+	}
+
 	private void addContentToList() {
 		content = new ArrayList<TextField>();
 		content.add(BALtxt);

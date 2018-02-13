@@ -185,6 +185,7 @@ public class ExcelControllerFX extends Application {
 			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
 				view.getMandatoryFieldsList().get(i).setId("error");
 				emptyFields++;
+				
 
 			}
 			else
@@ -203,7 +204,7 @@ public class ExcelControllerFX extends Application {
 
 			checkFields = false;
 		}
-
+		
 		return checkFields;
 
 	}
@@ -223,7 +224,7 @@ public class ExcelControllerFX extends Application {
 			alert.setHeaderText(null);
 			alert.setContentText("Pleas enter a valid email form");
 			alert.showAndWait();
-
+			
 			return false;
 		}
 	}
