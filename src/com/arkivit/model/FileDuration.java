@@ -1,56 +1,60 @@
 package com.arkivit.model;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.time.DurationFormatUtils;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.apache.log4j.BasicConfigurator;
 
-import com.xuggle.xuggler.IContainer;
+import io.humble.video.Demuxer;
+import io.humble.video.Global;
+
 
 public class FileDuration {
 
 	private String audioVideoFile;
 	private ArrayList<String> audioVideoList = new ArrayList<>();
-	//DurationFormatUtils durationFormat = new  DurationFormatUtils();
-	Duration durationFormat;
-	
-	public FileDuration() {
-		//this.filePath = filePath;
-		//CheckFileDuration();
-	}
-	
 
-	public void CheckFileDuration (String filePath){
+	public  void getDuration(String path) {
 
-		BasicConfigurator.configure();
-		IContainer fileContainer = IContainer.make();
-		int fileResult = fileContainer.open(filePath, IContainer.Type.READ, null);
-		long fileDuration = fileContainer.getDuration();
-		long durationSeconds = fileDuration / 1000000;
-		
-		String hms = String.format("%02d:%02d:%02d", TimeUnit.SECONDS.toHours(durationSeconds),
-		        TimeUnit.SECONDS.toMinutes(durationSeconds) - 
-		        TimeUnit.HOURS.toMinutes(TimeUnit.SECONDS.toHours(durationSeconds)),
-		        TimeUnit.SECONDS.toSeconds(durationSeconds) - 
-		        TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(durationSeconds))); 
-		
-		audioVideoFile =  String.valueOf(hms);
-		//audioVideoList.add(audioVideoFiles);
-		
-		if(fileResult<0) {
-			System.out.println("Problem with the file...");
+		final Demuxer demuxer = Demuxer.make();
+
+		try {
+			demuxer.open(path, null, false, true, null, null);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+			
 		}
+		
+		final String formattedDuration = formatTimeStamp(demuxer.getDuration());
+		System.out.printf("Duration: %s \n", 
+				formattedDuration); 
+		
+		
 
 	}
-	
+
+	public String formatTimeStamp(long duration) {
+		if ( duration == Global.NO_PTS) {
+			return "00:00:00";
+		}
+		double d = 1.0 * duration / Global.DEFAULT_PTS_PER_SECOND;
+		int hours = (int) (d / (60*60));
+		int mins = (int) ((d - hours*60*60) / 60);
+		int secs = (int) (d - hours*60*60 - mins*60);
+		return audioVideoFile =  String.valueOf(String.format("%1$02d:%2$02d:%3$02d", hours, mins, secs));
+
+	}
+
 
 	public ArrayList<String> getAudioVideoList(){
 		return audioVideoList;
 	}
-	
+
 	public String getAudioVideoDuration() {
 		return audioVideoFile;
 	}
+
 
 }
