@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.SynchronousQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,25 +101,21 @@ public class ExcelControllerFX extends Application {
 
 	}
 
+	
+	
 	private void createButton(ActionEvent event) {
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
-			System.out.println("createbutton");
-			progressBar();
 			model.init();
 			setAlert();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
-
 		}
 		else if(check){
-			System.out.println("createbutton");
-			progressBar();
 			model.init();
 			setAlert();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
-
 		}
 
 
@@ -243,8 +240,9 @@ public class ExcelControllerFX extends Application {
 		new Thread(() -> {
 	         for(int i = 0; i <=100; i++){
 	            final int position = i;
+	            
 	            Platform.runLater(() -> {
-	               view.getPb().setProgress(position/100.0);
+	            	view.getPb().setProgress(position/100.0);
 	               
 	            });
 	            try{
@@ -302,6 +300,7 @@ public class ExcelControllerFX extends Application {
 			else if(event.getSource().equals(view.getBtnConvert()))
 			{
 				view.getPb().setVisible(true);
+				progressBar();
 				createButton(event);
 				stage.setScene(view.getScene());
 				view.resetTextField();
