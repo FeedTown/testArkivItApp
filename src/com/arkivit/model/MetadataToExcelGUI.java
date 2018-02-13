@@ -465,6 +465,7 @@ public class MetadataToExcelGUI {
 		batchId  = new Label(0, 20, "Batch-ID", fontColor);
 
 		generalSheet.setColumnView(0, 40);
+		generalSheet.setColumnView(1, getLargestString(inneHallList));
 
 		generalSheet.addCell(headerLabel);
 		generalSheet.addCell(archiveDiareNum);
