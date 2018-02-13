@@ -11,15 +11,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
 
-import com.sun.prism.paint.Color;
-
 import jxl.Workbook;
 import jxl.WorkbookSettings;
-import jxl.format.CellFormat;
 import jxl.format.Colour;
 import jxl.write.Label;
-import jxl.write.WritableCell;
-import jxl.write.WritableCellFeatures;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
@@ -33,8 +28,8 @@ public class MetadataToExcelGUI {
 
 	private String excelFileName /*= "standard.xls"*/,folderName = ""; 
 	private long fileSize;
-	private String targetexcelFilepath;// = "F:\\Skola\\" ; 
-	private String sourceFolderPath;// = "F:\\Skola\\Svenska";
+	private String targetexcelFilepath;
+	private String sourceFolderPath;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
@@ -42,8 +37,7 @@ public class MetadataToExcelGUI {
 	private ArrayList<File> fList = new ArrayList<File>();
 	private int filec = 0;
 	private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
-	private FileDuration fileDuration = new FileDuration();
-	private GetContainerInfo getContainerInfo = new GetContainerInfo();
+	private FileDuration getContainerInfo = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
@@ -208,7 +202,7 @@ public class MetadataToExcelGUI {
 
 		if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
 		{
-			getContainerInfo.getInfo(currentfile.getParentFile().getAbsolutePath()
+			getContainerInfo.getDuration(currentfile.getParentFile().getAbsolutePath()
 					+ "/" + currentFileName); 
 			
 			duration = getContainerInfo.getAudioVideoDuration();
