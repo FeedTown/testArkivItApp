@@ -43,6 +43,7 @@ public class MetadataToExcelGUI {
 	private int filec = 0;
 	private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
 	private FileDuration fileDuration = new FileDuration();
+	private GetContainerInfo getContainerInfo = new GetContainerInfo();
 	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
@@ -77,7 +78,7 @@ public class MetadataToExcelGUI {
 			fileNameList.clear();
 			sizeList.clear();
 			filePathList.clear();
-			fileDuration.getAudioVideoList().clear();
+			getContainerInfo.getAudioVideoList().clear();
 		}
 		else
 		{
@@ -156,7 +157,8 @@ public class MetadataToExcelGUI {
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					//decoder.getUtfList().add(decoder.getUtfString());
-					fileDuration.getAudioVideoList().add(duration);
+					//fileDuration.getAudioVideoList().add(duration);
+					getContainerInfo.getAudioVideoList().add(duration);
 
 					System.out.println("File size: " + fileSize);
 
@@ -196,11 +198,20 @@ public class MetadataToExcelGUI {
 		tempString = checkVideoAudioFiles(tempPath);
 		newFileString = tempString.replaceAll(".*/", "");
 
-		if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
+		/*if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
 		{
 			fileDuration.CheckFileDuration(currentfile.getParentFile().getAbsolutePath()
 					+ "/" + currentFileName);
 			duration = fileDuration.getAudioVideoDuration();
+		}  */
+		
+
+		if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
+		{
+			getContainerInfo.getInfo(currentfile.getParentFile().getAbsolutePath()
+					+ "/" + currentFileName); 
+			
+			duration = getContainerInfo.getAudioVideoDuration();
 		} 
 
 	}
@@ -314,7 +325,7 @@ public class MetadataToExcelGUI {
 
 
 			fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
-			fileDurationColl = new Label(5, rowNum+1, fileDuration.getAudioVideoList().get(rowNum));
+			fileDurationColl = new Label(5, rowNum+1, getContainerInfo.getAudioVideoList().get(rowNum));
 
 			filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
 			filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
@@ -465,6 +476,7 @@ public class MetadataToExcelGUI {
 		batchId  = new Label(0, 20, "Batch-ID", fontColor);
 
 		generalSheet.setColumnView(0, 40);
+		generalSheet.setColumnView(1, getLargestString(inneHallList));
 
 		generalSheet.addCell(headerLabel);
 		generalSheet.addCell(archiveDiareNum);

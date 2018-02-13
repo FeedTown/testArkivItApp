@@ -52,10 +52,6 @@ public class ExcelControllerFX extends Application {
 		primaryStage.setTitle("ArkivIT");
 		primaryStage.setResizable(false);
 		this.stage = primaryStage;
-
-
-		//view.getScene().getStylesheets().add("resources/style/style.css");
-
 		stage.setScene(view.getScene());
 		stage.show();
 		view.addActionListenerForButton(new ActionListen());
@@ -65,7 +61,7 @@ public class ExcelControllerFX extends Application {
 	
 	
 
-	public void savaContentButton() {
+	public void saveContentButton() {
 		//1
 		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
 		//2
@@ -192,21 +188,20 @@ public class ExcelControllerFX extends Application {
 		
 		boolean checkFields = true;
 		int emptyFields = 0;
+
 		for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
-		{
+		{	
 			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
-				//view.getMandatoryFieldsList().get(i).getStyleClass().add("error");
-				view.getMandatoryFieldsList().get(i).setStyle(getCssStyle());
-				emptyFields = i+1;
+				view.getMandatoryFieldsList().get(i).setId("error");
+				emptyFields++;
+				
+
 			}
 			else
 			{
-				//view.getMandatoryFieldsList().get(i).getStyleClass().remove("error");
-				view.getMandatoryFieldsList().get(i).setStyle("");
+				view.getMandatoryFieldsList().get(i).setId("");
 			}
 		}
-
-		System.out.println("Empty fields : " + emptyFields);
 
 		if(emptyFields >= 1)
 		{
@@ -216,51 +211,29 @@ public class ExcelControllerFX extends Application {
 			alert.setHeaderText(null);
 			alert.showAndWait();
 
-			
-
 			checkFields = false;
 		}
-
+		
 		return checkFields;
 
 	}
 
-	private String getCssStyle() {
-		
-		String tmpCss = "-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 4;", tmpCss2 = ""
-				+ "-fx-focus-color: #d35244;\n" + 
-				"    -fx-faint-focus-color: #d3524422;\n" + 
-				"\n" + 
-				"    -fx-highlight-fill: -fx-accent;\n" + 
-				"    -fx-highlight-text-fill: white;\n" + 
-				"    -fx-background-color:\n" + 
-				"        -fx-focus-color,\n" + 
-				"        -fx-control-inner-background,\n" + 
-				"        -fx-faint-focus-color,\n" + 
-				"        linear-gradient(from 0px 0px to 0px 5px, "
-				+ "derive(-fx-control-inner-background, -9%), -fx-control-inner-background);\n" + 
-				"    -fx-background-insets: -0.2, 1, -1.4, 3;\n" + 
-				"    -fx-background-radius: 3, 2, 4, 0;\n" + 
-				"    -fx-prompt-text-fill: transparent;";
-		
-		return tmpCss2;
-		
-		
-	}
 
 	private boolean validateEmail() {
 		Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
 		Matcher m = p.matcher(view.getEKtxt().getText());
 		if(m.find() && m.group().equals(view.getEKtxt().getText())) {
+			view.getEKtxt().setId("");
 			return true;
 		}
 		else {
+			view.getEKtxt().setId("error");
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Not a valid email adress");
 			alert.setHeaderText(null);
 			alert.setContentText("Pleas enter a valid email form");
 			alert.showAndWait();
-
+			
 			return false;
 		}
 	}
@@ -307,7 +280,7 @@ public class ExcelControllerFX extends Application {
 
 			if(event.getSource().equals(view.getSaveButton()))
 			{
-				savaContentButton();
+				saveContentButton();
 				//view.startSecondScene();
 
 				if(checkRequestedFields() && validateEmail() == true) {
