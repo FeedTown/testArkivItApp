@@ -2,6 +2,8 @@ package com.arkivit.controller;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -9,13 +11,14 @@ import java.util.regex.Pattern;
 
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUIFX;
-import com.sun.javafx.tk.Toolkit.Task;
 import com.sun.prism.paint.Color;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -47,7 +50,7 @@ public class ExcelControllerFX extends Application {
 		view.start();
 		view.startSecondScene();
 		primaryStage.setTitle("ArkivIT");
-		primaryStage.setResizable(true);
+		primaryStage.setResizable(false);
 		this.stage = primaryStage;
 
 
@@ -102,10 +105,10 @@ public class ExcelControllerFX extends Application {
 	}
 
 	private void createButton(ActionEvent event) {
-		view.getPb().progressProperty(model.init());
-		view.getPb().setVisible(true);
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
+			System.out.println("createbutton");
+			progressBar();
 			model.init();
 			setAlert();
 			view.getOpenTxtField().setText("");
@@ -113,6 +116,8 @@ public class ExcelControllerFX extends Application {
 
 		}
 		else if(check){
+			System.out.println("createbutton");
+			progressBar();
 			model.init();
 			setAlert();
 			view.getOpenTxtField().setText("");
@@ -259,8 +264,41 @@ public class ExcelControllerFX extends Application {
 			return false;
 		}
 	}
+	public void progressBar() {
+		
+		
+		new Thread(() -> {
+	         for(int i = 0; i <=100; i++){
+	            final int position = i;
+	            Platform.runLater(() -> {
+	               view.getPb().setProgress(position/100.0);
+	               
+	            });
+	            try{
+	                Thread.sleep(100);
+	            }catch(Exception e){ System.err.println(e); }
+	         }
+	    }).start();
+		/*Task<Void> task = new Task<Void>() {
+		      @Override public Void call() {
+		    	view.getPb().setVisible(true);  
+		        for (int i = 0; i < 10; i++) {
+		          try {
+		            Thread.sleep(100);
+		          } catch (InterruptedException e) {
+		            Thread.interrupted();
+		            break;
+		          }
+		          System.out.println(i + 1);
+		          updateProgress(i + 1, 10);
+		        }
+		        return null;
+		      }
+		    };
+		    view.getPb().progressProperty().bind(task.progressProperty());*/
 
-
+	}
+	
 	class ActionListen implements EventHandler<ActionEvent>
 	{
 
@@ -274,7 +312,6 @@ public class ExcelControllerFX extends Application {
 
 				if(checkRequestedFields() && validateEmail() == true) {
 					stage.setScene(view.getSecondScene());
-					view.getPb().setVisible(false);
 					//view.getBALtxt().getStyleClass().remove("error");
 				}
 
@@ -291,6 +328,7 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(view.getBtnConvert()))
 			{
+				view.getPb().setVisible(true);
 				createButton(event);
 				stage.setScene(view.getScene());
 				view.resetTextField();
@@ -303,6 +341,7 @@ public class ExcelControllerFX extends Application {
 		}
 
 	}
+	
 	
 	
 	@SuppressWarnings("unused")

@@ -270,7 +270,7 @@ public class ExcelAppGUIFX{
 		pb = new ProgressBar();
 		pb.setMaxWidth(Double.MAX_VALUE);
 		//pb.setProgress(1.0);
-		//pb.setVisible(false);
+		
 		btnBack = new Button("◀ Back");
 		btnBack.setId("saveButton");
 		gridSecondScene = new GridPane();
@@ -308,6 +308,7 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(btnConvert, 1, 3);
 		
 		gridSecondScene.add(pb, 1, 5);
+		pb.setVisible(false);
 		
 		//back button
 		gridThirdScene.add(btnBack, 0, 0);
@@ -483,6 +484,11 @@ public class ExcelAppGUIFX{
 	public ProgressBar getPb() {
 		return pb;
 	}
+
+	public void setPb(ProgressBar pb) {
+		this.pb = pb;
+	}
+	
 	
 	
 	
