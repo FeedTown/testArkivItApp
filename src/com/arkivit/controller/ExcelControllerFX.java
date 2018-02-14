@@ -17,11 +17,13 @@ import com.sun.prism.paint.Color;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ProgressBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -59,8 +61,8 @@ public class ExcelControllerFX extends Application {
 
 
 	}
-	
-	
+
+
 
 	public void saveContentButton() {
 		//1
@@ -101,19 +103,21 @@ public class ExcelControllerFX extends Application {
 
 	}
 
-	
-	
+
+
 	private void createButton(ActionEvent event) {
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
-			model.init();
-			setAlert();
+			//model.init();
+			//setAlert();
+			progressBar();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
 		}
 		else if(check){
-			model.init();
-			setAlert();
+			//model.init();
+			//setAlert();
+			progressBar();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
 		}
@@ -182,7 +186,7 @@ public class ExcelControllerFX extends Application {
 
 	public boolean checkRequestedFields()
 	{
-		
+
 		boolean checkFields = true;
 		int emptyFields = 0;
 
@@ -191,7 +195,7 @@ public class ExcelControllerFX extends Application {
 			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
 				view.getMandatoryFieldsList().get(i).setId("error");
 				emptyFields++;
-				
+
 
 			}
 			else
@@ -210,7 +214,7 @@ public class ExcelControllerFX extends Application {
 
 			checkFields = false;
 		}
-		
+
 		return checkFields;
 
 	}
@@ -230,46 +234,59 @@ public class ExcelControllerFX extends Application {
 			alert.setHeaderText(null);
 			alert.setContentText("Pleas enter a valid email form");
 			alert.showAndWait();
-			
+
 			return false;
 		}
 	}
 	public void progressBar() {
+		Task<?> progressTask = getProgress();
+		
+		view.getPb().setVisible(true);
+		view.getPb().setProgress(0);
 		
 		
-		new Thread(() -> {
-	         for(int i = 0; i <=100; i++){
-	            final int position = i;
-	            
-	            Platform.runLater(() -> {
-	            	view.getPb().setProgress(position/100.0);
-	               
-	            });
-	            try{
-	                Thread.sleep(100);
-	            }catch(Exception e){ System.err.println(e); }
-	         }
-	    }).start();
-		/*Task<Void> task = new Task<Void>() {
-		      @Override public Void call() {
-		    	view.getPb().setVisible(true);  
-		        for (int i = 0; i < 10; i++) {
-		          try {
-		            Thread.sleep(100);
-		          } catch (InterruptedException e) {
-		            Thread.interrupted();
-		            break;
-		          }
-		          System.out.println(i + 1);
-		          updateProgress(i + 1, 10);
-		        }
-		        return null;
-		      }
-		    };
-		    view.getPb().progressProperty().bind(task.progressProperty());*/
+		
+		view.getPb().progressProperty().unbind();
+		view.getPb().progressProperty().bind(progressTask.progressProperty());
+		
+		
+		progressTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+
+			@Override
+			public void handle(WorkerStateEvent arg0) {
+				setAlert();
+				view.getPb().setVisible(false);
+				stage.setScene(view.getScene());
+				view.resetTextField();
+				
+			}
+			
+		});
+		
+
+		//Start Thread
+		Thread loadingThread = new Thread(progressTask);
+		loadingThread.start();
+		
 
 	}
-	
+
+	private Task<?> getProgress() {
+		
+		return new Task<Object>() {
+            @Override
+            protected Object call() throws Exception {
+            	model.init();
+                for (int i = 0; i < model.getFileNameList().size(); i++) {
+                    Thread.sleep(200);
+                   // updateMessage("2000 milliseconds");
+                    updateProgress(i + 1,model.getFileNameList().size());
+                }
+                return true;
+            }
+        };
+	}
+
 	class ActionListen implements EventHandler<ActionEvent>
 	{
 
@@ -281,10 +298,10 @@ public class ExcelControllerFX extends Application {
 				saveContentButton();
 				//view.startSecondScene();
 
-				if(checkRequestedFields() && validateEmail() == true) {
-					stage.setScene(view.getSecondScene());
-					//view.getBALtxt().getStyleClass().remove("error");
-				}
+				//if(checkRequestedFields() && validateEmail() == true) {
+				stage.setScene(view.getSecondScene());
+				//view.getBALtxt().getStyleClass().remove("error");
+				//}
 
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);
@@ -299,11 +316,11 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(view.getBtnConvert()))
 			{
-				view.getPb().setVisible(true);
-				progressBar();
+				//view.getPb().setVisible(true);
+				//progressBar();
 				createButton(event);
-				stage.setScene(view.getScene());
-				view.resetTextField();
+				
+
 			}
 			else if(event.getSource().equals(view.getBtnBack())){
 				stage.setScene(view.getScene());
@@ -313,9 +330,9 @@ public class ExcelControllerFX extends Application {
 		}
 
 	}
-	
-	
-	
+
+
+
 	@SuppressWarnings("unused")
 	private void junkCodes()
 	{

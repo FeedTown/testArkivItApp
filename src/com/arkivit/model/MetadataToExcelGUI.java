@@ -532,6 +532,12 @@ public class MetadataToExcelGUI {
 
 		return largestString;
 	}
+	
+	
+	
+	public ArrayList<String> getFileNameList() {
+		return fileNameList;
+	}
 
 	public String getExcelFileName() {
 		return excelFileName;
