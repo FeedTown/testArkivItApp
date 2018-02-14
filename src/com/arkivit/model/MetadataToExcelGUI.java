@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
@@ -95,28 +96,27 @@ public class MetadataToExcelGUI {
 
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
-		String path = "/Users/RobertoBlanco/Desktop";
+		String path = "/Users/RobertoBlanco/Desktop/target";
 		String newFile = "testing";
-		File testFile = new File(newFile);
+		File testFile = new File(path);
 		File folder = new File(folderPathName);
-		File target = new File("copy.txt");
+		File target = new File("nejhejdå.txt");
 		File[] listOfFilesInDirectory = folder.listFiles();
 		for(File file : listOfFilesInDirectory)
 		{
 			
 			
-			
-			try {
-				Files.copy(file.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
-				System.out.println("Copy....");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
+		
 			
 			if(file.isFile())
 			{
 				
+				try {
+					 FileUtils.copyFileToDirectory(file, testFile);
+					System.out.println("Copy....");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				filec++;
 				fList.add(file);
 				
