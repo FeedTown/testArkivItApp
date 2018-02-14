@@ -228,15 +228,14 @@ public class ExcelControllerFX extends Application {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Not a valid email adress");
 			alert.setHeaderText(null);
-			alert.setContentText("Pleas enter a valid email form");
+			alert.setContentText("Please enter a valid email form");
 			alert.showAndWait();
 			
 			return false;
 		}
 	}
 	public void progressBar() {
-		
-		
+		view.getPb().setVisible(true);
 		new Thread(() -> {
 	         for(int i = 0; i <=100; i++){
 	            final int position = i;
@@ -250,23 +249,6 @@ public class ExcelControllerFX extends Application {
 	            }catch(Exception e){ System.err.println(e); }
 	         }
 	    }).start();
-		/*Task<Void> task = new Task<Void>() {
-		      @Override public Void call() {
-		    	view.getPb().setVisible(true);  
-		        for (int i = 0; i < 10; i++) {
-		          try {
-		            Thread.sleep(100);
-		          } catch (InterruptedException e) {
-		            Thread.interrupted();
-		            break;
-		          }
-		          System.out.println(i + 1);
-		          updateProgress(i + 1, 10);
-		        }
-		        return null;
-		      }
-		    };
-		    view.getPb().progressProperty().bind(task.progressProperty());*/
 
 	}
 	
@@ -299,7 +281,7 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(view.getBtnConvert()))
 			{
-				view.getPb().setVisible(true);
+				
 				progressBar();
 				createButton(event);
 				stage.setScene(view.getScene());

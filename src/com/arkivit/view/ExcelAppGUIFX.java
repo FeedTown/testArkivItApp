@@ -312,7 +312,7 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(btnConvert, 1, 3);
 		
 		gridSecondScene.add(pb, 1, 5);
-		pb.setVisible(false);
+		pb.setVisible(true);
 		
 		//back button
 		gridThirdScene.add(btnBack, 0, 0);
