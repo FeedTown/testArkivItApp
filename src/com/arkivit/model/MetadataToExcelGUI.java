@@ -85,7 +85,6 @@ public class MetadataToExcelGUI {
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
 		
-		String path = "/Users/RobertoBlanco/Desktop/target";
 		File targetFile = new File(folderPathName + "/backup");
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
