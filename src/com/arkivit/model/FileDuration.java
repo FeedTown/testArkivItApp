@@ -2,9 +2,6 @@ package com.arkivit.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import org.apache.log4j.BasicConfigurator;
-
 import io.humble.video.Demuxer;
 import io.humble.video.Global;
 

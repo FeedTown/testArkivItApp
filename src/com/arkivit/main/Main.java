@@ -1,5 +1,7 @@
 package com.arkivit.main;
 
+import org.apache.log4j.BasicConfigurator;
+
 import com.arkivit.controller.ExcelController;
 import com.arkivit.controller.ExcelControllerFX;
 import com.arkivit.model.MetadataToExcelGUI;
@@ -24,10 +26,7 @@ public class Main {
 		ExcelControllerFX controllerFx = new ExcelControllerFX(model,viewFx);
 		
 		ExcelControllerFX.launch(controllerFx.getClass(),args);
-		
-		//controller.init();
-	
-		
+			
 	}
 	
 }
