@@ -105,7 +105,7 @@ public class ExcelControllerFX extends Application {
 
 
 
-	private void createButton(ActionEvent event) {
+	private void createButton(ActionEvent event) throws InterruptedException {
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
 			//model.init();
@@ -238,13 +238,13 @@ public class ExcelControllerFX extends Application {
 			return false;
 		}
 	}
-	public void progressBar() {
+	
+	public void progressBar() throws InterruptedException {
 		Task<?> progressTask = getProgress();
+		//Task<?> _progressTask = getTestProgress();
 		
-		view.getPb().setVisible(true);
+		
 		view.getPb().setProgress(0);
-		
-		
 		
 		view.getPb().progressProperty().unbind();
 		view.getPb().progressProperty().bind(progressTask.progressProperty());
@@ -254,10 +254,13 @@ public class ExcelControllerFX extends Application {
 
 			@Override
 			public void handle(WorkerStateEvent arg0) {
-				setAlert();
-				view.getPb().setVisible(false);
-				stage.setScene(view.getScene());
-				view.resetTextField();
+				
+				
+					setAlert();
+					view.getPb().setVisible(false);
+					stage.setScene(view.getScene());
+					view.resetTextField();
+				
 				
 			}
 			
@@ -268,20 +271,25 @@ public class ExcelControllerFX extends Application {
 		Thread loadingThread = new Thread(progressTask);
 		loadingThread.start();
 		
+		
 
 	}
 
 	private Task<?> getProgress() {
 		
 		return new Task<Object>() {
+			
             @Override
             protected Object call() throws Exception {
             	model.init();
-                for (int i = 0; i < model.getFileNameList().size(); i++) {
-                    Thread.sleep(200);
+            	view.getPb().setVisible(true);
+            	//Thread.sleep(200);
+               for (int i = 0; i < model.getFileListeLength(); i++) {
                    // updateMessage("2000 milliseconds");
-                    updateProgress(i + 1,model.getFileNameList().size());
+                	Thread.sleep(5);
+                    updateProgress(i + 1,model.getFileListeLength());
                 }
+                
                 return true;
             }
         };
@@ -318,7 +326,12 @@ public class ExcelControllerFX extends Application {
 			{
 				//view.getPb().setVisible(true);
 				//progressBar();
-				createButton(event);
+				try {
+					createButton(event);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 
 			}

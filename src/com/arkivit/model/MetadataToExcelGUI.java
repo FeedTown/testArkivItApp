@@ -24,10 +24,11 @@ import jxl.write.biff.RowsExceededException;
 
 
 
-public class MetadataToExcelGUI {
+public class MetadataToExcelGUI{
 
 	private String excelFileName /*= "standard.xls"*/,folderName = ""; 
 	private long fileSize;
+	private int fileListeLength;
 	private String targetexcelFilepath;
 	private String sourceFolderPath;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
@@ -55,6 +56,7 @@ public class MetadataToExcelGUI {
 		//fList = new ArrayList<File>();
 		//testMeth();
 	}
+
 
 	public void init() {
 
@@ -155,6 +157,7 @@ public class MetadataToExcelGUI {
 					getContainerInfo.getAudioVideoList().add(duration);
 
 					System.out.println("File size: " + fileSize);
+					
 
 				}
 
@@ -169,8 +172,10 @@ public class MetadataToExcelGUI {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
+		
+		fileListeLength = fileNameList.size();
+		
+		System.out.println("File name list length : " + fileListeLength);
 		//testForillegelChar();
 		createExcelFile();
 
@@ -535,6 +540,12 @@ public class MetadataToExcelGUI {
 	
 	
 	
+	
+	
+	public int getFileListeLength() {
+		return fileListeLength;
+	}
+
 	public ArrayList<String> getFileNameList() {
 		return fileNameList;
 	}
@@ -700,5 +711,6 @@ public class MetadataToExcelGUI {
 
 		}*/
 	}
+
 
 }
