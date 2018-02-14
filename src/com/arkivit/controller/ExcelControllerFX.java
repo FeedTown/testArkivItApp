@@ -247,7 +247,7 @@ public class ExcelControllerFX extends Application {
 		Task<?> progressTask = getProgress();
 		//Task<?> _progressTask = getTestProgress();
 		
-		
+		view.getPi().setVisible(true);
 		view.getPb().setProgress(0);
 		
 		view.getPb().progressProperty().unbind();
@@ -287,6 +287,7 @@ public class ExcelControllerFX extends Application {
             @Override
             protected Object call() throws Exception {
             	model.init();
+            	view.getPi().setVisible(false);
             	view.getPb().setVisible(true);
             	//Thread.sleep(200);
                for (int i = 0; i < model.getFileListeLength(); i++) {

@@ -54,3 +54,12 @@
         );
         -fx-indeterminate-bar-length: 60;
 }
+
+.progress-indicator > .indicator {
+    -fx-accent: #FCCC00;
+}
+
+.spinner {
+    -fx-accent: FFDE34;
+}
+

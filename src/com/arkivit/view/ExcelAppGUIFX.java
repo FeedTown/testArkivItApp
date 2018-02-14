@@ -2,6 +2,7 @@ package com.arkivit.view;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 
 import java.util.ArrayList;
 
@@ -101,6 +102,7 @@ public class ExcelAppGUIFX{
 	private CheckBox checkBox;// = new CheckBox("");
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
 	private ProgressBar pb;
+	private ProgressIndicator pi;
 	
 	
 	public ExcelAppGUIFX()
@@ -273,6 +275,8 @@ public class ExcelAppGUIFX{
 		btnConvert.setId("saveButton");
 		pb = new ProgressBar(0);
 		pb.setMaxWidth(Double.MAX_VALUE);
+		pi = new ProgressIndicator();
+		
 		//pb.setProgress(0.1F);
 		
 		btnBack = new Button("◀ Back");
@@ -313,6 +317,9 @@ public class ExcelAppGUIFX{
 		
 		gridSecondScene.add(pb, 1, 5);
 		pb.setVisible(false);
+		
+		gridSecondScene.add(pi, 1, 5);
+		pi.setVisible(false);
 		
 		//back button
 		gridThirdScene.add(btnBack, 0, 0);
@@ -493,6 +500,16 @@ public class ExcelAppGUIFX{
 	public void setPb(ProgressBar pb) {
 		this.pb = pb;
 	}
+
+	public ProgressIndicator getPi() {
+		return pi;
+	}
+
+	public void setPi(ProgressIndicator pi) {
+		this.pi = pi;
+	}
+	
+	
 	
 	
 	
