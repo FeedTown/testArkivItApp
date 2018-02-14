@@ -59,7 +59,7 @@ public class MetadataToExcelGUI {
 	}
 
 	public void init() {
-
+		file = new File(sourceFolderPath);
 		folderName = new File(sourceFolderPath).getName();
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
@@ -89,34 +89,29 @@ public class MetadataToExcelGUI {
 			
 		}
 	} */
-	
-	public static void copyFile( File from, File to ) throws IOException {
-	    Files.copy( from.toPath(), to.toPath() );
-	}
 
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
 		String path = "/Users/RobertoBlanco/Desktop/target";
-		String newFile = "testing";
-		File testFile = new File(path);
+		File targetFile = new File(path);
 		File folder = new File(folderPathName);
-		File target = new File("nejhejdå.txt");
 		File[] listOfFilesInDirectory = folder.listFiles();
+		
+		
+		try {
+			 FileUtils.copyDirectoryToDirectory(file, targetFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		for(File file : listOfFilesInDirectory)
 		{
-			
-			
 		
 			
 			if(file.isFile())
 			{
 				
-				try {
-					 FileUtils.copyFileToDirectory(file, testFile);
-					System.out.println("Copy....");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+
 				filec++;
 				fList.add(file);
 				
