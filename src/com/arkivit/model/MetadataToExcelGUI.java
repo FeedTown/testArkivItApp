@@ -82,21 +82,13 @@ public class MetadataToExcelGUI {
 		}
 	}
 	
-	/*private void renameFiles(String pathName) {
-		File folder = new File(pathName);
-		File[] listOfFilesInDirectory = folder.listFiles();
-		for(File file : listOfFilesInDirectory) {
-			
-		}
-	} */
-
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
+		
 		String path = "/Users/RobertoBlanco/Desktop/target";
-		File targetFile = new File(path);
+		File targetFile = new File(folderPathName + "/backup");
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
-		
 		
 		try {
 			 FileUtils.copyDirectoryToDirectory(file, targetFile);
