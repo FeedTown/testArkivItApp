@@ -174,7 +174,7 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 
-	public boolean checkRequestedFields()
+	/*public boolean checkRequestedFields()
 	{
 		
 		boolean checkFields = true;
@@ -207,7 +207,7 @@ public class ExcelControllerFX extends Application {
 		
 		return checkFields;
 
-	}
+	} */
 
 
 	private boolean validateEmail() {
@@ -241,10 +241,10 @@ public class ExcelControllerFX extends Application {
 				saveContentButton();
 				//view.startSecondScene();
 
-				if(checkRequestedFields() && validateEmail() == true) {
+				//if(checkRequestedFields() && validateEmail() == true) {
 					stage.setScene(view.getSecondScene());
 					//view.getBALtxt().getStyleClass().remove("error");
-				}
+				//}
 
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);
