@@ -271,7 +271,7 @@ public class ExcelAppGUIFX{
 		btnSaveAs.setId("saveButton");
 		btnConvert = new Button("Create");
 		btnConvert.setId("saveButton");
-		pb = new ProgressBar();
+		pb = new ProgressBar(0);
 		pb.setMaxWidth(Double.MAX_VALUE);
 		//pb.setProgress(0.1F);
 		
@@ -312,7 +312,7 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(btnConvert, 1, 3);
 		
 		gridSecondScene.add(pb, 1, 5);
-		pb.setVisible(true);
+		pb.setVisible(false);
 		
 		//back button
 		gridThirdScene.add(btnBack, 0, 0);
