@@ -289,10 +289,10 @@ public class ExcelAppGUIFX{
 		
 		
 		gridThirdScene = new GridPane();
-		gridThirdScene.setAlignment(Pos.CENTER);
+		gridThirdScene.setAlignment(Pos.BASELINE_LEFT);
 		gridThirdScene.setHgap(10);
 		gridThirdScene.setVgap(10);
-		gridThirdScene.setPadding(new Insets(0, 700, 0, 0));
+		gridThirdScene.setPadding(new Insets(0, 0, 15, 15));
 		
 		
 
@@ -508,6 +508,15 @@ public class ExcelAppGUIFX{
 	public void setPi(ProgressIndicator pi) {
 		this.pi = pi;
 	}
+
+	public CheckBox getCheckBox() {
+		return checkBox;
+	}
+
+	public void setCheckBox(CheckBox checkBox) {
+		this.checkBox = checkBox;
+	}
+	
 	
 	
 	

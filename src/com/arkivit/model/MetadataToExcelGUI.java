@@ -3,10 +3,13 @@ package com.arkivit.model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
@@ -37,8 +40,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fList = new ArrayList<File>();
 	private int filec = 0;
-	private InputStreamReaderDecoder decoder = new InputStreamReaderDecoder();
-	private FileDuration getContainerInfo = new FileDuration();
+	private FileDuration  fileDuration = new FileDuration ();
 	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
@@ -59,12 +61,34 @@ public class MetadataToExcelGUI{
 
 
 	public void init() {
-
-		folderName = new File(sourceFolderPath).getName();
+		
+		
+		
+		//sFile targetFile = new File(sourceFolderPath);
+		//System.out.println("Target file path : " + targetFile.getParentFile());
+	/*	try {
+			 FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} */
+		
+		
+		
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 	}
-
+	
+	public void copyFolder() {
+		file = new File(sourceFolderPath);
+		folderName = new File(sourceFolderPath).getName();
+		
+		try {
+			 FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	private void clearArrList() {
 
@@ -74,26 +98,39 @@ public class MetadataToExcelGUI{
 			fileNameList.clear();
 			sizeList.clear();
 			filePathList.clear();
-			getContainerInfo.getAudioVideoList().clear();
+			fileDuration.getAudioVideoList().clear();
 		}
 		else
 		{
 			System.out.println("The list is already empty.");
 		}
 	}
-
+	
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
+		
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
-
+		
+		
 		for(File file : listOfFilesInDirectory)
 		{
-
+		
+			
 			if(file.isFile())
 			{
+				
 				filec++;
 				fList.add(file);
+				
+				
+			  /*if(file.getName().contains("ö")) {
+					System.out.println("RENAME FILE, please");
+					file.renameTo(new File(path, newFile + ".txt"));
+					System.out.println("Is it renamed? " + file.getName());
+
+				
+				} */ 
 				System.out.println("Nr " + filec + " : " + file.getName());
 			}
 			else if(file.isDirectory())
@@ -152,9 +189,7 @@ public class MetadataToExcelGUI{
 					fileNameList.add(currentFileName);
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
-					//decoder.getUtfList().add(decoder.getUtfString());
-					//fileDuration.getAudioVideoList().add(duration);
-					getContainerInfo.getAudioVideoList().add(duration);
+					fileDuration.getAudioVideoList().add(duration);
 
 					System.out.println("File size: " + fileSize);
 					
@@ -169,7 +204,6 @@ public class MetadataToExcelGUI{
 
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -197,20 +231,13 @@ public class MetadataToExcelGUI{
 		tempString = checkVideoAudioFiles(tempPath);
 		newFileString = tempString.replaceAll(".*/", "");
 
-		/*if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
-		{
-			fileDuration.CheckFileDuration(currentfile.getParentFile().getAbsolutePath()
-					+ "/" + currentFileName);
-			duration = fileDuration.getAudioVideoDuration();
-		}  */
-		
 
 		if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
 		{
-			getContainerInfo.getDuration(currentfile.getParentFile().getAbsolutePath()
+			fileDuration.getDuration(currentfile.getParentFile().getAbsolutePath()
 					+ "/" + currentFileName); 
 			
-			duration = getContainerInfo.getAudioVideoDuration();
+			duration = fileDuration.getAudioVideoDuration();
 		} 
 
 	}
@@ -270,16 +297,12 @@ public class MetadataToExcelGUI{
 			workbook.close();
 			clearArrList();
 		} catch (RowsExceededException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IndexOutOfBoundsException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (WriteException e) {
-			// TODO Auto-generated catch block
+		} catch (WriteException e) { 
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -291,7 +314,7 @@ public class MetadataToExcelGUI{
 		String sizeInString,fileExtention,tempString;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
 		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
-		fileDurationRow,fileDurationColl,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
+		Row,Coll,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
 		personalInformationHandelingNameRow,commentLabelName,commentRow;
 		int rowNum = 0;
 
@@ -323,8 +346,8 @@ public class MetadataToExcelGUI{
 			charsetNameColl = new Label(4, rowNum+1, fileDecodeList.get(rowNum));
 
 
-			fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
-			fileDurationColl = new Label(5, rowNum+1, getContainerInfo.getAudioVideoList().get(rowNum));
+			Row = new Label (5,0, "SPELTID(endast audio och video)");
+			Coll = new Label(5, rowNum+1, fileDuration.getAudioVideoList().get(rowNum));
 
 			filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
 			filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
@@ -365,8 +388,8 @@ public class MetadataToExcelGUI{
 			excelSheet.addCell(charsetNameRow);
 			excelSheet.addCell(charsetNameColl);
 
-			excelSheet.addCell(fileDurationRow);
-			excelSheet.addCell(fileDurationColl);
+			excelSheet.addCell(Row);
+			excelSheet.addCell(Coll);
 
 			excelSheet.addCell(confidentialityRow);
 			//excelSheet.addCell(confidentialityColl);
@@ -620,8 +643,8 @@ public class MetadataToExcelGUI{
 			charsetNameRow = new Label(4,0, "TECKENUPPS�TTNING");
 			charsetNameColl = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
 
-			fileDurationRow = new Label (5,0, "SPELTID(endast audio och video)");
-			fileDurationColl = new Label(5, rowNumber+1, fileDuration.getAudioVideoList().get(rowNumber));
+			Row = new Label (5,0, "SPELTID(endast audio och video)");
+			Coll = new Label(5, rowNumber+1, .getAudioVideoList().get(rowNumber));
 
 			filePathNameRow = new Label(6, 0, "S�KV�G(path,url)");
 			filePathNameColl = new Label(6, rowNumber+1, filePathList.get(rowNumber));
@@ -662,8 +685,8 @@ public class MetadataToExcelGUI{
 			excelSheet.addCell(charsetNameRow);
 			excelSheet.addCell(charsetNameColl);
 
-			excelSheet.addCell(fileDurationRow);
-			excelSheet.addCell(fileDurationColl);
+			excelSheet.addCell(Row);
+			excelSheet.addCell(Coll);
 
 			excelSheet.addCell(confidentialityRow);
 			//excelSheet.addCell(confidentialityColl);
@@ -691,9 +714,9 @@ public class MetadataToExcelGUI{
 					currentFileName.endsWith("m4v"))
 			{
 
-				fileDuration.CheckFileDuration(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
+				.Check(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
 						+ "/" + currentFileName);
-				duration = fileDuration.getAudioVideoDuration();
+				duration = .getAudioVideoDuration();
 
 			}
 
@@ -705,7 +728,7 @@ public class MetadataToExcelGUI{
 			sizeList.add(fileSize);
 			filePathList.add(fPath);
 			decoder.getUtfList().add(decoder.getUtfString());
-			fileDuration.getAudioVideoList().add(duration);
+			.getAudioVideoList().add(duration);
 
 			System.out.println("File size: " + fileSize);
 

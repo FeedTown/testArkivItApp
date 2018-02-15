@@ -187,7 +187,7 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 
-	public boolean checkRequestedFields()
+	/*public boolean checkRequestedFields()
 	{
 
 		boolean checkFields = true;
@@ -220,7 +220,7 @@ public class ExcelControllerFX extends Application {
 
 		return checkFields;
 
-	}
+	} */
 
 
 	private boolean validateEmail() {
@@ -283,11 +283,32 @@ public class ExcelControllerFX extends Application {
 
 		return new Task<Object>() {
 
-			@Override
+			/*@Override
 			protected Object call() throws Exception {
 				model.init();
 				view.getPi().setVisible(false);
 				view.getPb().setVisible(true);
+				//Thread.sleep(200);
+				for (int i = 0; i < model.getFileListeLength(); i++) {
+					// updateMessage("2000 milliseconds");
+					Thread.sleep(20);
+					updateProgress(i + 1,model.getFileListeLength());
+				}*/
+
+			//return true;*/
+			@Override
+			protected Object call() throws Exception {
+				if(view.getCheckBox().isSelected()) {
+					model.copyFolder();
+					model.init();
+					view.getPi().setVisible(false);
+					view.getPb().setVisible(true);
+				}
+				else {
+					model.init();
+					view.getPi().setVisible(false);
+					view.getPb().setVisible(true);
+				}
 				//Thread.sleep(200);
 				for (int i = 0; i < model.getFileListeLength(); i++) {
 					// updateMessage("2000 milliseconds");
@@ -298,39 +319,6 @@ public class ExcelControllerFX extends Application {
 				return true;
 			}
 		};
-	}
-
-	public synchronized void startThread(Task<?> progressTask)
-	{
-		if(!loadingThread.isAlive())
-		{
-			//running = true;
-
-		}
-		else
-		{
-			return;
-		}
-	}
-
-	public synchronized void stopThread()
-	{
-
-		//running = false;
-
-		if(loadingThread.isAlive())
-		{
-			try {
-				loadingThread.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			return;
-		}
 
 	}
 
@@ -346,8 +334,10 @@ public class ExcelControllerFX extends Application {
 				//view.startSecondScene();
 
 				//if(checkRequestedFields() && validateEmail() == true) {
+
 				stage.setScene(view.getSecondScene());
 				//view.getBALtxt().getStyleClass().remove("error");
+
 				//}
 
 				view.getBtnConvert().setDisable(true);
