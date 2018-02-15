@@ -290,10 +290,12 @@ public class ExcelControllerFX extends Application {
 				else {
 					mapping = false;
 				}
+				
 				model.init(mapping);
 				view.getPi().setVisible(false);
 				view.getPb().setVisible(true);
 				//Thread.sleep(200);
+				
 				for (int i = 0; i < model.getFileListeLength(); i++) {
 					// updateMessage("2000 milliseconds");
 					Thread.sleep(20);
@@ -315,7 +317,6 @@ public class ExcelControllerFX extends Application {
 			if(event.getSource().equals(view.getSaveButton()))
 			{
 				saveContentButton();
-				//view.startSecondScene();
 
 				//if(checkRequestedFields() && validateEmail() == true) {
 

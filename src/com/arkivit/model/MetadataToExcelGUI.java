@@ -46,6 +46,7 @@ public class MetadataToExcelGUI{
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	File file;
+	private boolean mapping = false;
 
 	public MetadataToExcelGUI()
 	{
@@ -62,6 +63,7 @@ public class MetadataToExcelGUI{
 
 	public void init(boolean mapping) {
 		
+		this.mapping = mapping;
 		folderName = new File(sourceFolderPath).getName();
 		
 		if(mapping)
@@ -104,7 +106,7 @@ public class MetadataToExcelGUI{
 		
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
-		
+		File tempFile;
 		for(File file : listOfFilesInDirectory)
 		{
 		
@@ -114,14 +116,19 @@ public class MetadataToExcelGUI{
 				
 				filec++;
 				fList.add(file);
-				
+				//System.out.println("Current file path : " + file.getParentFile().getAbsolutePath());
+				//System.out.println("Current file name : " + file.getName());
+				if(mapping)
+				{
+					//tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
+					file.renameTo(new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName())));
+				}
 				
 			  /*if(file.getName().contains("ö")) {
 					System.out.println("RENAME FILE, please");
 					file.renameTo(new File(path, newFile + ".txt"));
 					System.out.println("Is it renamed? " + file.getName());
 
-				
 				} */ 
 				System.out.println("Nr " + filec + " : " + file.getName());
 			}
@@ -157,11 +164,7 @@ public class MetadataToExcelGUI{
 						getDecoding = getFileDecoder(fullPathforCurrentFile);
 						
 					}
-
-					//System.out.println(file.getName() + " encoding : " + getDecoding);
-
-					//decoder.fileEncoder(file.getParentFile().getAbsolutePath(), file.getName());  
-
+ 
 					checkForAudioVideoDuration(file);
 
 					fileSize = file.length();
