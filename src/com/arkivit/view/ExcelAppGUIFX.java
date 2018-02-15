@@ -508,6 +508,15 @@ public class ExcelAppGUIFX{
 	public void setPi(ProgressIndicator pi) {
 		this.pi = pi;
 	}
+
+	public CheckBox getCheckBox() {
+		return checkBox;
+	}
+
+	public void setCheckBox(CheckBox checkBox) {
+		this.checkBox = checkBox;
+	}
+	
 	
 	
 	

@@ -286,9 +286,16 @@ public class ExcelControllerFX extends Application {
 			
             @Override
             protected Object call() throws Exception {
+            	if(view.getCheckBox().isSelected()) {
+            		model.init();
+            		view.getPi().setVisible(false);
+                	view.getPb().setVisible(true);
+            	}
+            	else {
             	model.init();
             	view.getPi().setVisible(false);
             	view.getPb().setVisible(true);
+            	}
             	//Thread.sleep(200);
                for (int i = 0; i < model.getFileListeLength(); i++) {
                    // updateMessage("2000 milliseconds");
@@ -332,8 +339,8 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(view.getBtnConvert()))
 			{
-
-
+				
+				
 				createButton(event);
 
 				
