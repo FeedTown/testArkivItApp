@@ -59,7 +59,6 @@ public class MetadataToExcelGUI{
 		//testMeth();
 	}
 
-
 	public void init(boolean mapping) {
 		
 		folderName = new File(sourceFolderPath).getName();
