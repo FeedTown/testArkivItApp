@@ -62,8 +62,7 @@ public class MetadataToExcelGUI{
 
 	public void init() {
 		
-		file = new File(sourceFolderPath);
-		folderName = new File(sourceFolderPath).getName();
+		
 		
 		//sFile targetFile = new File(sourceFolderPath);
 		//System.out.println("Target file path : " + targetFile.getParentFile());
@@ -72,7 +71,7 @@ public class MetadataToExcelGUI{
 		} catch (IOException e) {
 			e.printStackTrace();
 		} */
-		copyFolder();
+		
 		
 		
 		listOfFilesAndDirectory(sourceFolderPath);
@@ -80,6 +79,8 @@ public class MetadataToExcelGUI{
 	}
 	
 	public void copyFolder() {
+		file = new File(sourceFolderPath);
+		folderName = new File(sourceFolderPath).getName();
 		
 		try {
 			 FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));

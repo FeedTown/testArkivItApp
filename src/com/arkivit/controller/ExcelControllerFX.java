@@ -287,6 +287,7 @@ public class ExcelControllerFX extends Application {
             @Override
             protected Object call() throws Exception {
             	if(view.getCheckBox().isSelected()) {
+            		model.copyFolder();
             		model.init();
             		view.getPi().setVisible(false);
                 	view.getPb().setVisible(true);
