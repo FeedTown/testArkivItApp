@@ -59,12 +59,33 @@ public class MetadataToExcelGUI {
 	}
 
 	public void init() {
+		
 		file = new File(sourceFolderPath);
 		folderName = new File(sourceFolderPath).getName();
+		
+		//sFile targetFile = new File(sourceFolderPath);
+		//System.out.println("Target file path : " + targetFile.getParentFile());
+	/*	try {
+			 FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} */
+		copyFolder();
+		
+		
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 	}
-
+	
+	public void copyFolder() {
+		
+		try {
+			 FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	private void clearArrList() {
 
@@ -85,15 +106,9 @@ public class MetadataToExcelGUI {
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
 		
-		File targetFile = new File(folderPathName + "/backup");
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
 		
-		try {
-			 FileUtils.copyDirectoryToDirectory(file, targetFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 		for(File file : listOfFilesInDirectory)
 		{
@@ -102,7 +117,6 @@ public class MetadataToExcelGUI {
 			if(file.isFile())
 			{
 				
-
 				filec++;
 				fList.add(file);
 				
