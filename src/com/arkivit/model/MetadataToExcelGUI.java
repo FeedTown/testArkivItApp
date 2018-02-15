@@ -60,7 +60,14 @@ public class MetadataToExcelGUI{
 	}
 
 
-	public void init() {	
+	public void init(boolean mapping) {
+		
+		folderName = new File(sourceFolderPath).getName();
+		
+		if(mapping)
+		{
+			copyFolder();
+		}
 		
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
@@ -68,8 +75,6 @@ public class MetadataToExcelGUI{
 	
 	public void copyFolder() {
 		file = new File(sourceFolderPath);
-		folderName = new File(sourceFolderPath).getName();
-		
 		try {
 			 FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
 		} catch (IOException e) {
@@ -99,7 +104,6 @@ public class MetadataToExcelGUI{
 		
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
-		
 		
 		for(File file : listOfFilesInDirectory)
 		{

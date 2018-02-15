@@ -153,7 +153,7 @@ public class ExcelController {
 		try {
 			boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 			if(!check) {
-				model.init();
+				model.init(false);
 				JOptionPane.showMessageDialog(null, "File was successfully created", 
 						"Success", JOptionPane.INFORMATION_MESSAGE);
 

@@ -33,7 +33,7 @@ public class ExcelControllerFX extends Application {
 	private ExcelAppGUIFX view;
 	private Stage stage;
 	private Thread loadingThread;
-	private boolean running = false;
+	private boolean running = false, mapping = false;
 	private Task<?> progressTask;
 	public ExcelControllerFX()
 	{
@@ -245,8 +245,7 @@ public class ExcelControllerFX extends Application {
 	public void progressBar() {
 
 		progressTask = getProgress();
-		//Task<?> _progressTask = getTestProgress();
-
+		
 		view.getPi().setVisible(true);
 		view.getPb().setProgress(0);
 
@@ -262,6 +261,7 @@ public class ExcelControllerFX extends Application {
 				stage.setScene(view.getScene());
 				view.resetTextField();
 				view.getPb().progressProperty().unbind();
+				view.getCheckBox().setSelected(false);
 			}
 
 		});
@@ -282,33 +282,17 @@ public class ExcelControllerFX extends Application {
 	private Task<?> getProgress() {
 
 		return new Task<Object>() {
-
-			/*@Override
-			protected Object call() throws Exception {
-				model.init();
-				view.getPi().setVisible(false);
-				view.getPb().setVisible(true);
-				//Thread.sleep(200);
-				for (int i = 0; i < model.getFileListeLength(); i++) {
-					// updateMessage("2000 milliseconds");
-					Thread.sleep(20);
-					updateProgress(i + 1,model.getFileListeLength());
-				}*/
-
-			//return true;*/
 			@Override
 			protected Object call() throws Exception {
 				if(view.getCheckBox().isSelected()) {
-					model.copyFolder();
-					model.init();
-					view.getPi().setVisible(false);
-					view.getPb().setVisible(true);
+					mapping = true;
 				}
 				else {
-					model.init();
-					view.getPi().setVisible(false);
-					view.getPb().setVisible(true);
+					mapping = false;
 				}
+				model.init(mapping);
+				view.getPi().setVisible(false);
+				view.getPb().setVisible(true);
 				//Thread.sleep(200);
 				for (int i = 0; i < model.getFileListeLength(); i++) {
 					// updateMessage("2000 milliseconds");
