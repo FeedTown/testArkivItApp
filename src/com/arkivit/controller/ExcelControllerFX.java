@@ -261,6 +261,7 @@ public class ExcelControllerFX extends Application {
 				view.getPb().setVisible(false);
 				stage.setScene(view.getScene());
 				view.resetTextField();
+				view.getCheckBox().setSelected(false);
 				view.getPb().progressProperty().unbind();
 			}
 
