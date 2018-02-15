@@ -114,16 +114,18 @@ public class MetadataToExcelGUI{
 			if(file.isFile())
 			{
 				
-				filec++;
-				fList.add(file);
-				//System.out.println("Current file path : " + file.getParentFile().getAbsolutePath());
-				//System.out.println("Current file name : " + file.getName());
+				
 				if(mapping)
 				{
 					//tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
 					file.renameTo(new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName())));
 				}
 				
+				filec++;
+				fList.add(file);
+				//System.out.println("Current file path : " + file.getParentFile().getAbsolutePath());
+				//System.out.println("Current file name : " + file.getName());
+			
 			  /*if(file.getName().contains("ö")) {
 					System.out.println("RENAME FILE, please");
 					file.renameTo(new File(path, newFile + ".txt"));
