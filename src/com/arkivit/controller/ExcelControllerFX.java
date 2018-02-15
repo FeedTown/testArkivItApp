@@ -32,7 +32,9 @@ public class ExcelControllerFX extends Application {
 	private MetadataToExcelGUI model;
 	private ExcelAppGUIFX view;
 	private Stage stage;
-
+	private Thread loadingThread;
+	private boolean running = false;
+	private Task<?> progressTask;
 	public ExcelControllerFX()
 	{
 		model = new MetadataToExcelGUI();
@@ -40,7 +42,7 @@ public class ExcelControllerFX extends Application {
 		//launch();
 	}
 
-	public ExcelControllerFX(MetadataToExcelGUI model, ExcelAppGUIFX view){
+	public ExcelControllerFX(MetadataToExcelGUI model, ExcelAppGUIFX view) throws InstantiationException, IllegalAccessException{
 
 		this.model = model;
 		this.view = view;
@@ -111,6 +113,7 @@ public class ExcelControllerFX extends Application {
 			//model.init();
 			//setAlert();
 			progressBar();
+			//stopThread();
 			view.getOpenTxtField().setText("");
 			view.getSaveTxtField().setText("");
 		}
@@ -241,72 +244,82 @@ public class ExcelControllerFX extends Application {
 
 	public void progressBar() {
 
-
-	
-
-		Task<?> progressTask = getProgress();
+		progressTask = getProgress();
 		//Task<?> _progressTask = getTestProgress();
-		
+
 		view.getPi().setVisible(true);
 		view.getPb().setProgress(0);
-		
-		view.getPb().progressProperty().unbind();
+
 		view.getPb().progressProperty().bind(progressTask.progressProperty());
-		
-		
+
 		progressTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
 			@Override
 			public void handle(WorkerStateEvent arg0) {
-				
-				
-					setAlert();
-					view.getPb().setVisible(false);
-					stage.setScene(view.getScene());
-					view.resetTextField();
-				
-				
+
+				setAlert();
+				view.getPb().setVisible(false);
+				stage.setScene(view.getScene());
+				view.resetTextField();
+				view.getPb().progressProperty().unbind();
 			}
-			
+
 		});
-		
+
 
 		//Start Thread
-		Thread loadingThread = new Thread(progressTask);
-		loadingThread.start();
-		
-		
 
+		//System.out.println("Thread was not alive.");
+		loadingThread = new Thread(progressTask);
+		loadingThread.start();
+
+
+
+		//startThread(progressTask);
 
 	}
 
 	private Task<?> getProgress() {
-		
+
 		return new Task<Object>() {
-			
-            @Override
-            protected Object call() throws Exception {
-            	if(view.getCheckBox().isSelected()) {
-            		model.copyFolder();
-            		model.init();
-            		view.getPi().setVisible(false);
-                	view.getPb().setVisible(true);
-            	}
-            	else {
-            	model.init();
-            	view.getPi().setVisible(false);
-            	view.getPb().setVisible(true);
-            	}
-            	//Thread.sleep(200);
-               for (int i = 0; i < model.getFileListeLength(); i++) {
-                   // updateMessage("2000 milliseconds");
-                	Thread.sleep(5);
-                    updateProgress(i + 1,model.getFileListeLength());
-                }
-                
-                return true;
-            }
-        };
+
+			/*@Override
+			protected Object call() throws Exception {
+				model.init();
+				view.getPi().setVisible(false);
+				view.getPb().setVisible(true);
+				//Thread.sleep(200);
+				for (int i = 0; i < model.getFileListeLength(); i++) {
+					// updateMessage("2000 milliseconds");
+					Thread.sleep(20);
+					updateProgress(i + 1,model.getFileListeLength());
+				}*/
+
+			//return true;*/
+			@Override
+			protected Object call() throws Exception {
+				if(view.getCheckBox().isSelected()) {
+					model.copyFolder();
+					model.init();
+					view.getPi().setVisible(false);
+					view.getPb().setVisible(true);
+				}
+				else {
+					model.init();
+					view.getPi().setVisible(false);
+					view.getPb().setVisible(true);
+				}
+				//Thread.sleep(200);
+				for (int i = 0; i < model.getFileListeLength(); i++) {
+					// updateMessage("2000 milliseconds");
+					Thread.sleep(20);
+					updateProgress(i + 1,model.getFileListeLength());
+				}
+
+				return true;
+			}
+		};
+
 	}
 
 	class ActionListen implements EventHandler<ActionEvent>
@@ -340,12 +353,7 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(view.getBtnConvert()))
 			{
-				
-				
 				createButton(event);
-
-				
-
 			}
 			else if(event.getSource().equals(view.getBtnBack())){
 				stage.setScene(view.getScene());
