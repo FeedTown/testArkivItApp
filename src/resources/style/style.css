@@ -1,5 +1,5 @@
 .root {
-	-fx-background-image: url("arkivitbg.jpg");
+	-fx-background-image: url("/resources/style/arkivitbg.jpg");
 	-fx-background-repeat: no-repeat;
 }
 
