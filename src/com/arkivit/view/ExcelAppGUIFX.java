@@ -318,6 +318,7 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(pb, 1, 5);
 		pb.setVisible(false);
 		
+		pi.setMinSize(80, 80);
 		gridSecondScene.add(pi, 1, 5);
 		pi.setVisible(false);
 		
