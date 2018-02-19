@@ -25,15 +25,18 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-
+/**
+ * 
+ * @author Saikat Talukder, Roberto Blanco, Kevin Olofsson
+ *
+ */
 
 public class MetadataToExcelGUI{
 
-	private String excelFileName /*= "standard.xls"*/,folderName = ""; 
+	private String excelFileName ,folderName = "", duration, fPath, currentFileName, tempString, tempPath, newFileString,
+			targetexcelFilepath, sourceFolderPath; 
 	private long fileSize;
 	private int fileListeLength;
-	private String targetexcelFilepath;
-	private String sourceFolderPath;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
@@ -43,24 +46,31 @@ public class MetadataToExcelGUI{
 	private FileDuration  fileDuration = new FileDuration ();
 	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
-	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	File file;
 	private boolean mapping = false;
-
+	
+	/**
+	 * Constructor
+	 */
 	public MetadataToExcelGUI()
 	{
 		//fList = new ArrayList<File>();
 	}
-
+	/**
+	 * Constructor with argument
+	 * @param excelFileName is the name of the file that the user gives the excel file
+	 */
 	public MetadataToExcelGUI(String excelFileName)
 	{   
 		this.excelFileName = excelFileName + ".xls";
 		//fList = new ArrayList<File>();
-		//testMeth();
 	}
 
-
+	/**
+	 * This method gets the folder name of the directory the user chooses
+	 * @param mapping is a boolean parameter that lets the user choose to map illegal characters or not.
+	 */
 	public void init(boolean mapping) {
 		
 		this.mapping = mapping;
@@ -310,9 +320,9 @@ public class MetadataToExcelGUI{
 
 		String sizeInString,fileExtention,tempString;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
-		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
-		Row,Coll,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
-		personalInformationHandelingNameRow,commentLabelName,commentRow;
+			  fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
+			  Row,Coll,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
+			  personalInformationHandelingNameRow,commentLabelName,commentRow;
 		int rowNum = 0;
 
 		excelSheet.getSettings().setProtected(true);
@@ -407,58 +417,41 @@ public class MetadataToExcelGUI{
 
 		int generalListSize = 1;
 
-		ArrayList<String> inneHallList = new ArrayList<String>();
+		ArrayList<String> contentList = new ArrayList<String>();
 
-		inneHallList.add(0, "");
-		inneHallList.add(1, "");
-		inneHallList.add(2, generalBean.getDescDelivery());
-		inneHallList.add(3, generalBean.getArchiveCreator());
-		inneHallList.add(4, generalBean.getArchiveCreatorNum());
-		inneHallList.add(5, generalBean.getDelivGov());
-		inneHallList.add(6, generalBean.getDelivGovNum());
-		inneHallList.add(7, generalBean.getConsultantBur());
-		inneHallList.add(8, generalBean.getContactDelivPerson());
-		inneHallList.add(9, generalBean.getTelContactPerson());
-		inneHallList.add(10, generalBean.getEmail());
-		inneHallList.add(11, "");
-		inneHallList.add(12, "");
-		inneHallList.add(13, generalBean.getArchiveName());
-		inneHallList.add(14, generalBean.getSystemName());
-		inneHallList.add(15, generalBean.getDate());
-		inneHallList.add(16, generalBean.getComment());
-		inneHallList.add(17, "");
-		inneHallList.add(18, "");
-		inneHallList.add(19, "");
-
-
+		contentList.add(0, "");
+		contentList.add(1, "");
+		contentList.add(2, generalBean.getDescDelivery());
+		contentList.add(3, generalBean.getArchiveCreator());
+		contentList.add(4, generalBean.getArchiveCreatorNum());
+		contentList.add(5, generalBean.getDelivGov());
+		contentList.add(6, generalBean.getDelivGovNum());
+		contentList.add(7, generalBean.getConsultantBur());
+		contentList.add(8, generalBean.getContactDelivPerson());
+		contentList.add(9, generalBean.getTelContactPerson());
+		contentList.add(10, generalBean.getEmail());
+		contentList.add(11, "");
+		contentList.add(12, "");
+		contentList.add(13, generalBean.getArchiveName());
+		contentList.add(14, generalBean.getSystemName());
+		contentList.add(15, generalBean.getDate());
+		contentList.add(16, generalBean.getComment());
+		contentList.add(17, "");
+		contentList.add(18, "");
+		contentList.add(19, "");
 
 
-		Label headerLabel, contentLabel, archiveDiareNum, 
-		archiveDiareNumDeliv,
-		descDelivery,
-		archiveCreator,
-		oNumArchiveCreator,
-		delivGov,
-		oNumDelivGov,
-		consultantBureau,
-		contactPersonDeliv,
-		telContactPerson,
-		mailContactPerson,
-		costCenter,
-		eBillingContactPerson,
-		archiveName,
-		systemName,
-		withdrawalDate,
-		comment,
-		projectCode,
-		accessId,
-		batchId;
+
+
+		Label headerLabel, contentLabel, archiveDiareNum, archiveDiareNumDeliv, descDelivery, archiveCreator, oNumArchiveCreator,
+			  delivGov, oNumDelivGov, consultantBureau, contactPersonDeliv, telContactPerson, mailContactPerson, costCenter,
+			  eBillingContactPerson, archiveName, systemName, withdrawalDate, comment, projectCode, accessId, batchId;
 
 		generalSheet.getSettings().setProtected(true);
 		WritableCellFormat unLocked = new WritableCellFormat();
 		unLocked.setLocked(false);
 
-		for(String infoList : inneHallList)
+		for(String infoList : contentList)
 		{
 			contentLabel = new Label(1, generalListSize, infoList, unLocked);
 			generalSheet.addCell(contentLabel);
@@ -495,7 +488,7 @@ public class MetadataToExcelGUI{
 		batchId  = new Label(0, 20, "Batch-ID", fontColor);
 
 		generalSheet.setColumnView(0, 40);
-		generalSheet.setColumnView(1, getLargestString(inneHallList));
+		generalSheet.setColumnView(1, getLargestString(contentList));
 
 		generalSheet.addCell(headerLabel);
 		generalSheet.addCell(archiveDiareNum);
