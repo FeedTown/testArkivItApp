@@ -48,7 +48,7 @@ public class ExcelAppGUIFX{
 	//content = new ArrayList<TextField>();
 	//mandatoryFields = new ArrayList<TextField>();
 
-	private GridPane grid,gridSecondScene, gridThirdScene, gridFourthScene;// = new GridPane();
+	private GridPane grid,gridSecondScene, gridThirdScene;;
 
 	//Text scenetitle = new Text("Welcome");
 	private Scene secondScene;
