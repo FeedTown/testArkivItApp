@@ -1,5 +1,10 @@
 package com.arkivit.model;
-
+/**
+ * 
+ * 
+ * @author Kevin Olofsson, Roberto Blanco Axelsson, Saikat Talukder
+ *
+ */
 
 public class GeneralBean {
 	

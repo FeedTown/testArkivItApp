@@ -27,6 +27,13 @@ import javafx.scene.control.ProgressBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Kevin Olofsson, Roberto Blanco Axelsson, Saikat Talukder
+ * Class that connects the model with the view
+ *
+ */
+
 public class ExcelControllerFX extends Application {
 
 	private MetadataToExcelGUI model;
@@ -35,20 +42,33 @@ public class ExcelControllerFX extends Application {
 	private Thread loadingThread;
 	private boolean running = false, mapping = false;
 	private Task<?> progressTask;
+	
+	/**
+	 * No args constructor with objects from MetadataToExcelGUI and ExcelAppGUIFX
+	 */
 	public ExcelControllerFX()
 	{
 		model = new MetadataToExcelGUI();
 		view = new ExcelAppGUIFX();
 		//launch();
 	}
-
+	/**
+	 * Args constructor with following parameters
+	 * @param model object of MetadataToExcelGUI
+	 * @param view object of ExcelAppGUIFX
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
 	public ExcelControllerFX(MetadataToExcelGUI model, ExcelAppGUIFX view) throws InstantiationException, IllegalAccessException{
 
 		this.model = model;
 		this.view = view;
 		//this.view.start();
 	}
-
+	
+	/**
+	 * Starts the application
+	 */
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -65,7 +85,9 @@ public class ExcelControllerFX extends Application {
 	}
 
 
-
+	/**
+	 * Gets the users input from text fields from the first scene
+	 */
 	public void saveContentButton() {
 		//1
 		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
@@ -106,7 +128,10 @@ public class ExcelControllerFX extends Application {
 	}
 
 
-
+	/**
+	 * Actions that performs to create the excel file
+	 * @param event
+	 */
 	private void createButton(ActionEvent event){
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
@@ -127,7 +152,9 @@ public class ExcelControllerFX extends Application {
 
 
 	}
-
+	/**
+	 * Alert popup message for succeded excel file creation
+	 */
 	private void setAlert() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("ArkivIT");
@@ -135,7 +162,11 @@ public class ExcelControllerFX extends Application {
 		alert.setContentText("File was successfully created");
 		alert.showAndWait();
 	}
-
+	/**
+	 * Action that performs to save content in directory
+	 * @param event
+	 * @param stage
+	 */
 	private void saveButton(ActionEvent event, Stage stage) {
 		FileChooser fileChooser = new FileChooser();
 		String fileName = "";
@@ -163,7 +194,11 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 
-
+	/**
+	 * Action that performs for selecting folder
+	 * @param e
+	 * @param stage
+	 */
 	public void openButton(ActionEvent e, Stage stage) {
 		File selectedDir = view.getDirectoryChooser().showDialog(stage);
 		String path;
@@ -187,42 +222,10 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 
-	/*public boolean checkRequestedFields()
-	{
-
-		boolean checkFields = true;
-		int emptyFields = 0;
-
-		for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
-		{	
-			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
-				view.getMandatoryFieldsList().get(i).setId("error");
-				emptyFields++;
-
-
-			}
-			else
-			{
-				view.getMandatoryFieldsList().get(i).setId("");
-			}
-		}
-
-		if(emptyFields >= 1)
-		{
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setContentText("Please fill all requested fields");
-			alert.setHeaderText(null);
-			alert.showAndWait();
-
-			checkFields = false;
-		}
-
-		return checkFields;
-
-	} */
-
-
+	/**
+	 * Validates email format in the first scene
+	 * @return true or false
+	 */
 	private boolean validateEmail() {
 		Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
 		Matcher m = p.matcher(view.getEKtxt().getText());
@@ -241,7 +244,12 @@ public class ExcelControllerFX extends Application {
 			return false;
 		}
 	}
-
+	/**
+	 * Thread that runs simultaneously with Fx application thread to show loading progress
+	 * Tasks performed and bound/unbound to progress bar
+	 * Actions performed when tasks are succeeded
+	 * Mapping of illegal characters
+	 */
 	public void progressBar() {
 
 		progressTask = getProgress();
@@ -260,6 +268,7 @@ public class ExcelControllerFX extends Application {
 				view.getPb().setVisible(false);
 				stage.setScene(view.getScene());
 				view.resetTextField();
+				view.getCheckBox().setSelected(false);
 				view.getPb().progressProperty().unbind();
 				view.getCheckBox().setSelected(false);
 			}
@@ -307,7 +316,11 @@ public class ExcelControllerFX extends Application {
 		};
 
 	}
-
+	/**
+	 * 
+	 * Action events on when buttons are clicked
+	 *
+	 */
 	class ActionListen implements EventHandler<ActionEvent>
 	{
 
@@ -346,140 +359,6 @@ public class ExcelControllerFX extends Application {
 			}
 
 		}
-
-	}
-
-
-
-	@SuppressWarnings("unused")
-	private void junkCodes()
-	{
-		/*public void saveButton(ActionEvent e) {
-		int returnSaveVal = view.getSaveFile().showSaveDialog(null);
-		if(returnSaveVal == JFileChooser.APPROVE_OPTION) {
-
-			model.setTargetexcelFilepath(view.getSaveFile().getSelectedFile().getParentFile().getAbsolutePath());
-			model.setExcelFileName(view.getSaveFile().getSelectedFile().getName() + ".xls");
-			view.getSaveTxtField().setText(model.getTargetexcelFilepath());
-
-		}
-		if(returnSaveVal == JFileChooser.CANCEL_OPTION) {
-
-			view.getSaveTxtField().setText("");
-			view.getBtnConvert().setEnabled(false);
-		}
-		if(e.getSource() == view.getBtnSaveAs() && returnSaveVal == JFileChooser.APPROVE_OPTION) {
-
-			view.getBtnConvert().setEnabled(true);
-		}
-	}*/
-
-		/*public void createButton(ActionEvent e) {
-		try {
-			boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
-			if(!check) {
-				model.testMeth();
-				JOptionPane.showMessageDialog(null, "File was successfully created", 
-						"Success", JOptionPane.INFORMATION_MESSAGE);
-
-				view.getOpenTxtField().setText("");
-				view.getSaveTxtField().setText("");
-				view.getBtnSaveAs().setEnabled(false);
-				view.getBtnConvert().setEnabled(false);
-
-			}
-			else if(check){
-				System.out.println("CATCH IF");		
-				JOptionPane.showMessageDialog(null, "File already exists", 
-						"INFO", 
-						JOptionPane.INFORMATION_MESSAGE);
-				view.getOpenTxtField().setText("");
-				view.getSaveTxtField().setText("");
-				if(e.getSource() == view.getBtnConvert()) {
-					view.getBtnSaveAs().setEnabled(false);
-					view.getBtnConvert().setEnabled(false);
-
-				}
-			}
-		}
-		catch(Exception e1){
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(null, "You can't overwrite file", 
-					"INFO", 
-					JOptionPane.INFORMATION_MESSAGE);
-			view.getBtnSaveAs().setEnabled(false);
-			view.getBtnConvert().setEnabled(false);
-			view.getOpenTxtField().setText("");
-			view.getSaveTxtField().setText("");
-		}
-	}*/
-
-		/*public void firstScene(Stage stage) {
-
-
-		//done button	
-		view.getSaveButton().setOnAction((event) -> {
-			doneButton();
-			view.startSecondScene();
-			stage.setScene(view.getSecondScene());
-			secondSceneEventHandler(stage);			
-		});
-
-
-	}
-
-	private void secondSceneEventHandler(Stage stage) {
-		//select folder button
-		view.getBtnSaveAs().setDisable(true);
-		view.getBtnConvert().setDisable(true);
-
-		view.getBtnOpenFile().setOnAction((event) -> {
-			openButton(event, stage);
-
-		});
-
-		view.getBtnSaveAs().setOnAction((event) -> {
-			saveButton(event,stage);
-		});
-
-		view.getBtnConvert().setOnAction((event) -> {
-			createButton(event);
-		});
-
-	}
-
-
-	}*/
-
-
-		/* if(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || view.getOAtxt().getText().isEmpty() || 
-		   view.getLMtxt().getText().isEmpty() || view.getOLMtxt().getText().isEmpty() ||
-		   view.getKFLtxt().getText().isEmpty() || view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
-		   view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty()){
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setTitle("Error");
-      alert.setContentText("Please fill all requested fields");
-      alert.setHeaderText(null);
-      alert.showAndWait();
-     // view.getBALtxt().getStyleClass().add("error");
-		//view.getAKtxt().getStyleClass().add("error");
-      checkFields = false;
-  }*/
-
-		/* if(!(view.getBALtxt().getText().isEmpty() || view.getAKtxt().getText().isEmpty() || 
-			view.getOAtxt().getText().isEmpty() || 
-			view.getLMtxt().getText().isEmpty() || 
-			view.getOLMtxt().getText().isEmpty() ||
-			view.getKFLtxt().getText().isEmpty() ||
-			view.getTTKtxt().getText().isEmpty() || view.getEKtxt().getText().isEmpty() ||
-			view.getANtxt().getText().isEmpty() || view.getSNtxt().getText().isEmpty())) {
-		System.out.println("NOT EMPTY");
-		view.getBALtxt().getStyleClass().remove("error");
-		view.getAKtxt().getStyleClass().remove("error");
-		//view.getBALtxt().setText("");
-		checkFields = false;
-
-	} */
 
 	}
 

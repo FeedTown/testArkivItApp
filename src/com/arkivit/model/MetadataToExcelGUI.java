@@ -36,7 +36,8 @@ import jxl.write.biff.RowsExceededException;
  */
 public class MetadataToExcelGUI{
 
-	private String excelFileName /*= "standard.xls"*/,folderName = ""; 
+	File file;
+	private String excelFileName, folderName = "";  
 	private long fileSize;
 	private int fileListeLength;
 	private String targetexcelFilepath;
@@ -45,60 +46,71 @@ public class MetadataToExcelGUI{
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
-	private ArrayList<File> fList = new ArrayList<File>();
-	private int filec = 0;
+	private ArrayList<File> fileList = new ArrayList<File>();
+	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
-	File file;
 	private boolean mapping = false;
 
+	/**
+	 * No args constructor
+	 */
 	public MetadataToExcelGUI()
 	{
-		//fList = new ArrayList<File>();
+
 	}
-	
+
+	/**
+	 * Constructor with argument.
+	 * @param excelFileName The name of the excel file
+	 */
 	public MetadataToExcelGUI(String excelFileName)
 	{   
 		this.excelFileName = excelFileName + ".xls";
-		//fList = new ArrayList<File>();
+		//fileList = new ArrayList<File>();
 		//testMeth();
 	}
 
-
+	/**
+	 * Name of source folder instantiated and
+	 * if mapping = true the method copyFolder gets called.
+	 * listOfFilesAndDirectory and getAndAddFileDataToList get called.
+	 * @param mapping A boolean, false by default
+	 */
 	public void init(boolean mapping) {
-		
+
 		this.mapping = mapping;
 		folderName = new File(sourceFolderPath).getName();
-		
+
 		if(mapping)
 		{
 			copyFolder();
 		}
-		
+
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 	}
-	
-	//Copying folder outside and places it outside of the root folder
+
+	//Copying folder to outside of the root folder
 	private void copyFolder() {
 		file = new File(sourceFolderPath);
 		try {
-			 FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
+			FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-	}
-	
-	//Clear ArrayList(s) if they aren't empty
-	private void clearArrList() {
 
-		if(!(fList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
+	}
+
+	//Clear ArrayList(s) if they aren't empty
+	private void clearArrayList() {
+
+		if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
 		{
-			fList.clear();
+			fileList.clear();
 			fileNameList.clear();
 			sizeList.clear();
 			filePathList.clear();
@@ -109,27 +121,31 @@ public class MetadataToExcelGUI{
 			System.out.println("The list is already empty.");
 		}
 	}
-	
+
+	/* Goes through folder and subfolders and adding files to an ArrayList.
+	 * If mapping = true All files with illegal characters are renamed.
+	 * If file is a directory the path will be retrieved.
+	 */
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
-		
+
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
 		for(File file : listOfFilesInDirectory)
 		{
-			
+
 			if(file.isFile())
 			{
-				
-				
+
+
 				if(mapping)
 				{
 					file.renameTo(new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName())));
 				}
-				
-				filec++;
-				fList.add(file);
-				System.out.println("Nr " + filec + " : " + file.getName());
+
+				fileCount++;
+				fileList.add(file);
+				System.out.println("Nr " + fileCount + " : " + file.getName());
 			}
 			else if(file.isDirectory())
 			{
@@ -137,10 +153,25 @@ public class MetadataToExcelGUI{
 			}
 		}
 
-		System.out.println(filec);
+		System.out.println(fileCount);
 
 	}
 
+	/*
+	 * If fileList is not empty:  
+	 * 
+	 * 1.It will check for certain extensions and call
+	 * getFileDecoder() method.
+	 * 
+	 * 2. Call checkForAudioVideoDuration() method.
+	 * 
+	 * 3. If getDecoding = null then fileDecodeList adds an empty String.
+	 * Else getDecoding().name will be added to fileDecodeList.
+	 * 
+	 * 4. Adds columns to ArrayLists
+	 * 
+	 * 5. Calling createExcelFile() method.
+	 */
 	private void getAndAddFileDataToList() 
 	{
 		Charset getDecoding;
@@ -149,19 +180,19 @@ public class MetadataToExcelGUI{
 		String fullPathforCurrentFile = "";
 
 		try {
-			if(!fList.isEmpty())
+			if(!fileList.isEmpty())
 			{
-				for(File file : fList)
+				for(File file : fileList)
 				{
 					fullPathforCurrentFile = file.getAbsolutePath();
 					getDecoding = null;
-					if(file.getName().endsWith(".html") || file.getName().endsWith(".xhtml") || file.getName().endsWith(".xml") || file.getName().endsWith(".css")
-							|| file.getName().endsWith(".xsd") || file.getName().endsWith(".dtd") || file.getName().endsWith(".xsl") || file.getName().endsWith(".txt")
-							|| file.getName().endsWith(".js")) {
+					if(file.getName().endsWith(".html") || file.getName().endsWith(".xhtml") || file.getName().endsWith(".xml")
+							|| file.getName().endsWith(".css") || file.getName().endsWith(".xsd") || file.getName().endsWith(".dtd") 
+							|| file.getName().endsWith(".xsl") || file.getName().endsWith(".txt") || file.getName().endsWith(".js")) {
 						getDecoding = getFileDecoder(fullPathforCurrentFile);
-						
+
 					}
- 
+
 					checkForAudioVideoDuration(file);
 
 					fileSize = file.length();
@@ -184,7 +215,7 @@ public class MetadataToExcelGUI{
 					fileDuration.getAudioVideoList().add(duration);
 
 					System.out.println("File size: " + fileSize);
-					
+
 
 				}
 
@@ -198,11 +229,10 @@ public class MetadataToExcelGUI{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		fileListeLength = fileNameList.size();
-		
+
 		System.out.println("File name list length : " + fileListeLength);
-		//testForillegelChar();
 		createExcelFile();
 
 	}
@@ -232,14 +262,14 @@ public class MetadataToExcelGUI{
 		{
 			fileDuration.getDuration(currentfile.getParentFile().getAbsolutePath()
 					+ "/" + currentFileName); 
-			
+
 			duration = fileDuration.getAudioVideoDuration();
 		} 
 
 	}
 
 	private void sortFileList() {
-		fList.sort(new Comparator<File>() {
+		fileList.sort(new Comparator<File>() {
 			@Override
 			public int compare(File o1, File o2) {
 				String s1 = o1.getName().toLowerCase();
@@ -260,12 +290,16 @@ public class MetadataToExcelGUI{
 			}});
 
 	}
-	
+
 	//Checks what type of file it is and returns the type.
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
 	}
 
+	/*
+	 * Instantiates source path and file name.
+	 * Creates the excel sheets and adds fileNameList to them if !fileNameList. 
+	 */
 	private void createExcelFile() {
 
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
@@ -292,7 +326,7 @@ public class MetadataToExcelGUI{
 			}
 			workbook.write();
 			workbook.close();
-			clearArrList();
+			clearArrayList();
 		} catch (RowsExceededException e) {
 			e.printStackTrace();
 		} catch (IndexOutOfBoundsException e) {
@@ -305,6 +339,123 @@ public class MetadataToExcelGUI{
 
 	}
 
+
+
+	/*
+	 * Creates labels and adds them as column names and adds user input data into
+	 * specific rows.
+	 */
+	private WritableSheet createGeneralSheet(WritableSheet generalSheet) throws RowsExceededException, WriteException {
+
+		int generalListSize = 1;
+		ArrayList<String> contentList = new ArrayList<String>();
+
+		contentList.add(0, "");
+		contentList.add(1, "");
+		contentList.add(2, generalBean.getDescDelivery());
+		contentList.add(3, generalBean.getArchiveCreator());
+		contentList.add(4, generalBean.getArchiveCreatorNum());
+		contentList.add(5, generalBean.getDelivGov());
+		contentList.add(6, generalBean.getDelivGovNum());
+		contentList.add(7, generalBean.getConsultantBur());
+		contentList.add(8, generalBean.getContactDelivPerson());
+		contentList.add(9, generalBean.getTelContactPerson());
+		contentList.add(10, generalBean.getEmail());
+		contentList.add(11, "");
+		contentList.add(12, "");
+		contentList.add(13, generalBean.getArchiveName());
+		contentList.add(14, generalBean.getSystemName());
+		contentList.add(15, generalBean.getDate());
+		contentList.add(16, generalBean.getComment());
+		contentList.add(17, "");
+		contentList.add(18, "");
+		contentList.add(19, "");
+
+
+
+
+		Label headerLabel, contentLabel, archiveDiareNum, archiveDiareNumDeliv, descDelivery, archiveCreator,
+		oNumArchiveCreator, delivGov, oNumDelivGov, consultantBureau, contactPersonDeliv, telContactPerson,
+		mailContactPerson, costCenter, eBillingContactPerson, archiveName, systemName, withdrawalDate,
+		comment, projectCode, accessId, batchId;
+
+		generalSheet.getSettings().setProtected(true);
+		WritableCellFormat unLocked = new WritableCellFormat();
+		unLocked.setLocked(false);
+
+		for(String infoList : contentList)
+		{
+			contentLabel = new Label(1, generalListSize, infoList, unLocked);
+			generalSheet.addCell(contentLabel);
+			generalListSize++;
+
+		}
+
+		WritableFont redFont = new WritableFont(WritableFont.ARIAL, 10);
+		redFont.setColour(Colour.RED);
+
+		WritableCellFormat fontColor = new WritableCellFormat(redFont);
+
+		headerLabel = new Label(0, 0, "RUBRIK");
+		//headerLabelCol = new Label(0, rowNum+1, tempString);
+		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
+		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans", fontColor);
+		descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
+		archiveCreator = new Label(0, 4, "Arkivbildare"); 
+		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
+		delivGov = new Label(0, 6, "Levererande myndighet");
+		oNumDelivGov = new Label(0, 7, "Organisationsnummer levererande myndighet");
+		consultantBureau = new Label(0, 8, "Servicebyrå/Konsult");
+		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans");
+		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson");
+		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson");
+		costCenter  = new Label(0, 12, "Kostnadsställe", fontColor);
+		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering", fontColor);
+		archiveName  = new Label(0, 14, "Arkivets namn");
+		systemName  = new Label(0, 15, "Systemets namn");
+		withdrawalDate  = new Label(0, 16, "Uttagsdatum");
+		comment  = new Label(0, 17, "Kommentar");
+		projectCode  = new Label(0, 18, "Projektkod", fontColor);
+		accessId  = new Label(0, 19, "Accessions-ID", fontColor);
+		batchId  = new Label(0, 20, "Batch-ID", fontColor);
+
+		generalSheet.setColumnView(0, 40);
+		generalSheet.setColumnView(1, getLargestString(contentList));
+
+		generalSheet.addCell(headerLabel);
+		generalSheet.addCell(archiveDiareNum);
+		generalSheet.addCell(archiveDiareNumDeliv);
+		generalSheet.addCell(descDelivery);
+		generalSheet.addCell(archiveCreator);
+		generalSheet.addCell(oNumArchiveCreator);
+		generalSheet.addCell(delivGov);
+		generalSheet.addCell(oNumDelivGov);
+		generalSheet.addCell(consultantBureau);
+		generalSheet.addCell(contactPersonDeliv);
+		generalSheet.addCell(telContactPerson);
+		generalSheet.addCell(mailContactPerson);
+		generalSheet.addCell(costCenter);
+		generalSheet.addCell(eBillingContactPerson);
+		generalSheet.addCell(archiveName);
+		generalSheet.addCell(systemName);
+		generalSheet.addCell(withdrawalDate);
+		generalSheet.addCell(comment);
+		generalSheet.addCell(projectCode);
+		generalSheet.addCell(accessId);
+		generalSheet.addCell(batchId);
+
+		contentLabel = new Label(1,0,"INNEHÅLL");
+		generalSheet.addCell(contentLabel);
+		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
+		return generalSheet;
+
+
+	}
+
+	/*
+	 * Creates labels and adds them as column names and adds specific data into
+	 * the specific columns.
+	 */
 	@SuppressWarnings("unused")
 	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
 
@@ -339,7 +490,7 @@ public class MetadataToExcelGUI{
 			fileSizeNameColl = new Label(3, rowNum+1, sizeInString);
 
 			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
-			//charsetNameColl = new Label(4, rowNum+1, decoder.getUtfList().get(rowNum));
+			//charsetNameColl = new Label(4, rowNum+1, decoder.getUtfileList().get(rowNum));
 			charsetNameColl = new Label(4, rowNum+1, fileDecodeList.get(rowNum));
 
 
@@ -403,131 +554,8 @@ public class MetadataToExcelGUI{
 
 
 	}
-	
-	private WritableSheet createGeneralSheet(WritableSheet generalSheet) throws RowsExceededException, WriteException {
 
-		int generalListSize = 1;
-
-		ArrayList<String> inneHallList = new ArrayList<String>();
-
-		inneHallList.add(0, "");
-		inneHallList.add(1, "");
-		inneHallList.add(2, generalBean.getDescDelivery());
-		inneHallList.add(3, generalBean.getArchiveCreator());
-		inneHallList.add(4, generalBean.getArchiveCreatorNum());
-		inneHallList.add(5, generalBean.getDelivGov());
-		inneHallList.add(6, generalBean.getDelivGovNum());
-		inneHallList.add(7, generalBean.getConsultantBur());
-		inneHallList.add(8, generalBean.getContactDelivPerson());
-		inneHallList.add(9, generalBean.getTelContactPerson());
-		inneHallList.add(10, generalBean.getEmail());
-		inneHallList.add(11, "");
-		inneHallList.add(12, "");
-		inneHallList.add(13, generalBean.getArchiveName());
-		inneHallList.add(14, generalBean.getSystemName());
-		inneHallList.add(15, generalBean.getDate());
-		inneHallList.add(16, generalBean.getComment());
-		inneHallList.add(17, "");
-		inneHallList.add(18, "");
-		inneHallList.add(19, "");
-
-
-
-
-		Label headerLabel, contentLabel, archiveDiareNum, 
-		archiveDiareNumDeliv,
-		descDelivery,
-		archiveCreator,
-		oNumArchiveCreator,
-		delivGov,
-		oNumDelivGov,
-		consultantBureau,
-		contactPersonDeliv,
-		telContactPerson,
-		mailContactPerson,
-		costCenter,
-		eBillingContactPerson,
-		archiveName,
-		systemName,
-		withdrawalDate,
-		comment,
-		projectCode,
-		accessId,
-		batchId;
-
-		generalSheet.getSettings().setProtected(true);
-		WritableCellFormat unLocked = new WritableCellFormat();
-		unLocked.setLocked(false);
-
-		for(String infoList : inneHallList)
-		{
-			contentLabel = new Label(1, generalListSize, infoList, unLocked);
-			generalSheet.addCell(contentLabel);
-			generalListSize++;
-
-		}
-
-		WritableFont redFont = new WritableFont(WritableFont.ARIAL, 10);
-		redFont.setColour(Colour.RED);
-
-		WritableCellFormat fontColor = new WritableCellFormat(redFont);
-
-		headerLabel = new Label(0, 0, "RUBRIK");
-		//headerLabelCol = new Label(0, rowNum+1, tempString);
-		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
-		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans", fontColor);
-		descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
-		archiveCreator = new Label(0, 4, "Arkivbildare"); 
-		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
-		delivGov = new Label(0, 6, "Levererande myndighet");
-		oNumDelivGov = new Label(0, 7, "Organisationsnummer levererande myndighet");
-		consultantBureau = new Label(0, 8, "Servicebyrå/Konsult");
-		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans");
-		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson");
-		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson");
-		costCenter  = new Label(0, 12, "Kostnadsställe", fontColor);
-		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering", fontColor);
-		archiveName  = new Label(0, 14, "Arkivets namn");
-		systemName  = new Label(0, 15, "Systemets namn");
-		withdrawalDate  = new Label(0, 16, "Uttagsdatum");
-		comment  = new Label(0, 17, "Kommentar");
-		projectCode  = new Label(0, 18, "Projektkod", fontColor);
-		accessId  = new Label(0, 19, "Accessions-ID", fontColor);
-		batchId  = new Label(0, 20, "Batch-ID", fontColor);
-
-		generalSheet.setColumnView(0, 40);
-		generalSheet.setColumnView(1, getLargestString(inneHallList));
-
-		generalSheet.addCell(headerLabel);
-		generalSheet.addCell(archiveDiareNum);
-		generalSheet.addCell(archiveDiareNumDeliv);
-		generalSheet.addCell(descDelivery);
-		generalSheet.addCell(archiveCreator);
-		generalSheet.addCell(oNumArchiveCreator);
-		generalSheet.addCell(delivGov);
-		generalSheet.addCell(oNumDelivGov);
-		generalSheet.addCell(consultantBureau);
-		generalSheet.addCell(contactPersonDeliv);
-		generalSheet.addCell(telContactPerson);
-		generalSheet.addCell(mailContactPerson);
-		generalSheet.addCell(costCenter);
-		generalSheet.addCell(eBillingContactPerson);
-		generalSheet.addCell(archiveName);
-		generalSheet.addCell(systemName);
-		generalSheet.addCell(withdrawalDate);
-		generalSheet.addCell(comment);
-		generalSheet.addCell(projectCode);
-		generalSheet.addCell(accessId);
-		generalSheet.addCell(batchId);
-
-		contentLabel = new Label(1,0,"INNEHÅLL");
-		generalSheet.addCell(contentLabel);
-		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
-		return generalSheet;
-
-
-	}
-
+	//If String contains illegal characters they will be replaced and returned.
 	private String replaceIllegalChars(String currentString) {
 		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
 				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
@@ -558,11 +586,8 @@ public class MetadataToExcelGUI{
 
 		return largestString;
 	}
-	
-	
-	
-	
-	
+
+
 	public int getFileListeLength() {
 		return fileListeLength;
 	}
@@ -598,140 +623,5 @@ public class MetadataToExcelGUI{
 	public GeneralBean getGeneralBean() {
 		return generalBean;
 	}
-
-
-	@SuppressWarnings("unused")
-	private void junkCodes()
-	{
-
-		//This code snipped is from CreateExcelFile function wich is replaced by for-each loop
-
-		//for (int rowNumber = 0; rowNumber < fileNameList.size(); rowNumber++) {
-
-
-		//tempString = replaceIllegalChars(fileNameList.get(rowNumber));
-
-		/*if(tempString.contains("�") || tempString.contains("�") || tempString.contains("�")
-					|| tempString.contains("�") || tempString.contains("�") || tempString.contains("�") 
-					|| tempString.contains("�") || tempString.contains("�"))
-			{
-				System.out.println("INSIDE replaceILLEGALE");
-				tempString = replaceIllegalChars(tempString);
-			}*/
-
-
-		/*
-			sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
-			fileExtention = FilenameUtils.getExtension(fileNameList.get(rowNumber));
-			// FilenameUtils.get
-
-			fileNameRow = new Label(0, 0, "FILNAMN");
-			fileNameColl = new Label(0, rowNumber+1, tempString);
-
-			fileTypeNameRow = new Label(1,0,"FILTYP");
-			fileTypeNameColl = new Label(1, rowNumber+1, fileExtention);
-
-			fileTypeVersionNameRow = new Label(2,0, "FILTYPSVERSION");
-			//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
-
-			fileSizeNameRow = new Label(3, 0, "STORLEK (Bytes)");
-			fileSizeNameColl = new Label(3, rowNumber+1, sizeInString);
-
-
-			charsetNameRow = new Label(4,0, "TECKENUPPS�TTNING");
-			charsetNameColl = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
-
-			Row = new Label (5,0, "SPELTID(endast audio och video)");
-			Coll = new Label(5, rowNumber+1, .getAudioVideoList().get(rowNumber));
-
-			filePathNameRow = new Label(6, 0, "S�KV�G(path,url)");
-			filePathNameColl = new Label(6, rowNumber+1, filePathList.get(rowNumber));
-
-			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
-			//Label confidentialityLabel = new Label(7, rowNumber+1,"");
-
-			personalInformationHandelingNameRow = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
-			//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
-
-			commentLabelName = new Label(9,0, "KOMMENTAR");
-			//Label commentLabel = new Label(9, rowNumber+1, "");
-
-			excelSheet.setColumnView(0, getLargestString(fileNameList));
-			excelSheet.setColumnView(2, 16);
-			excelSheet.setColumnView(4, 20);
-			excelSheet.setColumnView(5, 27);
-			excelSheet.setColumnView(6, getLargestString(filePathList));
-			excelSheet.setColumnView(7, 33);
-			excelSheet.setColumnView(8, 33);
-			excelSheet.setColumnView(9, 13);
-
-			excelSheet.addCell(fileNameRow);
-			excelSheet.addCell(fileNameColl);
-
-			excelSheet.addCell(fileTypeNameRow);
-			excelSheet.addCell(fileTypeNameColl);
-
-			excelSheet.addCell(filePathNameRow);
-			excelSheet.addCell(filePathNameColl);
-
-			excelSheet.addCell(fileTypeVersionNameRow);
-			//excelSheet.addCell(fileTypeVersionLabel);
-
-			excelSheet.addCell(fileSizeNameRow);
-			excelSheet.addCell(fileSizeNameColl);
-
-			excelSheet.addCell(charsetNameRow);
-			excelSheet.addCell(charsetNameColl);
-
-			excelSheet.addCell(Row);
-			excelSheet.addCell(Coll);
-
-			excelSheet.addCell(confidentialityRow);
-			//excelSheet.addCell(confidentialityColl);
-
-			excelSheet.addCell(personalInformationHandelingNameRow);
-			//excelSheet.addCell(personalInformationHandelingLabel);
-
-			excelSheet.addCell(commentLabelName);
-			//excelSheet.addCell(commentLabel);
-		 */
-
-		//}
-
-
-		/*for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) 
-		{
-
-			decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
-			duration = "";
-			currentFileName = fList.get(numberOfFilesInFolder).getName();
-
-			if(currentFileName.endsWith(".mov") || 
-					currentFileName.endsWith(".mp4") || 
-					currentFileName.endsWith(".mp3") || 
-					currentFileName.endsWith("m4v"))
-			{
-
-				.Check(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
-						+ "/" + currentFileName);
-				duration = .getAudioVideoDuration();
-
-			}
-
-			fileSize = fList.get(numberOfFilesInFolder).length();
-			fPath = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
-			fPath = fPath.replace(sourceFolderPath, folderName);
-
-			fileNameList.add(currentFileName);
-			sizeList.add(fileSize);
-			filePathList.add(fPath);
-			decoder.getUtfList().add(decoder.getUtfString());
-			.getAudioVideoList().add(duration);
-
-			System.out.println("File size: " + fileSize);
-
-		}*/
-	}
-
 
 }

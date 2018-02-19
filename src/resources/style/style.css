@@ -57,9 +57,13 @@
 
 .progress-indicator > .indicator {
     -fx-accent: #FCCC00;
+    -fx-pref-width:700px;
+    -fx-pref-height:700px;
 }
 
 .spinner {
     -fx-accent: FFDE34;
+    -fx-pref-width:700px;
+    -fx-pref-height:700px;
 }
 

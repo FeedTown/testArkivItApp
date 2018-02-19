@@ -22,6 +22,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 
+/**
+ * 
+ * @author Kevin Olofsson, Roberto Blanco Axelsson, Saikat Talukder
+ * The view of the application
+ *
+ */
 
 public class ExcelAppGUIFX{
 
@@ -104,12 +110,16 @@ public class ExcelAppGUIFX{
 	private ProgressBar pb;
 	private ProgressIndicator pi;
 	
-	
+	/**
+	 * No args constructor
+	 */
 	public ExcelAppGUIFX()
 	{
 		
 	}
-
+	/**
+	 * Adds all components to the first scene.
+	 */
 	public void start() {
 		saveButton = new Button("SAVE");
 		saveButton.setId("saveButton");
@@ -219,10 +229,10 @@ public class ExcelAppGUIFX{
 
 	}*/
 
-	public void setEKtxt(TextField eKtxt) {
-		EKtxt = eKtxt;
-	}
-
+	
+	/**
+	 * Adds all text fields to an array list
+	 */
 	private void addContentToList() {
 		content = new ArrayList<TextField>();
 		content.add(BALtxt);
@@ -241,6 +251,10 @@ public class ExcelAppGUIFX{
 		
 	}
 	
+	/**
+	 * Adds all the text fields that are mandatory to fill out, into an array list
+	 * @return the mandatory text fields
+	 */
 	public ArrayList<TextField> getMandatoryFieldsList() {
 		mandatoryFields = new ArrayList<TextField>();
 		mandatoryFields.add(BALtxt);
@@ -257,7 +271,9 @@ public class ExcelAppGUIFX{
 		
 	}
 	
-
+	/**
+	 * Adds all the components for the second scene to the second scene
+	 */
 	public void startSecondScene()
 	{
 		VBox root2 = new VBox();
@@ -276,8 +292,6 @@ public class ExcelAppGUIFX{
 		pb = new ProgressBar(0);
 		pb.setMaxWidth(Double.MAX_VALUE);
 		pi = new ProgressIndicator();
-		
-		//pb.setProgress(0.1F);
 		
 		btnBack = new Button("◀ Back");
 		btnBack.setId("saveButton");
@@ -332,7 +346,9 @@ public class ExcelAppGUIFX{
 		secondScene = new Scene(root2, 800, 620);
 		secondScene.getStylesheets().add("resources/style/style.css");
 	}
-	
+	/**
+	 * Resets the contents of the text fields
+	 */
 	public void resetTextField()
 	{
 		for(TextField tField : content)
@@ -348,6 +364,10 @@ public class ExcelAppGUIFX{
 		}
 	}
 	
+	/**
+	 * Adds action listeners to all the buttons in this application
+	 * @param listenForEvent
+	 */
 	public void addActionListenerForButton(EventHandler<ActionEvent> listenForEvent)
 	{
 		saveButton.setOnAction(listenForEvent);
@@ -356,11 +376,11 @@ public class ExcelAppGUIFX{
 		btnConvert.setOnAction(listenForEvent);
 		btnBack.setOnAction(listenForEvent);
 	}
-	
-	
-	//GETTER AND SETTERS
-	
-	
+		
+	/**
+	 * Getters and setters for variables
+	 * @return s all the variables that have getters
+	 */
 	public Button getBtnOpenFile() {
 		return btnOpenFile;
 	}
@@ -460,6 +480,10 @@ public class ExcelAppGUIFX{
 	public TextField getEKtxt() {
 		return EKtxt;
 	}
+	
+	public void setEKtxt(TextField eKtxt) {
+		EKtxt = eKtxt;
+	}
 
 	public TextField getANtxt() {
 		return ANtxt;
@@ -516,12 +540,4 @@ public class ExcelAppGUIFX{
 	public void setCheckBox(CheckBox checkBox) {
 		this.checkBox = checkBox;
 	}
-	
-	
-	
-	
-	
-	
-	
-
 }
