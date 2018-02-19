@@ -16,7 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -283,6 +283,12 @@ public class ExcelAppGUIFX{
 		outputLabel = new Label("Output");
 		mapLabel = new Label("Map");
 		checkBox = new CheckBox("");
+		final Tooltip tooltip = new Tooltip();
+		tooltip.setText(
+		    "Replacing Illegal characters 'å, ä, ö, ü with aa, ae, oe, ue'\n" +
+		    "and copies content to a backup folder. \n"  
+		);
+		checkBox.setTooltip(tooltip);
 		btnOpenFile = new Button("Select file...");
 		btnOpenFile.setId("saveButton");
 		btnSaveAs = new Button("Save As...");
@@ -292,6 +298,7 @@ public class ExcelAppGUIFX{
 		pb = new ProgressBar(0);
 		pb.setMaxWidth(Double.MAX_VALUE);
 		pi = new ProgressIndicator();
+		
 		
 		btnBack = new Button("◀ Back");
 		btnBack.setId("saveButton");

@@ -63,3 +63,12 @@
     -fx-accent: FFDE34;
 }
 
+ .tooltip{
+  -fx-font-size: 12pt;     
+  -fx-text-fill: black;   
+  -fx-font-weight: normal;
+  -fx-font-style: normal;
+  -fx-background-color: #FCCC00;
+  -fx-font-color: black;
+}
+
