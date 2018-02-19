@@ -42,7 +42,7 @@ public class ExcelControllerFX extends Application {
 	private Thread loadingThread;
 	private boolean running = false, mapping = false;
 	private Task<?> progressTask;
-	
+
 	/**
 	 * No args constructor with objects from MetadataToExcelGUI and ExcelAppGUIFX
 	 */
@@ -65,7 +65,7 @@ public class ExcelControllerFX extends Application {
 		this.view = view;
 		//this.view.start();
 	}
-	
+
 	/**
 	 * Starts the application
 	 */
@@ -253,7 +253,7 @@ public class ExcelControllerFX extends Application {
 	public void progressBar() {
 
 		progressTask = getProgress();
-		
+
 		view.getPi().setVisible(true);
 		view.getPb().setProgress(0);
 
@@ -299,12 +299,12 @@ public class ExcelControllerFX extends Application {
 				else {
 					mapping = false;
 				}
-				
+
 				model.init(mapping);
 				view.getPi().setVisible(false);
 				view.getPb().setVisible(true);
 				//Thread.sleep(200);
-				
+
 				for (int i = 0; i < model.getFileListeLength(); i++) {
 					// updateMessage("2000 milliseconds");
 					Thread.sleep(20);
