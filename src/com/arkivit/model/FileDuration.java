@@ -43,6 +43,12 @@ public class FileDuration {
 		System.out.printf("Duration: %s \n", 
 				formattedDuration); 
 		
+		try {
+			demuxer.close();
+		} catch (InterruptedException | IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -72,6 +78,5 @@ public class FileDuration {
 	public String getAudioVideoDuration() {
 		return audioVideoFile;
 	}
-
 
 }
