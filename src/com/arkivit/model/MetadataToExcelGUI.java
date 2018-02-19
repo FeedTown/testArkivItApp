@@ -26,7 +26,14 @@ import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
 
-
+/**
+ * This class is handling the process of sending data and importing metadata
+ * to two excel sheets.
+ * 
+ * @author RobertoBlanco, Saikat Takluder, Kevin Olofosson
+ * @since 2018-01-24
+ *
+ */
 public class MetadataToExcelGUI{
 
 	private String excelFileName /*= "standard.xls"*/,folderName = ""; 
@@ -40,7 +47,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fList = new ArrayList<File>();
 	private int filec = 0;
-	private FileDuration  fileDuration = new FileDuration ();
+	private FileDuration  fileDuration = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
@@ -52,7 +59,7 @@ public class MetadataToExcelGUI{
 	{
 		//fList = new ArrayList<File>();
 	}
-
+	
 	public MetadataToExcelGUI(String excelFileName)
 	{   
 		this.excelFileName = excelFileName + ".xls";
@@ -75,7 +82,8 @@ public class MetadataToExcelGUI{
 		getAndAddFileDataToList();
 	}
 	
-	public void copyFolder() {
+	//Copying folder outside and places it outside of the root folder
+	private void copyFolder() {
 		file = new File(sourceFolderPath);
 		try {
 			 FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
@@ -84,7 +92,8 @@ public class MetadataToExcelGUI{
 		}
 		
 	}
-
+	
+	//Clear ArrayList(s) if they aren't empty
 	private void clearArrList() {
 
 		if(!(fList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
@@ -106,10 +115,8 @@ public class MetadataToExcelGUI{
 		
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
-		File tempFile;
 		for(File file : listOfFilesInDirectory)
 		{
-		
 			
 			if(file.isFile())
 			{
@@ -117,21 +124,11 @@ public class MetadataToExcelGUI{
 				
 				if(mapping)
 				{
-					//tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
 					file.renameTo(new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName())));
 				}
 				
 				filec++;
 				fList.add(file);
-				//System.out.println("Current file path : " + file.getParentFile().getAbsolutePath());
-				//System.out.println("Current file name : " + file.getName());
-			
-			  /*if(file.getName().contains("ö")) {
-					System.out.println("RENAME FILE, please");
-					file.renameTo(new File(path, newFile + ".txt"));
-					System.out.println("Is it renamed? " + file.getName());
-
-				} */ 
 				System.out.println("Nr " + filec + " : " + file.getName());
 			}
 			else if(file.isDirectory())
@@ -144,8 +141,6 @@ public class MetadataToExcelGUI{
 
 	}
 
-
-	//sortGetContentAndAddToList
 	private void getAndAddFileDataToList() 
 	{
 		Charset getDecoding;
@@ -212,6 +207,7 @@ public class MetadataToExcelGUI{
 
 	}
 
+	//Checking what kind of charset the file has
 	private Charset getFileDecoder(String fullPathforCurrentFile) {
 		File currentFile = new File(fullPathforCurrentFile);
 
@@ -221,6 +217,9 @@ public class MetadataToExcelGUI{
 		return charsetForfile;
 	}
 
+	/*Checks the duration of a video or an audio file ONLY if
+	 * the file is detected as a "video/" or an "audio/" file.
+	 */
 	private void checkForAudioVideoDuration(File currentfile) {
 		duration = "";
 		currentFileName = currentfile.getName();
@@ -261,7 +260,8 @@ public class MetadataToExcelGUI{
 			}});
 
 	}
-
+	
+	//Checks what type of file it is and returns the type.
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
 	}
@@ -403,6 +403,7 @@ public class MetadataToExcelGUI{
 
 
 	}
+	
 	private WritableSheet createGeneralSheet(WritableSheet generalSheet) throws RowsExceededException, WriteException {
 
 		int generalListSize = 1;
