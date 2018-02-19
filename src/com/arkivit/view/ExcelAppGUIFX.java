@@ -306,7 +306,7 @@ public class ExcelAppGUIFX{
 		gridThirdScene.setAlignment(Pos.BASELINE_LEFT);
 		gridThirdScene.setHgap(10);
 		gridThirdScene.setVgap(10);
-		gridThirdScene.setPadding(new Insets(0, 0, 15, 15));
+		gridThirdScene.setPadding(new Insets(-60, 0, 100, 15));
 		
 		
 
@@ -332,6 +332,7 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(pb, 1, 5);
 		pb.setVisible(false);
 		
+		pi.setMinSize(80, 80);
 		gridSecondScene.add(pi, 1, 5);
 		pi.setVisible(false);
 		
