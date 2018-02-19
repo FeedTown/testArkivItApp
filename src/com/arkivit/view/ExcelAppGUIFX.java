@@ -30,27 +30,14 @@ import javafx.stage.DirectoryChooser;
  */
 
 public class ExcelAppGUIFX{
-
-
-
-	/*public static void main(String[] args) {
-		launch(args);
-
-	}*/
-
-	/*ExcelAppGUIFX(String args){
-		launch(args);
-	}*/
 	
-	private ArrayList<TextField> content ; //= new ArrayList<TextField>();;
+	private ArrayList<TextField> content; 
 
-	private ArrayList<TextField> mandatoryFields; // = new ArrayList<TextField>();;
-	//content = new ArrayList<TextField>();
-	//mandatoryFields = new ArrayList<TextField>();
 
-	private GridPane grid,gridSecondScene, gridThirdScene;;
+	private ArrayList<TextField> mandatoryFields; 
+	
+	private GridPane grid,gridSecondScene, gridThirdScene;
 
-	//Text scenetitle = new Text("Welcome");
 	private Scene secondScene;
 	private Label BAL;
 	private TextField BALtxt;
@@ -286,7 +273,7 @@ public class ExcelAppGUIFX{
 		final Tooltip tooltip = new Tooltip();
 		tooltip.setText(
 		    "Replacing Illegal characters 'å, ä, ö, ü with aa, ae, oe, ue'\n" +
-		    "and copies content to a backup folder. \n"  
+		    "and copies the original content to a backup folder. \n"  
 		);
 		checkBox.setTooltip(tooltip);
 		btnOpenFile = new Button("Select file...");

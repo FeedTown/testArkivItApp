@@ -2,28 +2,18 @@ package com.arkivit.controller;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.SynchronousQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.ExcelAppGUIFX;
-import com.sun.prism.paint.Color;
-
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ProgressBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -40,7 +30,7 @@ public class ExcelControllerFX extends Application {
 	private ExcelAppGUIFX view;
 	private Stage stage;
 	private Thread loadingThread;
-	private boolean running = false, mapping = false;
+	private boolean mapping = false;
 	private Task<?> progressTask;
 
 	/**
@@ -221,7 +211,39 @@ public class ExcelControllerFX extends Application {
 			view.getBtnSaveAs().setDisable(false);
 		}
 	}
-
+	
+	/*
+	 * Checks if mandatory field is empty or not.
+	 * If empty a red border will be visual, an alert will pop up and user cannot
+	 * go to the second scene. If !empty the user can go on to the second scene.
+	 */
+	public boolean checkRequestedFields()
+	{
+		boolean checkFields = true;
+		int emptyFields = 0;
+		for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
+		{	
+			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
+				view.getMandatoryFieldsList().get(i).setId("error");
+				emptyFields++;
+			}
+			else
+			{
+				view.getMandatoryFieldsList().get(i).setId("");
+			}
+		}
+		if(emptyFields >= 1)
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setContentText("Please fill all requested fields");
+			alert.setHeaderText(null);
+			alert.showAndWait();
+			checkFields = false;
+		}
+		return checkFields;
+	}
+	
 	/**
 	 * Validates email format in the first scene
 	 * @return true or false
@@ -331,12 +353,12 @@ public class ExcelControllerFX extends Application {
 			{
 				saveContentButton();
 
-				//if(checkRequestedFields() && validateEmail() == true) {
+				if(checkRequestedFields() && validateEmail() == true) {
 
 				stage.setScene(view.getSecondScene());
 				//view.getBALtxt().getStyleClass().remove("error");
 
-				//}
+				}
 
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);
