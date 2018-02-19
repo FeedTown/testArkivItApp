@@ -5,18 +5,33 @@ import java.util.ArrayList;
 import io.humble.video.Demuxer;
 import io.humble.video.Global;
 
-
+/**
+ * 
+ * The FileDuration class job is to find out the duration of video/audio files
+ * and display the duration in a certain format.
+ * 
+ * @author Roberto Blanco
+ * @since 2018-02-13
+ *
+ */
 public class FileDuration {
 
 	private String audioVideoFile;
+	
 	private ArrayList<String> audioVideoList = new ArrayList<>();
 
-	public  void getDuration(String path) {
+	/**
+	 * Opens up Demuxer container so a file can be read and then
+	 * retrieve duration from file.
+	 * 
+	 * @param file A String that represents a file.
+	 */
+	public  void getDuration(String file) {
 
 		final Demuxer demuxer = Demuxer.make();
 
 		try {
-			demuxer.open(path, null, false, true, null, null);
+			demuxer.open(file, null, false, true, null, null);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -28,10 +43,15 @@ public class FileDuration {
 		System.out.printf("Duration: %s \n", 
 				formattedDuration); 
 		
-		
-
 	}
 
+	/**
+	 * Formats a parsed long so duration displays
+	 * accordingly to regulations of customer.
+	 * 
+	 * @param duration  Duration for a file
+	 * @return Formatted long thats been parsed to a String
+	 */
 	public String formatTimeStamp(long duration) {
 		if ( duration == Global.NO_PTS) {
 			return "00:00:00";
@@ -44,11 +64,11 @@ public class FileDuration {
 
 	}
 
-
 	public ArrayList<String> getAudioVideoList(){
 		return audioVideoList;
 	}
 
+	
 	public String getAudioVideoDuration() {
 		return audioVideoFile;
 	}

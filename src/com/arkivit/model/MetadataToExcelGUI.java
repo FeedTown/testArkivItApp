@@ -25,81 +25,92 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+
 /**
+ * This class is handling the process of sending data and importing metadata
+ * to two excel sheets.
  * 
- * @author Saikat Talukder, Roberto Blanco, Kevin Olofsson
+ * @author RobertoBlanco, Saikat Takluder, Kevin Olofosson
+ * @since 2018-01-24
  *
  */
-
 public class MetadataToExcelGUI{
 
-	private String excelFileName ,folderName = "", duration, fPath, currentFileName, tempString, tempPath, newFileString,
-			targetexcelFilepath, sourceFolderPath; 
+	File file;
+	private String excelFileName, folderName = "";  
 	private long fileSize;
 	private int fileListeLength;
+	private String targetexcelFilepath;
+	private String sourceFolderPath;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
-	private ArrayList<File> fList = new ArrayList<File>();
-	private int filec = 0;
-	private FileDuration  fileDuration = new FileDuration ();
+	private ArrayList<File> fileList = new ArrayList<File>();
+	private int fileCount = 0;
+	private FileDuration  fileDuration = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
+	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
-	File file;
 	private boolean mapping = false;
-	
+
 	/**
-	 * Constructor
+	 * No args constructor
 	 */
 	public MetadataToExcelGUI()
 	{
-		//fList = new ArrayList<File>();
+
 	}
+
 	/**
-	 * Constructor with argument
-	 * @param excelFileName is the name of the file that the user gives the excel file
+	 * Constructor with argument.
+	 * @param excelFileName The name of the excel file
 	 */
 	public MetadataToExcelGUI(String excelFileName)
 	{   
 		this.excelFileName = excelFileName + ".xls";
-		//fList = new ArrayList<File>();
+		//fileList = new ArrayList<File>();
+		//testMeth();
 	}
 
 	/**
-	 * This method gets the folder name of the directory the user chooses
-	 * @param mapping is a boolean parameter that lets the user choose to map illegal characters or not.
+	 * Name of source folder instantiated and
+	 * if mapping = true the method copyFolder gets called.
+	 * listOfFilesAndDirectory and getAndAddFileDataToList get called.
+	 * @param mapping A boolean, false by default
 	 */
 	public void init(boolean mapping) {
-		
+
 		this.mapping = mapping;
 		folderName = new File(sourceFolderPath).getName();
-		
+
 		if(mapping)
 		{
 			copyFolder();
 		}
-		
+
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 	}
-	
-	public void copyFolder() {
+
+	//Copying folder to outside of the root folder
+	private void copyFolder() {
 		file = new File(sourceFolderPath);
 		try {
-			 FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
+			FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	private void clearArrList() {
+	//Clear ArrayList(s) if they aren't empty
+	private void clearArrayList() {
 
-		if(!(fList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
+		if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
 		{
-			fList.clear();
+			fileList.clear();
 			fileNameList.clear();
 			sizeList.clear();
 			filePathList.clear();
@@ -110,39 +121,31 @@ public class MetadataToExcelGUI{
 			System.out.println("The list is already empty.");
 		}
 	}
-	
+
+	/* Goes through folder and subfolders and adding files to an ArrayList.
+	 * If mapping = true All files with illegal characters are renamed.
+	 * If file is a directory the path will be retrieved.
+	 */
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
-		
+
 		File folder = new File(folderPathName);
 		File[] listOfFilesInDirectory = folder.listFiles();
-		File tempFile;
 		for(File file : listOfFilesInDirectory)
 		{
-		
-			
+
 			if(file.isFile())
 			{
-				
-				
+
+
 				if(mapping)
 				{
-					//tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
 					file.renameTo(new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName())));
 				}
-				
-				filec++;
-				fList.add(file);
-				//System.out.println("Current file path : " + file.getParentFile().getAbsolutePath());
-				//System.out.println("Current file name : " + file.getName());
-			
-			  /*if(file.getName().contains("ö")) {
-					System.out.println("RENAME FILE, please");
-					file.renameTo(new File(path, newFile + ".txt"));
-					System.out.println("Is it renamed? " + file.getName());
 
-				} */ 
-				System.out.println("Nr " + filec + " : " + file.getName());
+				fileCount++;
+				fileList.add(file);
+				System.out.println("Nr " + fileCount + " : " + file.getName());
 			}
 			else if(file.isDirectory())
 			{
@@ -150,12 +153,25 @@ public class MetadataToExcelGUI{
 			}
 		}
 
-		System.out.println(filec);
+		System.out.println(fileCount);
 
 	}
 
-
-	//sortGetContentAndAddToList
+	/*
+	 * If fileList is not empty:  
+	 * 
+	 * 1.It will check for certain extensions and call
+	 * getFileDecoder() method.
+	 * 
+	 * 2. Call checkForAudioVideoDuration() method.
+	 * 
+	 * 3. If getDecoding = null then fileDecodeList adds an empty String.
+	 * Else getDecoding().name will be added to fileDecodeList.
+	 * 
+	 * 4. Adds columns to ArrayLists
+	 * 
+	 * 5. Calling createExcelFile() method.
+	 */
 	private void getAndAddFileDataToList() 
 	{
 		Charset getDecoding;
@@ -164,19 +180,19 @@ public class MetadataToExcelGUI{
 		String fullPathforCurrentFile = "";
 
 		try {
-			if(!fList.isEmpty())
+			if(!fileList.isEmpty())
 			{
-				for(File file : fList)
+				for(File file : fileList)
 				{
 					fullPathforCurrentFile = file.getAbsolutePath();
 					getDecoding = null;
-					if(file.getName().endsWith(".html") || file.getName().endsWith(".xhtml") || file.getName().endsWith(".xml") || file.getName().endsWith(".css")
-							|| file.getName().endsWith(".xsd") || file.getName().endsWith(".dtd") || file.getName().endsWith(".xsl") || file.getName().endsWith(".txt")
-							|| file.getName().endsWith(".js")) {
+					if(file.getName().endsWith(".html") || file.getName().endsWith(".xhtml") || file.getName().endsWith(".xml")
+							|| file.getName().endsWith(".css") || file.getName().endsWith(".xsd") || file.getName().endsWith(".dtd") 
+							|| file.getName().endsWith(".xsl") || file.getName().endsWith(".txt") || file.getName().endsWith(".js")) {
 						getDecoding = getFileDecoder(fullPathforCurrentFile);
-						
+
 					}
- 
+
 					checkForAudioVideoDuration(file);
 
 					fileSize = file.length();
@@ -199,7 +215,7 @@ public class MetadataToExcelGUI{
 					fileDuration.getAudioVideoList().add(duration);
 
 					System.out.println("File size: " + fileSize);
-					
+
 
 				}
 
@@ -213,15 +229,15 @@ public class MetadataToExcelGUI{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		fileListeLength = fileNameList.size();
-		
+
 		System.out.println("File name list length : " + fileListeLength);
-		//testForillegelChar();
 		createExcelFile();
 
 	}
 
+	//Checking what kind of charset the file has
 	private Charset getFileDecoder(String fullPathforCurrentFile) {
 		File currentFile = new File(fullPathforCurrentFile);
 
@@ -231,6 +247,9 @@ public class MetadataToExcelGUI{
 		return charsetForfile;
 	}
 
+	/*Checks the duration of a video or an audio file ONLY if
+	 * the file is detected as a "video/" or an "audio/" file.
+	 */
 	private void checkForAudioVideoDuration(File currentfile) {
 		duration = "";
 		currentFileName = currentfile.getName();
@@ -243,14 +262,14 @@ public class MetadataToExcelGUI{
 		{
 			fileDuration.getDuration(currentfile.getParentFile().getAbsolutePath()
 					+ "/" + currentFileName); 
-			
+
 			duration = fileDuration.getAudioVideoDuration();
 		} 
 
 	}
 
 	private void sortFileList() {
-		fList.sort(new Comparator<File>() {
+		fileList.sort(new Comparator<File>() {
 			@Override
 			public int compare(File o1, File o2) {
 				String s1 = o1.getName().toLowerCase();
@@ -272,10 +291,15 @@ public class MetadataToExcelGUI{
 
 	}
 
+	//Checks what type of file it is and returns the type.
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
 	}
 
+	/*
+	 * Instantiates source path and file name.
+	 * Creates the excel sheets and adds fileNameList to them if !fileNameList. 
+	 */
 	private void createExcelFile() {
 
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
@@ -302,7 +326,7 @@ public class MetadataToExcelGUI{
 			}
 			workbook.write();
 			workbook.close();
-			clearArrList();
+			clearArrayList();
 		} catch (RowsExceededException e) {
 			e.printStackTrace();
 		} catch (IndexOutOfBoundsException e) {
@@ -315,108 +339,15 @@ public class MetadataToExcelGUI{
 
 	}
 
-	@SuppressWarnings("unused")
-	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
-
-		String sizeInString,fileExtention,tempString;
-		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
-			  fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
-			  Row,Coll,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
-			  personalInformationHandelingNameRow,commentLabelName,commentRow;
-		int rowNum = 0;
-
-		excelSheet.getSettings().setProtected(true);
-
-		for(String filename : fileNameList)
-		{
-			tempString = replaceIllegalChars(filename);
 
 
-			sizeInString = Objects.toString(sizeList.get(rowNum), null); 
-			fileExtention = FilenameUtils.getExtension(filename);
-
-			fileNameRow = new Label(0, 0, "FILNAMN");
-
-			fileNameColl = new Label(0, rowNum+1, tempString);
-
-			fileTypeNameRow = new Label(1,0,"FILTYP");
-			fileTypeNameColl = new Label(1, rowNum+1, fileExtention);
-
-			fileTypeVersionNameRow = new Label(2,0, "FILTYPSVERSION");
-			//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
-
-			fileSizeNameRow = new Label(3, 0, "STORLEK (Bytes)");
-			fileSizeNameColl = new Label(3, rowNum+1, sizeInString);
-
-			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
-			//charsetNameColl = new Label(4, rowNum+1, decoder.getUtfList().get(rowNum));
-			charsetNameColl = new Label(4, rowNum+1, fileDecodeList.get(rowNum));
-
-
-			Row = new Label (5,0, "SPELTID(endast audio och video)");
-			Coll = new Label(5, rowNum+1, fileDuration.getAudioVideoList().get(rowNum));
-
-			filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
-			filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
-
-			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
-			//Label confidentialityLabel = new Label(7, rowNumber+1,"");
-
-			personalInformationHandelingNameRow = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
-			//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
-
-			commentLabelName = new Label(9,0, "KOMMENTAR");
-			//Label commentLabel = new Label(9, rowNumber+1, "");
-
-			excelSheet.setColumnView(0, getLargestString(fileNameList));
-			excelSheet.setColumnView(2, 16);
-			excelSheet.setColumnView(4, 20);
-			excelSheet.setColumnView(5, 27);
-			excelSheet.setColumnView(6, getLargestString(filePathList));
-			excelSheet.setColumnView(7, 33);
-			excelSheet.setColumnView(8, 33);
-			excelSheet.setColumnView(9, 13);
-
-			excelSheet.addCell(fileNameRow);
-			excelSheet.addCell(fileNameColl);
-
-			excelSheet.addCell(fileTypeNameRow);
-			excelSheet.addCell(fileTypeNameColl);
-
-			excelSheet.addCell(filePathNameRow);
-			excelSheet.addCell(filePathNameColl);
-
-			excelSheet.addCell(fileTypeVersionNameRow);
-			//excelSheet.addCell(fileTypeVersionLabel);
-
-			excelSheet.addCell(fileSizeNameRow);
-			excelSheet.addCell(fileSizeNameColl);
-
-			excelSheet.addCell(charsetNameRow);
-			excelSheet.addCell(charsetNameColl);
-
-			excelSheet.addCell(Row);
-			excelSheet.addCell(Coll);
-
-			excelSheet.addCell(confidentialityRow);
-			//excelSheet.addCell(confidentialityColl);
-
-			excelSheet.addCell(personalInformationHandelingNameRow);
-			//excelSheet.addCell(personalInformationHandelingLabel);
-
-			excelSheet.addCell(commentLabelName);
-			//excelSheet.addCell(commentLabel);
-			rowNum++;
-		}
-
-		return excelSheet;
-
-
-	}
+	/*
+	 * Creates labels and adds them as column names and adds user input data into
+	 * specific rows.
+	 */
 	private WritableSheet createGeneralSheet(WritableSheet generalSheet) throws RowsExceededException, WriteException {
 
 		int generalListSize = 1;
-
 		ArrayList<String> contentList = new ArrayList<String>();
 
 		contentList.add(0, "");
@@ -443,9 +374,10 @@ public class MetadataToExcelGUI{
 
 
 
-		Label headerLabel, contentLabel, archiveDiareNum, archiveDiareNumDeliv, descDelivery, archiveCreator, oNumArchiveCreator,
-			  delivGov, oNumDelivGov, consultantBureau, contactPersonDeliv, telContactPerson, mailContactPerson, costCenter,
-			  eBillingContactPerson, archiveName, systemName, withdrawalDate, comment, projectCode, accessId, batchId;
+		Label headerLabel, contentLabel, archiveDiareNum, archiveDiareNumDeliv, descDelivery, archiveCreator,
+		oNumArchiveCreator, delivGov, oNumDelivGov, consultantBureau, contactPersonDeliv, telContactPerson,
+		mailContactPerson, costCenter, eBillingContactPerson, archiveName, systemName, withdrawalDate,
+		comment, projectCode, accessId, batchId;
 
 		generalSheet.getSettings().setProtected(true);
 		WritableCellFormat unLocked = new WritableCellFormat();
@@ -520,124 +452,53 @@ public class MetadataToExcelGUI{
 
 	}
 
-	private String replaceIllegalChars(String currentString) {
-		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
-				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
-				|| currentString.contains("Ö") || currentString.contains("Ü"))
-		{
-			currentString = StringUtils.replaceEach (currentString, 
-					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
-					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
-		}
-
-		return currentString;
-	}
-
+	/*
+	 * Creates labels and adds them as column names and adds specific data into
+	 * the specific columns.
+	 */
 	@SuppressWarnings("unused")
-	private int getLargestString(ArrayList<String> stringList) {
+	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
 
-		int largestString = stringList.get(0).length();
-		int index = 0;
+		String sizeInString,fileExtention,tempString;
+		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
+		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
+		Row,Coll,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
+		personalInformationHandelingNameRow,commentLabelName,commentRow;
+		int rowNum = 0;
 
-		for(int i = 0; i < stringList.size(); i++)
+		excelSheet.getSettings().setProtected(true);
+
+		for(String filename : fileNameList)
 		{
-			if(stringList.get(i).length() > largestString)
-			{
-				largestString = stringList.get(i).length();
-				index = i;
-			}
-		}
-
-		return largestString;
-	}
-	
-	
-	
-	
-	
-	public int getFileListeLength() {
-		return fileListeLength;
-	}
-
-	public ArrayList<String> getFileNameList() {
-		return fileNameList;
-	}
-
-	public String getExcelFileName() {
-		return excelFileName;
-	}
-
-	public void setExcelFileName(String excelFileName) {
-		this.excelFileName = excelFileName;
-	}
-
-	public String getTargetexcelFilepath() {
-		return targetexcelFilepath;
-	}
-
-	public void setTargetexcelFilepath(String targetexcelFilepath) {
-		this.targetexcelFilepath = targetexcelFilepath;
-	}
-
-	public String getSourceFolderPath() {
-		return sourceFolderPath;
-	}
-
-	public void setSourceFolderPath(String sourceFolderPath) {
-		this.sourceFolderPath = sourceFolderPath;
-	}
-
-	public GeneralBean getGeneralBean() {
-		return generalBean;
-	}
+			tempString = replaceIllegalChars(filename);
 
 
-	@SuppressWarnings("unused")
-	private void junkCodes()
-	{
-
-		//This code snipped is from CreateExcelFile function wich is replaced by for-each loop
-
-		//for (int rowNumber = 0; rowNumber < fileNameList.size(); rowNumber++) {
-
-
-		//tempString = replaceIllegalChars(fileNameList.get(rowNumber));
-
-		/*if(tempString.contains("�") || tempString.contains("�") || tempString.contains("�")
-					|| tempString.contains("�") || tempString.contains("�") || tempString.contains("�") 
-					|| tempString.contains("�") || tempString.contains("�"))
-			{
-				System.out.println("INSIDE replaceILLEGALE");
-				tempString = replaceIllegalChars(tempString);
-			}*/
-
-
-		/*
-			sizeInString = Objects.toString(sizeList.get(rowNumber), null); 
-			fileExtention = FilenameUtils.getExtension(fileNameList.get(rowNumber));
-			// FilenameUtils.get
+			sizeInString = Objects.toString(sizeList.get(rowNum), null); 
+			fileExtention = FilenameUtils.getExtension(filename);
 
 			fileNameRow = new Label(0, 0, "FILNAMN");
-			fileNameColl = new Label(0, rowNumber+1, tempString);
+
+			fileNameColl = new Label(0, rowNum+1, tempString);
 
 			fileTypeNameRow = new Label(1,0,"FILTYP");
-			fileTypeNameColl = new Label(1, rowNumber+1, fileExtention);
+			fileTypeNameColl = new Label(1, rowNum+1, fileExtention);
 
 			fileTypeVersionNameRow = new Label(2,0, "FILTYPSVERSION");
 			//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
 
 			fileSizeNameRow = new Label(3, 0, "STORLEK (Bytes)");
-			fileSizeNameColl = new Label(3, rowNumber+1, sizeInString);
+			fileSizeNameColl = new Label(3, rowNum+1, sizeInString);
 
+			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
+			//charsetNameColl = new Label(4, rowNum+1, decoder.getUtfileList().get(rowNum));
+			charsetNameColl = new Label(4, rowNum+1, fileDecodeList.get(rowNum));
 
-			charsetNameRow = new Label(4,0, "TECKENUPPS�TTNING");
-			charsetNameColl = new Label(4, rowNumber+1, decoder.getUtfList().get(rowNumber));
 
 			Row = new Label (5,0, "SPELTID(endast audio och video)");
-			Coll = new Label(5, rowNumber+1, .getAudioVideoList().get(rowNumber));
+			Coll = new Label(5, rowNum+1, fileDuration.getAudioVideoList().get(rowNum));
 
-			filePathNameRow = new Label(6, 0, "S�KV�G(path,url)");
-			filePathNameColl = new Label(6, rowNumber+1, filePathList.get(rowNumber));
+			filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
+			filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
 
 			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
 			//Label confidentialityLabel = new Label(7, rowNumber+1,"");
@@ -686,44 +547,81 @@ public class MetadataToExcelGUI{
 
 			excelSheet.addCell(commentLabelName);
 			//excelSheet.addCell(commentLabel);
-		 */
+			rowNum++;
+		}
 
-		//}
+		return excelSheet;
 
 
-		/*for (int numberOfFilesInFolder = 0; numberOfFilesInFolder < fList.size(); numberOfFilesInFolder++) 
-		{
-
-			decoder.fileEncoder(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath(), fList.get(numberOfFilesInFolder).getName());  
-			duration = "";
-			currentFileName = fList.get(numberOfFilesInFolder).getName();
-
-			if(currentFileName.endsWith(".mov") || 
-					currentFileName.endsWith(".mp4") || 
-					currentFileName.endsWith(".mp3") || 
-					currentFileName.endsWith("m4v"))
-			{
-
-				.Check(fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath()
-						+ "/" + currentFileName);
-				duration = .getAudioVideoDuration();
-
-			}
-
-			fileSize = fList.get(numberOfFilesInFolder).length();
-			fPath = fList.get(numberOfFilesInFolder).getParentFile().getAbsolutePath();
-			fPath = fPath.replace(sourceFolderPath, folderName);
-
-			fileNameList.add(currentFileName);
-			sizeList.add(fileSize);
-			filePathList.add(fPath);
-			decoder.getUtfList().add(decoder.getUtfString());
-			.getAudioVideoList().add(duration);
-
-			System.out.println("File size: " + fileSize);
-
-		}*/
 	}
 
+	//If String contains illegal characters they will be replaced and returned.
+	private String replaceIllegalChars(String currentString) {
+		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
+				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
+				|| currentString.contains("Ö") || currentString.contains("Ü"))
+		{
+			currentString = StringUtils.replaceEach (currentString, 
+					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
+					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
+		}
+
+		return currentString;
+	}
+
+	@SuppressWarnings("unused")
+	private int getLargestString(ArrayList<String> stringList) {
+
+		int largestString = stringList.get(0).length();
+		int index = 0;
+
+		for(int i = 0; i < stringList.size(); i++)
+		{
+			if(stringList.get(i).length() > largestString)
+			{
+				largestString = stringList.get(i).length();
+				index = i;
+			}
+		}
+
+		return largestString;
+	}
+
+
+	public int getFileListeLength() {
+		return fileListeLength;
+	}
+
+	public ArrayList<String> getFileNameList() {
+		return fileNameList;
+	}
+
+	public String getExcelFileName() {
+		return excelFileName;
+	}
+
+	public void setExcelFileName(String excelFileName) {
+		this.excelFileName = excelFileName;
+	}
+
+	public String getTargetexcelFilepath() {
+		return targetexcelFilepath;
+	}
+
+	public void setTargetexcelFilepath(String targetexcelFilepath) {
+		this.targetexcelFilepath = targetexcelFilepath;
+	}
+
+	public String getSourceFolderPath() {
+		return sourceFolderPath;
+	}
+
+	public void setSourceFolderPath(String sourceFolderPath) {
+		this.sourceFolderPath = sourceFolderPath;
+	}
+
+	public GeneralBean getGeneralBean() {
+		return generalBean;
+	}
 
 }

@@ -80,34 +80,4 @@ public class CharsetDetector {
         return true;
     }
 
-   /* public static void main(String[] args) {
-    	String path2 = "C:\\Users\\Saikat\\Google Drive\\VT17SaikatTalukder\\assets\\Script\\rating.js";
-    	String path ="H:\\Hämtade filer\\jdbcpro.pdf";
-    	File f = new File(path2);
-
-        String[] charsetsToBeTested = {"UTF-8", "windows-1253", "ISO-8859-7"};
-
-        CharsetDetector cd = new CharsetDetector();
-        Charset charset = cd.detectCharset(f, charsetsToBeTested);
-        
-        System.out.println(charset);
-        
-        /*
-        if (charset != null) {
-            try {
-                InputStreamReader reader = new InputStreamReader(new FileInputStream(f), charset);
-                int c = 0;
-                while ((c = reader.read()) != -1) {
-                    System.out.print((char)c);
-                }
-                reader.close();
-            } catch (FileNotFoundException fnfe) {
-                fnfe.printStackTrace();
-            }catch(IOException ioe){
-                ioe.printStackTrace();
-            }
-        }else{
-            System.out.println("Unrecognized charset.");
-        }
-    }*/
 }

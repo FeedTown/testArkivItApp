@@ -363,6 +363,7 @@ public class ExcelAppGUIFX{
 			datePicker.setValue(null);
 		}
 	}
+	
 	/**
 	 * Adds action listeners to all the buttons in this application
 	 * @param listenForEvent
@@ -375,13 +376,11 @@ public class ExcelAppGUIFX{
 		btnConvert.setOnAction(listenForEvent);
 		btnBack.setOnAction(listenForEvent);
 	}
-	
-	
+		
 	/**
 	 * Getters and setters for variables
 	 * @return s all the variables that have getters
 	 */
-	
 	public Button getBtnOpenFile() {
 		return btnOpenFile;
 	}
@@ -541,12 +540,4 @@ public class ExcelAppGUIFX{
 	public void setCheckBox(CheckBox checkBox) {
 		this.checkBox = checkBox;
 	}
-	
-	
-	
-	
-	
-	
-	
-
 }
