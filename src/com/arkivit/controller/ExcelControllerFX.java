@@ -244,6 +244,14 @@ public class ExcelControllerFX extends Application {
 		return checkFields;
 	}
 	
+	public void setInfoAlert() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Not a valid number");
+		alert.setHeaderText(null);
+		alert.setContentText("This field only allows numbers");
+		alert.showAndWait();
+	}
+	
 	/**
 	 * Validates email format in the first scene
 	 * @return true or false
@@ -263,6 +271,66 @@ public class ExcelControllerFX extends Application {
 			alert.setContentText("Please enter a valid email form");
 			alert.showAndWait();
 
+			return false;
+		}
+	}
+	
+	private boolean validateNumbers() {
+		Pattern pattern = Pattern.compile("[0-9-]*");
+		Matcher match = pattern.matcher(view.validateNumberList());
+		
+		boolean checkFieldsForNumbers = true;
+		for(int i = 0; i < view.validateNumberList().size(); i++)
+		{	
+			if(match.find() && match.group().equals(view.validateNumberList().get(i).getText())) {
+				view.validateNumberList().get(i).setId("");
+			}
+			else
+			{
+				view.validateNumberList().get(i).setId("error");
+				
+			}
+		}
+		setInfoAlert();
+		return checkFieldsForNumbers;
+	}
+	
+	private boolean validateOANumber() {
+		Pattern pattern = Pattern.compile("[0-9-]*");
+		Matcher match = pattern.matcher(view.getOAtxt().getText());
+		
+		if(match.find() && match.group().equals(view.getOAtxt().getText())) {
+			view.getOAtxt().setId("");
+			return true;
+		}
+		else {
+			setInfoAlert();
+			return false;
+		}
+	}
+	
+	private boolean validateOLMNumber() {
+		Pattern pattern = Pattern.compile("[0-9-]*");
+		Matcher ma = pattern.matcher(view.getOLMtxt().getText());
+		if(ma.find() && ma.group().equals(view.getOLMtxt().getText())) {
+			view.getOLMtxt().setId("");
+			return true;
+		}
+		else {
+			setInfoAlert();
+			return false;
+		}
+	}
+	
+	private boolean validatePhoneNumber() {
+		Pattern pattern = Pattern.compile("[0-9-]*");
+		Matcher m = pattern.matcher(view.getTTKtxt().getText());
+		if(m.find() && m.group().equals(view.getTTKtxt().getText())) {
+			view.getTTKtxt().setId("");
+			return true;
+		}
+		else {
+			setInfoAlert();
 			return false;
 		}
 	}
@@ -353,7 +421,7 @@ public class ExcelControllerFX extends Application {
 			{
 				saveContentButton();
 
-				if(checkRequestedFields() && validateEmail() == true) {
+				if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
 
 				stage.setScene(view.getSecondScene());
 				//view.getBALtxt().getStyleClass().remove("error");
