@@ -135,7 +135,6 @@ public class MetadataToExcelGUI{
 			if(file.isFile())
 			{
 
-
 				if(mapping)
 				{
 					file.renameTo(new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName())));
@@ -147,7 +146,12 @@ public class MetadataToExcelGUI{
 			}
 			else if(file.isDirectory())
 			{
+	
 				listOfFilesAndDirectory(file.getAbsolutePath());
+				if(mapping) {
+					file.renameTo(new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName())));
+				}
+		
 			}
 		}
 
@@ -457,7 +461,7 @@ public class MetadataToExcelGUI{
 	@SuppressWarnings("unused")
 	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
 
-		String sizeInString,fileExtention,tempString;
+		String sizeInString,fileExtention,tempString,tempString2;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
 		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
 		Row,Coll,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
@@ -471,9 +475,11 @@ public class MetadataToExcelGUI{
 			
 			if(mapping) {
 				tempString = replaceIllegalChars(filename);
+				//tempString = replaceIllegalChars(filePathList.toString());
 			}
 			else {
 				tempString = filename;
+				//tempString = filePathList.toString();
 			}
 
 			sizeInString = Objects.toString(sizeList.get(rowNum), null); 
