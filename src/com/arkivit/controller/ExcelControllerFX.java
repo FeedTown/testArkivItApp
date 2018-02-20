@@ -244,6 +244,14 @@ public class ExcelControllerFX extends Application {
 		return checkFields;
 	}
 	
+	public void setInfoAlert() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Not a valid number");
+		alert.setHeaderText(null);
+		alert.setContentText("This field only allows numbers");
+		alert.showAndWait();
+	}
+	
 	/**
 	 * Validates email format in the first scene
 	 * @return true or false
@@ -266,6 +274,36 @@ public class ExcelControllerFX extends Application {
 			return false;
 		}
 	}
+	
+	/**
+	 * Validates number format in first scene if specified fields have numbers or not
+	 * @return true or false
+	 */
+	private boolean validateNumbers() {
+		int notNumber = 0;
+		boolean checkFieldsForNumbers = true;
+		for(int i = 0; i < view.validateNumberList().size(); i++)
+		{	
+			if(view.validateNumberList().get(i).getText().matches("[0-9-]*")) {
+				view.validateNumberList().get(i).setId("");
+				
+			}
+			else
+			{
+				view.validateNumberList().get(i).setId("error");
+				notNumber++;
+				
+			}
+		}
+		
+		if(notNumber >= 1)
+		{
+			setInfoAlert();
+			checkFieldsForNumbers = false;
+		}
+		return checkFieldsForNumbers;
+	}
+	
 	/**
 	 * Thread that runs simultaneously with Fx application thread to show loading progress
 	 * Tasks performed and bound/unbound to progress bar
@@ -353,7 +391,7 @@ public class ExcelControllerFX extends Application {
 			{
 				saveContentButton();
 
-				if(checkRequestedFields() && validateEmail() == true) {
+				if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
 
 				stage.setScene(view.getSecondScene());
 				//view.getBALtxt().getStyleClass().remove("error");
