@@ -275,8 +275,12 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 	
+	/**
+	 * Validates number format in first scene if specified fields have numbers or not
+	 * @return true or false
+	 */
 	private boolean validateNumbers() {
-		int notInt = 0;
+		int notNumber = 0;
 		boolean checkFieldsForNumbers = true;
 		for(int i = 0; i < view.validateNumberList().size(); i++)
 		{	
@@ -287,12 +291,12 @@ public class ExcelControllerFX extends Application {
 			else
 			{
 				view.validateNumberList().get(i).setId("error");
-				notInt++;
+				notNumber++;
 				
 			}
 		}
 		
-		if(notInt >= 1)
+		if(notNumber >= 1)
 		{
 			setInfoAlert();
 			checkFieldsForNumbers = false;

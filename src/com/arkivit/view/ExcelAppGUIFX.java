@@ -134,7 +134,7 @@ public class ExcelAppGUIFX{
 		KFLtxt = new TextField();
 		TTKtxt = new TextField();
 		EKtxt = new TextField();
-		EKtxt.setPromptText("john.doe@arkivit.se");
+		EKtxt.setPromptText("exemple@arkivit.se");
 		ANtxt = new TextField();
 		SNtxt = new TextField();
 		//UDtxt = new TextField();
