@@ -468,14 +468,18 @@ public class MetadataToExcelGUI{
 
 		for(String filename : fileNameList)
 		{
-			tempString = replaceIllegalChars(filename);
-
+			
+			if(mapping) {
+				tempString = replaceIllegalChars(filename);
+			}
+			else {
+				tempString = filename;
+			}
 
 			sizeInString = Objects.toString(sizeList.get(rowNum), null); 
 			fileExtention = FilenameUtils.getExtension(filename);
 
 			fileNameRow = new Label(0, 0, "FILNAMN");
-
 			fileNameColl = new Label(0, rowNum+1, tempString);
 
 			fileTypeNameRow = new Label(1,0,"FILTYP");
