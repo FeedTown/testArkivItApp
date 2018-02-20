@@ -33,7 +33,9 @@ public class ExcelAppGUIFX{
 	
 	private ArrayList<TextField> content; 
 
-	private ArrayList<TextField> mandatoryFields; 
+
+	private ArrayList<TextField> mandatoryFields;
+	private ArrayList<TextField> validateFields;
 	
 	private GridPane grid,gridSecondScene, gridThirdScene;
 
@@ -256,6 +258,16 @@ public class ExcelAppGUIFX{
 		return mandatoryFields;
 		
 	}
+	
+	public ArrayList<TextField> validateNumberList() {
+		validateFields = new ArrayList<TextField>();
+		validateFields.add(OAtxt);
+		validateFields.add(OLMtxt);
+		validateFields.add(TTKtxt);
+		return validateFields;
+	}
+	
+	
 	
 	/**
 	 * Adds all the components for the second scene to the second scene
