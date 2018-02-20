@@ -276,22 +276,27 @@ public class ExcelControllerFX extends Application {
 	}
 	
 	private boolean validateNumbers() {
-		Pattern pattern = Pattern.compile("[0-9-]*");
-		Matcher match = pattern.matcher(view.validateNumberList());
-		
+		int notInt = 0;
 		boolean checkFieldsForNumbers = true;
 		for(int i = 0; i < view.validateNumberList().size(); i++)
 		{	
-			if(match.find() && match.group().equals(view.validateNumberList().get(i).getText())) {
+			if(view.validateNumberList().get(i).getText().matches("[0-9-]*")) {
 				view.validateNumberList().get(i).setId("");
+				
 			}
 			else
 			{
 				view.validateNumberList().get(i).setId("error");
+				notInt++;
 				
 			}
 		}
-		setInfoAlert();
+		
+		if(notInt >= 1)
+		{
+			setInfoAlert();
+			checkFieldsForNumbers = false;
+		}
 		return checkFieldsForNumbers;
 	}
 	
