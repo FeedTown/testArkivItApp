@@ -300,45 +300,6 @@ public class ExcelControllerFX extends Application {
 		return checkFieldsForNumbers;
 	}
 	
-	private boolean validateOANumber() {
-		Pattern pattern = Pattern.compile("[0-9-]*");
-		Matcher match = pattern.matcher(view.getOAtxt().getText());
-		
-		if(match.find() && match.group().equals(view.getOAtxt().getText())) {
-			view.getOAtxt().setId("");
-			return true;
-		}
-		else {
-			setInfoAlert();
-			return false;
-		}
-	}
-	
-	private boolean validateOLMNumber() {
-		Pattern pattern = Pattern.compile("[0-9-]*");
-		Matcher ma = pattern.matcher(view.getOLMtxt().getText());
-		if(ma.find() && ma.group().equals(view.getOLMtxt().getText())) {
-			view.getOLMtxt().setId("");
-			return true;
-		}
-		else {
-			setInfoAlert();
-			return false;
-		}
-	}
-	
-	private boolean validatePhoneNumber() {
-		Pattern pattern = Pattern.compile("[0-9-]*");
-		Matcher m = pattern.matcher(view.getTTKtxt().getText());
-		if(m.find() && m.group().equals(view.getTTKtxt().getText())) {
-			view.getTTKtxt().setId("");
-			return true;
-		}
-		else {
-			setInfoAlert();
-			return false;
-		}
-	}
 	/**
 	 * Thread that runs simultaneously with Fx application thread to show loading progress
 	 * Tasks performed and bound/unbound to progress bar
@@ -427,7 +388,6 @@ public class ExcelControllerFX extends Application {
 				saveContentButton();
 
 				if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
-
 				stage.setScene(view.getSecondScene());
 				//view.getBALtxt().getStyleClass().remove("error");
 
