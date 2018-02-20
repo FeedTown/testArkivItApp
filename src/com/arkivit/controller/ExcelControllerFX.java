@@ -252,6 +252,29 @@ public class ExcelControllerFX extends Application {
 		alert.showAndWait();
 	}
 	
+	private boolean validateNumbers() {
+		Pattern pattern = Pattern.compile("[0-9-]*");
+		Matcher match = pattern.matcher(view.validateNumberList().toString());
+		
+		boolean checkFieldsForNumbers = true;
+		for(int i = 0; i < view.validateNumberList().size(); i++)
+		{	
+			if(match.find() && match.group().equals(view.validateNumberList().get(i).getText())) {
+				view.validateNumberList().get(i).setId("");
+				System.out.println("IF VALIDATE");
+				
+			}
+			else
+			{
+				System.out.println("ELSE VALIDATE");
+				view.validateNumberList().get(i).setId("error");
+				
+			}
+		}
+	
+		return checkFieldsForNumbers;
+	}
+	
 	/**
 	 * Validates email format in the first scene
 	 * @return true or false
@@ -275,27 +298,7 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 	
-	private boolean validateNumbers() {
-		Pattern pattern = Pattern.compile("[0-9-]*");
-		Matcher match = pattern.matcher(view.validateNumberList());
-		
-		boolean checkFieldsForNumbers = true;
-		for(int i = 0; i < view.validateNumberList().size(); i++)
-		{	
-			if(match.find() && match.group().equals(view.validateNumberList().get(i).getText())) {
-				view.validateNumberList().get(i).setId("");
-			}
-			else
-			{
-				view.validateNumberList().get(i).setId("error");
-				
-			}
-		}
-		setInfoAlert();
-		return checkFieldsForNumbers;
-	}
-	
-	private boolean validateOANumber() {
+	/*private boolean validateOANumber() {
 		Pattern pattern = Pattern.compile("[0-9-]*");
 		Matcher match = pattern.matcher(view.getOAtxt().getText());
 		
@@ -333,7 +336,7 @@ public class ExcelControllerFX extends Application {
 			setInfoAlert();
 			return false;
 		}
-	}
+	} */
 	/**
 	 * Thread that runs simultaneously with Fx application thread to show loading progress
 	 * Tasks performed and bound/unbound to progress bar
