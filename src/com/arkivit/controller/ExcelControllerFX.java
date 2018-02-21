@@ -42,6 +42,7 @@ public class ExcelControllerFX extends Application {
 		view = new ExcelAppGUIFX();
 		//launch();
 	}
+	
 	/**
 	 * Args constructor with following parameters
 	 * @param model object of MetadataToExcelGUI
@@ -59,7 +60,6 @@ public class ExcelControllerFX extends Application {
 	/**
 	 * Starts the application
 	 */
-
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		view.start();
@@ -413,10 +413,12 @@ public class ExcelControllerFX extends Application {
 				saveContentButton();
 
 				//if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
+
 				stage.setScene(view.getSecondScene());
 				//view.getBALtxt().getStyleClass().remove("error");
 
 				//}
+
 				view.getBtnOverwrite().setDisable(true);
 				view.getCheckBox2().setDisable(true);
 				view.getBtnConvert().setDisable(true);

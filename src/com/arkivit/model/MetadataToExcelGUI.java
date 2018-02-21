@@ -78,9 +78,9 @@ public class MetadataToExcelGUI{
 	 * listOfFilesAndDirectory and getAndAddFileDataToList get called.
 	 * @param mapping A boolean, false by default
 	 */
-	public void init(boolean mapping) {
+	public void init(boolean mapp) {
 
-		this.mapping = mapping;
+		this.mapping = mapp;
 		folderName = new File(sourceFolderPath).getName();
 
 		if(mapping)
@@ -128,31 +128,44 @@ public class MetadataToExcelGUI{
 	{
 
 		File folder = new File(folderPathName);
+		File tempFile;
 		File[] listOfFilesInDirectory = folder.listFiles();
 		for(File file : listOfFilesInDirectory)
 		{
-
-			//if(file.isFile())
-			//{
+			
+			tempFile = file;
+			
+			if(file.isFile())
+			{
 
 
 				if(mapping)
 				{
-					file.renameTo(new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName())));
+					tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
+					file.renameTo(tempFile);
 				}
-
+				
 				fileCount++;
-				fileList.add(file);
+				fileList.add(tempFile);
 				System.out.println("Nr " + fileCount + " : " + file.getName());
 			//}
 			//else if(file.isDirectory())
 			if(file.isDirectory())	
 			{
-				listOfFilesAndDirectory(file.getAbsolutePath());
+				if(mapping) 
+				{
+					tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
+					file.renameTo(tempFile);
+				}
+				
+				listOfFilesAndDirectory(tempFile.getAbsolutePath());
+				
+		
 			}
 		}
 
 		System.out.println(fileCount);
+		}
 
 	}
 
@@ -458,7 +471,7 @@ public class MetadataToExcelGUI{
 	@SuppressWarnings("unused")
 	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
 
-		String sizeInString,fileExtention,tempString;
+		String sizeInString,fileExtention,tempString,tempString2;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
 		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
 		Row,Coll,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
@@ -470,18 +483,20 @@ public class MetadataToExcelGUI{
 		for(String filename : fileNameList)
 		{
 			
-			if(mapping) {
+			/*if(mapping) {
 				tempString = replaceIllegalChars(filename);
+				//tempString = replaceIllegalChars(filePathList.toString());
 			}
 			else {
 				tempString = filename;
-			}
+				//tempString = filePathList.toString();
+			}*/
 
 			sizeInString = Objects.toString(sizeList.get(rowNum), null); 
 			fileExtention = FilenameUtils.getExtension(filename);
 
 			fileNameRow = new Label(0, 0, "FILNAMN");
-			fileNameColl = new Label(0, rowNum+1, tempString);
+			fileNameColl = new Label(0, rowNum+1, filename);
 
 			fileTypeNameRow = new Label(1,0,"FILTYP");
 			fileTypeNameColl = new Label(1, rowNum+1, fileExtention);
