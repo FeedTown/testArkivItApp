@@ -1,6 +1,9 @@
 package com.arkivit.model;
 
 import java.io.File;
+import java.nio.file.FileStore;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -33,11 +36,11 @@ import jxl.write.biff.RowsExceededException;
  *
  */
 public class MetadataToExcelGUI{
-
+	
 	File file;
 	private String excelFileName, folderName = "";  
 	private long fileSize;
-	private int fileListeLength;
+	private int fileListLength;
 	private String targetexcelFilepath;
 	private String sourceFolderPath;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
@@ -52,6 +55,7 @@ public class MetadataToExcelGUI{
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	private boolean mapping = false;
+	int temC = 0;
 
 	/**
 	 * No args constructor
@@ -89,7 +93,7 @@ public class MetadataToExcelGUI{
 		}
 
 		listOfFilesAndDirectory(sourceFolderPath);
-		getAndAddFileDataToList();
+		//getAndAddFileDataToList();
 	}
 
 	//Copying folder to outside of the root folder
@@ -126,18 +130,19 @@ public class MetadataToExcelGUI{
 	 */
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
-
 		File folder = new File(folderPathName);
 		File tempFile;
 		File[] listOfFilesInDirectory = folder.listFiles();
 		for(File file : listOfFilesInDirectory)
 		{
-			
+			temC++;
 			tempFile = file;
 			
 			if(file.isFile())
 			{
-
+				
+				//doMapping(file,tempFile);
+				
 				if(mapping)
 				{
 					tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
@@ -146,7 +151,7 @@ public class MetadataToExcelGUI{
 				
 				fileCount++;
 				fileList.add(tempFile);
-				System.out.println("Nr " + fileCount + " : " + file.getName());
+				System.out.println("Nr " + temC + " : " + file.getName());
 			}
 			else if(file.isDirectory())
 			{
@@ -155,15 +160,29 @@ public class MetadataToExcelGUI{
 					tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
 					file.renameTo(tempFile);
 				}
-				
+				System.out.println("Nr " + temC + " subfoldername : " + file.getName());
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
 				
 		
 			}
+			
+			
+			
 		}
 
-		System.out.println(fileCount);
+		//System.out.println(fileCount);
 
+	}
+
+	private File doMapping(File currentFile, File tempFile) {
+		
+		if(mapping)
+		{
+			tempFile = new File(currentFile.getParentFile().getAbsolutePath(), replaceIllegalChars(currentFile.getName()));
+			currentFile.renameTo(tempFile);
+		}
+		
+		return tempFile;
 	}
 
 	/*
@@ -239,9 +258,9 @@ public class MetadataToExcelGUI{
 			e.printStackTrace();
 		}
 
-		fileListeLength = fileNameList.size();
+		fileListLength = fileNameList.size();
 
-		System.out.println("File name list length : " + fileListeLength);
+		System.out.println("File name list length : " + fileListLength);
 		createExcelFile();
 
 	}
@@ -584,27 +603,35 @@ public class MetadataToExcelGUI{
 		return currentString;
 	}
 
-	@SuppressWarnings("unused")
+	
 	private int getLargestString(ArrayList<String> stringList) {
 
 		int largestString = stringList.get(0).length();
-		int index = 0;
+//		int index = 0;
 
 		for(int i = 0; i < stringList.size(); i++)
 		{
 			if(stringList.get(i).length() > largestString)
 			{
 				largestString = stringList.get(i).length();
-				index = i;
+				//index = i;
 			}
 		}
 
 		return largestString;
 	}
 
+	
+	public int getFileCount() {
+		return fileCount;
+	}
+
+	public void setFileCount(int fileCount) {
+		this.fileCount = fileCount;
+	}
 
 	public int getFileListeLength() {
-		return fileListeLength;
+		return fileListLength;
 	}
 
 	public ArrayList<String> getFileNameList() {

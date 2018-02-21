@@ -337,14 +337,9 @@ public class ExcelControllerFX extends Application {
 
 
 		//Start Thread
-
-		//System.out.println("Thread was not alive.");
 		loadingThread = new Thread(progressTask);
 		loadingThread.start();
 
-
-
-		//startThread(progressTask);
 
 	}
 
@@ -365,10 +360,10 @@ public class ExcelControllerFX extends Application {
 				view.getPb().setVisible(true);
 				//Thread.sleep(200);
 
-				for (int i = 0; i < model.getFileListeLength(); i++) {
+				for (int i = 0; i < model.getFileCount(); i++) {
 					// updateMessage("2000 milliseconds");
 					Thread.sleep(20);
-					updateProgress(i + 1,model.getFileListeLength());
+					updateProgress(i + 1,model.getFileCount());
 				}
 
 				return true;
