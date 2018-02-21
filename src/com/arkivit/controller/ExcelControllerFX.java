@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 /**
  * 
- * @author Kevin Olofsson, Roberto Blanco Axelsson, Saikat Talukder
+ * @author Kevin Olofsson, Roberto Blanco, Saikat Talukder
  * Class that connects the model with the view
  *
  */
@@ -181,6 +181,27 @@ public class ExcelControllerFX extends Application {
 
 			view.getSaveTxtField().setText(model.getTargetexcelFilepath());
 			view.getBtnConvert().setDisable(false);
+		}
+	}
+	
+	private void checkBox() {
+		if(view.getCheckBox().isSelected()) {
+			view.getCheckBox2().setDisable(false);
+			view.getBtnOverwrite().setDisable(false);
+		}
+		else {
+			view.getCheckBox2().setDisable(true);
+			view.getCheckBox2().setSelected(false);
+			view.getBtnOverwrite().setDisable(true);
+			
+		}
+	}
+	private void checkBox2() {
+		if(view.getCheckBox2().isSelected()) {
+			view.getBtnOverwrite().setDisable(true);
+		}
+		else {
+			view.getBtnOverwrite().setDisable(false);
 		}
 	}
 
@@ -391,14 +412,16 @@ public class ExcelControllerFX extends Application {
 			{
 				saveContentButton();
 
-				if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
+				//if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
 				stage.setScene(view.getSecondScene());
 				//view.getBALtxt().getStyleClass().remove("error");
 
-				}
-
+				//}
+				view.getBtnOverwrite().setDisable(true);
+				view.getCheckBox2().setDisable(true);
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);
+				
 			}
 			else if(event.getSource().equals(view.getBtnOpenFile()))
 			{
@@ -415,6 +438,12 @@ public class ExcelControllerFX extends Application {
 			else if(event.getSource().equals(view.getBtnBack())){
 				stage.setScene(view.getScene());
 
+			}
+			else if(event.getSource().equals(view.getCheckBox())) {
+				checkBox();
+			}
+			else if(event.getSource().equals(view.getCheckBox2())) {
+				checkBox2();
 			}
 
 		}

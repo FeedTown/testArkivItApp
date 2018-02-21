@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,12 +19,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 
 /**
  * 
- * @author Kevin Olofsson, Roberto Blanco Axelsson, Saikat Talukder
+ * @author Kevin Olofsson, Roberto Blanco, Saikat Talukder
  * The view of the application
  *
  */
@@ -85,6 +87,7 @@ public class ExcelAppGUIFX{
 	private VBox root = new VBox();
 	private Scene firstScene;
 	private Button btnOpenFile;
+	private Button btnOverwrite;
 	private Button btnSaveAs;
 	private Button btnConvert;
 	private Button btnBack;
@@ -93,7 +96,9 @@ public class ExcelAppGUIFX{
 	private Label dirLabel;// = new Label("Directory");
 	private Label outputLabel;// = new Label("Output");
 	private Label mapLabel;// = new Label("Map");
-	private CheckBox checkBox;// = new CheckBox("");
+	private Label overwriteLabel;
+	private CheckBox checkBox;
+	private CheckBox checkBox2;
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
 	private ProgressBar pb;
 	private ProgressIndicator pi;
@@ -287,31 +292,56 @@ public class ExcelAppGUIFX{
 		    "and copies the original content to a backup folder. \n"  
 		);
 		checkBox.setTooltip(tooltip);
-		btnOpenFile = new Button("Select file...");
+		overwriteLabel = new Label("Overwrite");
+		checkBox2 = new CheckBox("");
+		final Tooltip tooltip2 = new Tooltip();
+		tooltip2.setText(
+		    "By checking overwrite you will overwrite \n" +
+		    "and replace the original content. \n"  
+		);
+		checkBox2.setTooltip(tooltip2);
+		btnOpenFile = new Button("Select folder...");
 		btnOpenFile.setId("saveButton");
+		btnOpenFile.setMaxWidth(Double.MAX_VALUE);
+		btnOverwrite = new Button("Select Directory...");
+		btnOverwrite.setId("saveButton");
+		btnOverwrite.setMaxWidth(Double.MAX_VALUE);
+		final Tooltip tooltip3 = new Tooltip();
+		tooltip3.setText(
+		    "Choose the directory where you want to save the  \n" +
+		    "original content. \n"  
+		);
+		btnOverwrite.setTooltip(tooltip3);
 		btnSaveAs = new Button("Save As...");
 		btnSaveAs.setId("saveButton");
+		btnSaveAs.setMaxWidth(Double.MAX_VALUE);
 		btnConvert = new Button("Create");
 		btnConvert.setId("saveButton");
 		pb = new ProgressBar(0);
 		pb.setMaxWidth(Double.MAX_VALUE);
 		pi = new ProgressIndicator();
-		
-		
 		btnBack = new Button("◀ Back");
 		btnBack.setId("saveButton");
+		
 		gridSecondScene = new GridPane();
 		gridSecondScene.setAlignment(Pos.CENTER);
 		gridSecondScene.setHgap(10);
 		gridSecondScene.setVgap(10);
-		gridSecondScene.setPadding(new Insets(200, 200, 200, 200));
+		gridSecondScene.setPadding(new Insets(200, 200, 100, 200));
+		
 		
 		
 		gridThirdScene = new GridPane();
 		gridThirdScene.setAlignment(Pos.BASELINE_LEFT);
 		gridThirdScene.setHgap(10);
 		gridThirdScene.setVgap(10);
-		gridThirdScene.setPadding(new Insets(-60, 0, 100, 15));
+		gridThirdScene.setPadding(new Insets(5, 0, 0, 15));
+		HBox hBox = new HBox(mapLabel, checkBox);
+		hBox.setAlignment(Pos.CENTER_LEFT);
+		HBox.setMargin(checkBox,new Insets(15,15,15,15));
+		HBox hBox2 = new HBox(overwriteLabel, checkBox2);
+		hBox2.setAlignment(Pos.CENTER_LEFT);
+		HBox.setMargin(checkBox2,new Insets(15,15,15,15));
 		
 		
 
@@ -322,8 +352,11 @@ public class ExcelAppGUIFX{
 		gridSecondScene.add(btnOpenFile, 2, 0);
 
 		//mapp
-		gridSecondScene.add(mapLabel, 0, 1);
-		gridSecondScene.add(checkBox, 1, 1);
+		gridSecondScene.add(hBox, 0, 1);
+		
+		//overwrite
+		gridSecondScene.add(hBox2, 1, 1);
+		gridSecondScene.add(btnOverwrite, 2, 1);
 
 		//Out dir components
 		gridSecondScene.add(outputLabel, 0, 2);
@@ -381,6 +414,8 @@ public class ExcelAppGUIFX{
 		btnSaveAs.setOnAction(listenForEvent);
 		btnConvert.setOnAction(listenForEvent);
 		btnBack.setOnAction(listenForEvent);
+		checkBox.setOnAction(listenForEvent);
+		checkBox2.setOnAction(listenForEvent);
 	}
 		
 	/**
@@ -546,4 +581,18 @@ public class ExcelAppGUIFX{
 	public void setCheckBox(CheckBox checkBox) {
 		this.checkBox = checkBox;
 	}
+	public Button getBtnOverwrite() {
+		return btnOverwrite;
+	}
+	public void setBtnOverwrite(Button btnOverwrite) {
+		this.btnOverwrite = btnOverwrite;
+	}
+	public CheckBox getCheckBox2() {
+		return checkBox2;
+	}
+	public void setCheckBox2(CheckBox checkBox2) {
+		this.checkBox2 = checkBox2;
+	}
+	
+	
 }

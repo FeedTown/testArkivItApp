@@ -132,8 +132,8 @@ public class MetadataToExcelGUI{
 		for(File file : listOfFilesInDirectory)
 		{
 
-			if(file.isFile())
-			{
+			//if(file.isFile())
+			//{
 
 
 				if(mapping)
@@ -144,8 +144,9 @@ public class MetadataToExcelGUI{
 				fileCount++;
 				fileList.add(file);
 				System.out.println("Nr " + fileCount + " : " + file.getName());
-			}
-			else if(file.isDirectory())
+			//}
+			//else if(file.isDirectory())
+			if(file.isDirectory())	
 			{
 				listOfFilesAndDirectory(file.getAbsolutePath());
 			}
@@ -620,6 +621,16 @@ public class MetadataToExcelGUI{
 
 	public void setSourceFolderPath(String sourceFolderPath) {
 		this.sourceFolderPath = sourceFolderPath;
+	}
+	
+	
+
+	public int getFileCount() {
+		return fileCount;
+	}
+
+	public void setFileCount(int fileCount) {
+		this.fileCount = fileCount;
 	}
 
 	public GeneralBean getGeneralBean() {
