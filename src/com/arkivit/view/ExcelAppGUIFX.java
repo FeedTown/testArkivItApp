@@ -286,6 +286,7 @@ public class ExcelAppGUIFX{
 		outputLabel = new Label("Output");
 		mapLabel = new Label("Map");
 		checkBox = new CheckBox("");
+		checkBox.setDisable(true);
 		final Tooltip tooltip = new Tooltip();
 		tooltip.setText(
 		    "Replacing Illegal characters 'å, ä, ö, ü with aa, ae, oe, ue'\n" +
@@ -294,6 +295,7 @@ public class ExcelAppGUIFX{
 		checkBox.setTooltip(tooltip);
 		overwriteLabel = new Label("Overwrite");
 		checkBox2 = new CheckBox("");
+		checkBox2.setDisable(true);
 		final Tooltip tooltip2 = new Tooltip();
 		tooltip2.setText(
 		    "By checking overwrite you will overwrite \n" +
@@ -304,6 +306,7 @@ public class ExcelAppGUIFX{
 		btnOpenFile.setId("saveButton");
 		btnOpenFile.setMaxWidth(Double.MAX_VALUE);
 		btnOverwrite = new Button("Select Directory...");
+		btnOverwrite.setDisable(true);
 		btnOverwrite.setId("saveButton");
 		btnOverwrite.setMaxWidth(Double.MAX_VALUE);
 		final Tooltip tooltip3 = new Tooltip();
@@ -313,9 +316,11 @@ public class ExcelAppGUIFX{
 		);
 		btnOverwrite.setTooltip(tooltip3);
 		btnSaveAs = new Button("Save As...");
+		btnSaveAs.setDisable(true);
 		btnSaveAs.setId("saveButton");
 		btnSaveAs.setMaxWidth(Double.MAX_VALUE);
 		btnConvert = new Button("Create");
+		btnConvert.setDisable(true);
 		btnConvert.setId("saveButton");
 		pb = new ProgressBar(0);
 		pb.setMaxWidth(Double.MAX_VALUE);
@@ -414,6 +419,7 @@ public class ExcelAppGUIFX{
 		btnSaveAs.setOnAction(listenForEvent);
 		btnConvert.setOnAction(listenForEvent);
 		btnBack.setOnAction(listenForEvent);
+		btnOverwrite.setOnAction(listenForEvent);
 		checkBox.setOnAction(listenForEvent);
 		checkBox2.setOnAction(listenForEvent);
 	}

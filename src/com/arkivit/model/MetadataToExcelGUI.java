@@ -38,7 +38,7 @@ public class MetadataToExcelGUI{
 	private String excelFileName, folderName = "";  
 	private long fileSize;
 	private int fileListeLength;
-	private String targetexcelFilepath;
+	private String targetexcelFilepath, backupFilePath;
 	private String sourceFolderPath;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
@@ -96,7 +96,7 @@ public class MetadataToExcelGUI{
 	private void copyFolder() {
 		file = new File(sourceFolderPath);
 		try {
-			FileUtils.copyDirectoryToDirectory(file, new File(file.getParentFile() + "/" +folderName+ "_backup"));
+			FileUtils.copyDirectoryToDirectory(file, new File(backupFilePath + "/" +folderName+ "_backup"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -148,9 +148,8 @@ public class MetadataToExcelGUI{
 				fileCount++;
 				fileList.add(tempFile);
 				System.out.println("Nr " + fileCount + " : " + file.getName());
-			//}
-			//else if(file.isDirectory())
-			if(file.isDirectory())	
+			}
+			else if(file.isDirectory())	
 			{
 				if(mapping) 
 				{
@@ -165,7 +164,7 @@ public class MetadataToExcelGUI{
 		}
 
 		System.out.println(fileCount);
-		}
+		
 
 	}
 
@@ -651,5 +650,14 @@ public class MetadataToExcelGUI{
 	public GeneralBean getGeneralBean() {
 		return generalBean;
 	}
+
+	public String getBackupFilePath() {
+		return backupFilePath;
+	}
+
+	public void setBackupFilePath(String backupFilePath) {
+		this.backupFilePath = backupFilePath;
+	}
+	
 
 }

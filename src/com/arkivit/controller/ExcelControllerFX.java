@@ -114,7 +114,6 @@ public class ExcelControllerFX extends Application {
 		//13
 		model.getGeneralBean().setComment(view.getKOMtxt().getText());
 
-
 	}
 
 
@@ -184,25 +183,48 @@ public class ExcelControllerFX extends Application {
 		}
 	}
 	
+	private void overwriteButton(ActionEvent event, Stage stage) {
+		//model.setBackupFilePath();
+		File backupDir = view.getDirectoryChooser().showDialog(stage);
+		if(backupDir != null) {
+			view.getBtnSaveAs().setDisable(false);
+			model.setBackupFilePath(backupDir.getAbsolutePath());
+			view.getBtnSaveAs().setDisable(false);
+			
+			
+			if(event.getSource() == view.getBtnOverwrite() && backupDir != null) {
+				view.getCheckBox2().setDisable(true);
+			}
+
+		}
+	}
+	
+	
+	
 	private void checkBox() {
 		if(view.getCheckBox().isSelected()) {
 			view.getCheckBox2().setDisable(false);
 			view.getBtnOverwrite().setDisable(false);
+			view.getBtnSaveAs().setDisable(true);
 		}
 		else {
 			view.getCheckBox2().setDisable(true);
 			view.getCheckBox2().setSelected(false);
 			view.getBtnOverwrite().setDisable(true);
+			view.getBtnSaveAs().setDisable(false);
 			
 		}
 	}
 	private void checkBox2() {
 		if(view.getCheckBox2().isSelected()) {
 			view.getBtnOverwrite().setDisable(true);
+			view.getBtnSaveAs().setDisable(false);
 		}
-		else {
+		else if(!view.getCheckBox2().isSelected()) {
+			view.getBtnSaveAs().setDisable(true);
 			view.getBtnOverwrite().setDisable(false);
 		}
+		
 	}
 
 	/**
@@ -220,7 +242,7 @@ public class ExcelControllerFX extends Application {
 			view.getOpenTxtField().setText(model.getSourceFolderPath());
 			path = selectedDir.getAbsolutePath();
 			System.out.println(path);
-			view.getBtnSaveAs().setDisable(false);
+			//view.getBtnSaveAs().setDisable(false);
 
 		}
 		if(selectedDir == null) {
@@ -230,6 +252,7 @@ public class ExcelControllerFX extends Application {
 
 		if(e.getSource() == view.getBtnOpenFile() && selectedDir != null) {
 			view.getBtnSaveAs().setDisable(false);
+			view.getCheckBox().setDisable(false);
 		}
 	}
 	
@@ -418,11 +441,13 @@ public class ExcelControllerFX extends Application {
 				//view.getBALtxt().getStyleClass().remove("error");
 
 				//}
-
-				view.getBtnOverwrite().setDisable(true);
+				
+				/*view.getBtnOverwrite().setDisable(true);
+				view.getCheckBox().setDisable(true);
 				view.getCheckBox2().setDisable(true);
 				view.getBtnConvert().setDisable(true);
-				view.getBtnSaveAs().setDisable(true);
+				view.getBtnSaveAs().setDisable(true);*/
+				
 				
 			}
 			else if(event.getSource().equals(view.getBtnOpenFile()))
@@ -439,13 +464,16 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(view.getBtnBack())){
 				stage.setScene(view.getScene());
-
 			}
 			else if(event.getSource().equals(view.getCheckBox())) {
 				checkBox();
 			}
 			else if(event.getSource().equals(view.getCheckBox2())) {
 				checkBox2();
+			}
+			else if(event.getSource().equals(view.getBtnOverwrite())) {
+				overwriteButton(event, stage);
+				
 			}
 
 		}
