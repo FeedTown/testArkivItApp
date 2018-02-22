@@ -36,7 +36,7 @@ import jxl.write.biff.RowsExceededException;
  */
 public class MetadataToExcelGUI{
 
-	File file;
+	//private File file;
 	private String excelFileName, folderName = "";  
 	private long fileSize;
 	private int fileListeLength;
@@ -47,6 +47,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
+	private ArrayList<String> pathTest = new ArrayList<String>();
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
@@ -87,28 +88,27 @@ public class MetadataToExcelGUI{
 		this.overwrite = overW;
 		folderName = new File(sourceFolderPath).getName();
 
-		
+
 		if(mapping && !overwrite) 
 		{
 			copyFolder();
 			System.out.println("Copying folder.........");
 		}
-		
-		/*if(mapping && overwrite)
-		{
-			listOfFilesAndDirectory(sourceFolderPath);
-		} */
-		
 
 		listOfFilesAndDirectory(sourceFolderPath);
+		for(String s : pathTest)
+		{
+			System.out.println("Folder paths: " + s);
+		}
 		getAndAddFileDataToList();
 	}
 
+
 	//Copying folder to outside of the root folder
 	private void copyFolder() {
-		file = new File(sourceFolderPath);
+		File selectedFolder = new File(sourceFolderPath);
 		try {
-			FileUtils.copyDirectoryToDirectory(file, new File(backupFilePath + "/" +folderName+ "_backup"));
+			FileUtils.copyDirectoryToDirectory(selectedFolder, new File(backupFilePath + "/" +folderName+ "_backup"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -141,39 +141,46 @@ public class MetadataToExcelGUI{
 
 		File folder = new File(folderPathName);
 		File tempFile;
-		File[] listOfFilesInDirectory = folder.listFiles();
-		for(File file : listOfFilesInDirectory)
-		{
-			
-			tempFile = file;
-			
-			if(file.isFile())
-			{
-
-
-				if(mapping)
-				{
-					tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
-					file.renameTo(tempFile);
-				}
-				
-				fileCount++;
-				fileList.add(tempFile);
-				System.out.println("Nr " + fileCount + " : " + file.getName() + "\nPath: " + file.getAbsolutePath()+ "\n");
-			}
-			else if(file.isDirectory())	
-			{
-				
-				if(mapping) 
-				{
-					tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
-					file.renameTo(tempFile);
-				}
-				
-				listOfFilesAndDirectory(tempFile.getAbsolutePath());
-			}
-		}
 		
+		for(File currentFileOrDir : folder.listFiles())
+		{
+			tempFile = currentFileOrDir;
+			if(currentFileOrDir.isFile())
+			{
+				if(mapping)
+					tempFile = doMapping(tempFile,currentFileOrDir);
+
+				
+				fileList.add(tempFile);
+				fileCount++;
+				System.out.println("Nr " + fileCount + " : " + tempFile.getName() + "\nPath: " + tempFile.getAbsolutePath()+ "\n");
+
+
+			}
+
+			if(currentFileOrDir.isDirectory())	
+			{
+				
+				if(mapping)
+					tempFile = doMapping(tempFile,currentFileOrDir);
+
+				listOfFilesAndDirectory(tempFile.getAbsolutePath());
+
+			}
+
+		}
+
+
+	}
+
+	
+	private File doMapping(File tempFile, File currFileOrDir) {
+		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+		currFileOrDir.renameTo(tempFile);
+		
+		return tempFile;
+
+
 	}
 
 	/*
@@ -489,7 +496,7 @@ public class MetadataToExcelGUI{
 
 		for(String filename : fileNameList)
 		{
-			
+
 			/*if(mapping) {
 				tempString = replaceIllegalChars(filename);
 				//tempString = replaceIllegalChars(filePathList.toString());
@@ -644,8 +651,8 @@ public class MetadataToExcelGUI{
 	public void setSourceFolderPath(String sourceFolderPath) {
 		this.sourceFolderPath = sourceFolderPath;
 	}
-	
-	
+
+
 
 	public int getFileCount() {
 		return fileCount;
@@ -666,6 +673,6 @@ public class MetadataToExcelGUI{
 	public void setBackupFilePath(String backupFilePath) {
 		this.backupFilePath = backupFilePath;
 	}
-	
+
 
 }

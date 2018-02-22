@@ -33,7 +33,7 @@ public class ExcelControllerFX extends Application {
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private Task<?> progressTask;
-	File backupDir;
+	private File backupDir;
 
 	/**
 	 * No args constructor with objects from MetadataToExcelGUI and ExcelAppGUIFX
@@ -387,9 +387,14 @@ public class ExcelControllerFX extends Application {
 				view.getPb().setVisible(false);
 				stage.setScene(view.getScene());
 				view.resetTextField();
+				view.getCheckBox().setDisable(true);
 				view.getCheckBox().setSelected(false);
 				view.getPb().progressProperty().unbind();
-				view.getCheckBox().setSelected(false);
+				view.getCheckBox2().setSelected(false);
+				view.getCheckBox2().setDisable(true);
+				view.getBtnOverwrite().setDisable(true);
+				view.getBtnSaveAs().setDisable(true);
+				view.getBtnDelete().setDisable(true);
 			}
 
 		});
@@ -412,25 +417,14 @@ public class ExcelControllerFX extends Application {
 		return new Task<Object>() {
 			@Override
 			protected Object call() throws Exception {
-				if(view.getCheckBox().isSelected() && view.getCheckBox2().isSelected()) {
+				if(view.getCheckBox().isSelected()) {
 					mapping = true;
-					
-				}
-				else if(view.getCheckBox().isSelected()) {
-					mapping = true;
-				}
-				else {
-					mapping = false;
+					if(view.getCheckBox2().isSelected())
+					{
+						overwrite = true;
+					}
 				}
 				
-				if(view.getCheckBox2().isSelected())
-				{
-					overwrite = true;
-				}
-				else
-				{
-					overwrite = false;
-				}
 
 				model.init(mapping, overwrite);
 				view.getPi().setVisible(false);
