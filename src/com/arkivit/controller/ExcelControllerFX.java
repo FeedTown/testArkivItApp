@@ -32,6 +32,7 @@ public class ExcelControllerFX extends Application {
 	private Thread loadingThread;
 	private boolean mapping = false;
 	private Task<?> progressTask;
+	File backupDir;
 
 	/**
 	 * No args constructor with objects from MetadataToExcelGUI and ExcelAppGUIFX
@@ -182,7 +183,7 @@ public class ExcelControllerFX extends Application {
 			view.getBtnConvert().setDisable(false);
 		}
 	}
-	File backupDir;
+	
 	private void overwriteButton(ActionEvent event, Stage stage) {
 		//model.setBackupFilePath();
 		backupDir = view.getDirectoryChooser().showDialog(stage);
