@@ -33,6 +33,7 @@ public class ExcelControllerFX extends Application {
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private Task<?> progressTask;
+	File backupDir;
 
 	/**
 	 * No args constructor with objects from MetadataToExcelGUI and ExcelAppGUIFX
@@ -186,17 +187,30 @@ public class ExcelControllerFX extends Application {
 	
 	private void overwriteButton(ActionEvent event, Stage stage) {
 		//model.setBackupFilePath();
-		File backupDir = view.getDirectoryChooser().showDialog(stage);
+		backupDir = view.getDirectoryChooser().showDialog(stage);
 		if(backupDir != null) {
 			view.getBtnSaveAs().setDisable(false);
 			model.setBackupFilePath(backupDir.getAbsolutePath());
 			view.getBtnSaveAs().setDisable(false);
+			view.getBtnDelete().setDisable(true);
 			
 			
 			if(event.getSource() == view.getBtnOverwrite() && backupDir != null) {
 				view.getCheckBox2().setDisable(true);
+				view.getBtnDelete().setDisable(false);
 			}
+			
 
+		}
+	}
+	
+	private void deleteButton(ActionEvent event) {
+		backupDir = null;
+		
+		if(backupDir == null) {
+			view.getBtnDelete().setDisable(true);
+			view.getCheckBox2().setDisable(false);
+			view.getBtnSaveAs().setDisable(true);
 		}
 	}
 	
@@ -489,6 +503,9 @@ public class ExcelControllerFX extends Application {
 			else if(event.getSource().equals(view.getBtnOverwrite())) {
 				overwriteButton(event, stage);
 				
+			}
+			else if(event.getSource().equals(view.getBtnDelete())) {
+				deleteButton(event);
 			}
 
 		}

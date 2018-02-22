@@ -26,6 +26,29 @@
     -fx-font-size: 14px;
 }
 
+#deleteButton{
+	-fx-background-color:#f90217 ;
+    -fx-border-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+#deleteButton:hover{
+	-fx-background-color:#f95765;
+    -fx-border-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+#deleteButton:pressed{
+	-fx-background-color:#f95765;
+    -fx-border-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
 #error{
     -fx-focus-color: #d35244;
     -fx-faint-focus-color: #d3524422;
@@ -69,6 +92,15 @@
   -fx-font-weight: normal;
   -fx-font-style: normal;
   -fx-background-color: #FCCC00;
+  -fx-font-color: black;
+}
+
+ #tooltip{
+  -fx-font-size: 12pt;     
+  -fx-text-fill: black;   
+  -fx-font-weight: normal;
+  -fx-font-style: normal;
+  -fx-background-color: #f90217;
   -fx-font-color: black;
 }
 

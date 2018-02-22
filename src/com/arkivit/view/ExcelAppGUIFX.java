@@ -90,7 +90,7 @@ public class ExcelAppGUIFX{
 	private Button btnOverwrite;
 	private Button btnSaveAs;
 	private Button btnConvert;
-	private Button btnBack;
+	private Button btnBack, btnDelete;
 	private TextField openTxtField;// = new TextField();
 	private TextField saveTxtField; //= new TextField();
 	private Label dirLabel;// = new Label("Directory");
@@ -309,6 +309,16 @@ public class ExcelAppGUIFX{
 		btnOverwrite.setDisable(true);
 		btnOverwrite.setId("saveButton");
 		btnOverwrite.setMaxWidth(Double.MAX_VALUE);
+		btnDelete = new Button("X");
+		btnDelete.setId("deleteButton");
+		btnDelete.setDisable(true);
+		btnDelete.setMaxWidth(Double.MAX_VALUE);
+		final Tooltip tooltip4 = new Tooltip();
+		tooltip4.setText(
+		    "Remove the chosen directory for the backup content"
+		);
+		tooltip4.setId("tooltip");
+		btnDelete.setTooltip(tooltip4);
 		final Tooltip tooltip3 = new Tooltip();
 		tooltip3.setText(
 		    "Choose the directory where you want to save the  \n" +
@@ -340,13 +350,15 @@ public class ExcelAppGUIFX{
 		gridThirdScene.setAlignment(Pos.BASELINE_LEFT);
 		gridThirdScene.setHgap(10);
 		gridThirdScene.setVgap(10);
-		gridThirdScene.setPadding(new Insets(5, 0, 0, 15));
+		gridThirdScene.setPadding(new Insets(15, 0, 0, 15));
 		HBox hBox = new HBox(mapLabel, checkBox);
 		hBox.setAlignment(Pos.CENTER_LEFT);
-		HBox.setMargin(checkBox,new Insets(15,15,15,15));
+		HBox.setMargin(checkBox,new Insets(10,10,10,10));
 		HBox hBox2 = new HBox(overwriteLabel, checkBox2);
 		hBox2.setAlignment(Pos.CENTER_LEFT);
-		HBox.setMargin(checkBox2,new Insets(15,15,15,15));
+		HBox.setMargin(checkBox2,new Insets(10,10,10,10));
+		HBox hBox3 = new HBox(btnOverwrite, btnDelete);
+		hBox3.setAlignment(Pos.CENTER_RIGHT);
 		
 		
 
@@ -361,7 +373,8 @@ public class ExcelAppGUIFX{
 		
 		//overwrite
 		gridSecondScene.add(hBox2, 1, 1);
-		gridSecondScene.add(btnOverwrite, 2, 1);
+		gridSecondScene.add(hBox3, 2, 1);
+		//gridSecondScene.add(btnOverwrite, 2, 1);
 
 		//Out dir components
 		gridSecondScene.add(outputLabel, 0, 2);
@@ -422,6 +435,7 @@ public class ExcelAppGUIFX{
 		btnOverwrite.setOnAction(listenForEvent);
 		checkBox.setOnAction(listenForEvent);
 		checkBox2.setOnAction(listenForEvent);
+		btnDelete.setOnAction(listenForEvent);
 	}
 		
 	/**
@@ -598,6 +612,12 @@ public class ExcelAppGUIFX{
 	}
 	public void setCheckBox2(CheckBox checkBox2) {
 		this.checkBox2 = checkBox2;
+	}
+	public Button getBtnDelete() {
+		return btnDelete;
+	}
+	public void setBtnDelete(Button btnDelete) {
+		this.btnDelete = btnDelete;
 	}
 	
 	
