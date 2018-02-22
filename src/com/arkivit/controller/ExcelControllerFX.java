@@ -31,6 +31,7 @@ public class ExcelControllerFX extends Application {
 	private Stage stage;
 	private Thread loadingThread;
 	private boolean mapping = false;
+	private boolean overwrite = false;
 	private Task<?> progressTask;
 
 	/**
@@ -397,14 +398,27 @@ public class ExcelControllerFX extends Application {
 		return new Task<Object>() {
 			@Override
 			protected Object call() throws Exception {
-				if(view.getCheckBox().isSelected()) {
+				if(view.getCheckBox().isSelected() && view.getCheckBox2().isSelected()) {
+					mapping = true;
+					
+				}
+				else if(view.getCheckBox().isSelected()) {
 					mapping = true;
 				}
 				else {
 					mapping = false;
 				}
+				
+				if(view.getCheckBox2().isSelected())
+				{
+					overwrite = true;
+				}
+				else
+				{
+					overwrite = false;
+				}
 
-				model.init(mapping);
+				model.init(mapping, overwrite);
 				view.getPi().setVisible(false);
 				view.getPb().setVisible(true);
 				//Thread.sleep(200);
@@ -420,6 +434,7 @@ public class ExcelControllerFX extends Application {
 		};
 
 	}
+	
 	/**
 	 * 
 	 * Action events on when buttons are clicked

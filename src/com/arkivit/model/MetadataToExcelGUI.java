@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
 
+import javax.xml.bind.SchemaOutputResolver;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +54,7 @@ public class MetadataToExcelGUI{
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	private boolean mapping = false;
+	private boolean overwrite = false;
 
 	/**
 	 * No args constructor
@@ -78,15 +81,24 @@ public class MetadataToExcelGUI{
 	 * listOfFilesAndDirectory and getAndAddFileDataToList get called.
 	 * @param mapping A boolean, false by default
 	 */
-	public void init(boolean mapp) {
+	public void init(boolean mapp, boolean overW) {
 
 		this.mapping = mapp;
+		this.overwrite = overW;
 		folderName = new File(sourceFolderPath).getName();
 
-		if(mapping)
+		
+		if(mapping && !overwrite) 
 		{
 			copyFolder();
+			System.out.println("Copying folder.........");
 		}
+		
+		/*if(mapping && overwrite)
+		{
+			listOfFilesAndDirectory(sourceFolderPath);
+		} */
+		
 
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
