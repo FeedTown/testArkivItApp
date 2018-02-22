@@ -309,7 +309,7 @@ public class ExcelAppGUIFX{
 		btnOverwrite.setDisable(true);
 		btnOverwrite.setId("saveButton");
 		btnOverwrite.setMaxWidth(Double.MAX_VALUE);
-		btnDelete = new Button("X");
+		btnDelete = new Button("✖");
 		btnDelete.setId("deleteButton");
 		btnDelete.setDisable(true);
 		btnDelete.setMaxWidth(Double.MAX_VALUE);
@@ -343,6 +343,14 @@ public class ExcelAppGUIFX{
 		gridSecondScene.setHgap(10);
 		gridSecondScene.setVgap(10);
 		gridSecondScene.setPadding(new Insets(200, 200, 100, 200));
+		HBox hBox = new HBox(mapLabel, checkBox);
+		hBox.setAlignment(Pos.CENTER_LEFT);
+		HBox.setMargin(checkBox,new Insets(5,5,5,5));
+		HBox hBox2 = new HBox(overwriteLabel, checkBox2);
+		hBox2.setAlignment(Pos.CENTER_LEFT);
+		HBox.setMargin(checkBox2,new Insets(10,10,10,10));
+		HBox hBox3 = new HBox(btnOverwrite, btnDelete);
+		hBox3.setAlignment(Pos.CENTER_RIGHT);
 		
 		
 		
@@ -351,14 +359,7 @@ public class ExcelAppGUIFX{
 		gridThirdScene.setHgap(10);
 		gridThirdScene.setVgap(10);
 		gridThirdScene.setPadding(new Insets(15, 0, 0, 15));
-		HBox hBox = new HBox(mapLabel, checkBox);
-		hBox.setAlignment(Pos.CENTER_LEFT);
-		HBox.setMargin(checkBox,new Insets(10,10,10,10));
-		HBox hBox2 = new HBox(overwriteLabel, checkBox2);
-		hBox2.setAlignment(Pos.CENTER_LEFT);
-		HBox.setMargin(checkBox2,new Insets(10,10,10,10));
-		HBox hBox3 = new HBox(btnOverwrite, btnDelete);
-		hBox3.setAlignment(Pos.CENTER_RIGHT);
+		
 		
 		
 
