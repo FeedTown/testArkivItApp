@@ -159,10 +159,11 @@ public class MetadataToExcelGUI{
 				
 				fileCount++;
 				fileList.add(tempFile);
-				System.out.println("Nr " + fileCount + " : " + file.getName());
+				System.out.println("Nr " + fileCount + " : " + file.getName() + "\nPath: " + file.getAbsolutePath()+ "\n");
 			}
 			else if(file.isDirectory())	
 			{
+				
 				if(mapping) 
 				{
 					tempFile = new File(file.getParentFile().getAbsolutePath(), replaceIllegalChars(file.getName()));
@@ -170,14 +171,9 @@ public class MetadataToExcelGUI{
 				}
 				
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
-				
-		
 			}
 		}
-
-		System.out.println(fileCount);
 		
-
 	}
 
 	/*
