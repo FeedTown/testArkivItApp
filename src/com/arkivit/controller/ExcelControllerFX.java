@@ -117,7 +117,19 @@ public class ExcelControllerFX extends Application {
 		model.getGeneralBean().setComment(view.getKOMtxt().getText());
 
 	}
-
+	
+	private void setDefault() {
+		view.getOpenTxtField().setText("");
+		view.getSaveTxtField().setText("");
+		view.getCheckBox().setDisable(true);
+		view.getCheckBox().setSelected(false);
+		view.getCheckBox2().setDisable(true);
+		view.getCheckBox2().setSelected(false);
+		view.getBtnSaveAs().setDisable(true);
+		view.getBtnDelete().setDisable(true);
+		view.getBtnOverwrite().setDisable(true);
+		view.getBtnConvert().setDisable(true);
+	}
 
 	/**
 	 * Actions that performs to create the excel file
@@ -130,15 +142,13 @@ public class ExcelControllerFX extends Application {
 			//setAlert();
 			progressBar();
 			//stopThread();
-			view.getOpenTxtField().setText("");
-			view.getSaveTxtField().setText("");
+			setDefault();
 		}
 		else if(check){
 			//model.init();
 			//setAlert();
 			progressBar();
-			view.getOpenTxtField().setText("");
-			view.getSaveTxtField().setText("");
+			setDefault();
 		}
 
 
