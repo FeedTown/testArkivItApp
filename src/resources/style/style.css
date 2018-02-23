@@ -1,0 +1,107 @@
+.root {
+	-fx-background-image: url("/resources/style/arkivitbg.jpg");
+	-fx-background-repeat: no-repeat;
+}
+
+#saveButton{
+	-fx-background-color:#FCCC00 ;
+    -fx-border-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+#saveButton:hover{
+	-fx-background-color:#FFDE34;
+    -fx-border-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+#saveButton:pressed{
+	-fx-background-color:#FFDE34;
+    -fx-border-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+#deleteButton{
+	-fx-background-color:#f90217 ;
+    -fx-border-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+#deleteButton:hover{
+	-fx-background-color:#f95765;
+    -fx-border-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+#deleteButton:pressed{
+	-fx-background-color:#f95765;
+    -fx-border-radius: 30;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+#error{
+    -fx-focus-color: #d35244;
+    -fx-faint-focus-color: #d3524422;
+
+    -fx-highlight-fill: -fx-accent;
+    -fx-highlight-text-fill: white;
+    -fx-background-color:
+        -fx-focus-color,
+        -fx-control-inner-background,
+        -fx-faint-focus-color,
+        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+    -fx-background-insets: -0.2, 1, -1.4, 3;
+    -fx-background-radius: 3, 2, 4, 0;
+    -fx-prompt-text-fill: transparent;
+}
+
+.progress-bar > .bar {
+    -fx-accent:#FCCC00;
+    -fx-background-color: linear-gradient(
+        from 0px .75em to .75em 0px,
+        repeat,
+        -fx-accent 0%,
+        -fx-accent 49%,
+        derive(-fx-accent, 30%) 50%,
+        derive(-fx-accent, 30%) 99%
+        );
+        -fx-indeterminate-bar-length: 60;
+}
+
+.progress-indicator > .indicator {
+    -fx-accent: #FCCC00;
+}
+
+.spinner {
+    -fx-accent: FFDE34;
+}
+
+ .tooltip{
+  -fx-font-size: 12pt;     
+  -fx-text-fill: black;   
+  -fx-font-weight: normal;
+  -fx-font-style: normal;
+  -fx-background-color: #FCCC00;
+  -fx-font-color: black;
+}
+
+ #tooltip{
+  -fx-font-size: 12pt;     
+  -fx-text-fill: black;   
+  -fx-font-weight: normal;
+  -fx-font-style: normal;
+  -fx-background-color: #f90217;
+  -fx-font-color: black;
+}
+
+
