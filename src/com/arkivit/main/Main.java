@@ -2,7 +2,8 @@ package com.arkivit.main;
 
 import com.arkivit.controller.ExcelControllerFX;
 import com.arkivit.model.MetadataToExcelGUI;
-import com.arkivit.view.ExcelAppGUIFX;
+import com.arkivit.view.SecondScene;
+import com.arkivit.view.FirstScene;
 
 
 public class Main {
@@ -12,9 +13,11 @@ public class Main {
 		
 		MetadataToExcelGUI model = new MetadataToExcelGUI();
 		
-		ExcelAppGUIFX viewFx = new ExcelAppGUIFX();
+		FirstScene firstScene = new FirstScene();
 		
-		ExcelControllerFX controllerFx = new ExcelControllerFX(model,viewFx);
+		SecondScene secondScene = new SecondScene();
+		
+		ExcelControllerFX controllerFx = new ExcelControllerFX(model,firstScene,secondScene);
 		
 		ExcelControllerFX.launch(controllerFx.getClass(),args);
 			

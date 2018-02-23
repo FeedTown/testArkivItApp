@@ -6,7 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.arkivit.model.MetadataToExcelGUI;
-import com.arkivit.view.ExcelAppGUIFX;
+import com.arkivit.view.SecondScene;
+import com.arkivit.view.FirstScene;
+
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -27,7 +29,8 @@ import javafx.stage.Stage;
 public class ExcelControllerFX extends Application {
 
 	private MetadataToExcelGUI model;
-	private ExcelAppGUIFX view;
+	private SecondScene secondScene;
+	private FirstScene firstScene;
 	private Stage stage;
 	private Thread loadingThread;
 	private boolean mapping = false;
@@ -41,7 +44,8 @@ public class ExcelControllerFX extends Application {
 	public ExcelControllerFX()
 	{
 		model = new MetadataToExcelGUI();
-		view = new ExcelAppGUIFX();
+		firstScene = new FirstScene();
+		secondScene = new SecondScene();
 		//launch();
 	}
 	
@@ -52,11 +56,13 @@ public class ExcelControllerFX extends Application {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public ExcelControllerFX(MetadataToExcelGUI model, ExcelAppGUIFX view) throws InstantiationException, IllegalAccessException{
+	public ExcelControllerFX(MetadataToExcelGUI model,FirstScene firstScene, SecondScene secondScene) 
+			throws InstantiationException, IllegalAccessException{
 
 		this.model = model;
-		this.view = view;
-		//this.view.start();
+		this.firstScene = firstScene;
+		this.secondScene = secondScene;
+		
 	}
 
 	/**
@@ -64,14 +70,15 @@ public class ExcelControllerFX extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		view.start();
-		view.startSecondScene();
+		firstScene.startFirstScene();
+		secondScene.startSecondScene();
 		primaryStage.setTitle("ArkivIT");
 		primaryStage.setResizable(false);
 		this.stage = primaryStage;
-		stage.setScene(view.getScene());
+		stage.setScene(firstScene.getFirstScene());
 		stage.show();
-		view.addActionListenerForButton(new ActionListen());
+		firstScene.addActionListenerForButton(new ActionListen());
+		secondScene.addActionListenerForButton(new ActionListen());
 
 
 	}
@@ -82,39 +89,39 @@ public class ExcelControllerFX extends Application {
 	 */
 	public void saveContentButton() {
 		//1
-		model.getGeneralBean().setDescDelivery(view.getBALtxt().getText());
+		model.getGeneralBean().setDescDelivery(firstScene.getBALtxt().getText());
 		//2
-		model.getGeneralBean().setArchiveCreator(view.getAKtxt().getText());
+		model.getGeneralBean().setArchiveCreator(firstScene.getAKtxt().getText());
 		//3
-		model.getGeneralBean().setArchiveCreatorNum(view.getOAtxt().getText());
+		model.getGeneralBean().setArchiveCreatorNum(firstScene.getOAtxt().getText());
 		//4
-		model.getGeneralBean().setDelivGov(view.getLMtxt().getText());
+		model.getGeneralBean().setDelivGov(firstScene.getLMtxt().getText());
 		//5
-		model.getGeneralBean().setDelivGovNum(view.getOLMtxt().getText());
+		model.getGeneralBean().setDelivGovNum(firstScene.getOLMtxt().getText());
 		//6
-		model.getGeneralBean().setConsultantBur(view.getSKtxt().getText());
+		model.getGeneralBean().setConsultantBur(firstScene.getSKtxt().getText());
 		//7
-		model.getGeneralBean().setContactDelivPerson(view.getKFLtxt().getText());
+		model.getGeneralBean().setContactDelivPerson(firstScene.getKFLtxt().getText());
 		//8
-		model.getGeneralBean().setTelContactPerson(view.getTTKtxt().getText());
+		model.getGeneralBean().setTelContactPerson(firstScene.getTTKtxt().getText());
 		//9
-		model.getGeneralBean().setEmail(view.getEKtxt().getText());
+		model.getGeneralBean().setEmail(firstScene.getEKtxt().getText());
 		//10
-		model.getGeneralBean().setArchiveName(view.getANtxt().getText());
+		model.getGeneralBean().setArchiveName(firstScene.getANtxt().getText());
 		//11
-		model.getGeneralBean().setSystemName(view.getSNtxt().getText());
+		model.getGeneralBean().setSystemName(firstScene.getSNtxt().getText());
 		//12
-		if(view.getDatePicker().getValue() == null)
+		if(firstScene.getDatePicker().getValue() == null)
 		{
 			System.out.println("No value at date");
 			model.getGeneralBean().setDate("");
 		}
 		else
 		{
-			model.getGeneralBean().setDate(view.getDatePicker().getValue().toString());
+			model.getGeneralBean().setDate(firstScene.getDatePicker().getValue().toString());
 		}
 		//13
-		model.getGeneralBean().setComment(view.getKOMtxt().getText());
+		model.getGeneralBean().setComment(firstScene.getKOMtxt().getText());
 
 	}
 
@@ -130,15 +137,15 @@ public class ExcelControllerFX extends Application {
 			//setAlert();
 			progressBar();
 			//stopThread();
-			view.getOpenTxtField().setText("");
-			view.getSaveTxtField().setText("");
+			secondScene.getOpenTxtField().setText("");
+			secondScene.getSaveTxtField().setText("");
 		}
 		else if(check){
 			//model.init();
 			//setAlert();
 			progressBar();
-			view.getOpenTxtField().setText("");
-			view.getSaveTxtField().setText("");
+			secondScene.getOpenTxtField().setText("");
+			secondScene.getSaveTxtField().setText("");
 		}
 
 
@@ -180,24 +187,24 @@ public class ExcelControllerFX extends Application {
 			fileName = file.getName();
 			System.out.println(fileName);
 
-			view.getSaveTxtField().setText(model.getTargetexcelFilepath());
-			view.getBtnConvert().setDisable(false);
+			secondScene.getSaveTxtField().setText(model.getTargetexcelFilepath());
+			secondScene.getBtnConvert().setDisable(false);
 		}
 	}
 	
 	private void overwriteButton(ActionEvent event, Stage stage) {
 		//model.setBackupFilePath();
-		backupDir = view.getDirectoryChooser().showDialog(stage);
+		backupDir = secondScene.getDirectoryChooser().showDialog(stage);
 		if(backupDir != null) {
-			view.getBtnSaveAs().setDisable(false);
+			secondScene.getBtnSaveAs().setDisable(false);
 			model.setBackupFilePath(backupDir.getAbsolutePath());
-			view.getBtnSaveAs().setDisable(false);
-			view.getBtnDelete().setDisable(true);
+			secondScene.getBtnSaveAs().setDisable(false);
+			secondScene.getBtnDelete().setDisable(true);
 			
 			
-			if(event.getSource() == view.getBtnOverwrite() && backupDir != null) {
-				view.getCheckBox2().setDisable(true);
-				view.getBtnDelete().setDisable(false);
+			if(event.getSource() == secondScene.getBtnOverwrite() && backupDir != null) {
+				secondScene.getOverwriteCheckBox().setDisable(true);
+				secondScene.getBtnDelete().setDisable(false);
 			}
 			
 
@@ -208,36 +215,36 @@ public class ExcelControllerFX extends Application {
 		backupDir = null;
 		
 		if(backupDir == null) {
-			view.getBtnDelete().setDisable(true);
-			view.getCheckBox2().setDisable(false);
-			view.getBtnSaveAs().setDisable(true);
+			secondScene.getBtnDelete().setDisable(true);
+			secondScene.getOverwriteCheckBox().setDisable(false);
+			secondScene.getBtnSaveAs().setDisable(true);
 		}
 	}
 	
 	
 	
 	private void checkBox() {
-		if(view.getCheckBox().isSelected()) {
-			view.getCheckBox2().setDisable(false);
-			view.getBtnOverwrite().setDisable(false);
-			view.getBtnSaveAs().setDisable(true);
+		if(secondScene.getMappCheckBox().isSelected()) {
+			secondScene.getOverwriteCheckBox().setDisable(false);
+			secondScene.getBtnOverwrite().setDisable(false);
+			secondScene.getBtnSaveAs().setDisable(true);
 		}
 		else {
-			view.getCheckBox2().setDisable(true);
-			view.getCheckBox2().setSelected(false);
-			view.getBtnOverwrite().setDisable(true);
-			view.getBtnSaveAs().setDisable(false);
+			secondScene.getOverwriteCheckBox().setDisable(true);
+			secondScene.getOverwriteCheckBox().setSelected(false);
+			secondScene.getBtnOverwrite().setDisable(true);
+			secondScene.getBtnSaveAs().setDisable(false);
 			
 		}
 	}
 	private void checkBox2() {
-		if(view.getCheckBox2().isSelected()) {
-			view.getBtnOverwrite().setDisable(true);
-			view.getBtnSaveAs().setDisable(false);
+		if(secondScene.getOverwriteCheckBox().isSelected()) {
+			secondScene.getBtnOverwrite().setDisable(true);
+			secondScene.getBtnSaveAs().setDisable(false);
 		}
-		else if(!view.getCheckBox2().isSelected()) {
-			view.getBtnSaveAs().setDisable(true);
-			view.getBtnOverwrite().setDisable(false);
+		else if(!secondScene.getOverwriteCheckBox().isSelected()) {
+			secondScene.getBtnSaveAs().setDisable(true);
+			secondScene.getBtnOverwrite().setDisable(false);
 		}
 		
 	}
@@ -248,13 +255,13 @@ public class ExcelControllerFX extends Application {
 	 * @param stage
 	 */
 	public void openButton(ActionEvent e, Stage stage) {
-		File selectedDir = view.getDirectoryChooser().showDialog(stage);
+		File selectedDir = secondScene.getDirectoryChooser().showDialog(stage);
 		String path;
 
 		if(selectedDir != null) {
-			view.getBtnSaveAs().setDisable(false);
+			secondScene.getBtnSaveAs().setDisable(false);
 			model.setSourceFolderPath(selectedDir.getAbsolutePath());
-			view.getOpenTxtField().setText(model.getSourceFolderPath());
+			secondScene.getOpenTxtField().setText(model.getSourceFolderPath());
 			path = selectedDir.getAbsolutePath();
 			System.out.println(path);
 			//view.getBtnSaveAs().setDisable(false);
@@ -265,9 +272,9 @@ public class ExcelControllerFX extends Application {
 			//view.getBtnSaveAs().setDisable(true);
 		}
 
-		if(e.getSource() == view.getBtnOpenFile() && selectedDir != null) {
-			view.getBtnSaveAs().setDisable(false);
-			view.getCheckBox().setDisable(false);
+		if(e.getSource() == secondScene.getBtnOpenFile() && selectedDir != null) {
+			secondScene.getBtnSaveAs().setDisable(false);
+			secondScene.getMappCheckBox().setDisable(false);
 		}
 	}
 	
@@ -280,15 +287,15 @@ public class ExcelControllerFX extends Application {
 	{
 		boolean checkFields = true;
 		int emptyFields = 0;
-		for(int i = 0; i < view.getMandatoryFieldsList().size(); i++)
+		for(int i = 0; i < firstScene.getMandatoryFieldsList().size(); i++)
 		{	
-			if(view.getMandatoryFieldsList().get(i).getText().isEmpty()) {
-				view.getMandatoryFieldsList().get(i).setId("error");
+			if(firstScene.getMandatoryFieldsList().get(i).getText().isEmpty()) {
+				firstScene.getMandatoryFieldsList().get(i).setId("error");
 				emptyFields++;
 			}
 			else
 			{
-				view.getMandatoryFieldsList().get(i).setId("");
+				firstScene.getMandatoryFieldsList().get(i).setId("");
 			}
 		}
 		if(emptyFields >= 1)
@@ -317,13 +324,13 @@ public class ExcelControllerFX extends Application {
 	 */
 	private boolean validateEmail() {
 		Pattern p = Pattern.compile("[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+");
-		Matcher m = p.matcher(view.getEKtxt().getText());
-		if(m.find() && m.group().equals(view.getEKtxt().getText())) {
-			view.getEKtxt().setId("");
+		Matcher m = p.matcher(firstScene.getEKtxt().getText());
+		if(m.find() && m.group().equals(firstScene.getEKtxt().getText())) {
+			firstScene.getEKtxt().setId("");
 			return true;
 		}
 		else {
-			view.getEKtxt().setId("error");
+			firstScene.getEKtxt().setId("error");
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Not a valid email adress");
 			alert.setHeaderText(null);
@@ -341,15 +348,15 @@ public class ExcelControllerFX extends Application {
 	private boolean validateNumbers() {
 		int notNumber = 0;
 		boolean checkFieldsForNumbers = true;
-		for(int i = 0; i < view.validateNumberList().size(); i++)
+		for(int i = 0; i < firstScene.validateNumberList().size(); i++)
 		{	
-			if(view.validateNumberList().get(i).getText().matches("[0-9-]*")) {
-				view.validateNumberList().get(i).setId("");
+			if(firstScene.validateNumberList().get(i).getText().matches("[0-9-]*")) {
+				firstScene.validateNumberList().get(i).setId("");
 				
 			}
 			else
 			{
-				view.validateNumberList().get(i).setId("error");
+				firstScene.validateNumberList().get(i).setId("error");
 				notNumber++;
 				
 			}
@@ -373,10 +380,10 @@ public class ExcelControllerFX extends Application {
 
 		progressTask = getProgress();
 
-		view.getPi().setVisible(true);
-		view.getPb().setProgress(0);
+		secondScene.getPi().setVisible(true);
+		secondScene.getPb().setProgress(0);
 
-		view.getPb().progressProperty().bind(progressTask.progressProperty());
+		secondScene.getPb().progressProperty().bind(progressTask.progressProperty());
 
 		progressTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
@@ -384,17 +391,17 @@ public class ExcelControllerFX extends Application {
 			public void handle(WorkerStateEvent arg0) {
 
 				setAlert();
-				view.getPb().setVisible(false);
-				stage.setScene(view.getScene());
-				view.resetTextField();
-				view.getCheckBox().setDisable(true);
-				view.getCheckBox().setSelected(false);
-				view.getPb().progressProperty().unbind();
-				view.getCheckBox2().setSelected(false);
-				view.getCheckBox2().setDisable(true);
-				view.getBtnOverwrite().setDisable(true);
-				view.getBtnSaveAs().setDisable(true);
-				view.getBtnDelete().setDisable(true);
+				secondScene.getPb().setVisible(false);
+				stage.setScene(firstScene.getFirstScene());
+				firstScene.resetTextField();
+				secondScene.getMappCheckBox().setDisable(true);
+				secondScene.getMappCheckBox().setSelected(false);
+				secondScene.getPb().progressProperty().unbind();
+				secondScene.getOverwriteCheckBox().setSelected(false);
+				secondScene.getOverwriteCheckBox().setDisable(true);
+				secondScene.getBtnOverwrite().setDisable(true);
+				secondScene.getBtnSaveAs().setDisable(true);
+				secondScene.getBtnDelete().setDisable(true);
 			}
 
 		});
@@ -417,9 +424,9 @@ public class ExcelControllerFX extends Application {
 		return new Task<Object>() {
 			@Override
 			protected Object call() throws Exception {
-				if(view.getCheckBox().isSelected()) {
+				if(secondScene.getMappCheckBox().isSelected()) {
 					mapping = true;
-					if(view.getCheckBox2().isSelected())
+					if(secondScene.getOverwriteCheckBox().isSelected())
 					{
 						overwrite = true;
 					}
@@ -427,8 +434,8 @@ public class ExcelControllerFX extends Application {
 				
 
 				model.init(mapping, overwrite);
-				view.getPi().setVisible(false);
-				view.getPb().setVisible(true);
+				secondScene.getPi().setVisible(false);
+				secondScene.getPb().setVisible(true);
 				//Thread.sleep(200);
 
 				for (int i = 0; i < model.getFileListeLength(); i++) {
@@ -454,51 +461,51 @@ public class ExcelControllerFX extends Application {
 		@Override
 		public void handle(ActionEvent event) {
 
-			if(event.getSource().equals(view.getSaveButton()))
+			if(event.getSource().equals(firstScene.getSaveButton()))
 			{
 				saveContentButton();
 
 				//if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
 
-				stage.setScene(view.getSecondScene());
+				stage.setScene(secondScene.getSecondScene());
 				//view.getBALtxt().getStyleClass().remove("error");
 
 				//}
 				
 				/*view.getBtnOverwrite().setDisable(true);
 				view.getCheckBox().setDisable(true);
-				view.getCheckBox2().setDisable(true);
+				view.getOverwriteCheckBox().setDisable(true);
 				view.getBtnConvert().setDisable(true);
 				view.getBtnSaveAs().setDisable(true);*/
 				
 				
 			}
-			else if(event.getSource().equals(view.getBtnOpenFile()))
+			else if(event.getSource().equals(secondScene.getBtnOpenFile()))
 			{
 				openButton(event, stage);
 			}
-			else if(event.getSource().equals(view.getBtnSaveAs()))
+			else if(event.getSource().equals(secondScene.getBtnSaveAs()))
 			{
 				saveButton(event, stage);
 			}
-			else if(event.getSource().equals(view.getBtnConvert()))
+			else if(event.getSource().equals(secondScene.getBtnConvert()))
 			{
 				createButton(event);
 			}
-			else if(event.getSource().equals(view.getBtnBack())){
-				stage.setScene(view.getScene());
+			else if(event.getSource().equals(secondScene.getBtnBack())){
+				stage.setScene(firstScene.getFirstScene());
 			}
-			else if(event.getSource().equals(view.getCheckBox())) {
+			else if(event.getSource().equals(secondScene.getMappCheckBox())) {
 				checkBox();
 			}
-			else if(event.getSource().equals(view.getCheckBox2())) {
+			else if(event.getSource().equals(secondScene.getOverwriteCheckBox())) {
 				checkBox2();
 			}
-			else if(event.getSource().equals(view.getBtnOverwrite())) {
+			else if(event.getSource().equals(secondScene.getBtnOverwrite())) {
 				overwriteButton(event, stage);
 				
 			}
-			else if(event.getSource().equals(view.getBtnDelete())) {
+			else if(event.getSource().equals(secondScene.getBtnDelete())) {
 				deleteButton(event);
 			}
 
