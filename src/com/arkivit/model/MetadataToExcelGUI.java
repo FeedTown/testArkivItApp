@@ -1,29 +1,26 @@
 package com.arkivit.model;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
 
-import javax.xml.bind.SchemaOutputResolver;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.record.LabelRecord;
+import org.apache.poi.hssf.record.LabelSSTRecord;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.tika.Tika;
 
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.format.Colour;
-import jxl.write.Label;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
+
 
 
 /**
@@ -71,7 +68,7 @@ public class MetadataToExcelGUI{
 	 */
 	public MetadataToExcelGUI(String excelFileName)
 	{   
-		this.excelFileName = excelFileName + ".xls";
+		this.excelFileName = excelFileName + ".xlsx";
 		//fileList = new ArrayList<File>();
 		//testMeth();
 	}
@@ -338,10 +335,19 @@ public class MetadataToExcelGUI{
 	private void createExcelFile() {
 
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
+		
 
 		try {
+			
+			FileOutputStream fileOut = new FileOutputStream(targetexcelFilepath +"/"+ excelFileName);
+			Workbook wb = new HSSFWorkbook();
+			wb.write(fileOut);
+			
+			Sheet sheet1  = wb.createSheet("Allmänt");
+			Sheet sheet2  = wb.createSheet("Filer");
+			//Row row = sheet1.createRow(0);
 			System.out.println("createExcelFile");
-			WorkbookSettings wbSettings = new WorkbookSettings();
+		/*	WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
 			workbook.createSheet("Allmänt", 0);
@@ -349,26 +355,22 @@ public class MetadataToExcelGUI{
 			System.out.println("Excel file is created in path -- "
 					+ targetexcelFilepath);
 
-			WritableSheet generalSheet = (WritableSheet) workbook.getSheet(0);
-			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(1);
+			WritableSheet sheet1 = (WritableSheet) workbook.getSheet(0);
+			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(1); */
 
 			if (!fileNameList.isEmpty()) {
-				generalSheet = createGeneralSheet(generalSheet);
-				excelSheet = createMetadataExcelSheet(excelSheet);
+				sheet1= createsheet1(sheet1);
+				sheet2 = createMetadataExcelSheet(sheet2);
 
 			} else {
 				System.out.println("No matching files found");
 			}
-			workbook.write();
-			workbook.close();
+			fileOut.close();
+			wb.close();
 			clearArrayList();
-		} catch (RowsExceededException e) {
+		}  catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
-		} catch (WriteException e) { 
-			e.printStackTrace();
-		} catch (IOException e) {
+		}  catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -380,7 +382,7 @@ public class MetadataToExcelGUI{
 	 * Creates labels and adds them as column names and adds user input data into
 	 * specific rows.
 	 */
-	private WritableSheet createGeneralSheet(WritableSheet generalSheet) throws RowsExceededException, WriteException {
+	private Sheet createsheet1(Sheet sheet1)  {
 
 		int generalListSize = 1;
 		ArrayList<String> contentList = new ArrayList<String>();
@@ -407,39 +409,49 @@ public class MetadataToExcelGUI{
 		contentList.add(19, "");
 
 
+		 Object[][] datatypes = {
+	                {"RUBRIK", "INNEHÅLL"},
+	                {"Riksarkiverts diarienummer leveransöverkommelse", "", },
+	                {"Riksarkiverts diarienummer leverans", ""},
+	                {"Beskrivning av leverans", generalBean.getDescDelivery()},
+	                {"Arkivbildare",  generalBean.getArchiveCreator()},
+	                {"Organisationsnummer arkivbildare", generalBean.getArchiveCreatorNum()},
+	                {"Levererande myndighet", generalBean.getDelivGov()},
+	                {"Organisationsnummer levererande myndighet",};
 
-
-		Label headerLabel, contentLabel, archiveDiareNum, archiveDiareNumDeliv, descDelivery, archiveCreator,
+		LabelRecord headerLabel, archiveDiareNum, archiveDiareNumDeliv, descDelivery, archiveCreator,
 		oNumArchiveCreator, delivGov, oNumDelivGov, consultantBureau, contactPersonDeliv, telContactPerson,
 		mailContactPerson, costCenter, eBillingContactPerson, archiveName, systemName, withdrawalDate,
 		comment, projectCode, accessId, batchId;
+		LabelSSTRecord contentLabel;
 
-		generalSheet.getSettings().setProtected(true);
-		WritableCellFormat unLocked = new WritableCellFormat();
-		unLocked.setLocked(false);
+		//sheet1.getSettings().setProtected(true);
+		//WritableCellFormat unLocked = new WritableCellFormat();
+		//unLocked.setLocked(false);
 
 		for(String infoList : contentList)
 		{
-			contentLabel = new Label(1, generalListSize, infoList, unLocked);
-			generalSheet.addCell(contentLabel);
+			//contentLabel = new Label(1, generalListSize, infoList /*unLocked*/);
+			contentLabel =  new LabelSSTRecord(); 
+			sheet1.createRow(1);
 			generalListSize++;
 
 		}
 
-		WritableFont redFont = new WritableFont(WritableFont.ARIAL, 10);
+		//WritableFont redFont = new WritableFont(WritableFont.ARIAL, 10);
 		redFont.setColour(Colour.RED);
 
-		WritableCellFormat fontColor = new WritableCellFormat(redFont);
+		//WritableCellFormat fontColor = new WritableCellFormat(redFont);
 
-		headerLabel = new Label(0, 0, "RUBRIK");
+		headerLabel = new LabelRecord(0, 0, "RUBRIK");
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
-		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
-		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans", fontColor);
-		descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
-		archiveCreator = new Label(0, 4, "Arkivbildare"); 
-		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
-		delivGov = new Label(0, 6, "Levererande myndighet");
-		oNumDelivGov = new Label(0, 7, "Organisationsnummer levererande myndighet");
+		//archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
+		//archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans", fontColor);
+		//descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
+		//archiveCreator = new Label(0, 4, "Arkivbildare"); 
+		//oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
+		//delivGov = new Label(0, 6, "Levererande myndighet");
+		//oNumDelivGov = new Label(0, 7, "Organisationsnummer levererande myndighet");
 		consultantBureau = new Label(0, 8, "Servicebyrå/Konsult");
 		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans");
 		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson");
@@ -454,35 +466,35 @@ public class MetadataToExcelGUI{
 		accessId  = new Label(0, 19, "Accessions-ID", fontColor);
 		batchId  = new Label(0, 20, "Batch-ID", fontColor);
 
-		generalSheet.setColumnView(0, 40);
-		generalSheet.setColumnView(1, getLargestString(contentList));
+		sheet1.setColumnView(0, 40);
+		sheet1.setColumnView(1, getLargestString(contentList));
 
-		generalSheet.addCell(headerLabel);
-		generalSheet.addCell(archiveDiareNum);
-		generalSheet.addCell(archiveDiareNumDeliv);
-		generalSheet.addCell(descDelivery);
-		generalSheet.addCell(archiveCreator);
-		generalSheet.addCell(oNumArchiveCreator);
-		generalSheet.addCell(delivGov);
-		generalSheet.addCell(oNumDelivGov);
-		generalSheet.addCell(consultantBureau);
-		generalSheet.addCell(contactPersonDeliv);
-		generalSheet.addCell(telContactPerson);
-		generalSheet.addCell(mailContactPerson);
-		generalSheet.addCell(costCenter);
-		generalSheet.addCell(eBillingContactPerson);
-		generalSheet.addCell(archiveName);
-		generalSheet.addCell(systemName);
-		generalSheet.addCell(withdrawalDate);
-		generalSheet.addCell(comment);
-		generalSheet.addCell(projectCode);
-		generalSheet.addCell(accessId);
-		generalSheet.addCell(batchId);
+		sheet1.addCell(headerLabel);
+		sheet1.addCell(archiveDiareNum);
+		sheet1.addCell(archiveDiareNumDeliv);
+		sheet1.addCell(descDelivery);
+		sheet1.addCell(archiveCreator);
+		sheet1.addCell(oNumArchiveCreator);
+		sheet1.addCell(delivGov);
+		sheet1.addCell(oNumDelivGov);
+		sheet1.addCell(consultantBureau);
+		sheet1.addCell(contactPersonDeliv);
+		sheet1.addCell(telContactPerson);
+		sheet1.addCell(mailContactPerson);
+		sheet1.addCell(costCenter);
+		sheet1.addCell(eBillingContactPerson);
+		sheet1.addCell(archiveName);
+		sheet1.addCell(systemName);
+		sheet1.addCell(withdrawalDate);
+		sheet1.addCell(comment);
+		sheet1.addCell(projectCode);
+		sheet1.addCell(accessId);
+		sheet1.addCell(batchId);
 
 		contentLabel = new Label(1,0,"INNEHÅLL");
-		generalSheet.addCell(contentLabel);
+		sheet1.addCell(contentLabel);
 		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
-		return generalSheet;
+		return sheet1;
 
 
 	}
@@ -492,7 +504,7 @@ public class MetadataToExcelGUI{
 	 * the specific columns.
 	 */
 	@SuppressWarnings("unused")
-	private WritableSheet createMetadataExcelSheet(WritableSheet excelSheet) throws RowsExceededException, WriteException  {
+	private Sheet createMetadataExcelSheet(Sheet excelSheet)   {
 
 		String sizeInString,fileExtention,tempString,tempString2;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,

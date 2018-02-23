@@ -150,6 +150,7 @@ public class ExcelControllerFX extends Application {
 
 
 	}
+	
 	/**
 	 * Alert popup message for succeded excel file creation
 	 */
@@ -160,6 +161,7 @@ public class ExcelControllerFX extends Application {
 		alert.setContentText("File was successfully created");
 		alert.showAndWait();
 	}
+	
 	/**
 	 * Action that performs to save content in directory
 	 * @param event
@@ -170,7 +172,7 @@ public class ExcelControllerFX extends Application {
 		String fileName = "";
 		fileChooser.setTitle("VA");
 		//Set extension filter to .xlsx files
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		//Show save file dialog
