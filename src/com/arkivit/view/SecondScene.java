@@ -125,7 +125,7 @@ public class SecondScene{
 		secondGrid.setAlignment(Pos.BASELINE_LEFT);
 		secondGrid.setHgap(10);
 		secondGrid.setVgap(10);
-		secondGrid.setPadding(new Insets(15, 0, 0, 15));
+		secondGrid.setPadding(new Insets(0, 0, 0, 15));
 		HBox hBox = new HBox(mapLabel, mappCheckBox);
 		hBox.setAlignment(Pos.CENTER_LEFT);
 		HBox.setMargin(mappCheckBox,new Insets(10,10,10,10));
