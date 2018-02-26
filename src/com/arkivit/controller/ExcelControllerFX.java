@@ -192,6 +192,12 @@ public class ExcelControllerFX extends Application {
 
 			view.getSaveTxtField().setText(model.getTargetexcelFilepath());
 			view.getBtnConvert().setDisable(false);
+			view.getCheckBox().setDisable(true);
+		}
+		else if(file == null) {
+			view.getSaveTxtField().setText("");
+			view.getBtnConvert().setDisable(true);
+			view.getCheckBox().setDisable(false);
 		}
 	}
 	
@@ -384,9 +390,10 @@ public class ExcelControllerFX extends Application {
 		progressTask = getProgress();
 
 		view.getPi().setVisible(true);
-		view.getPb().setProgress(0);
+		view.getWaitLabel().setVisible(true);
+		//view.getPb().setProgress(0);
 
-		view.getPb().progressProperty().bind(progressTask.progressProperty());
+		//view.getPb().progressProperty().bind(progressTask.progressProperty());
 
 		progressTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
@@ -394,12 +401,12 @@ public class ExcelControllerFX extends Application {
 			public void handle(WorkerStateEvent arg0) {
 
 				setAlert();
-				view.getPb().setVisible(false);
+				//view.getPb().setVisible(false);
 				stage.setScene(view.getScene());
 				view.resetTextField();
 				view.getCheckBox().setDisable(true);
 				view.getCheckBox().setSelected(false);
-				view.getPb().progressProperty().unbind();
+				//view.getPb().progressProperty().unbind();
 				view.getCheckBox2().setSelected(false);
 				view.getCheckBox2().setDisable(true);
 				view.getBtnOverwrite().setDisable(true);
@@ -438,7 +445,8 @@ public class ExcelControllerFX extends Application {
 
 				model.init(mapping, overwrite);
 				view.getPi().setVisible(false);
-				view.getPb().setVisible(true);
+				view.getWaitLabel().setVisible(false);
+				//view.getPb().setVisible(true);
 				//Thread.sleep(200);
 
 				for (int i = 0; i < model.getFileListeLength(); i++) {

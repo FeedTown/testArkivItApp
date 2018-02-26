@@ -96,7 +96,7 @@ public class ExcelAppGUIFX{
 	private Label dirLabel;// = new Label("Directory");
 	private Label outputLabel;// = new Label("Output");
 	private Label mapLabel;// = new Label("Map");
-	private Label overwriteLabel;
+	private Label overwriteLabel, waitLabel;
 	private CheckBox checkBox;
 	private CheckBox checkBox2;
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -335,6 +335,7 @@ public class ExcelAppGUIFX{
 		pb = new ProgressBar(0);
 		pb.setMaxWidth(Double.MAX_VALUE);
 		pi = new ProgressIndicator();
+		waitLabel = new Label("Please wait...");
 		btnBack = new Button("◀ Back");
 		btnBack.setId("saveButton");
 		
@@ -351,6 +352,7 @@ public class ExcelAppGUIFX{
 		HBox.setMargin(checkBox2,new Insets(10,10,10,10));
 		HBox hBox3 = new HBox(btnOverwrite, btnDelete);
 		hBox3.setAlignment(Pos.CENTER_RIGHT);
+		HBox hBox4 = new HBox(pi, waitLabel);
 		
 		
 		
@@ -386,12 +388,12 @@ public class ExcelAppGUIFX{
 		//Create Excel button
 		gridSecondScene.add(btnConvert, 1, 3);
 		
-		gridSecondScene.add(pb, 1, 5);
-		pb.setVisible(false);
-		
 		pi.setMinSize(80, 80);
-		gridSecondScene.add(pi, 1, 5);
+		gridSecondScene.add(pi, 1, 4);
 		pi.setVisible(false);
+		gridSecondScene.add(waitLabel, 2, 4);
+		waitLabel.setVisible(false);
+		pb.setVisible(false);
 		
 		//back button
 		gridThirdScene.add(btnBack, 0, 0);
@@ -620,6 +622,13 @@ public class ExcelAppGUIFX{
 	public void setBtnDelete(Button btnDelete) {
 		this.btnDelete = btnDelete;
 	}
+	public Label getWaitLabel() {
+		return waitLabel;
+	}
+	public void setWaitLabel(Label waitLabel) {
+		this.waitLabel = waitLabel;
+	}
+	
 	
 	
 }
