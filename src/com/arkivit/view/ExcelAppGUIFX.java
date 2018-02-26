@@ -336,6 +336,7 @@ public class ExcelAppGUIFX{
 		pb.setMaxWidth(Double.MAX_VALUE);
 		pi = new ProgressIndicator();
 		waitLabel = new Label("Please wait...");
+		waitLabel.setId("waitLabel");
 		btnBack = new Button("◀ Back");
 		btnBack.setId("saveButton");
 		
@@ -352,7 +353,6 @@ public class ExcelAppGUIFX{
 		HBox.setMargin(checkBox2,new Insets(10,10,10,10));
 		HBox hBox3 = new HBox(btnOverwrite, btnDelete);
 		hBox3.setAlignment(Pos.CENTER_RIGHT);
-		HBox hBox4 = new HBox(pi, waitLabel);
 		
 		
 		
