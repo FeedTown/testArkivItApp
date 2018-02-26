@@ -441,9 +441,9 @@ public class MetadataToExcelGUI{
 
 		headerLabel = new Label(0, 0, "RUBRIK", bold);
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
-		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
-		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans", fontColor);
-		descDelivery  = new Label(0, 3, "Beskrivning av leverans", bold); 
+		archiveDiareNum = new Label(0, 1, "Riksarkivets diarienummer leveransöverkommelse", fontColor);
+		archiveDiareNumDeliv = new Label(0, 2, "Riksarkivets diarienummer leverans", fontColor);
+		descDelivery  = new Label(0, 3, "Beskrivning av leveransen", bold); 
 		archiveCreator = new Label(0, 4, "Arkivbildare", bold); 
 		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare", bold); 
 		delivGov = new Label(0, 6, "Levererande myndighet", bold);
@@ -451,7 +451,7 @@ public class MetadataToExcelGUI{
 		consultantBureau = new Label(0, 8, "Servicebyrå/Konsult", bold);
 		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans", bold);
 		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson", bold);
-		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson", bold);
+		mailContactPerson  = new Label(0, 11, "E-post-adress till kontaktperson", bold);
 		costCenter  = new Label(0, 12, "Kostnadsställe", fontColor);
 		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering", fontColor);
 		archiveName  = new Label(0, 14, "Arkivets namn", bold);
