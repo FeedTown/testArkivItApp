@@ -1,6 +1,8 @@
 package com.arkivit.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -12,8 +14,12 @@ import javax.xml.bind.SchemaOutputResolver;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tika.Tika;
 
+import Test.code.WorkbookExample;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.format.Colour;
@@ -147,7 +153,7 @@ public class MetadataToExcelGUI{
 
 		File folder = new File(folderPathName);
 		File tempFile;
-		
+
 		for(File currentFileOrDir : folder.listFiles())
 		{
 			tempFile = currentFileOrDir;
@@ -156,7 +162,7 @@ public class MetadataToExcelGUI{
 				if(mapping)
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
-				
+
 				fileList.add(tempFile);
 				System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
 				fileCount++;
@@ -165,7 +171,7 @@ public class MetadataToExcelGUI{
 			if(currentFileOrDir.isDirectory())	
 			{
 				//pathTest.add(tempFile.getAbsolutePath());
-				
+
 				if(mapping)
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
@@ -186,7 +192,7 @@ public class MetadataToExcelGUI{
 
 		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
 		currFileOrDir.renameTo(tempFile);
-		
+
 		return tempFile;
 
 
@@ -329,6 +335,19 @@ public class MetadataToExcelGUI{
 	//Checks what type of file it is and returns the type.
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
+	}
+
+	public void createExcelFilePOI() throws IOException {
+
+		FileOutputStream inMemoryOut = 
+				new FileOutputStream(new File(targetexcelFilepath +"/"+ excelFileName));
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		WorkbookExample example = new WorkbookExample(workbook, inMemoryOut);
+		example.export();
+
+
+
+
 	}
 
 	/*
