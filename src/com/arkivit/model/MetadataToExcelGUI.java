@@ -441,7 +441,7 @@ public class MetadataToExcelGUI{
 
 		headerLabel = new Label(0, 0, "RUBRIK", bold);
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
-		archiveDiareNum = new Label(0, 1, "Riksarkivets diarienummer leveransöverkommelse", fontColor);
+		archiveDiareNum = new Label(0, 1, "Riksarkivets diarienummer leveransöverenskommelse", fontColor);
 		archiveDiareNumDeliv = new Label(0, 2, "Riksarkivets diarienummer leverans", fontColor);
 		descDelivery  = new Label(0, 3, "Beskrivning av leveransen", bold); 
 		archiveCreator = new Label(0, 4, "Arkivbildare", bold); 
