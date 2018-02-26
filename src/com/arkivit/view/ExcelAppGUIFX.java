@@ -208,8 +208,8 @@ public class ExcelAppGUIFX{
 		//root.getChildren().add(hbBtn);
 		
 		firstScene = new Scene(root, 800, 620);
-		firstScene.getStylesheets().add("resources/style/style.css");
-		
+		//firstScene.getStylesheets().add("/resources/style/style.css");
+		firstScene.getStylesheets().add(getClass().getResource("/resources/style/style.css").toExternalForm());
 
 	}
 
@@ -401,7 +401,8 @@ public class ExcelAppGUIFX{
 		//root2.getChildren().add(pb);
 		root2.getChildren().add(gridThirdScene);
 		secondScene = new Scene(root2, 800, 620);
-		secondScene.getStylesheets().add("resources/style/style.css");
+		//secondScene.getStylesheets().add("/resources/style/style.css");
+		secondScene.getStylesheets().add(getClass().getResource("/resources/style/style.css").toExternalForm());
 	}
 	/**
 	 * Resets the contents of the text fields
