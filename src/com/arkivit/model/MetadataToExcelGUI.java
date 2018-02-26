@@ -16,6 +16,7 @@ import org.apache.tika.Tika;
 
 import jxl.Workbook;
 import jxl.WorkbookSettings;
+import jxl.format.BoldStyle;
 import jxl.format.Colour;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
@@ -426,30 +427,37 @@ public class MetadataToExcelGUI{
 
 		}
 
-		WritableFont redFont = new WritableFont(WritableFont.ARIAL, 10);
+		WritableFont redFont = new WritableFont(WritableFont.ARIAL, 9);
+		WritableFont boldFont = new WritableFont(WritableFont.ARIAL, 9);
+		
 		redFont.setColour(Colour.RED);
+		redFont.setBoldStyle(WritableFont.BOLD);
+		
+		boldFont.setBoldStyle(WritableFont.BOLD);
 
 		WritableCellFormat fontColor = new WritableCellFormat(redFont);
+		WritableCellFormat bold = new WritableCellFormat(boldFont);
+		
 
-		headerLabel = new Label(0, 0, "RUBRIK");
+		headerLabel = new Label(0, 0, "RUBRIK", bold);
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
 		archiveDiareNum = new Label(0, 1, "Riksarkiverts diarienummer leveransöverkommelse", fontColor);
 		archiveDiareNumDeliv = new Label(0, 2, "Riksarkiverts diarienummer leverans", fontColor);
-		descDelivery  = new Label(0, 3, "Beskrivning av leverans"); 
-		archiveCreator = new Label(0, 4, "Arkivbildare"); 
-		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare"); 
-		delivGov = new Label(0, 6, "Levererande myndighet");
-		oNumDelivGov = new Label(0, 7, "Organisationsnummer levererande myndighet");
-		consultantBureau = new Label(0, 8, "Servicebyrå/Konsult");
-		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans");
-		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson");
-		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson");
+		descDelivery  = new Label(0, 3, "Beskrivning av leverans", bold); 
+		archiveCreator = new Label(0, 4, "Arkivbildare", bold); 
+		oNumArchiveCreator = new Label(0, 5, "Organisationsnummer arkivbildare", bold); 
+		delivGov = new Label(0, 6, "Levererande myndighet", bold);
+		oNumDelivGov = new Label(0, 7, "Organisationsnummer levererande myndighet", bold);
+		consultantBureau = new Label(0, 8, "Servicebyrå/Konsult", bold);
+		contactPersonDeliv = new Label(0, 9, "Kontaktperson för leverans", bold);
+		telContactPerson  = new Label(0, 10, "Telefonnummer till kontaktperson", bold);
+		mailContactPerson  = new Label(0, 11, "E-post till kontaktperson", bold);
 		costCenter  = new Label(0, 12, "Kostnadsställe", fontColor);
 		eBillingContactPerson  = new Label(0, 13, "Kontaktperson för e-fakturering", fontColor);
-		archiveName  = new Label(0, 14, "Arkivets namn");
-		systemName  = new Label(0, 15, "Systemets namn");
-		withdrawalDate  = new Label(0, 16, "Uttagsdatum");
-		comment  = new Label(0, 17, "Kommentar");
+		archiveName  = new Label(0, 14, "Arkivets namn", bold);
+		systemName  = new Label(0, 15, "Systemets namn", bold);
+		withdrawalDate  = new Label(0, 16, "Uttagsdatum", bold);
+		comment  = new Label(0, 17, "Kommentar", bold);
 		projectCode  = new Label(0, 18, "Projektkod", fontColor);
 		accessId  = new Label(0, 19, "Accessions-ID", fontColor);
 		batchId  = new Label(0, 20, "Batch-ID", fontColor);
@@ -479,7 +487,7 @@ public class MetadataToExcelGUI{
 		generalSheet.addCell(accessId);
 		generalSheet.addCell(batchId);
 
-		contentLabel = new Label(1,0,"INNEHÅLL");
+		contentLabel = new Label(1,0,"INNEHÅLL", bold);
 		generalSheet.addCell(contentLabel);
 		//contentLabelCol = new Label(1, rowNum+1, fileExtention);
 		return generalSheet;
@@ -502,6 +510,10 @@ public class MetadataToExcelGUI{
 		int rowNum = 0;
 
 		excelSheet.getSettings().setProtected(true);
+		
+		WritableFont boldFont = new WritableFont(WritableFont.ARIAL, 9);
+		boldFont.setBoldStyle(WritableFont.BOLD);
+		WritableCellFormat bold = new WritableCellFormat(boldFont);
 
 		for(String filename : fileNameList)
 		{
@@ -518,36 +530,36 @@ public class MetadataToExcelGUI{
 			sizeInString = Objects.toString(sizeList.get(rowNum), null); 
 			fileExtention = FilenameUtils.getExtension(filename);
 
-			fileNameRow = new Label(0, 0, "FILNAMN");
+			fileNameRow = new Label(0, 0, "FILNAMN", bold);
 			fileNameColl = new Label(0, rowNum+1, filename);
 
-			fileTypeNameRow = new Label(1,0,"FILTYP");
+			fileTypeNameRow = new Label(1,0,"FILTYP", bold);
 			fileTypeNameColl = new Label(1, rowNum+1, fileExtention);
 
-			fileTypeVersionNameRow = new Label(2,0, "FILTYPSVERSION");
+			fileTypeVersionNameRow = new Label(2,0, "FILTYPSVERSION", bold);
 			//Label fileTypeVersionLabel = new Label(2, rowNumber+1,"")
 
-			fileSizeNameRow = new Label(3, 0, "STORLEK (Bytes)");
+			fileSizeNameRow = new Label(3, 0, "STORLEK (Bytes)", bold);
 			fileSizeNameColl = new Label(3, rowNum+1, sizeInString);
 
-			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING");
+			charsetNameRow = new Label(4,0, "TECKENUPPSÄTTNING", bold);
 			//charsetNameColl = new Label(4, rowNum+1, decoder.getUtfileList().get(rowNum));
 			charsetNameColl = new Label(4, rowNum+1, fileDecodeList.get(rowNum));
 
 
-			Row = new Label (5,0, "SPELTID(endast audio och video)");
+			Row = new Label (5,0, "SPELTID (endast audio och video)", bold);
 			Coll = new Label(5, rowNum+1, fileDuration.getAudioVideoList().get(rowNum));
 
-			filePathNameRow = new Label(6, 0, "SÖKVÄG(path,url)");
+			filePathNameRow = new Label(6, 0, "SÖKVÄG (path, url)", bold);
 			filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
 
-			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN");
+			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN", bold);
 			//Label confidentialityLabel = new Label(7, rowNumber+1,"");
 
-			personalInformationHandelingNameRow = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER");
+			personalInformationHandelingNameRow = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER", bold);
 			//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
 
-			commentLabelName = new Label(9,0, "KOMMENTAR");
+			commentLabelName = new Label(9,0, "KOMMENTAR", bold);
 			//Label commentLabel = new Label(9, rowNumber+1, "");
 
 			excelSheet.setColumnView(0, getLargestString(fileNameList));
