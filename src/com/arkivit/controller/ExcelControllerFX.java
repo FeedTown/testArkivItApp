@@ -5,6 +5,8 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.text.View;
+
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.SecondScene;
 import com.arkivit.view.FirstScene;
@@ -189,6 +191,12 @@ public class ExcelControllerFX extends Application {
 
 			secondScene.getSaveTxtField().setText(model.getTargetexcelFilepath());
 			secondScene.getBtnConvert().setDisable(false);
+			secondScene.getMappCheckBox().setDisable(true);
+		}
+		else if(file == null) {
+			secondScene.getSaveTxtField().setText("");
+			secondScene.getBtnConvert().setDisable(true);
+			secondScene.getMappCheckBox().setDisable(false);
 		}
 	}
 	
@@ -381,9 +389,10 @@ public class ExcelControllerFX extends Application {
 		progressTask = getProgress();
 
 		secondScene.getPi().setVisible(true);
-		secondScene.getPb().setProgress(0);
+		secondScene.getWaitLabel().setVisible(true);
+		//secondScene.getPb().setProgress(0);
 
-		secondScene.getPb().progressProperty().bind(progressTask.progressProperty());
+		//secondScene.getPb().progressProperty().bind(progressTask.progressProperty());
 
 		progressTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
@@ -391,12 +400,12 @@ public class ExcelControllerFX extends Application {
 			public void handle(WorkerStateEvent arg0) {
 
 				setAlert();
-				secondScene.getPb().setVisible(false);
+				//secondScene.getPb().setVisible(false);
 				stage.setScene(firstScene.getFirstScene());
 				firstScene.resetTextField();
 				secondScene.getMappCheckBox().setDisable(true);
 				secondScene.getMappCheckBox().setSelected(false);
-				secondScene.getPb().progressProperty().unbind();
+				//secondScene.getPb().progressProperty().unbind();
 				secondScene.getOverwriteCheckBox().setSelected(false);
 				secondScene.getOverwriteCheckBox().setDisable(true);
 				secondScene.getBtnOverwrite().setDisable(true);
@@ -435,7 +444,8 @@ public class ExcelControllerFX extends Application {
 
 				model.init(mapping, overwrite);
 				secondScene.getPi().setVisible(false);
-				secondScene.getPb().setVisible(true);
+				secondScene.getWaitLabel().setVisible(false);
+				//secondScene.getPb().setVisible(true);
 				//Thread.sleep(200);
 
 				for (int i = 0; i < model.getFileListeLength(); i++) {

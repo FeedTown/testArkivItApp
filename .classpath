@@ -16,6 +16,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/RobertoBlanco/Desktop/xmlbeans-xpath-2.6.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

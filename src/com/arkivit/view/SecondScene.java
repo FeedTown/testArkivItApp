@@ -38,7 +38,7 @@ public class SecondScene{
 	private Label dirLabel;// = new Label("Directory");
 	private Label outputLabel;// = new Label("Output");
 	private Label mapLabel;// = new Label("Map");
-	private Label overwriteLabel;
+	private Label overwriteLabel, waitLabel;
 	private CheckBox mappCheckBox;
 	private CheckBox overwriteCheckBox;
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -108,6 +108,8 @@ public class SecondScene{
 		pb = new ProgressBar(0);
 		pb.setMaxWidth(Double.MAX_VALUE);
 		pi = new ProgressIndicator();
+		waitLabel = new Label("Please wait...");
+		waitLabel.setId("waitLabel");
 		btnBack = new Button("◀ Back");
 		btnBack.setId("saveButton");
 		
@@ -162,8 +164,10 @@ public class SecondScene{
 		pb.setVisible(false);
 		
 		pi.setMinSize(80, 80);
-		firstGrid.add(pi, 1, 5);
+		firstGrid.add(pi, 1, 4);
+		firstGrid.add(waitLabel, 2, 4);
 		pi.setVisible(false);
+		waitLabel.setVisible(false);
 		
 		//back button
 		secondGrid.add(btnBack, 0, 0);
@@ -293,6 +297,17 @@ public class SecondScene{
 	public void setBtnDelete(Button btnDelete) {
 		this.btnDelete = btnDelete;
 	}
+
+
+	public Label getWaitLabel() {
+		return waitLabel;
+	}
+
+
+	public void setWaitLabel(Label waitLabel) {
+		this.waitLabel = waitLabel;
+	}
+	
 	
 	
 }
