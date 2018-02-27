@@ -1,10 +1,14 @@
 package com.arkivit.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import javax.xml.bind.SchemaOutputResolver;
@@ -12,8 +16,14 @@ import javax.xml.bind.SchemaOutputResolver;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.tika.Tika;
 
+import Test.code.Person;
+import Test.code.WorkbookExample;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.format.BoldStyle;
@@ -148,7 +158,7 @@ public class MetadataToExcelGUI{
 
 		File folder = new File(folderPathName);
 		File tempFile;
-		
+
 		for(File currentFileOrDir : folder.listFiles())
 		{
 			tempFile = currentFileOrDir;
@@ -157,7 +167,7 @@ public class MetadataToExcelGUI{
 				if(mapping)
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
-				
+
 				fileList.add(tempFile);
 				System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
 				fileCount++;
@@ -166,7 +176,7 @@ public class MetadataToExcelGUI{
 			if(currentFileOrDir.isDirectory())	
 			{
 				//pathTest.add(tempFile.getAbsolutePath());
-				
+
 				if(mapping)
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
@@ -187,7 +197,7 @@ public class MetadataToExcelGUI{
 
 		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
 		currFileOrDir.renameTo(tempFile);
-		
+
 		return tempFile;
 
 
@@ -332,6 +342,35 @@ public class MetadataToExcelGUI{
 		return this.fileType.detect(fileType);
 	}
 
+	private void createExcelFilePoi() throws IOException {
+
+		FileOutputStream streamOut = new FileOutputStream(new File("streamWorkbook.xlsx"));
+		SXSSFWorkbook streamWorkbook = new SXSSFWorkbook();
+	
+
+		List<Person> persons = new ArrayList<Person>();
+		for (int i = 0; i < 100; i++) {
+			persons.add(new Person(String.valueOf("user_" + i),String.valueOf("lastname_" + i)));
+
+		}
+
+		Sheet sheet =  streamWorkbook.createSheet();
+		for (int i = 0; i < persons.size(); i++) {
+			Person p = persons.get(i);
+			Row row = sheet.createRow(i);
+			Cell cell = row.createCell(0);
+			Cell cell1 = row.createCell(1);
+			cell.setCellValue(p.getName());
+			cell1.setCellValue(p.getlName());
+		}
+
+		streamWorkbook.write(streamOut);
+		streamOut.close();
+		streamWorkbook.close();
+
+
+	}
+
 	/*
 	 * Instantiates source path and file name.
 	 * Creates the excel sheets and adds fileNameList to them if !fileNameList. 
@@ -429,15 +468,15 @@ public class MetadataToExcelGUI{
 
 		WritableFont redFont = new WritableFont(WritableFont.ARIAL, 9);
 		WritableFont boldFont = new WritableFont(WritableFont.ARIAL, 9);
-		
+
 		redFont.setColour(Colour.RED);
 		redFont.setBoldStyle(WritableFont.BOLD);
-		
+
 		boldFont.setBoldStyle(WritableFont.BOLD);
 
 		WritableCellFormat fontColor = new WritableCellFormat(redFont);
 		WritableCellFormat bold = new WritableCellFormat(boldFont);
-		
+
 
 		headerLabel = new Label(0, 0, "RUBRIK", bold);
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
@@ -510,7 +549,7 @@ public class MetadataToExcelGUI{
 		int rowNum = 0;
 
 		excelSheet.getSettings().setProtected(true);
-		
+
 		WritableFont boldFont = new WritableFont(WritableFont.ARIAL, 9);
 		boldFont.setBoldStyle(WritableFont.BOLD);
 		WritableCellFormat bold = new WritableCellFormat(boldFont);
