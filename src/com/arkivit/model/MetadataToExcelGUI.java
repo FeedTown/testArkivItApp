@@ -73,7 +73,8 @@ public class MetadataToExcelGUI{
 	 */
 	public MetadataToExcelGUI()
 	{
-
+		sourceFolderPath = "F:\\Skola\\Svenska";
+		init(false,false);
 	}
 
 	/**
@@ -82,6 +83,7 @@ public class MetadataToExcelGUI{
 	 */
 	public MetadataToExcelGUI(String excelFileName)
 	{   
+		
 		this.excelFileName = excelFileName + ".xls";
 		//fileList = new ArrayList<File>();
 		//testMeth();
@@ -113,10 +115,8 @@ public class MetadataToExcelGUI{
 
 
 		listOfFilesAndDirectory(sourceFolderPath);
-		for(String s : pathTest)
-		{
-			System.out.println("Folder paths: " + s);
-		}
+		
+		
 		getAndAddFileDataToList();
 	}
 
@@ -279,7 +279,14 @@ public class MetadataToExcelGUI{
 		fileListeLength = fileNameList.size();
 
 		System.out.println("File name list length : " + fileListeLength);
-		createExcelFile();
+		//createExcelFile();
+		
+		try {
+			createExcelFilePoi();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -342,26 +349,70 @@ public class MetadataToExcelGUI{
 		return this.fileType.detect(fileType);
 	}
 
-	private void createExcelFilePoi() throws IOException {
+	public void createExcelFilePoi() throws IOException {
 
-		FileOutputStream streamOut = new FileOutputStream(new File("streamWorkbook.xlsx"));
+		//FileOutputStream streamOut = new FileOutputStream(new File(targetexcelFilepath +"/"+ excelFileName));
+		FileOutputStream streamOut = new FileOutputStream(new File("test1.xlsx"));
 		SXSSFWorkbook streamWorkbook = new SXSSFWorkbook();
-	
+		FileInfoStorageBean f;
+		String fileExtension, sizeInString, fileTypeVersion = "" ,confidentialityColl = "",
+				personalInformationHandelingNameColl  ="", comment = "";
 
-		List<Person> persons = new ArrayList<Person>();
-		for (int i = 0; i < 100; i++) {
-			persons.add(new Person(String.valueOf("user_" + i),String.valueOf("lastname_" + i)));
+		List<FileInfoStorageBean> fileContentSheetList = new ArrayList<FileInfoStorageBean>();
+		//List<SheetHeaderNameBean> fileHeaderList = new ArrayList<SheetHeaderNameBean>();
+		
+		List<String> fileHeaderList = new ArrayList<String>();
+		fileHeaderList = addHeadersToList(fileHeaderList);
+		
+		
+		for (int i = 0; i < fileList.size(); i++) {
+			fileExtension = FilenameUtils.getExtension(fileNameList.get(i));
+			sizeInString = Objects.toString(sizeList.get(i), null);
+			
+			fileContentSheetList.add(new FileInfoStorageBean(fileNameList.get(i), fileExtension, 
+					fileTypeVersion, sizeInString, fileDecodeList.get(i), fileDuration.getAudioVideoList().get(i),
+					filePathList.get(i), confidentialityColl, personalInformationHandelingNameColl,comment));
+			
 
 		}
 
 		Sheet sheet =  streamWorkbook.createSheet();
-		for (int i = 0; i < persons.size(); i++) {
-			Person p = persons.get(i);
-			Row row = sheet.createRow(i);
-			Cell cell = row.createCell(0);
-			Cell cell1 = row.createCell(1);
-			cell.setCellValue(p.getName());
-			cell1.setCellValue(p.getlName());
+		Row row;
+		Row header = sheet.createRow(0);
+		
+		int currentHeader = 0;
+		for(String tmp : fileHeaderList)
+		{
+			header.createCell(currentHeader).setCellValue(tmp);
+			currentHeader++;
+		}
+		
+		Cell cell1, cell2, cell3,cell4, cell5, cell6, cell7, cell8, cell9, cell;
+		for (int i = 0; i < fileContentSheetList.size(); i++) {
+			f = fileContentSheetList.get(i);
+			row = sheet.createRow(i+1);
+		    cell = row.createCell(0);
+			cell1 = row.createCell(1);
+			cell2 = row.createCell(2);
+			cell3 = row.createCell(3);
+			cell4 = row.createCell(4);
+			cell5 = row.createCell(5);
+			cell6 = row.createCell(6);
+			cell7 = row.createCell(7);
+			cell8 = row.createCell(8);
+			cell9 = row.createCell(9);
+			
+			cell.setCellValue(f.getFileNameColl());
+			cell1.setCellValue(f.getFileTypeNameColl());
+			cell2.setCellValue(fileTypeVersion);
+			cell3.setCellValue(f.getFileSizeNameColl());
+			cell4.setCellValue(f.getCharsetNameColl());
+			cell5.setCellValue(f.getDurationColl());
+			cell6.setCellValue(f.getFilePathNameColl());
+			cell7.setCellValue(confidentialityColl);
+			cell8.setCellValue(personalInformationHandelingNameColl);
+			cell9.setCellValue(comment);
+			
 		}
 
 		streamWorkbook.write(streamOut);
@@ -369,6 +420,23 @@ public class MetadataToExcelGUI{
 		streamWorkbook.close();
 
 
+	}
+
+	private List addHeadersToList(List<String> fileHeaderList) 
+	{
+		fileHeaderList.add("FILNAMN");
+		fileHeaderList.add("FILTYP");
+		fileHeaderList.add("FILTYPSVERSION");
+		fileHeaderList.add("STORLEK (Bytes)");
+		fileHeaderList.add("TECKENUPPSÄTTNING");
+		fileHeaderList.add("SPELTID (endast audio och video)");
+		fileHeaderList.add("SÖKVÄG (path, url)");
+		fileHeaderList.add("SEKRETESSGRAD HOS MYNDIGHETEN");
+		fileHeaderList.add("BEHANDLING AV PERSONUPPGIFTER");
+		fileHeaderList.add("KOMMENTAR");
+		
+		return fileHeaderList;
+		
 	}
 
 	/*

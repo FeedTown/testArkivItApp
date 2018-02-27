@@ -7,10 +7,12 @@ import java.io.IOException;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.arkivit.model.MetadataToExcelGUI;
+
 public class testMain {
 
 	public static void main(String[] args) throws IOException {
-	    FileOutputStream inMemoryOut = new FileOutputStream(new File("inMemoryWorkbook.xlsx"));
+	    /*FileOutputStream inMemoryOut = new FileOutputStream(new File("inMemoryWorkbook.xlsx"));
 	    XSSFWorkbook workbook = new XSSFWorkbook();
 	    WorkbookExample example = new WorkbookExample(workbook, inMemoryOut);
 	    example.export();
@@ -18,6 +20,8 @@ public class testMain {
 	    FileOutputStream streamOut = new FileOutputStream(new File("streamWorkbook.xlsx"));
 	    SXSSFWorkbook streamWorkbook = new SXSSFWorkbook();
 	    WorkbookExample streamExample = new WorkbookExample(streamWorkbook, streamOut);
-	    streamExample.export();
+	    streamExample.export();*/
+		
+		MetadataToExcelGUI data = new MetadataToExcelGUI();
 	}
 }
