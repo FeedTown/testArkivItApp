@@ -38,9 +38,9 @@ public class SecondScene{
 	private Label dirLabel;// = new Label("Directory");
 	private Label outputLabel;// = new Label("Output");
 	private Label mapLabel;// = new Label("Map");
-	private Label overwriteLabel, waitLabel;
+	private Label overwriteLabel, waitLabel, confidentialLabel, personalDataLabel;
 	private CheckBox mappCheckBox;
-	private CheckBox overwriteCheckBox;
+	private CheckBox overwriteCheckBox, confidentialCheckBox, personalDataBox;
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
 	private ProgressBar pb;
 	private ProgressIndicator pi;
@@ -98,6 +98,20 @@ public class SecondScene{
 		    "original content. \n"  
 		);
 		btnOverwrite.setTooltip(tooltip3);
+		confidentialLabel = new Label("Confidential");
+		confidentialCheckBox = new CheckBox();
+		final Tooltip confidentialTooltip = new Tooltip();
+		confidentialTooltip.setText(
+		    "Set 'Sekretessgrad hos myndighet' to 'JA'\n"
+		);
+		confidentialCheckBox.setTooltip(confidentialTooltip);
+		personalDataLabel = new Label("Personal Data");
+		personalDataBox = new CheckBox();
+		final Tooltip personalDataTooltip = new Tooltip();
+		personalDataTooltip.setText(
+		    "Set 'Behandling av personuppgifter' to 'JA'\n"
+		);
+		personalDataBox.setTooltip(personalDataTooltip);
 		btnSaveAs = new Button("Save As...");
 		btnSaveAs.setDisable(true);
 		btnSaveAs.setId("saveButton");
@@ -105,8 +119,8 @@ public class SecondScene{
 		btnConvert = new Button("Create");
 		btnConvert.setDisable(true);
 		btnConvert.setId("saveButton");
-		pb = new ProgressBar(0);
-		pb.setMaxWidth(Double.MAX_VALUE);
+		//pb = new ProgressBar(0);
+		//pb.setMaxWidth(Double.MAX_VALUE);
 		pi = new ProgressIndicator();
 		waitLabel = new Label("Please wait...");
 		waitLabel.setId("waitLabel");
@@ -117,15 +131,7 @@ public class SecondScene{
 		firstGrid.setAlignment(Pos.CENTER);
 		firstGrid.setHgap(10);
 		firstGrid.setVgap(10);
-		firstGrid.setPadding(new Insets(200, 200, 100, 200));
-		
-		
-		
-		secondGrid = new GridPane();
-		secondGrid.setAlignment(Pos.BASELINE_LEFT);
-		secondGrid.setHgap(10);
-		secondGrid.setVgap(10);
-		secondGrid.setPadding(new Insets(0, 0, 0, 15));
+		firstGrid.setPadding(new Insets(250, 100, 50, 100));
 		HBox hBox = new HBox(mapLabel, mappCheckBox);
 		hBox.setAlignment(Pos.CENTER_LEFT);
 		HBox.setMargin(mappCheckBox,new Insets(10,10,10,10));
@@ -134,6 +140,21 @@ public class SecondScene{
 		HBox.setMargin(overwriteCheckBox,new Insets(10,10,10,10));
 		HBox hBox3 = new HBox(btnOverwrite, btnDelete);
 		hBox3.setAlignment(Pos.CENTER_RIGHT);
+		HBox hBox4 = new HBox(confidentialLabel, confidentialCheckBox);
+		hBox4.setAlignment(Pos.CENTER_LEFT);
+		HBox.setMargin(confidentialLabel,new Insets(0,10,0,0));
+		HBox hBox5 = new HBox(personalDataLabel, personalDataBox);
+		hBox5.setAlignment(Pos.CENTER_RIGHT);
+		HBox.setMargin(personalDataLabel,new Insets(0,10,0,0));
+		
+		
+		
+		secondGrid = new GridPane();
+		secondGrid.setAlignment(Pos.BASELINE_LEFT);
+		secondGrid.setHgap(10);
+		secondGrid.setVgap(10);
+		secondGrid.setPadding(new Insets(-5, 0, 0, 15));
+		
 		
 		
 
@@ -150,22 +171,26 @@ public class SecondScene{
 		firstGrid.add(hBox2, 1, 1);
 		firstGrid.add(hBox3, 2, 1);
 		//firstGrid.add(btnOverwrite, 2, 1);
+		
+		//classification and personal data
+		firstGrid.add(hBox4, 0, 2);
+		firstGrid.add(hBox5, 1, 2);
 
 		//Out dir components
-		firstGrid.add(outputLabel, 0, 2);
-		firstGrid.add(saveTxtField, 1, 2);
+		firstGrid.add(outputLabel, 0, 3);
+		firstGrid.add(saveTxtField, 1, 3);
 		saveTxtField.setEditable(false);
-		firstGrid.add(btnSaveAs, 2, 2);
+		firstGrid.add(btnSaveAs, 2, 3);
 		
 		//Create Excel button
-		firstGrid.add(btnConvert, 1, 3);
+		firstGrid.add(btnConvert, 1, 4);
 		
-		firstGrid.add(pb, 1, 5);
-		pb.setVisible(false);
+		/*firstGrid.add(pb, 1, 5);
+		pb.setVisible(false);*/
 		
 		pi.setMinSize(80, 80);
-		firstGrid.add(pi, 1, 4);
-		firstGrid.add(waitLabel, 2, 4);
+		firstGrid.add(pi, 1, 5);
+		firstGrid.add(waitLabel, 2, 5);
 		pi.setVisible(false);
 		waitLabel.setVisible(false);
 		
@@ -193,6 +218,8 @@ public class SecondScene{
 		mappCheckBox.setOnAction(listenForEvent);
 		overwriteCheckBox.setOnAction(listenForEvent);
 		btnDelete.setOnAction(listenForEvent);
+		confidentialCheckBox.setOnAction(listenForEvent);
+		personalDataBox.setOnAction(listenForEvent);
 	}
 		
 	/**
@@ -298,7 +325,6 @@ public class SecondScene{
 		this.btnDelete = btnDelete;
 	}
 
-
 	public Label getWaitLabel() {
 		return waitLabel;
 	}
@@ -307,6 +333,27 @@ public class SecondScene{
 	public void setWaitLabel(Label waitLabel) {
 		this.waitLabel = waitLabel;
 	}
+
+
+	public CheckBox getConfidentialCheckBox() {
+		return confidentialCheckBox;
+	}
+
+
+	public void setConfidentialCheckBox(CheckBox confidentialCheckBox) {
+		this.confidentialCheckBox = confidentialCheckBox;
+	}
+
+
+	public CheckBox getPersonalDataBox() {
+		return personalDataBox;
+	}
+
+
+	public void setPersonalDataBox(CheckBox personalDataBox) {
+		this.personalDataBox = personalDataBox;
+	}
+	
 	
 	
 	

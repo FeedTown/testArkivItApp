@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import jxl.write.Label;
 
 /**
  * 
@@ -256,6 +257,27 @@ public class ExcelControllerFX extends Application {
 		}
 		
 	}
+	private void confidentialBox() {
+		if(secondScene.getConfidentialCheckBox().isSelected()) {
+			model.setConfidentialChecked("JA");
+			//tempLabel.equals(model.getConfidentialityColl());
+			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
+		}
+		else {
+			model.setConfidentialChecked("NEJ");
+		}
+	}
+	
+	private void personalDataBox() {
+		if(secondScene.getPersonalDataBox().isSelected()) {
+			model.setPersonalDataChecked("JA");
+			//tempLabel.equals(model.getConfidentialityColl());
+			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
+		}
+		else {
+			model.setPersonalDataChecked("NEJ");
+		}
+	}
 
 	/**
 	 * Action that performs for selecting folder
@@ -411,6 +433,8 @@ public class ExcelControllerFX extends Application {
 				secondScene.getBtnOverwrite().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);
 				secondScene.getBtnDelete().setDisable(true);
+				secondScene.getConfidentialCheckBox().setSelected(false);
+				secondScene.getPersonalDataBox().setSelected(false);
 			}
 
 		});
@@ -517,6 +541,12 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(secondScene.getBtnDelete())) {
 				deleteButton(event);
+			}
+			else if(event.getSource().equals(secondScene.getConfidentialCheckBox())) {
+				confidentialBox();
+			}
+			else if(event.getSource().equals(secondScene.getPersonalDataBox())) {
+				personalDataBox();
 			}
 
 		}

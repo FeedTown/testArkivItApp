@@ -48,7 +48,7 @@ import jxl.write.biff.RowsExceededException;
 public class MetadataToExcelGUI{
 
 	//private File file;
-	private String excelFileName, folderName = "";  
+	private String excelFileName, folderName = "", confidentialChecked, personalDataChecked;  
 	private long fileSize;
 	private int fileListeLength;
 	private String targetexcelFilepath, backupFilePath;
@@ -67,6 +67,7 @@ public class MetadataToExcelGUI{
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	private boolean mapping = false;
 	private boolean overwrite = false;
+	
 
 	/**
 	 * No args constructor
@@ -544,16 +545,16 @@ public class MetadataToExcelGUI{
 		String sizeInString,fileExtention,tempString,tempString2;
 		Label fileNameRow,fileNameColl,fileTypeNameRow,fileTypeNameColl,fileTypeVersionNameRow,
 		fileTypeVersionNameColl,fileSizeNameRow,fileSizeNameColl,charsetNameRow,charsetNameColl,
-		Row,Coll,filePathNameRow,filePathNameColl,confidentialityRow,confidentialityColl,
+		Row,Coll,filePathNameRow,filePathNameColl,confidentialityRow, confidentialityColl, personalInformationColl,
 		personalInformationHandelingNameRow,commentLabelName,commentRow;
-		int rowNum = 0;
+		
 
 		excelSheet.getSettings().setProtected(true);
 
 		WritableFont boldFont = new WritableFont(WritableFont.ARIAL, 9);
 		boldFont.setBoldStyle(WritableFont.BOLD);
 		WritableCellFormat bold = new WritableCellFormat(boldFont);
-
+		int rowNum = 0;
 		for(String filename : fileNameList)
 		{
 
@@ -592,11 +593,11 @@ public class MetadataToExcelGUI{
 			filePathNameRow = new Label(6, 0, "SÖKVÄG (path, url)", bold);
 			filePathNameColl = new Label(6, rowNum+1, filePathList.get(rowNum));
 
-			confidentialityRow = new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN", bold);
-			//Label confidentialityLabel = new Label(7, rowNumber+1,"");
+			confidentialityRow= new Label(7,0, "SEKRETESSGRAD HOS MYNDIGHETEN", bold);
+			confidentialityColl = new Label(7, rowNum+1, confidentialChecked);
 
 			personalInformationHandelingNameRow = new Label(8,0, "BEHANDLING AV PERSONUPPGIFTER", bold);
-			//Label personalInformationHandelingLabel = new Label(8, rowNumber+1, "");
+			personalInformationColl = new Label(8, rowNum+1, personalDataChecked);
 
 			commentLabelName = new Label(9,0, "KOMMENTAR", bold);
 			//Label commentLabel = new Label(9, rowNumber+1, "");
@@ -632,10 +633,10 @@ public class MetadataToExcelGUI{
 			excelSheet.addCell(Coll);
 
 			excelSheet.addCell(confidentialityRow);
-			//excelSheet.addCell(confidentialityColl);
+			excelSheet.addCell(confidentialityColl);
 
 			excelSheet.addCell(personalInformationHandelingNameRow);
-			//excelSheet.addCell(personalInformationHandelingLabel);
+			excelSheet.addCell(personalInformationColl);
 
 			excelSheet.addCell(commentLabelName);
 			//excelSheet.addCell(commentLabel);
@@ -733,6 +734,24 @@ public class MetadataToExcelGUI{
 	public void setBackupFilePath(String backupFilePath) {
 		this.backupFilePath = backupFilePath;
 	}
+	
+	public String getConfidentialChecked() {
+		return confidentialChecked;
+	}
+
+	public void setConfidentialChecked(String confidentialChecked) {
+		this.confidentialChecked = confidentialChecked;
+	}
+
+	public String getPersonalDataChecked() {
+		return personalDataChecked;
+	}
+
+	public void setPersonalDataChecked(String personalDataChecked) {
+		this.personalDataChecked = personalDataChecked;
+	}
+	
+	
 
 
 }
