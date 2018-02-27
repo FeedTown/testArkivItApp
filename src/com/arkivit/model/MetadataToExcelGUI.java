@@ -73,7 +73,8 @@ public class MetadataToExcelGUI{
 	 */
 	public MetadataToExcelGUI()
 	{
-
+		sourceFolderPath = "/Users/RobertoBlanco/Desktop/TestFiles";
+		init(false,false);
 	}
 
 	/**
@@ -82,6 +83,7 @@ public class MetadataToExcelGUI{
 	 */
 	public MetadataToExcelGUI(String excelFileName)
 	{   
+
 		this.excelFileName = excelFileName + ".xls";
 		//fileList = new ArrayList<File>();
 		//testMeth();
@@ -113,10 +115,8 @@ public class MetadataToExcelGUI{
 
 
 		listOfFilesAndDirectory(sourceFolderPath);
-		for(String s : pathTest)
-		{
-			System.out.println("Folder paths: " + s);
-		}
+
+
 		getAndAddFileDataToList();
 	}
 
@@ -279,7 +279,15 @@ public class MetadataToExcelGUI{
 		fileListeLength = fileNameList.size();
 
 		System.out.println("File name list length : " + fileListeLength);
-		createExcelFile();
+		//createExcelFile();
+
+		try {
+			//createSecondSheet();
+			createWorkbook();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -341,33 +349,155 @@ public class MetadataToExcelGUI{
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
 	}
-
-	private void createExcelFilePoi() throws IOException {
-
-		FileOutputStream streamOut = new FileOutputStream(new File("streamWorkbook.xlsx"));
-		SXSSFWorkbook streamWorkbook = new SXSSFWorkbook();
 	
-
-		List<Person> persons = new ArrayList<Person>();
-		for (int i = 0; i < 100; i++) {
-			persons.add(new Person(String.valueOf("user_" + i),String.valueOf("lastname_" + i)));
-
-		}
-
-		Sheet sheet =  streamWorkbook.createSheet();
-		for (int i = 0; i < persons.size(); i++) {
-			Person p = persons.get(i);
-			Row row = sheet.createRow(i);
-			Cell cell = row.createCell(0);
-			Cell cell1 = row.createCell(1);
-			cell.setCellValue(p.getName());
-			cell1.setCellValue(p.getlName());
-		}
-
+	private void createWorkbook() throws IOException {
+		FileOutputStream streamOut = new FileOutputStream(new File("testfile2.xlsx"));
+		SXSSFWorkbook streamWorkbook = new SXSSFWorkbook();
+		
+		createFirstSheet(streamWorkbook);
+		createSecondSheet(streamWorkbook);
+		
 		streamWorkbook.write(streamOut);
 		streamOut.close();
 		streamWorkbook.close();
 
+		
+	}
+
+	public void createFirstSheet(SXSSFWorkbook streamWorkbook) throws IOException{
+		
+
+		List<String> generalHeaderList= new ArrayList<String>();
+		generalHeaderList = addGeneralHeadersToList(generalHeaderList);
+
+		Sheet sheet1 = streamWorkbook.createSheet("Allmänt");
+		Row rowFirstSheet;
+		Row headerFirstSheet = sheet1.createRow(0);
+		
+		headerFirstSheet.createCell(0).setCellValue("RUBRIK");
+		headerFirstSheet.createCell(1).setCellValue("INNEHÅLL");
+		
+		Cell cell0,cell1 ;
+		
+		for (int i = 0; i < generalHeaderList.size(); i++) {
+			generalHeaderList.get(i);
+			rowFirstSheet = sheet1.createRow(i+1);
+			cell0 = rowFirstSheet.createCell(0);
+			cell1 = rowFirstSheet.createCell(1);
+		
+			cell0.setCellValue(generalHeaderList.get(i));
+			//cell1.setCellValue("INNEHÅLL");
+
+		}
+		
+		
+		
+	}
+
+	public void createSecondSheet(SXSSFWorkbook streamWorkbook) throws IOException {
+		
+		FileInfoStorageBean f;
+		String fileExtension, sizeInString, fileTypeVersion = "" ,confidentialityColl = "",
+				personalInformationHandelingNameColl  ="", commentColl = "";
+
+		List<FileInfoStorageBean> fileContentSheetList = new ArrayList<FileInfoStorageBean>();
+
+		List<String> fileHeaderList = new ArrayList<String>();
+		fileHeaderList = addHeadersToList(fileHeaderList);
+
+
+		for (int i = 0; i < fileList.size(); i++) {
+			fileExtension = FilenameUtils.getExtension(fileNameList.get(i));
+			sizeInString = Objects.toString(sizeList.get(i), null);
+
+			fileContentSheetList.add(new FileInfoStorageBean(fileNameList.get(i), fileExtension, 
+					fileTypeVersion, sizeInString, fileDecodeList.get(i), fileDuration.getAudioVideoList().get(i),
+					filePathList.get(i), confidentialityColl, personalInformationHandelingNameColl,commentColl));
+
+
+		}
+
+		Sheet sheet2 =  streamWorkbook.createSheet("FILER");
+		Row rowSecondSheet;
+		Row header = sheet2.createRow(0);
+
+		int currentHeader = 0;
+
+		for(String tmp : fileHeaderList)
+		{
+			header.createCell(currentHeader).setCellValue(tmp);
+			currentHeader++;
+		}
+
+		Cell cell1, cell2, cell3,cell4, cell5, cell6, cell7, cell8, cell9, cell;
+		for (int i = 0; i < fileContentSheetList.size(); i++) {
+			f = fileContentSheetList.get(i);
+			rowSecondSheet = sheet2.createRow(i+1);
+			cell = rowSecondSheet.createCell(0);
+			cell1 = rowSecondSheet.createCell(1);
+			cell2 = rowSecondSheet.createCell(2);
+			cell3 = rowSecondSheet.createCell(3);
+			cell4 = rowSecondSheet.createCell(4);
+			cell5 = rowSecondSheet.createCell(5);
+			cell6 = rowSecondSheet.createCell(6);
+			cell7 = rowSecondSheet.createCell(7);
+			cell8 = rowSecondSheet.createCell(8);
+			cell9 = rowSecondSheet.createCell(9);
+
+			cell.setCellValue(f.getFileNameColl());
+			cell1.setCellValue(f.getFileTypeNameColl());
+			cell2.setCellValue(fileTypeVersion);
+			cell3.setCellValue(f.getFileSizeNameColl());
+			cell4.setCellValue(f.getCharsetNameColl());
+			cell5.setCellValue(f.getDurationColl());
+			cell6.setCellValue(f.getFilePathNameColl());
+			cell7.setCellValue(confidentialityColl);
+			cell8.setCellValue(personalInformationHandelingNameColl);
+			cell9.setCellValue(commentColl);
+
+		}
+
+	}
+
+
+	private List<String> addGeneralHeadersToList(List<String> generalHeaderList) {
+		generalHeaderList.add("Riksarkivets diarienummer leveransöverenskommelse");
+		generalHeaderList.add("Riksarkivets diarienummer leverans");
+		generalHeaderList.add("Beskrivning av leveransen");
+		generalHeaderList.add("Arkivbildare");
+		generalHeaderList.add("Organisationsnummer arkivbildare");
+		generalHeaderList.add("Levererande myndighet");
+		generalHeaderList.add("Organisationsnummer levererande myndighet");
+		generalHeaderList.add("Servicebyrå/Konsult");
+		generalHeaderList.add("Kontaktperson för leverans");
+		generalHeaderList.add("Telefonnummer till kontaktperson");
+		generalHeaderList.add("Kostnadsställe");
+		generalHeaderList.add("Kontaktperson för e-fakturering");
+		generalHeaderList.add("Arkivets namn");
+		generalHeaderList.add("Systemets namn");
+		generalHeaderList.add("Uttagsdatum");
+		generalHeaderList.add("Kommentar");
+		generalHeaderList.add("Projektkod");
+		generalHeaderList.add("Accessions-ID");
+		generalHeaderList.add("Batch-ID");
+		return generalHeaderList;
+	}
+
+
+	private List<String> addHeadersToList(List<String> fileHeaderList) 
+	{
+		fileHeaderList.add("FILNAMN");
+		fileHeaderList.add("FILTYP");
+		fileHeaderList.add("FILTYPSVERSION");
+		fileHeaderList.add("STORLEK (Bytes)");
+		fileHeaderList.add("TECKENUPPSÄTTNING");
+		fileHeaderList.add("SPELTID (endast audio och video)");
+		fileHeaderList.add("SÖKVÄG (path, url)");
+		fileHeaderList.add("SEKRETESSGRAD HOS MYNDIGHETEN");
+		fileHeaderList.add("BEHANDLING AV PERSONUPPGIFTER");
+		fileHeaderList.add("KOMMENTAR");
+
+		return fileHeaderList;
 
 	}
 
@@ -476,7 +606,6 @@ public class MetadataToExcelGUI{
 
 		WritableCellFormat fontColor = new WritableCellFormat(redFont);
 		WritableCellFormat bold = new WritableCellFormat(boldFont);
-
 
 		headerLabel = new Label(0, 0, "RUBRIK", bold);
 		//headerLabelCol = new Label(0, rowNum+1, tempString);
