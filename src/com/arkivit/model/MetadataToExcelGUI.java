@@ -474,7 +474,7 @@ public class MetadataToExcelGUI{
 		for (int i = 0; i < fileContentSheetList.size(); i++) {
 			f = fileContentSheetList.get(i);
 			rowSecondSheet = sheet2.createRow(i+1);
-			cell = rowSecondSheet.createCell(0);
+			/*cell = rowSecondSheet.createCell(0);
 			cell1 = rowSecondSheet.createCell(1);
 			cell2 = rowSecondSheet.createCell(2);
 			cell3 = rowSecondSheet.createCell(3);
@@ -483,9 +483,20 @@ public class MetadataToExcelGUI{
 			cell6 = rowSecondSheet.createCell(6);
 			cell7 = rowSecondSheet.createCell(7);
 			cell8 = rowSecondSheet.createCell(8);
-			cell9 = rowSecondSheet.createCell(9);
+			cell9 = rowSecondSheet.createCell(9);*/
+			
+			rowSecondSheet.createCell(0).setCellValue(f.getFileNameColl());
+			rowSecondSheet.createCell(1).setCellValue(f.getFileTypeNameColl());
+			rowSecondSheet.createCell(2).setCellValue(fileTypeVersion);
+			rowSecondSheet.createCell(3).setCellValue(f.getFileSizeNameColl());
+			rowSecondSheet.createCell(4).setCellValue(f.getCharsetNameColl());
+			rowSecondSheet.createCell(5).setCellValue(f.getDurationColl());
+			rowSecondSheet.createCell(6).setCellValue(f.getFilePathNameColl());
+			rowSecondSheet.createCell(7).setCellValue(confidentialChecked);
+			rowSecondSheet.createCell(8).setCellValue(personalDataChecked);
+			rowSecondSheet.createCell(9).setCellValue(commentColl);
 
-			cell.setCellValue(f.getFileNameColl());
+			/*cell.setCellValue(f.getFileNameColl());
 			cell1.setCellValue(f.getFileTypeNameColl());
 			cell2.setCellValue(fileTypeVersion);
 			cell3.setCellValue(f.getFileSizeNameColl());
@@ -494,7 +505,7 @@ public class MetadataToExcelGUI{
 			cell6.setCellValue(f.getFilePathNameColl());
 			cell7.setCellValue(confidentialChecked);
 			cell8.setCellValue(personalDataChecked);
-			cell9.setCellValue(commentColl);
+			cell9.setCellValue(commentColl);*/
 
 		}
 
