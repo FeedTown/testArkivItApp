@@ -173,7 +173,7 @@ public class MetadataToExcelGUI{
 				fileCount++;
 			}
 
-			if(currentFileOrDir.isDirectory())	
+			else if(currentFileOrDir.isDirectory())	
 			{
 				//pathTest.add(tempFile.getAbsolutePath());
 
