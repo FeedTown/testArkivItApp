@@ -460,7 +460,8 @@ public class MetadataToExcelGUI{
 	}
 
 
-	private List<String> addGeneralHeadersToList(List<String> generalHeaderList) {
+	private List<String> addGeneralHeadersToList(List<String> generalHeaderList) 
+	{
 		
 		generalHeaderList.add("Riksarkivets diarienummer leveransöverenskommelse");
 		generalHeaderList.add("Riksarkivets diarienummer leverans");
