@@ -467,8 +467,8 @@ public class MetadataToExcelGUI{
 		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
 		style.setFont(boldFont);
 		//style.setLocked(true);
-		locked.setLocked(true);
-		
+		locked.setLocked(false);
+	
 		Row rowSecondSheet;
 		Row header = sheet2.createRow(0);
 
@@ -483,13 +483,15 @@ public class MetadataToExcelGUI{
 
 		}
 
+
 		Cell cell0, cell1, cell2, cell3,cell4, cell5, cell6, cell7, cell8, cell9;
-		
+
 		for (int i = 0; i < fileContentSheetList.size(); i++) {
 			
 			f = fileContentSheetList.get(i);
 			rowSecondSheet = sheet2.createRow(i+1);
-			cell0 = rowSecondSheet.createCell(0);
+			/*cell0 = rowSecondSheet.createCell(0);
+>>>>>>> b8910dd19de39872876423cfb961aafe8e44c7fe
 			cell1 = rowSecondSheet.createCell(1);
 			cell2 = rowSecondSheet.createCell(2);
 			cell3 = rowSecondSheet.createCell(3);
@@ -513,14 +515,22 @@ public class MetadataToExcelGUI{
 			
 	
 			rowSecondSheet.getCell(i).setCellStyle(locked);
-					
-			//cell0.setCellStyle(unLocked);
-			//cell1.setCellStyle(unLocked);
-			//rowSecondSheet.getCell(i);
-			//if(rowSecondSheet.cellIterator().hasNext()){
-				
-			//}
+
+			cell9 = rowSecondSheet.createCell(9);*/
 			
+			rowSecondSheet.createCell(0).setCellValue(f.getFileNameColl());
+			rowSecondSheet.createCell(1).setCellValue(f.getFileTypeNameColl());
+			rowSecondSheet.createCell(2).setCellValue(fileTypeVersion);
+			rowSecondSheet.createCell(3).setCellValue(f.getFileSizeNameColl());
+			rowSecondSheet.createCell(4).setCellValue(f.getCharsetNameColl());
+			rowSecondSheet.createCell(5).setCellValue(f.getDurationColl());
+			rowSecondSheet.createCell(6).setCellValue(f.getFilePathNameColl());
+			rowSecondSheet.createCell(7).setCellValue(confidentialChecked);
+			rowSecondSheet.createCell(8).setCellValue(personalDataChecked);
+			rowSecondSheet.createCell(9).setCellValue(commentColl);
+
+			rowSecondSheet.setRowStyle(locked);
+		
 		}
 
 	}
