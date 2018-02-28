@@ -58,7 +58,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
-	private ArrayList<String> pathTest = new ArrayList<String>();
+	private ArrayList<String> mappedFiles = new ArrayList<String>();
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
@@ -75,10 +75,10 @@ public class MetadataToExcelGUI{
 	public MetadataToExcelGUI()
 	{
 
-		sourceFolderPath = "F:\\Skola\\Svenska";
+		sourceFolderPath = "C:\\Users\\Kevin\\Desktop\\test";
 		//sourceFolderPath = "/Users/RobertoBlanco/Desktop/TestFiles";
 
-		init(false,false);
+		init(true,true);
 	}
 
 	/**
@@ -487,7 +487,7 @@ public class MetadataToExcelGUI{
 	}
 
 
-	private List addHeadersToList(List<String> fileHeaderList) 
+	private List<String> addHeadersToList(List<String> fileHeaderList) 
 	{
 		fileHeaderList.add("FILNAMN");
 		fileHeaderList.add("FILTYP");
@@ -788,6 +788,7 @@ public class MetadataToExcelGUI{
 			currentString = StringUtils.replaceEach (currentString, 
 					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
+			mappedFiles.add(currentString);
 		}
 
 		return currentString;
@@ -880,6 +881,14 @@ public class MetadataToExcelGUI{
 
 	public void setPersonalDataChecked(String personalDataChecked) {
 		this.personalDataChecked = personalDataChecked;
+	}
+
+	public ArrayList<String> getMappedFiles() {
+		return mappedFiles;
+	}
+
+	public void setMappedFiles(ArrayList<String> mappedFiles) {
+		this.mappedFiles = mappedFiles;
 	}
 	
 	

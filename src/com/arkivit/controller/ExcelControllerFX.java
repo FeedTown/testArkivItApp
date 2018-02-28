@@ -259,23 +259,23 @@ public class ExcelControllerFX extends Application {
 	}
 	private void confidentialBox() {
 		if(secondScene.getConfidentialCheckBox().isSelected()) {
-			model.setConfidentialChecked("JA");
+			model.setConfidentialChecked("NEJ");
 			//tempLabel.equals(model.getConfidentialityColl());
 			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
 		}
 		else {
-			model.setConfidentialChecked("NEJ");
+			model.setConfidentialChecked("");
 		}
 	}
 	
 	private void personalDataBox() {
 		if(secondScene.getPersonalDataBox().isSelected()) {
-			model.setPersonalDataChecked("JA");
+			model.setPersonalDataChecked("NEJ");
 			//tempLabel.equals(model.getConfidentialityColl());
 			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
 		}
 		else {
-			model.setPersonalDataChecked("NEJ");
+			model.setPersonalDataChecked("");
 		}
 	}
 
@@ -433,8 +433,6 @@ public class ExcelControllerFX extends Application {
 				secondScene.getBtnOverwrite().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);
 				secondScene.getBtnDelete().setDisable(true);
-				secondScene.getConfidentialCheckBox().setSelected(false);
-				secondScene.getPersonalDataBox().setSelected(false);
 			}
 
 		});

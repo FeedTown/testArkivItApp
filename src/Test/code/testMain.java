@@ -8,6 +8,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.arkivit.model.MetadataToExcelGUI;
+import com.arkivit.model.mappingLog;
 
 public class testMain {
 
@@ -23,5 +24,6 @@ public class testMain {
 	    streamExample.export();*/
 		
 		MetadataToExcelGUI data = new MetadataToExcelGUI();
+		mappingLog mapping = new mappingLog(data);
 	}
 }
