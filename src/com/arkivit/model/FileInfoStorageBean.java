@@ -3,190 +3,112 @@ package com.arkivit.model;
 public class FileInfoStorageBean {
 	
 	
-	String headerLabel, contentLabel, archiveDiareNum, archiveDiareNumDeliv, descDelivery, archiveCreator,
-	oNumArchiveCreator, delivGov, oNumDelivGov, consultantBureau, contactPersonDeliv, telContactPerson,
-	mailContactPerson, costCenter, eBillingContactPerson, archiveName, systemName, withdrawalDate,
-	comment, projectCode, accessId, batchId;
+	private String fileNameColl ,fileTypeNameColl,
+	fileTypeVersionNameColl,fileSizeNameColl,charsetNameColl,
+	durationColl, filePathNameColl, confidentialityColl,
+	personalInformationHandelingNameColl,commentColl;
 	
-	public FileInfoStorageBean() {
-		// TODO Auto-generated constructor stub
+	
+	
+	public FileInfoStorageBean(String fileNameColl, String fileTypeNameColl, String fileTypeVersionNameColl,
+			String fileSizeNameColl, String charsetNameColl, String durationColl, String filePathNameColl,
+			String confidentialityColl, String personalInformationHandelingNameColl, String commentColl) 
+	{
+		
+		this.fileNameColl = fileNameColl;
+		this.fileTypeNameColl = fileTypeNameColl;
+		this.fileTypeVersionNameColl = fileTypeVersionNameColl;
+		this.fileSizeNameColl = fileSizeNameColl;
+		this.charsetNameColl = charsetNameColl;
+		this.durationColl = durationColl;
+		this.filePathNameColl = filePathNameColl;
+		this.confidentialityColl = confidentialityColl;
+		this.personalInformationHandelingNameColl = personalInformationHandelingNameColl;
+		this.commentColl = commentColl;
 	}
 
-	public String getHeaderLabel() {
-		return headerLabel;
+
+
+	public String getFileNameColl() {
+		return fileNameColl;
 	}
 
-	public void setHeaderLabel(String headerLabel) {
-		this.headerLabel = headerLabel;
+	public void setFileNameColl(String fileNameColl) {
+		this.fileNameColl = fileNameColl;
 	}
 
-	public String getContentLabel() {
-		return contentLabel;
+	public String getFileTypeNameColl() {
+		return fileTypeNameColl;
 	}
 
-	public void setContentLabel(String contentLabel) {
-		this.contentLabel = contentLabel;
+	public void setFileTypeNameColl(String fileTypeNameColl) {
+		this.fileTypeNameColl = fileTypeNameColl;
 	}
 
-	public String getArchiveDiareNum() {
-		return archiveDiareNum;
+	public String getFileTypeVersionNameColl() {
+		return fileTypeVersionNameColl;
 	}
 
-	public void setArchiveDiareNum(String archiveDiareNum) {
-		this.archiveDiareNum = archiveDiareNum;
+	public void setFileTypeVersionNameColl(String fileTypeVersionNameColl) {
+		this.fileTypeVersionNameColl = fileTypeVersionNameColl;
 	}
 
-	public String getArchiveDiareNumDeliv() {
-		return archiveDiareNumDeliv;
+	public String getFileSizeNameColl() {
+		return fileSizeNameColl;
 	}
 
-	public void setArchiveDiareNumDeliv(String archiveDiareNumDeliv) {
-		this.archiveDiareNumDeliv = archiveDiareNumDeliv;
+	public void setFileSizeNameColl(String fileSizeNameColl) {
+		this.fileSizeNameColl = fileSizeNameColl;
 	}
 
-	public String getDescDelivery() {
-		return descDelivery;
+	public String getCharsetNameColl() {
+		return charsetNameColl;
 	}
 
-	public void setDescDelivery(String descDelivery) {
-		this.descDelivery = descDelivery;
+	public void setCharsetNameColl(String charsetNameColl) {
+		this.charsetNameColl = charsetNameColl;
 	}
 
-	public String getArchiveCreator() {
-		return archiveCreator;
+	public String getDurationColl() {
+		return durationColl;
 	}
 
-	public void setArchiveCreator(String archiveCreator) {
-		this.archiveCreator = archiveCreator;
+	public void setDurationColl(String durationColl) {
+		this.durationColl = durationColl;
 	}
 
-	public String getoNumArchiveCreator() {
-		return oNumArchiveCreator;
+	public String getFilePathNameColl() {
+		return filePathNameColl;
 	}
 
-	public void setoNumArchiveCreator(String oNumArchiveCreator) {
-		this.oNumArchiveCreator = oNumArchiveCreator;
+	public void setFilePathNameColl(String filePathNameColl) {
+		this.filePathNameColl = filePathNameColl;
 	}
 
-	public String getDelivGov() {
-		return delivGov;
+	public String getConfidentialityColl() {
+		return confidentialityColl;
 	}
 
-	public void setDelivGov(String delivGov) {
-		this.delivGov = delivGov;
+	public void setConfidentialityColl(String confidentialityColl) {
+		this.confidentialityColl = confidentialityColl;
 	}
 
-	public String getoNumDelivGov() {
-		return oNumDelivGov;
+	public String getPersonalInformationHandelingNameColl() {
+		return personalInformationHandelingNameColl;
 	}
 
-	public void setoNumDelivGov(String oNumDelivGov) {
-		this.oNumDelivGov = oNumDelivGov;
+	public void setPersonalInformationHandelingNameColl(String personalInformationHandelingNameColl) {
+		this.personalInformationHandelingNameColl = personalInformationHandelingNameColl;
 	}
 
-	public String getConsultantBureau() {
-		return consultantBureau;
+	public String getCommentColl() {
+		return commentColl;
 	}
 
-	public void setConsultantBureau(String consultantBureau) {
-		this.consultantBureau = consultantBureau;
+	public void setCommentColl(String commentColl) {
+		this.commentColl = commentColl;
 	}
 
-	public String getContactPersonDeliv() {
-		return contactPersonDeliv;
-	}
-
-	public void setContactPersonDeliv(String contactPersonDeliv) {
-		this.contactPersonDeliv = contactPersonDeliv;
-	}
-
-	public String getTelContactPerson() {
-		return telContactPerson;
-	}
-
-	public void setTelContactPerson(String telContactPerson) {
-		this.telContactPerson = telContactPerson;
-	}
-
-	public String getMailContactPerson() {
-		return mailContactPerson;
-	}
-
-	public void setMailContactPerson(String mailContactPerson) {
-		this.mailContactPerson = mailContactPerson;
-	}
-
-	public String getCostCenter() {
-		return costCenter;
-	}
-
-	public void setCostCenter(String costCenter) {
-		this.costCenter = costCenter;
-	}
-
-	public String geteBillingContactPerson() {
-		return eBillingContactPerson;
-	}
-
-	public void seteBillingContactPerson(String eBillingContactPerson) {
-		this.eBillingContactPerson = eBillingContactPerson;
-	}
-
-	public String getArchiveName() {
-		return archiveName;
-	}
-
-	public void setArchiveName(String archiveName) {
-		this.archiveName = archiveName;
-	}
-
-	public String getSystemName() {
-		return systemName;
-	}
-
-	public void setSystemName(String systemName) {
-		this.systemName = systemName;
-	}
-
-	public String getWithdrawalDate() {
-		return withdrawalDate;
-	}
-
-	public void setWithdrawalDate(String withdrawalDate) {
-		this.withdrawalDate = withdrawalDate;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public String getProjectCode() {
-		return projectCode;
-	}
-
-	public void setProjectCode(String projectCode) {
-		this.projectCode = projectCode;
-	}
-
-	public String getAccessId() {
-		return accessId;
-	}
-
-	public void setAccessId(String accessId) {
-		this.accessId = accessId;
-	}
-
-	public String getBatchId() {
-		return batchId;
-	}
-
-	public void setBatchId(String batchId) {
-		this.batchId = batchId;
-	}
 	
 	
 	
