@@ -11,7 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 * **Java 8**
 * **Maven 3**
-* **Eclipse** (in Java perspective)
+* **Eclipse IDE** (in Java perspective)
 * **JavaFX**
 
 ### Installing and running
