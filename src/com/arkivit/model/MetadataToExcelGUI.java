@@ -80,8 +80,8 @@ public class MetadataToExcelGUI{
 	public MetadataToExcelGUI()
 	{
 
-		sourceFolderPath = "F:\\Skola\\Svenska";
-		//sourceFolderPath = "/Users/RobertoBlanco/Desktop/TestFiles";
+		//sourceFolderPath = "F:\\Skola\\Svenska";
+		sourceFolderPath = "/Users/RobertoBlanco/Desktop/TestFiles";
 
 		init(false,false);
 	}
@@ -434,7 +434,10 @@ public class MetadataToExcelGUI{
 	}
 
 	public void createSecondSheet(SXSSFWorkbook streamWorkbook) throws IOException {
-
+		
+		CellStyle style = streamWorkbook.createCellStyle();
+		Font boldFont = streamWorkbook.createFont();
+		
 		FileInfoStorageBean f;
 		String fileExtension, sizeInString, fileTypeVersion = "" ,confidentialityColl = "",
 				personalInformationHandelingNameColl  ="", commentColl = "";
@@ -457,6 +460,10 @@ public class MetadataToExcelGUI{
 		}
 
 		Sheet sheet2 =  streamWorkbook.createSheet("FILER");
+		
+		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
+		style.setFont(boldFont);
+		
 		Row rowSecondSheet;
 		Row header = sheet2.createRow(0);
 
@@ -466,6 +473,7 @@ public class MetadataToExcelGUI{
 		for(String tmp : fileHeaderList)
 		{
 			header.createCell(currentHeader).setCellValue(tmp);
+			header.getCell(currentHeader).setCellStyle(style);
 			currentHeader++;
 
 		}
@@ -528,7 +536,7 @@ public class MetadataToExcelGUI{
 	}
 
 
-	private List addHeadersToList(List<String> fileHeaderList) 
+	private List<String> addHeadersToList(List<String> fileHeaderList) 
 	{
 		fileHeaderList.add("FILNAMN");
 		fileHeaderList.add("FILTYP");
