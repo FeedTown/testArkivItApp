@@ -1,6 +1,6 @@
 # testArkivItApp
 
-This is An archiving application. The project is intended for digital archiving.
+This is an archiving application. The project is intended for digital archiving.
 
 ## Getting Started
 
