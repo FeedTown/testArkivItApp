@@ -2,6 +2,7 @@ package com.arkivit.main;
 
 import com.arkivit.controller.ExcelControllerFX;
 import com.arkivit.model.MetadataToExcelGUI;
+import com.arkivit.model.mappingLog;
 import com.arkivit.view.SecondScene;
 import com.arkivit.view.FirstScene;
 
@@ -20,6 +21,8 @@ public class Main {
 		ExcelControllerFX controllerFx = new ExcelControllerFX(model,firstScene,secondScene);
 		
 		ExcelControllerFX.launch(controllerFx.getClass(),args);
+		
+		mappingLog mapping = new mappingLog(model);
 			
 	}
 	
