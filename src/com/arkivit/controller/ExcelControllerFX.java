@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.text.View;
 
+import com.arkivit.model.MappingLog;
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.SecondScene;
 import com.arkivit.view.FirstScene;
@@ -32,6 +33,7 @@ import jxl.write.Label;
 public class ExcelControllerFX extends Application {
 
 	private MetadataToExcelGUI model;
+	private MappingLog log;
 	private SecondScene secondScene;
 	private FirstScene firstScene;
 	private Stage stage;
@@ -47,6 +49,7 @@ public class ExcelControllerFX extends Application {
 	public ExcelControllerFX()
 	{
 		model = new MetadataToExcelGUI();
+		log = new MappingLog(model);
 		firstScene = new FirstScene();
 		secondScene = new SecondScene();
 		//launch();
@@ -173,7 +176,7 @@ public class ExcelControllerFX extends Application {
 		String fileName = "";
 		fileChooser.setTitle("VA");
 		//Set extension filter to .xlsx files
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		//Show save file dialog
@@ -259,23 +262,23 @@ public class ExcelControllerFX extends Application {
 	}
 	private void confidentialBox() {
 		if(secondScene.getConfidentialCheckBox().isSelected()) {
-			model.setConfidentialChecked("JA");
+			model.setConfidentialChecked("NEJ");
 			//tempLabel.equals(model.getConfidentialityColl());
 			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
 		}
 		else {
-			model.setConfidentialChecked("NEJ");
+			model.setConfidentialChecked("");
 		}
 	}
 	
 	private void personalDataBox() {
 		if(secondScene.getPersonalDataBox().isSelected()) {
-			model.setPersonalDataChecked("JA");
+			model.setPersonalDataChecked("NEJ");
 			//tempLabel.equals(model.getConfidentialityColl());
 			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
 		}
 		else {
-			model.setPersonalDataChecked("NEJ");
+			model.setPersonalDataChecked("");
 		}
 	}
 
@@ -433,8 +436,6 @@ public class ExcelControllerFX extends Application {
 				secondScene.getBtnOverwrite().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);
 				secondScene.getBtnDelete().setDisable(true);
-				secondScene.getConfidentialCheckBox().setSelected(false);
-				secondScene.getPersonalDataBox().setSelected(false);
 			}
 
 		});
@@ -467,6 +468,8 @@ public class ExcelControllerFX extends Application {
 				
 
 				model.init(mapping, overwrite);
+				log.mappedLog();
+
 				secondScene.getPi().setVisible(false);
 				secondScene.getWaitLabel().setVisible(false);
 				//secondScene.getPb().setVisible(true);

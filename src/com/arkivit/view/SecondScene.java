@@ -102,14 +102,14 @@ public class SecondScene{
 		confidentialCheckBox = new CheckBox();
 		final Tooltip confidentialTooltip = new Tooltip();
 		confidentialTooltip.setText(
-		    "Set 'Sekretessgrad hos myndighet' to 'JA'\n"
+		    "Set 'Sekretessgrad hos myndighet' to 'NEJ'\n"
 		);
 		confidentialCheckBox.setTooltip(confidentialTooltip);
 		personalDataLabel = new Label("Personal Data");
 		personalDataBox = new CheckBox();
 		final Tooltip personalDataTooltip = new Tooltip();
 		personalDataTooltip.setText(
-		    "Set 'Behandling av personuppgifter' to 'JA'\n"
+		    "Set 'Behandling av personuppgifter' to 'NEJ'\n"
 		);
 		personalDataBox.setTooltip(personalDataTooltip);
 		btnSaveAs = new Button("Save As...");
