@@ -24,6 +24,6 @@ public class testMain {
 	    streamExample.export();*/
 		
 		MetadataToExcelGUI data = new MetadataToExcelGUI();
-		MappingLog mapping = new MappingLog(data);
+		//MappingLog mapping = new MappingLog(data);
 	}
 }
