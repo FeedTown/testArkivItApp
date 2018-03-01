@@ -18,8 +18,6 @@ public class Main {
 		
 		SecondScene secondScene = new SecondScene();
 		
-	//	MappingLog log = new MappingLog();
-		
 		ExcelControllerFX controllerFx = new ExcelControllerFX(model,firstScene,secondScene);
 		
 		ExcelControllerFX.launch(controllerFx.getClass(),args);
