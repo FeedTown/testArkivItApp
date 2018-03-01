@@ -5,17 +5,15 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class mappingLog {
+public class MappingLog {
 	MetadataToExcelGUI model = new MetadataToExcelGUI();
-	public mappingLog(MetadataToExcelGUI model) {
+	public MappingLog(MetadataToExcelGUI model) {
 		this.model = model;
-		mappedLog();
-		
 	}
 	public void mappedLog() {
 	 Logger logger = Logger.getLogger("MyLog");  
 	 FileHandler fh;
-	 String logName = model.getTargetexcelFilepath() + "/" + model.getExcelFileName() + ".log";
+	 String logName = "test.log";
 
 	    try {  
 

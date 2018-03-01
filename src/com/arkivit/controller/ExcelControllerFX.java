@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.text.View;
 
+import com.arkivit.model.MappingLog;
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.SecondScene;
 import com.arkivit.view.FirstScene;
@@ -32,6 +33,7 @@ import jxl.write.Label;
 public class ExcelControllerFX extends Application {
 
 	private MetadataToExcelGUI model;
+	private MappingLog log;
 	private SecondScene secondScene;
 	private FirstScene firstScene;
 	private Stage stage;
@@ -47,6 +49,7 @@ public class ExcelControllerFX extends Application {
 	public ExcelControllerFX()
 	{
 		model = new MetadataToExcelGUI();
+		log = new MappingLog(model);
 		firstScene = new FirstScene();
 		secondScene = new SecondScene();
 		//launch();
@@ -465,6 +468,8 @@ public class ExcelControllerFX extends Application {
 				
 
 				model.init(mapping, overwrite);
+				log.mappedLog();
+
 				secondScene.getPi().setVisible(false);
 				secondScene.getWaitLabel().setVisible(false);
 				//secondScene.getPb().setVisible(true);
