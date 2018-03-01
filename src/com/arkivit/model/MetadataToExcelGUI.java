@@ -500,6 +500,7 @@ public class MetadataToExcelGUI{
 		fileHeaderList.add("BEHANDLING AV PERSONUPPGIFTER");
 		fileHeaderList.add("KOMMENTAR");
 		
+		
 		return fileHeaderList;
 		
 	}
