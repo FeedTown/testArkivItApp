@@ -403,8 +403,29 @@ public class MetadataToExcelGUI{
 		
 		Sheet sheet1 = streamWorkbook.createSheet("Allmänt");
 		sheet1.protectSheet("");
-		Row rowFirstSheet;
 		Row headerFirstSheet = sheet1.createRow(0);
+		Row rowFirstSheet = sheet1.createRow(1);
+		
+		contentList.add(0, "");
+		contentList.add(1, "");
+		contentList.add(2, generalBean.getDescDelivery());
+		contentList.add(3, generalBean.getArchiveCreator());
+		contentList.add(4, generalBean.getArchiveCreatorNum());
+		contentList.add(5, generalBean.getDelivGov());
+		contentList.add(6, generalBean.getDelivGovNum());
+		contentList.add(7, generalBean.getConsultantBur());
+		contentList.add(8, generalBean.getContactDelivPerson());
+		contentList.add(9, generalBean.getTelContactPerson());
+		contentList.add(10, generalBean.getEmail());
+		contentList.add(11, "");
+		contentList.add(12, "");
+		contentList.add(13, generalBean.getArchiveName());
+		contentList.add(14, generalBean.getSystemName());
+		contentList.add(15, generalBean.getDate());
+		contentList.add(16, generalBean.getComment());
+		contentList.add(17, "");
+		contentList.add(18, "");
+		contentList.add(19, "");
 
 
 		font = createFont(font, Font.COLOR_RED);
@@ -419,12 +440,14 @@ public class MetadataToExcelGUI{
 		headerFirstSheet.getCell(0).setCellStyle(boldStyle);
 		headerFirstSheet.getCell(1).setCellStyle(boldStyle);
 		
+		
 		for (int i = 0; i < generalHeaderList.size(); i++) {
 			
 			generalHeaderList.get(i);
 			rowFirstSheet = sheet1.createRow(i+1);
 			rowFirstSheet.createCell(0).setCellValue(generalHeaderList.get(i));
-			rowFirstSheet.createCell(1).setCellValue("");
+			rowFirstSheet.createCell(1).setCellValue(contentList.get(i));
+			
 			rowFirstSheet.getCell(1).setCellStyle(locked);
 
 			if(i == 0 || i == 1 || i == 11 || i == 12 || i == 17 || i == 18
@@ -438,28 +461,30 @@ public class MetadataToExcelGUI{
 				rowFirstSheet.getCell(0).setCellStyle(boldStyle);
 			}
 			
-			contentList.add(0, "");
-			contentList.add(1, "");
-			contentList.add(2, generalBean.getDescDelivery());
-			contentList.add(3, generalBean.getArchiveCreator());
-			contentList.add(4, generalBean.getArchiveCreatorNum());
-			contentList.add(5, generalBean.getDelivGov());
-			contentList.add(6, generalBean.getDelivGovNum());
-			contentList.add(7, generalBean.getConsultantBur());
-			contentList.add(8, generalBean.getContactDelivPerson());
-			contentList.add(9, generalBean.getTelContactPerson());
-			contentList.add(10, generalBean.getEmail());
-			contentList.add(11, "");
-			contentList.add(12, "");
-			contentList.add(13, generalBean.getArchiveName());
-			contentList.add(14, generalBean.getSystemName());
-			contentList.add(15, generalBean.getDate());
-			contentList.add(16, generalBean.getComment());
-			contentList.add(17, "");
-			contentList.add(18, "");
-			contentList.add(19, "");
+			
 
 		}
+		
+		/*rowFirstSheet.createCell(1).setCellValue("");
+		rowFirstSheet.createCell(2).setCellValue("");
+		rowFirstSheet.createCell(3).setCellValue(generalBean.getDescDelivery());
+		rowFirstSheet.createCell(4).setCellValue(generalBean.getArchiveCreator());
+		rowFirstSheet.createCell(5).setCellValue(generalBean.getArchiveCreatorNum());
+		rowFirstSheet.createCell(6).setCellValue(generalBean.getDelivGov());
+		rowFirstSheet.createCell(7).setCellValue(generalBean.getDelivGovNum());
+		rowFirstSheet.createCell(8).setCellValue(generalBean.getConsultantBur());
+		rowFirstSheet.createCell(9).setCellValue(generalBean.getContactDelivPerson());
+		rowFirstSheet.createCell(10).setCellValue(generalBean.getTelContactPerson());
+		rowFirstSheet.createCell(11).setCellValue(generalBean.getEmail());
+		rowFirstSheet.createCell(12).setCellValue("");
+		rowFirstSheet.createCell(13).setCellValue("");
+		rowFirstSheet.createCell(14).setCellValue(generalBean.getArchiveName());
+		rowFirstSheet.createCell(15).setCellValue(generalBean.getSystemName());
+		rowFirstSheet.createCell(16).setCellValue(generalBean.getDate());
+		rowFirstSheet.createCell(17).setCellValue(generalBean.getComment());
+		rowFirstSheet.createCell(18).setCellValue("");
+		rowFirstSheet.createCell(19).setCellValue("");
+		rowFirstSheet.createCell(20).setCellValue(""); */
 
 	}
 
@@ -491,7 +516,7 @@ public class MetadataToExcelGUI{
 		}
 		
 		Sheet sheet2 =  streamWorkbook.createSheet("Filer");
-		//sheet2.protectSheet("");
+		sheet2.protectSheet("");
 		
 		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
 		style.setFont(boldFont);
@@ -512,7 +537,7 @@ public class MetadataToExcelGUI{
 		}
 				
 		//Cell cell0, cell1, cell2, cell3,cell4, cell5, cell6, cell7, cell8, cell9;
-		/*for (int i = 0; i < fileContentSheetList.size(); i++) {
+		for (int i = 0; i < fileContentSheetList.size(); i++) {
 			
 			f = fileContentSheetList.get(i);
 			rowSecondSheet = sheet2.createRow(i+1);
@@ -537,9 +562,9 @@ public class MetadataToExcelGUI{
 			rowSecondSheet.getCell(7).setCellStyle(locked);
 			rowSecondSheet.getCell(8).setCellStyle(locked);
 			rowSecondSheet.getCell(9).setCellStyle(locked); 		
-		} */
+		} 
 
-		for (int rowNb = 0; rowNb < fileContentSheetList.size(); rowNb++) {
+		/*for (int rowNb = 0; rowNb < fileContentSheetList.size(); rowNb++) {
 			f = fileContentSheetList.get(rowNb);   
 			Row row = sheet2.createRow(rowNb+1);
 
@@ -549,7 +574,7 @@ public class MetadataToExcelGUI{
 				if(cell == null)
 				{
 					cell = row.createCell(colNb);
-				}
+				} */
 				//while(colNb<=10) {
 			/*		row.createCell(0).setCellValue(f.getFileNameColl()); 
 					row.createCell(1).setCellValue(f.getFileTypeNameColl());
@@ -563,7 +588,7 @@ public class MetadataToExcelGUI{
 					row.createCell(9).setCellValue(commentColl); */
 				//}
 
-				if (colNb==0)
+			/*	if (colNb==0)
 				{
 					cell.setCellValue(f.getFileNameColl()); //first row are column names
 				}
@@ -597,8 +622,8 @@ public class MetadataToExcelGUI{
 
 				row.getCell(colNb).setCellStyle(locked);
 			}
-		}
-	}
+		} */
+	} 
 
 
 	private List<String> addGeneralHeadersToList(List<String> generalHeaderList) 
