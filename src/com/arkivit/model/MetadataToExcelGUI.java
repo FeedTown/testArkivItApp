@@ -80,13 +80,19 @@ public class MetadataToExcelGUI{
 	public MetadataToExcelGUI()
 	{
 
+
 		//sourceFolderPath = "C:\\Users\\Kevin\\Desktop\\test";
 
 		/*sourceFolderPath = "F:\\Skola\\Svenska"; */
-		sourceFolderPath = "/Users/RobertoBlanco/Desktop/TestFiles";
+		//sourceFolderPath = "/Users/RobertoBlanco/Desktop/TestFiles";
+
+		
+		//sourceFolderPath = "C:\\Users\\Kevin\\Desktop\\test";
+		/*sourceFolderPath = "F:\\Skola\\Svenska";
+		sourceFolderPath = "/Users/RobertoBlanco/Desktop/TestFiles";*/
 
 
-		init(true,true);
+		//init(mapping,overwrite);
 	}
 
 	/**
@@ -96,7 +102,7 @@ public class MetadataToExcelGUI{
 	public MetadataToExcelGUI(String excelFileName)
 	{   
 
-		this.excelFileName = excelFileName + ".xls";
+		this.excelFileName = excelFileName + ".xlsx";
 		//fileList = new ArrayList<File>();
 		//testMeth();
 	}
@@ -120,10 +126,10 @@ public class MetadataToExcelGUI{
 			System.out.println("Copying folder.........");
 		}
 
-		/*if(mapping && overwrite)
+		if(mapping && overwrite)
 		{
 			listOfFilesAndDirectory(sourceFolderPath);
-		} */
+		} 
 
 
 		listOfFilesAndDirectory(sourceFolderPath);
@@ -135,7 +141,7 @@ public class MetadataToExcelGUI{
 	private void copyFolder() {
 		File selectedFolder = new File(sourceFolderPath);
 		try {
-			FileUtils.copyDirectoryToDirectory(selectedFolder, new File(backupFilePath + "/" +folderName+ "_backup"));
+			FileUtils.copyDirectoryToDirectory(selectedFolder, new File(backupFilePath + "/" + folderName + "_backup"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -362,7 +368,7 @@ public class MetadataToExcelGUI{
 	}
 
 	private void createWorkbook() throws IOException {
-		FileOutputStream streamOut = new FileOutputStream(new File("testfile2.xlsx"));
+		FileOutputStream streamOut = new FileOutputStream(new File(targetexcelFilepath +"/"+ excelFileName));
 		SXSSFWorkbook streamWorkbook = new SXSSFWorkbook();
 
 		createFirstSheet(streamWorkbook);
@@ -464,8 +470,8 @@ public class MetadataToExcelGUI{
 		Font boldFont = streamWorkbook.createFont();
 		
 		FileInfoStorageBean f;
-		String fileExtension, sizeInString, fileTypeVersion = "" ,confidentialityColl = "",
-				personalInformationHandelingNameColl  ="", commentColl = "";
+		String fileExtension, sizeInString, fileTypeVersion = "" ,confidentialityColl = confidentialChecked,
+				personalInformationHandelingNameColl  = personalDataChecked, commentColl = "";
 
 		List<FileInfoStorageBean> fileContentSheetList = new ArrayList<FileInfoStorageBean>();
 
@@ -532,7 +538,7 @@ public class MetadataToExcelGUI{
 			rowSecondSheet.getCell(8).setCellStyle(locked);
 			rowSecondSheet.getCell(9).setCellStyle(locked); 		
 		} */
-		
+
 		for (int rowNb = 0; rowNb < fileContentSheetList.size(); rowNb++) {
 			f = fileContentSheetList.get(rowNb);   
 			Row row = sheet2.createRow(rowNb+1);
@@ -587,12 +593,11 @@ public class MetadataToExcelGUI{
 				}
 				else if(colNb==9) {
 					cell.setCellValue(commentColl);
-				} 
+				}
 
 				row.getCell(colNb).setCellStyle(locked);
 			}
-		} 
-	
+		}
 	}
 
 
