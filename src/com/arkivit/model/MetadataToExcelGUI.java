@@ -369,60 +369,7 @@ public class MetadataToExcelGUI{
 		streamOut.close();
 		streamWorkbook.close();
 	}
-
-	public void createFirstSheet(SXSSFWorkbook streamWorkbook) throws IOException{
-
-		CellStyle style = streamWorkbook.createCellStyle(), boldStyle = streamWorkbook.createCellStyle();
-		Font font=  streamWorkbook.createFont(), boldFont = streamWorkbook.createFont();
-
-		List<String> generalHeaderList= new ArrayList<String>();
-		generalHeaderList = addGeneralHeadersToList(generalHeaderList);
-		
-		Sheet sheet1 = streamWorkbook.createSheet("Allmänt");
-		Row rowFirstSheet;
-		Row headerFirstSheet = sheet1.createRow(0);
-
-
-		font = createFont(font, Font.COLOR_RED);
-		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
-
-		style.setFont(font);
-		boldStyle.setFont(boldFont);
-
-		headerFirstSheet.createCell(0).setCellValue("RUBRIK");
-		headerFirstSheet.createCell(1).setCellValue("INNEHÅLL");
-		headerFirstSheet.getCell(0).setCellStyle(boldStyle);
-		headerFirstSheet.getCell(1).setCellStyle(boldStyle);
-		
-
-		Cell cell0,cell1;
-
-		for (int i = 0; i < generalHeaderList.size(); i++) {
-			generalHeaderList.get(i);
-			rowFirstSheet = sheet1.createRow(i+1);
-
-			cell0 = rowFirstSheet.createCell(0);
-			cell1 = rowFirstSheet.createCell(1);
-
-			cell0.setCellValue(generalHeaderList.get(i));
-
-			if(i == 0 || i == 1 || i == 11 || i == 12 || i == 17 || i == 18
-					|| i == 19)
-			{
-				cell0.setCellStyle(style);
-			}
-			else
-			{
-				cell0.setCellStyle(boldStyle);
-			}
-
-
-			//cell1.setCellValue("INNEHÅLL");
-
-		}
-
-	}
-
+	
 	private Font createFont(Font font, short fontColor) {
 
 		font.setFontHeightInPoints((short)9);
@@ -432,6 +379,58 @@ public class MetadataToExcelGUI{
 		font.setItalic(false);
 	
 		return font;
+	}
+
+	public void createFirstSheet(SXSSFWorkbook streamWorkbook) throws IOException{
+
+		CellStyle style = streamWorkbook.createCellStyle(); 
+		CellStyle boldStyle = streamWorkbook.createCellStyle();
+		CellStyle locked = streamWorkbook.createCellStyle();
+		Font font=  streamWorkbook.createFont(), boldFont = streamWorkbook.createFont();
+
+		List<String> generalHeaderList= new ArrayList<String>();
+		generalHeaderList = addGeneralHeadersToList(generalHeaderList);
+		
+		Sheet sheet1 = streamWorkbook.createSheet("Allmänt");
+		sheet1.protectSheet("");
+		Row rowFirstSheet;
+		Row headerFirstSheet = sheet1.createRow(0);
+
+
+		font = createFont(font, Font.COLOR_RED);
+		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
+
+		style.setFont(font);
+		boldStyle.setFont(boldFont);
+		locked.setLocked(false);
+		
+		headerFirstSheet.createCell(0).setCellValue("RUBRIK");
+		headerFirstSheet.createCell(1).setCellValue("INNEHÅLL");
+		headerFirstSheet.getCell(0).setCellStyle(boldStyle);
+		headerFirstSheet.getCell(1).setCellStyle(boldStyle);
+		
+		for (int i = 0; i < generalHeaderList.size(); i++) {
+			
+			generalHeaderList.get(i);
+			rowFirstSheet = sheet1.createRow(i+1);
+			rowFirstSheet.createCell(0).setCellValue(generalHeaderList.get(i));
+			rowFirstSheet.createCell(1).setCellValue("");
+			rowFirstSheet.getCell(1).setCellStyle(locked);
+
+			if(i == 0 || i == 1 || i == 11 || i == 12 || i == 17 || i == 18
+					|| i == 19)
+			{
+				rowFirstSheet.getCell(0).setCellStyle(style);
+			}
+			else
+			{
+				
+				rowFirstSheet.getCell(0).setCellStyle(boldStyle);
+			}
+
+
+		}
+
 	}
 
 	public void createSecondSheet(SXSSFWorkbook streamWorkbook) throws IOException {
@@ -476,7 +475,6 @@ public class MetadataToExcelGUI{
 		for(String tmp : fileHeaderList)
 		{
 			header.createCell(currentHeader).setCellValue(tmp);
-			//header.getCell(currentHeader).setCellStyle(locked);
 			header.getCell(currentHeader).setCellStyle(style);
 			sheet2.createFreezePane(0, currentHeader);
 			currentHeader++;
