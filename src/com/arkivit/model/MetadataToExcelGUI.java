@@ -392,6 +392,7 @@ public class MetadataToExcelGUI{
 		Font font=  streamWorkbook.createFont(), boldFont = streamWorkbook.createFont();
 
 		List<String> generalHeaderList= new ArrayList<String>();
+		List<String> contentList = new ArrayList<String>();
 		generalHeaderList = addGeneralHeadersToList(generalHeaderList);
 		
 		Sheet sheet1 = streamWorkbook.createSheet("Allmänt");
@@ -430,7 +431,27 @@ public class MetadataToExcelGUI{
 				
 				rowFirstSheet.getCell(0).setCellStyle(boldStyle);
 			}
-
+			
+			contentList.add(0, "");
+			contentList.add(1, "");
+			contentList.add(2, generalBean.getDescDelivery());
+			contentList.add(3, generalBean.getArchiveCreator());
+			contentList.add(4, generalBean.getArchiveCreatorNum());
+			contentList.add(5, generalBean.getDelivGov());
+			contentList.add(6, generalBean.getDelivGovNum());
+			contentList.add(7, generalBean.getConsultantBur());
+			contentList.add(8, generalBean.getContactDelivPerson());
+			contentList.add(9, generalBean.getTelContactPerson());
+			contentList.add(10, generalBean.getEmail());
+			contentList.add(11, "");
+			contentList.add(12, "");
+			contentList.add(13, generalBean.getArchiveName());
+			contentList.add(14, generalBean.getSystemName());
+			contentList.add(15, generalBean.getDate());
+			contentList.add(16, generalBean.getComment());
+			contentList.add(17, "");
+			contentList.add(18, "");
+			contentList.add(19, "");
 
 		}
 
@@ -464,7 +485,7 @@ public class MetadataToExcelGUI{
 		}
 		
 		Sheet sheet2 =  streamWorkbook.createSheet("Filer");
-		sheet2.protectSheet("");
+		//sheet2.protectSheet("");
 		
 		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
 		style.setFont(boldFont);
@@ -517,8 +538,25 @@ public class MetadataToExcelGUI{
 			Row row = sheet2.createRow(rowNb+1);
 
 			for (int colNb = 0; colNb < 10; colNb++) {
-				Cell cell = row.createCell(colNb);
+				Cell cell = row.getCell(colNb);
 				
+				if(cell == null)
+				{
+					cell = row.createCell(colNb);
+				}
+				//while(colNb<=10) {
+			/*		row.createCell(0).setCellValue(f.getFileNameColl()); 
+					row.createCell(1).setCellValue(f.getFileTypeNameColl());
+					row.createCell(2).setCellValue(fileTypeVersion);
+					row.createCell(3).setCellValue(f.getFileSizeNameColl());
+					row.createCell(4).setCellValue(f.getCharsetNameColl());
+					row.createCell(5).setCellValue(f.getDurationColl());
+					row.createCell(6).setCellValue(f.getFilePathNameColl());
+					row.createCell(7).setCellValue(confidentialChecked);
+					row.createCell(8).setCellValue(personalDataChecked);
+					row.createCell(9).setCellValue(commentColl); */
+				//}
+
 				if (colNb==0)
 				{
 					cell.setCellValue(f.getFileNameColl()); //first row are column names
@@ -549,11 +587,11 @@ public class MetadataToExcelGUI{
 				}
 				else if(colNb==9) {
 					cell.setCellValue(commentColl);
-				}
+				} 
 
 				row.getCell(colNb).setCellStyle(locked);
 			}
-		}
+		} 
 	
 	}
 
