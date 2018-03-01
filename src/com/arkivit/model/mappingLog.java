@@ -15,7 +15,7 @@ public class mappingLog {
 	public void mappedLog() {
 	 Logger logger = Logger.getLogger("MyLog");  
 	 FileHandler fh;
-	 String logName = "test.log";
+	 String logName = model.getTargetexcelFilepath() + "/" + model.getExcelFileName() + ".log";
 
 	    try {  
 
