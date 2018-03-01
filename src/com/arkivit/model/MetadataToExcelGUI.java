@@ -393,7 +393,7 @@ public class MetadataToExcelGUI{
 		headerFirstSheet.createCell(1).setCellValue("INNEHÅLL");
 		headerFirstSheet.getCell(0).setCellStyle(boldStyle);
 		headerFirstSheet.getCell(1).setCellStyle(boldStyle);
-		
+
 
 		Cell cell0,cell1;
 
@@ -430,16 +430,16 @@ public class MetadataToExcelGUI{
 		font.setColor(fontColor);
 		font.setBold(true);
 		font.setItalic(false);
-	
+
 		return font;
 	}
 
 	public void createSecondSheet(SXSSFWorkbook streamWorkbook) throws IOException {
-		
+
 		CellStyle style = streamWorkbook.createCellStyle();
 		CellStyle locked = streamWorkbook.createCellStyle();
 		Font boldFont = streamWorkbook.createFont();
-		
+
 		FileInfoStorageBean f;
 		String fileExtension, sizeInString, fileTypeVersion = "" ,confidentialityColl = "",
 				personalInformationHandelingNameColl  ="", commentColl = "";
@@ -463,13 +463,13 @@ public class MetadataToExcelGUI{
 
 		Sheet sheet2 =  streamWorkbook.createSheet("Filer");
 		sheet2.protectSheet("");
-		
+
 		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
 		style.setFont(boldFont);
 		//style.setLocked(true);
 		locked.setLocked(false);
-		
-		Row rowSecondSheet;
+
+		Row rowSecondSheet = null;
 		Row header = sheet2.createRow(0);
 
 		int currentHeader = 0;
@@ -484,22 +484,12 @@ public class MetadataToExcelGUI{
 		}
 
 		//Cell cell0, cell1, cell2, cell3,cell4, cell5, cell6, cell7, cell8, cell9;
-		
-		for (int i = 0; i < fileContentSheetList.size(); i++) {
-			
+
+		/*for (int i = 0; i < fileContentSheetList.size(); i++) {
+
 			f = fileContentSheetList.get(i);
 			rowSecondSheet = sheet2.createRow(i+1);
-			/*cell0 = rowSecondSheet.createCell(0);
-			cell1 = rowSecondSheet.createCell(1);
-			cell2 = rowSecondSheet.createCell(2);
-			cell3 = rowSecondSheet.createCell(3);
-			cell4 = rowSecondSheet.createCell(4);
-			cell5 = rowSecondSheet.createCell(5);
-			cell6 = rowSecondSheet.createCell(6);
-			cell7 = rowSecondSheet.createCell(7);
-			cell8 = rowSecondSheet.createCell(8);
-			cell9 = rowSecondSheet.createCell(9);*/
-			
+
 			rowSecondSheet.createCell(0).setCellValue(f.getFileNameColl());
 			rowSecondSheet.createCell(1).setCellValue(f.getFileTypeNameColl());
 			rowSecondSheet.createCell(2).setCellValue(fileTypeVersion);
@@ -510,19 +500,60 @@ public class MetadataToExcelGUI{
 			rowSecondSheet.createCell(7).setCellValue(confidentialChecked);
 			rowSecondSheet.createCell(8).setCellValue(personalDataChecked);
 			rowSecondSheet.createCell(9).setCellValue(commentColl);
-
-			rowSecondSheet.setRowStyle(locked);
 			
-			//cell0.setCellStyle(unLocked);
-			//cell1.setCellStyle(unLocked);
-			//rowSecondSheet.getCell(i);
-			//if(rowSecondSheet.cellIterator().hasNext()){
-				
-			//}
+			for (int colNb = 0; colNb < 10; colNb++) {
+				Cell cell = row.createCell(colNb);
+			}
 			
 
+		}*/
+
+		for (int rowNb = 0; rowNb < fileContentSheetList.size(); rowNb++) {
+			f = fileContentSheetList.get(rowNb);   
+			Row row = sheet2.createRow(rowNb+1);
+
+			for (int colNb = 0; colNb < 10; colNb++) {
+				Cell cell = row.getCell(colNb);
+				if(cell == null)
+				{
+					cell = row.createCell(colNb);
+				}
+
+				if (colNb==0)
+				{
+					cell.setCellValue(f.getFileNameColl()); 
+				}
+				else if(colNb==1) {
+					cell.setCellValue(f.getFileTypeNameColl());
+				}
+				else if(colNb==2) {
+					cell.setCellValue(fileTypeVersion);
+				}
+				else if(colNb==3) {
+					cell.setCellValue(f.getFileSizeNameColl());
+				}
+				else if(colNb==4) {
+					cell.setCellValue(f.getCharsetNameColl());
+				}
+				else if(colNb==5) { 
+					cell.setCellValue(f.getDurationColl());
+				}
+				else if(colNb==6) {
+					cell.setCellValue(f.getFilePathNameColl());
+				}
+				else if(colNb==7){
+					cell.setCellValue(confidentialChecked);
+				}
+				else if(colNb==8) { 
+					cell.setCellValue(personalDataChecked);
+				}
+				else if(colNb==9) {
+					cell.setCellValue(commentColl);
+				}
+				row.getCell(colNb).setCellStyle(locked);
+			}
+			
 		}
-
 	}
 
 
@@ -551,6 +582,7 @@ public class MetadataToExcelGUI{
 		return generalHeaderList;
 
 	}
+
 
 
 	private List<String> addHeadersToList(List<String> fileHeaderList) 
