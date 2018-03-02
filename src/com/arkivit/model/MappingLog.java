@@ -13,7 +13,7 @@ public class MappingLog {
 	public void mappedLog() {
 	 Logger logger = Logger.getLogger("MyLog");  
 	 FileHandler fh;
-	 String logName = "test.log";
+	 String logName = model.getTargetexcelFilepath() + "/" + model.getExcelFileName() + ".log";
 
 	    try {  
 
@@ -27,6 +27,7 @@ public class MappingLog {
 	        for(String temp: model.getMappedFiles()) {
 	        	logger.info("Mapped file: " + temp + "\n");
 	        }
+	        fh.close();
 	        
 	    } catch (SecurityException e) {  
 	        e.printStackTrace();  
