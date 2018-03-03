@@ -374,6 +374,36 @@ public class MetadataToExcelGUI{
 		streamOut.close();
 		streamWorkbook.close();
 	}
+	
+	private CellStyle createRedAndBoldFont(SXSSFWorkbook streamWorkbook) {
+		CellStyle style = streamWorkbook.createCellStyle();
+		Font redAndBoldFont = streamWorkbook.createFont();
+		redAndBoldFont.setFontHeightInPoints((short)9);
+		redAndBoldFont.setFontName("Arial");
+		redAndBoldFont.setColor(Font.COLOR_RED);
+		redAndBoldFont.setBold(true);
+		style.setFont(redAndBoldFont);
+		return style;
+		
+	}
+	
+	private CellStyle createBoldFont(SXSSFWorkbook streamWorkbook) {
+		CellStyle style = streamWorkbook.createCellStyle();
+		Font boldFont = streamWorkbook.createFont();
+		boldFont.setFontHeightInPoints((short)9);
+		boldFont.setFontName("Arial");
+		boldFont.setColor(Font.COLOR_NORMAL);
+		boldFont.setBold(true);
+		style.setFont(boldFont);
+		return style;
+		
+	}
+	
+	private CellStyle unLocked(SXSSFWorkbook streamWorkbook) {
+		CellStyle locked = streamWorkbook.createCellStyle();
+		locked.setLocked(false);
+		return locked;
+	}
 
 	private Font createFont(Font font, short fontColor) {
 
@@ -389,27 +419,27 @@ public class MetadataToExcelGUI{
 	public void createFirstSheet(SXSSFWorkbook streamWorkbook) throws IOException{
 
 		
-		CellStyle style = streamWorkbook.createCellStyle(); 
-		CellStyle boldStyle = streamWorkbook.createCellStyle();
-		CellStyle locked = streamWorkbook.createCellStyle();
-		Font font=  streamWorkbook.createFont(), boldFont = streamWorkbook.createFont();
+		//CellStyle style = streamWorkbook.createCellStyle(); 
+		//CellStyle boldStyle = streamWorkbook.createCellStyle();
+		//CellStyle locked = streamWorkbook.createCellStyle();
+		//Font font=  streamWorkbook.createFont(), boldFont = streamWorkbook.createFont();
 
 		SXSSFSheet sheet1 = streamWorkbook.createSheet("Allmänt");
 		sheet1.protectSheet("");
 		Row headerFirstSheet = sheet1.createRow(0);
 		Row rowFirstSheet = sheet1.createRow(1);
 
-		font = createFont(font, Font.COLOR_RED);
-		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
+		//font = createFont(font, Font.COLOR_RED);
+		//boldFont = createFont(boldFont, Font.COLOR_NORMAL);
 		
-		style.setFont(font);
-		boldStyle.setFont(boldFont);
-		locked.setLocked(false); 
+		//style.setFont(font);
+		//boldStyle.setFont(boldFont);
+		//locked.setLocked(false); 
 
 		headerFirstSheet.createCell(0).setCellValue("RUBRIK");
 		headerFirstSheet.createCell(1).setCellValue("INNEHÅLL");
-		headerFirstSheet.getCell(0).setCellStyle(boldStyle);
-		headerFirstSheet.getCell(1).setCellStyle(boldStyle);
+		headerFirstSheet.getCell(0).setCellStyle(createBoldFont(streamWorkbook));
+		headerFirstSheet.getCell(1).setCellStyle(createBoldFont(streamWorkbook));
 		
 		for (int row = 0; row < getGeneralHeaders().size(); row++) {
 
@@ -421,11 +451,11 @@ public class MetadataToExcelGUI{
 			if(row == 0 || row == 1 || row == 11 || row == 12 || row == 17 || row == 18
 					|| row == 19)
 			{
-				rowFirstSheet.getCell(0).setCellStyle(style);
+				rowFirstSheet.getCell(0).setCellStyle(createRedAndBoldFont(streamWorkbook));
 			}
 			else
 			{
-				rowFirstSheet.getCell(0).setCellStyle(boldStyle);
+				rowFirstSheet.getCell(0).setCellStyle(createBoldFont(streamWorkbook));
 			}
 
 
@@ -434,7 +464,7 @@ public class MetadataToExcelGUI{
 				sheet1.autoSizeColumn(colNb);
 			}
 
-			rowFirstSheet.getCell(1).setCellStyle(locked);
+			rowFirstSheet.getCell(1).setCellStyle(unLocked(streamWorkbook));
 
 		}
 
@@ -468,9 +498,9 @@ public class MetadataToExcelGUI{
 		SXSSFSheet sheet2 =  streamWorkbook.createSheet("Filer");
 		sheet2.protectSheet("");
 
-		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
 		style.setFont(boldFont);
 		locked.setLocked(false);
+		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
 
 		Row rowSecondSheet = null;
 		Row header = sheet2.createRow(0);
