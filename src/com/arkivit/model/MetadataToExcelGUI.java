@@ -203,8 +203,7 @@ public class MetadataToExcelGUI{
 
 	}
 
-	private File doMapping(File tempFile, File currFileOrDir) {
-
+	public File doMapping(File tempFile, File currFileOrDir) {
 
 		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
 		currFileOrDir.renameTo(tempFile);
@@ -213,7 +212,7 @@ public class MetadataToExcelGUI{
 
 
 	}
-
+	
 	/*
 	 * If fileList is not empty:  
 	 * 
@@ -290,14 +289,10 @@ public class MetadataToExcelGUI{
 		fileListeLength = fileNameList.size();
 
 		System.out.println("File name list length : " + fileListeLength);
-		//createExcelFile();
-
-
+	
 		try {
-			//createSecondSheet();
 			createWorkbook();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -841,15 +836,6 @@ public List<String> getContentList(){
 		for(String filename : fileNameList)
 		{
 
-			/*if(mapping) {
-				tempString = replaceIllegalChars(filename);
-				//tempString = replaceIllegalChars(filePathList.toString());
-			}
-			else {
-				tempString = filename;
-				//tempString = filePathList.toString();
-			}*/
-
 			sizeInString = Objects.toString(sizeList.get(rowNum), null); 
 			fileExtention = FilenameUtils.getExtension(filename);
 
@@ -996,7 +982,6 @@ public List<String> getContentList(){
 	public void setSourceFolderPath(String sourceFolderPath) {
 		this.sourceFolderPath = sourceFolderPath;
 	}
-
 
 
 	public int getFileCount() {

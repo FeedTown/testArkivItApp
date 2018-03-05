@@ -44,7 +44,7 @@ public class ExcelControllerFX extends Application {
 	private File backupDir;
 
 	/**
-	 * No args constructor with objects from MetadataToExcelGUI and ExcelAppGUIFX
+	 * No args constructor with objects from classes MetadataToExcelGUI, MappingLog,  FirstScene and SecondScene
 	 */
 	public ExcelControllerFX()
 	{
@@ -246,7 +246,7 @@ public class ExcelControllerFX extends Application {
 			secondScene.getOverwriteCheckBox().setSelected(false);
 			secondScene.getBtnOverwrite().setDisable(true);
 			secondScene.getBtnSaveAs().setDisable(false);
-			
+				
 		}
 	}
 	private void checkBox2() {

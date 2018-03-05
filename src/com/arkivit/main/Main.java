@@ -21,8 +21,6 @@ public class Main {
 		ExcelControllerFX controllerFx = new ExcelControllerFX(model,firstScene,secondScene);
 		
 		ExcelControllerFX.launch(controllerFx.getClass(),args);
-		
-		
 			
 	}
 	
