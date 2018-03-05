@@ -404,37 +404,13 @@ public class MetadataToExcelGUI{
 		locked.setLocked(false);
 		return locked;
 	}
-
-	private Font createFont(Font font, short fontColor) {
-
-		font.setFontHeightInPoints((short)9);
-		font.setFontName("Arial");
-		font.setColor(fontColor);
-		font.setBold(true);
-		font.setItalic(false);
-
-		return font;
-	}
 	
 	public void createFirstSheet(SXSSFWorkbook streamWorkbook) throws IOException{
-
-		
-		//CellStyle style = streamWorkbook.createCellStyle(); 
-		//CellStyle boldStyle = streamWorkbook.createCellStyle();
-		//CellStyle locked = streamWorkbook.createCellStyle();
-		//Font font=  streamWorkbook.createFont(), boldFont = streamWorkbook.createFont();
 
 		SXSSFSheet sheet1 = streamWorkbook.createSheet("Allmänt");
 		sheet1.protectSheet("");
 		Row headerFirstSheet = sheet1.createRow(0);
 		Row rowFirstSheet = sheet1.createRow(1);
-
-		//font = createFont(font, Font.COLOR_RED);
-		//boldFont = createFont(boldFont, Font.COLOR_NORMAL);
-		
-		//style.setFont(font);
-		//boldStyle.setFont(boldFont);
-		//locked.setLocked(false); 
 
 		headerFirstSheet.createCell(0).setCellValue("RUBRIK");
 		headerFirstSheet.createCell(1).setCellValue("INNEHÅLL");
@@ -472,10 +448,6 @@ public class MetadataToExcelGUI{
 
 	public void createSecondSheet(SXSSFWorkbook streamWorkbook) throws IOException {
 
-		CellStyle style = streamWorkbook.createCellStyle();
-		CellStyle locked = streamWorkbook.createCellStyle();
-		Font boldFont = streamWorkbook.createFont();
-
 		FileInfoStorageBean f;
 		String fileExtension, sizeInString, fileTypeVersion = "" ,confidentialityColl = confidentialChecked,
 				personalInformationHandelingNameColl  = personalDataChecked, commentColl = "";
@@ -498,9 +470,6 @@ public class MetadataToExcelGUI{
 		SXSSFSheet sheet2 =  streamWorkbook.createSheet("Filer");
 		sheet2.protectSheet("");
 
-		style.setFont(boldFont);
-		locked.setLocked(false);
-		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
 
 		Row rowSecondSheet = null;
 		Row header = sheet2.createRow(0);
@@ -510,42 +479,10 @@ public class MetadataToExcelGUI{
 		for(String tmp : fileHeaderList)
 		{
 			header.createCell(currentHeader).setCellValue(tmp);
-			header.getCell(currentHeader).setCellStyle(style);
+			header.getCell(currentHeader).setCellStyle(createBoldFont(streamWorkbook));
 			currentHeader++;
 
 		}
-
-		//Cell cell0, cell1, cell2, cell3,cell4, cell5, cell6, cell7, cell8, cell9;
-	/*	for (int i = 0; i < fileContentSheetList.size(); i++) {
-			 
-			f = fileContentSheetList.get(i);		
-			rowSecondSheet = sheet2.createRow(i+1);
-			rowSecondSheet.createCell(0).setCellValue(f.getFileNameColl());
-			rowSecondSheet.createCell(1).setCellValue(f.getFileTypeNameColl());
-			rowSecondSheet.createCell(2).setCellValue(fileTypeVersion);
-			rowSecondSheet.createCell(3).setCellValue(f.getFileSizeNameColl());
-			rowSecondSheet.createCell(4).setCellValue(f.getCharsetNameColl());
-			rowSecondSheet.createCell(5).setCellValue(f.getDurationColl());
-			rowSecondSheet.createCell(6).setCellValue(f.getFilePathNameColl());
-			rowSecondSheet.createCell(7).setCellValue(confidentialChecked);
-			rowSecondSheet.createCell(8).setCellValue(personalDataChecked);
-			rowSecondSheet.createCell(9).setCellValue(commentColl);
-
-			rowSecondSheet.getCell(0).setCellStyle(locked);
-			rowSecondSheet.getCell(1).setCellStyle(locked);
-			rowSecondSheet.getCell(2).setCellStyle(locked);
-			rowSecondSheet.getCell(3).setCellStyle(locked);
-			rowSecondSheet.getCell(4).setCellStyle(locked);
-			rowSecondSheet.getCell(5).setCellStyle(locked);
-			rowSecondSheet.getCell(6).setCellStyle(locked);
-			rowSecondSheet.getCell(7).setCellStyle(locked);
-			rowSecondSheet.getCell(8).setCellStyle(locked);
-			rowSecondSheet.getCell(9).setCellStyle(locked);
-			
-			sheet2.trackColumnForAutoSizing(i);
-			sheet2.autoSizeColumn(i);
-			
-		}  */
 
 		for (int rowNb = 0; rowNb < fileContentSheetList.size(); rowNb++) {
 			f = fileContentSheetList.get(rowNb);   
@@ -593,7 +530,7 @@ public class MetadataToExcelGUI{
 				}
 				sheet2.trackColumnForAutoSizing(colNb);
 				sheet2.autoSizeColumn(colNb);
-				row.getCell(colNb).setCellStyle(locked);
+				row.getCell(colNb).setCellStyle(unLocked(streamWorkbook));
 			}
 		}  
 	} 
