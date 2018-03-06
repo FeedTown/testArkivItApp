@@ -145,6 +145,7 @@ public class ExcelControllerFX extends Application {
 			//stopThread();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
+			model.clearArrayList();
 		}
 		else if(check){
 			//model.init();
@@ -436,6 +437,8 @@ public class ExcelControllerFX extends Application {
 				secondScene.getBtnOverwrite().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);
 				secondScene.getBtnDelete().setDisable(true);
+				mapping = false;
+				overwrite = false;
 			}
 
 		});
@@ -468,7 +471,12 @@ public class ExcelControllerFX extends Application {
 				
 
 				model.init(mapping, overwrite);
-				log.mappedLog();
+				
+				if(mapping || overwrite)
+				{
+					log.mappedLog();
+				}
+				
 
 				secondScene.getPi().setVisible(false);
 				secondScene.getWaitLabel().setVisible(false);

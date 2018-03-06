@@ -123,16 +123,11 @@ public class MetadataToExcelGUI{
 			System.out.println("Copying folder.........");
 		}
 
-		if(mapping && overwrite)
-		{
-			listOfFilesAndDirectory(sourceFolderPath);
-		} 
-
 
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 	
-		System.out.println(illegalCharFiles.toString());
+		//System.out.println(illegalCharFiles.toString());
 	}
 
 
@@ -158,6 +153,7 @@ public class MetadataToExcelGUI{
 			filePathList.clear();
 			fileDuration.getAudioVideoList().clear();
 			illegalCharFiles.clear();
+			mappedFiles.clear();
 		}
 		else
 		{
