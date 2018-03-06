@@ -66,6 +66,8 @@ public class MetadataToExcelGUI{
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
 	private ArrayList<String> mappedFiles = new ArrayList<String>();
+	private ArrayList<String> illegalCharFiles = new ArrayList<String>();
+	
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
@@ -129,6 +131,8 @@ public class MetadataToExcelGUI{
 
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
+	
+		System.out.println(illegalCharFiles.toString());
 	}
 
 
@@ -144,7 +148,7 @@ public class MetadataToExcelGUI{
 	}
 
 	//Clear ArrayList(s) if they aren't empty
-	private void clearArrayList() {
+	public void clearArrayList() {
 
 		if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
 		{
@@ -153,6 +157,7 @@ public class MetadataToExcelGUI{
 			sizeList.clear();
 			filePathList.clear();
 			fileDuration.getAudioVideoList().clear();
+			illegalCharFiles.clear();
 		}
 		else
 		{
@@ -176,6 +181,7 @@ public class MetadataToExcelGUI{
 			if(currentFileOrDir.isFile())
 			{
 				if(mapping)
+					//tempFile = getIllChars(tempFile,currentFileOrDir);
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
 
@@ -189,6 +195,7 @@ public class MetadataToExcelGUI{
 				//pathTest.add(tempFile.getAbsolutePath());
 
 				if(mapping)
+					//tempFile = getIllChars(tempFile,currentFileOrDir);
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
@@ -212,6 +219,12 @@ public class MetadataToExcelGUI{
 
 
 	}
+	
+	/*public File getIllChars(File tempFile, File currFileOrDir) {
+		System.out.println("getIllllll");
+		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), illegalCharacters(currFileOrDir.getName()));
+		return tempFile;
+	} */
 	
 	/*
 	 * If fileList is not empty:  
@@ -368,6 +381,7 @@ public class MetadataToExcelGUI{
 		streamWorkbook.write(streamOut);
 		streamOut.close();
 		streamWorkbook.close();
+		//clearArrayList();
 	}
 	
 	private CellStyle createRedAndBoldFont(SXSSFWorkbook streamWorkbook) {
@@ -678,7 +692,7 @@ public List<String> getContentList(){
 
 			} else {
 				System.out.println("No matching files found");
-			}
+			} 
 			workbook.write();
 			workbook.close();
 			clearArrayList();
@@ -923,6 +937,7 @@ public List<String> getContentList(){
 				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
 				|| currentString.contains("Ö") || currentString.contains("Ü"))
 		{
+			illegalCharFiles.add(currentString);
 			currentString = StringUtils.replaceEach (currentString, 
 					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
@@ -931,6 +946,19 @@ public List<String> getContentList(){
 
 		return currentString;
 	}
+	
+	/*public String illegalCharacters(String illegalString) {
+
+		if(illegalString.contains("å") || illegalString.contains("ä") || illegalString.contains("ö")
+				|| illegalString.contains("ü") || illegalString.contains("Å") || illegalString.contains("Ä") 
+				|| illegalString.contains("Ö") || illegalString.contains("Ü"))
+		{
+			
+			illegalCharFiles.add(illegalString);
+		}
+
+		return illegalString;
+	} */
 
 	@SuppressWarnings("unused")
 	private int getLargestString(List<String> stringList) {
@@ -1027,6 +1055,14 @@ public List<String> getContentList(){
 
 	public void setMappedFiles(ArrayList<String> mappedFiles) {
 		this.mappedFiles = mappedFiles;
+	}
+	
+	public ArrayList<String> getIllegalCharFiles() {
+		return illegalCharFiles;
+	}
+
+	public void setIllegalCharFiles(ArrayList<String> illegalCharFiles) {
+		this.illegalCharFiles = illegalCharFiles;
 	}
 	
 
