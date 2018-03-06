@@ -139,20 +139,17 @@ public class ExcelControllerFX extends Application {
 	private void createButton(ActionEvent event){
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
-			//model.init();
-			//setAlert();
 			progressBar();
-			//stopThread();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
 			model.clearArrayList();
+			secondScene.getBtnConvert().setDisable(true);
 		}
 		else if(check){
-			//model.init();
-			//setAlert();
 			progressBar();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
+			
 		}
 
 

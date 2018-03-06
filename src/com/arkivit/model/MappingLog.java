@@ -26,10 +26,6 @@ public class MappingLog {
 
 	public void mappedLog() {
 
-		//Logger loggerOrg = Logger.getLogger("MyLog2");  
-		//FileHandler fhOrg;
-		//String orgName = model.getTargetexcelFilepath();
-
 		Logger logger = Logger.getLogger("MyLog");  
 		FileHandler fh;
 		String logName = model.getTargetexcelFilepath() + "/" + model.getExcelFileName() + ".log";
@@ -40,7 +36,6 @@ public class MappingLog {
 
 				fh = new FileHandler(logName);
 				logger.addHandler(fh);
-				//loggerOrg.addHandler(fh);
 				SimpleFormatter formatter = new SimpleFormatter();  
 				fh.setFormatter(formatter);  
 				int count = 0;
@@ -52,17 +47,12 @@ public class MappingLog {
 					
 				}
 				
-				for(String illegalTemp : model.getIllegalCharFiles()) {
-					System.out.println("INNE I ILLELLGLLALAS");
-					logger.info("Orignal file: "+ illegalTemp + "\n");
-				}
-				
 				fh.close();
 			}
 
 			else {
 
-				System.out.println("No logg file was created."); 
+				System.out.println("No log file was created."); 
 			}
 	
 		}
