@@ -17,13 +17,13 @@ public class TestForReadingFiles {
 	public static void main(String[] args) throws IOException {
 		
 		//InputStreamReaderDecoder input = new InputStreamReaderDecoder();
-		TestForReadingFiles test = new TestForReadingFiles();
+		//TestForReadingFiles test = new TestForReadingFiles();
 		
 		
 		
 		
 		Tika fileType = new Tika();
-		String path ="H:\\Hämtade filer\\Individuell-studieplan-Saikat-Talkuder-20170331.doc", path2 = "H:\\Skrivbord\\js.js";
+		String path ="H:\\Hämtade filer\\Individuell-studieplan-Saikat-Talkuder-20170331.doc"; //path2 = "H:\\Skrivbord\\js.js";
 		//Path _path = Paths.get(URI.create(path2));
 		FileInputStream _fileInputStream = new FileInputStream(path);
 		
@@ -34,6 +34,7 @@ public class TestForReadingFiles {
 		
 		System.out.println("Filetype: " + fileType.detect(path));
 		//System.out.println("File encoding type : " + utfString);
+		_fileInputStream.close();
 		
 		
 	}

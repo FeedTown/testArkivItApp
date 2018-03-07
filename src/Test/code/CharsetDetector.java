@@ -20,9 +20,6 @@ package Test.code;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
@@ -85,7 +82,7 @@ public class CharsetDetector {
 
     public static void main(String[] args) {
     	String path2 = "C:\\Users\\Saikat\\Google Drive\\VT17SaikatTalukder\\assets\\Script\\rating.js";
-    	String path ="H:\\Hämtade filer\\jdbcpro.pdf";
+    	//String path ="H:\\Hämtade filer\\jdbcpro.pdf";
     	File f = new File(path2);
 
         String[] charsetsToBeTested = {"UTF-8", "windows-1253", "ISO-8859-7"};

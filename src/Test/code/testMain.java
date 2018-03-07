@@ -1,14 +1,7 @@
 package Test.code;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.arkivit.model.MetadataToExcelGUI;
-import com.arkivit.model.MappingLog;
+import java.util.Scanner;
 
 public class testMain {
 
@@ -23,7 +16,27 @@ public class testMain {
 	    WorkbookExample streamExample = new WorkbookExample(streamWorkbook, streamOut);
 	    streamExample.export();*/
 		
-		MetadataToExcelGUI data = new MetadataToExcelGUI();
+		//MetadataToExcelGUI data = new MetadataToExcelGUI();
 		//MappingLog mapping = new MappingLog(data);
+		boolean doMapping = false;
+		
+		Scanner scan = new Scanner(System.in);
+		
+		System.out.println("Do you want to mapp everthing in selected folder?\n Yes(y)/No(n)? ");
+		String answer = scan.nextLine();
+		
+		if(answer.equals("y") || answer.equals("Y")) {
+			
+			doMapping = true;
+		}
+		else if(answer.equals("n") || answer.equals("N"))
+		{
+			doMapping = false;
+		}
+			
+		
+		new testMapping(doMapping).init();
+		
+		scan.close();
 	}
 }
