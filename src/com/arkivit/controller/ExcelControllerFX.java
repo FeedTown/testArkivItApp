@@ -44,7 +44,7 @@ public class ExcelControllerFX extends Application {
 	private File backupDir;
 
 	/**
-	 * No args constructor with objects from MetadataToExcelGUI and ExcelAppGUIFX
+	 * No args constructor with objects from classes MetadataToExcelGUI, MappingLog,  FirstScene and SecondScene
 	 */
 	public ExcelControllerFX()
 	{
@@ -139,19 +139,17 @@ public class ExcelControllerFX extends Application {
 	private void createButton(ActionEvent event){
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
-			//model.init();
-			//setAlert();
 			progressBar();
-			//stopThread();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
+			model.clearArrayList();
+			secondScene.getBtnConvert().setDisable(true);
 		}
 		else if(check){
-			//model.init();
-			//setAlert();
 			progressBar();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
+			
 		}
 
 
@@ -246,7 +244,7 @@ public class ExcelControllerFX extends Application {
 			secondScene.getOverwriteCheckBox().setSelected(false);
 			secondScene.getBtnOverwrite().setDisable(true);
 			secondScene.getBtnSaveAs().setDisable(false);
-			
+				
 		}
 	}
 	private void checkBox2() {
@@ -436,6 +434,8 @@ public class ExcelControllerFX extends Application {
 				secondScene.getBtnOverwrite().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);
 				secondScene.getBtnDelete().setDisable(true);
+				mapping = false;
+				overwrite = false;
 			}
 
 		});
@@ -468,7 +468,12 @@ public class ExcelControllerFX extends Application {
 				
 
 				model.init(mapping, overwrite);
-				log.mappedLog();
+				
+				if(mapping || overwrite)
+				{
+					log.mappedLog();
+				}
+				
 
 				secondScene.getPi().setVisible(false);
 				secondScene.getWaitLabel().setVisible(false);

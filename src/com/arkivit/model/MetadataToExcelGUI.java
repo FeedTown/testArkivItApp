@@ -66,6 +66,8 @@ public class MetadataToExcelGUI{
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
 	private ArrayList<String> mappedFiles = new ArrayList<String>();
+	private ArrayList<String> illegalCharFiles = new ArrayList<String>();
+	
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
@@ -81,7 +83,6 @@ public class MetadataToExcelGUI{
 	 */
 	public MetadataToExcelGUI()
 	{
-
 
 		//sourceFolderPath = "C:\\Users\\Kevin\\Desktop\\test";
 		//sourceFolderPath = "F:\\Skola\\Svenska";
@@ -122,14 +123,11 @@ public class MetadataToExcelGUI{
 			System.out.println("Copying folder.........");
 		}
 
-		if(mapping && overwrite)
-		{
-			listOfFilesAndDirectory(sourceFolderPath);
-		} 
-
 
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
+	
+		//System.out.println(illegalCharFiles.toString());
 	}
 
 
@@ -145,7 +143,7 @@ public class MetadataToExcelGUI{
 	}
 
 	//Clear ArrayList(s) if they aren't empty
-	private void clearArrayList() {
+	public void clearArrayList() {
 
 		if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
 		{
@@ -154,6 +152,8 @@ public class MetadataToExcelGUI{
 			sizeList.clear();
 			filePathList.clear();
 			fileDuration.getAudioVideoList().clear();
+			illegalCharFiles.clear();
+			mappedFiles.clear();
 		}
 		else
 		{
@@ -177,6 +177,7 @@ public class MetadataToExcelGUI{
 			if(currentFileOrDir.isFile())
 			{
 				if(mapping)
+					//tempFile = getIllChars(tempFile,currentFileOrDir);
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
 
@@ -190,6 +191,7 @@ public class MetadataToExcelGUI{
 				//pathTest.add(tempFile.getAbsolutePath());
 
 				if(mapping)
+					//tempFile = getIllChars(tempFile,currentFileOrDir);
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
@@ -204,8 +206,7 @@ public class MetadataToExcelGUI{
 
 	}
 
-	private File doMapping(File tempFile, File currFileOrDir) {
-
+	public File doMapping(File tempFile, File currFileOrDir) {
 
 		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
 		currFileOrDir.renameTo(tempFile);
@@ -214,7 +215,13 @@ public class MetadataToExcelGUI{
 
 
 	}
-
+	
+	/*public File getIllChars(File tempFile, File currFileOrDir) {
+		System.out.println("getIllllll");
+		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), illegalCharacters(currFileOrDir.getName()));
+		return tempFile;
+	} */
+	
 	/*
 	 * If fileList is not empty:  
 	 * 
@@ -291,14 +298,10 @@ public class MetadataToExcelGUI{
 		fileListeLength = fileNameList.size();
 
 		System.out.println("File name list length : " + fileListeLength);
-		//createExcelFile();
-
-
+	
 		try {
-			//createSecondSheet();
 			createWorkbook();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -374,110 +377,81 @@ public class MetadataToExcelGUI{
 		streamWorkbook.write(streamOut);
 		streamOut.close();
 		streamWorkbook.close();
+		//clearArrayList();
 	}
-
-	private Font createFont(Font font, short fontColor) {
-
-		font.setFontHeightInPoints((short)9);
-		font.setFontName("Arial");
-		font.setColor(fontColor);
-		font.setBold(true);
-		font.setItalic(false);
-
-		return font;
+	
+	private CellStyle createRedAndBoldFont(SXSSFWorkbook streamWorkbook) {
+		CellStyle style = streamWorkbook.createCellStyle();
+		Font redAndBoldFont = streamWorkbook.createFont();
+		redAndBoldFont.setFontHeightInPoints((short)9);
+		redAndBoldFont.setFontName("Arial");
+		redAndBoldFont.setColor(Font.COLOR_RED);
+		redAndBoldFont.setBold(true);
+		style.setFont(redAndBoldFont);
+		return style;
+		
 	}
-
-	public void createFirstSheet(SXSSFWorkbook streamWorkbook) throws IOException{
-
-		CellStyle style = streamWorkbook.createCellStyle(); 
-		CellStyle boldStyle = streamWorkbook.createCellStyle();
+	
+	private CellStyle createBoldFont(SXSSFWorkbook streamWorkbook) {
+		CellStyle style = streamWorkbook.createCellStyle();
+		Font boldFont = streamWorkbook.createFont();
+		boldFont.setFontHeightInPoints((short)9);
+		boldFont.setFontName("Arial");
+		boldFont.setColor(Font.COLOR_NORMAL);
+		boldFont.setBold(true);
+		style.setFont(boldFont);
+		return style;
+		
+	}
+	
+	private CellStyle unLocked(SXSSFWorkbook streamWorkbook) {
 		CellStyle locked = streamWorkbook.createCellStyle();
-		Font font=  streamWorkbook.createFont(), boldFont = streamWorkbook.createFont();
-		int largestString;
-		ArrayList<String> contentList = new ArrayList<String>();
-
-		contentList.add(0, "");
-		contentList.add(1, "");
-		contentList.add(2, generalBean.getDescDelivery());
-		contentList.add(3, generalBean.getArchiveCreator());
-		contentList.add(4, generalBean.getArchiveCreatorNum());
-		contentList.add(5, generalBean.getDelivGov());
-		contentList.add(6, generalBean.getDelivGovNum());
-		contentList.add(7, generalBean.getConsultantBur());
-		contentList.add(8, generalBean.getContactDelivPerson());
-		contentList.add(9, generalBean.getTelContactPerson());
-		contentList.add(10, generalBean.getEmail());
-		contentList.add(11, "");
-		contentList.add(12, "");
-		contentList.add(13, generalBean.getArchiveName());
-		contentList.add(14, generalBean.getSystemName());
-		contentList.add(15, generalBean.getDate());
-		contentList.add(16, generalBean.getComment());
-		contentList.add(17, "");
-		contentList.add(18, "");
-		contentList.add(19, "");
-
-		largestString = getLargestString(contentList);
-
-		List<String> generalHeaderList= new ArrayList<String>();
-		generalHeaderList = addGeneralHeadersToList(generalHeaderList);
+		locked.setLocked(false);
+		return locked;
+	}
+	
+	public void createFirstSheet(SXSSFWorkbook streamWorkbook) throws IOException{
 
 		SXSSFSheet sheet1 = streamWorkbook.createSheet("Allmänt");
 		sheet1.protectSheet("");
-		Row rowFirstSheet;
 		Row headerFirstSheet = sheet1.createRow(0);
-
-		font = createFont(font, Font.COLOR_RED);
-		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
-
-		style.setFont(font);
-		boldStyle.setFont(boldFont);
-		locked.setLocked(false);
+		Row rowFirstSheet = sheet1.createRow(1);
 
 		headerFirstSheet.createCell(0).setCellValue("RUBRIK");
 		headerFirstSheet.createCell(1).setCellValue("INNEHÅLL");
-		headerFirstSheet.getCell(0).setCellStyle(boldStyle);
-		headerFirstSheet.getCell(1).setCellStyle(boldStyle);
+		headerFirstSheet.getCell(0).setCellStyle(createBoldFont(streamWorkbook));
+		headerFirstSheet.getCell(1).setCellStyle(createBoldFont(streamWorkbook));
+		
+		for (int row = 0; row < getGeneralHeaders().size(); row++) {
 
-		Cell cell0,cell1;
-
-		for (int row = 0; row < generalHeaderList.size(); row++) {
-
-			generalHeaderList.get(row);
+			getGeneralHeaders().get(row);
 			rowFirstSheet = sheet1.createRow(row+1);
-			rowFirstSheet.createCell(0).setCellValue(generalHeaderList.get(row));
-			rowFirstSheet.createCell(1).setCellValue(contentList.get(row));
-
-
+			rowFirstSheet.createCell(0).setCellValue(getGeneralHeaders().get(row));
+			rowFirstSheet.createCell(1).setCellValue(getContentList().get(row));
 
 			if(row == 0 || row == 1 || row == 11 || row == 12 || row == 17 || row == 18
 					|| row == 19)
 			{
-				rowFirstSheet.getCell(0).setCellStyle(style);
+				rowFirstSheet.getCell(0).setCellStyle(createRedAndBoldFont(streamWorkbook));
 			}
 			else
 			{
-				rowFirstSheet.getCell(0).setCellStyle(boldStyle);
+				rowFirstSheet.getCell(0).setCellStyle(createBoldFont(streamWorkbook));
 			}
+
 
 			for (int colNb = 0; colNb < 2; colNb++) {
 				sheet1.trackColumnForAutoSizing(colNb);
 				sheet1.autoSizeColumn(colNb);
 			}
 
-			//sheet1.autoSizeColumn(largestString);
-			rowFirstSheet.getCell(1).setCellStyle(locked);
-
+			rowFirstSheet.getCell(1).setCellStyle(unLocked(streamWorkbook));
 
 		}
 
 	}
 
 	public void createSecondSheet(SXSSFWorkbook streamWorkbook) throws IOException {
-
-		CellStyle style = streamWorkbook.createCellStyle();
-		CellStyle locked = streamWorkbook.createCellStyle();
-		Font boldFont = streamWorkbook.createFont();
 
 		FileInfoStorageBean f;
 		String fileExtension, sizeInString, fileTypeVersion = "" ,confidentialityColl = confidentialChecked,
@@ -501,9 +475,6 @@ public class MetadataToExcelGUI{
 		SXSSFSheet sheet2 =  streamWorkbook.createSheet("Filer");
 		sheet2.protectSheet("");
 
-		boldFont = createFont(boldFont, Font.COLOR_NORMAL);
-		style.setFont(boldFont);
-		locked.setLocked(false);
 
 		Row rowSecondSheet = null;
 		Row header = sheet2.createRow(0);
@@ -513,11 +484,10 @@ public class MetadataToExcelGUI{
 		for(String tmp : fileHeaderList)
 		{
 			header.createCell(currentHeader).setCellValue(tmp);
-			header.getCell(currentHeader).setCellStyle(style);
+			header.getCell(currentHeader).setCellStyle(createBoldFont(streamWorkbook));
 			currentHeader++;
 
 		}
-
 
 		for (int rowNb = 0; rowNb < fileContentSheetList.size(); rowNb++) {
 			f = fileContentSheetList.get(rowNb);   
@@ -525,10 +495,12 @@ public class MetadataToExcelGUI{
 
 			for (int colNb = 0; colNb < 10; colNb++) {
 				Cell cell = row.getCell(colNb);
+
 				if(cell == null)
 				{
 					cell = row.createCell(colNb);
-				}
+				} 
+
 
 				if (colNb==0)
 				{
@@ -563,12 +535,13 @@ public class MetadataToExcelGUI{
 				}
 				sheet2.trackColumnForAutoSizing(colNb);
 				sheet2.autoSizeColumn(colNb);
-				row.getCell(colNb).setCellStyle(locked);
+				row.getCell(colNb).setCellStyle(unLocked(streamWorkbook));
 			}
+		}  
+	} 
 
-		}
 
-	}
+
 
 	private void testCodes()
 	{
@@ -614,9 +587,9 @@ public class MetadataToExcelGUI{
 
 	}
 
-	private List<String> addGeneralHeadersToList(List<String> generalHeaderList) 
+	private List<String> getGeneralHeaders() 
 	{
-
+		List<String> generalHeaderList= new ArrayList<String>();
 		generalHeaderList.add("Riksarkivets diarienummer leveransöverenskommelse");
 		generalHeaderList.add("Riksarkivets diarienummer leverans");
 		generalHeaderList.add("Beskrivning av leveransen");
@@ -627,6 +600,7 @@ public class MetadataToExcelGUI{
 		generalHeaderList.add("Servicebyrå/Konsult");
 		generalHeaderList.add("Kontaktperson för leverans");
 		generalHeaderList.add("Telefonnummer till kontaktperson");
+		generalHeaderList.add("E-post-adress till kontaktperson");
 		generalHeaderList.add("Kostnadsställe");
 		generalHeaderList.add("Kontaktperson för e-fakturering");
 		generalHeaderList.add("Arkivets namn");
@@ -636,9 +610,37 @@ public class MetadataToExcelGUI{
 		generalHeaderList.add("Projektkod");
 		generalHeaderList.add("Accessions-ID");
 		generalHeaderList.add("Batch-ID");
+		
 		return generalHeaderList;
-
 	}
+	
+public List<String> getContentList(){
+		
+		List<String> contentList = new ArrayList<>();
+		contentList.add(0, "");
+		contentList.add(1, "");
+		contentList.add(2, generalBean.getDescDelivery());
+		contentList.add(3, generalBean.getArchiveCreator());
+		contentList.add(4, generalBean.getArchiveCreatorNum());
+		contentList.add(5, generalBean.getDelivGov());
+		contentList.add(6, generalBean.getDelivGovNum());
+		contentList.add(7, generalBean.getConsultantBur());
+		contentList.add(8, generalBean.getContactDelivPerson());
+		contentList.add(9, generalBean.getTelContactPerson());
+		contentList.add(10, generalBean.getEmail());
+		contentList.add(11, "");
+		contentList.add(12, "");
+		contentList.add(13, generalBean.getArchiveName());
+		contentList.add(14, generalBean.getSystemName());
+		contentList.add(15, generalBean.getDate());
+		contentList.add(16, generalBean.getComment());
+		contentList.add(17, "");
+		contentList.add(18, "");
+		contentList.add(19, "");
+		
+		return contentList;	
+	}
+
 
 
 
@@ -686,7 +688,7 @@ public class MetadataToExcelGUI{
 
 			} else {
 				System.out.println("No matching files found");
-			}
+			} 
 			workbook.write();
 			workbook.close();
 			clearArrayList();
@@ -844,15 +846,6 @@ public class MetadataToExcelGUI{
 		for(String filename : fileNameList)
 		{
 
-			/*if(mapping) {
-				tempString = replaceIllegalChars(filename);
-				//tempString = replaceIllegalChars(filePathList.toString());
-			}
-			else {
-				tempString = filename;
-				//tempString = filePathList.toString();
-			}*/
-
 			sizeInString = Objects.toString(sizeList.get(rowNum), null); 
 			fileExtention = FilenameUtils.getExtension(filename);
 
@@ -940,6 +933,7 @@ public class MetadataToExcelGUI{
 				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
 				|| currentString.contains("Ö") || currentString.contains("Ü"))
 		{
+			illegalCharFiles.add(currentString);
 			currentString = StringUtils.replaceEach (currentString, 
 					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
@@ -948,9 +942,22 @@ public class MetadataToExcelGUI{
 
 		return currentString;
 	}
+	
+	/*public String illegalCharacters(String illegalString) {
+
+		if(illegalString.contains("å") || illegalString.contains("ä") || illegalString.contains("ö")
+				|| illegalString.contains("ü") || illegalString.contains("Å") || illegalString.contains("Ä") 
+				|| illegalString.contains("Ö") || illegalString.contains("Ü"))
+		{
+			
+			illegalCharFiles.add(illegalString);
+		}
+
+		return illegalString;
+	} */
 
 	@SuppressWarnings("unused")
-	private int getLargestString(ArrayList<String> stringList) {
+	private int getLargestString(List<String> stringList) {
 
 		int largestString = stringList.get(0).length();
 		int index = 0;
@@ -1001,7 +1008,6 @@ public class MetadataToExcelGUI{
 	}
 
 
-
 	public int getFileCount() {
 		return fileCount;
 	}
@@ -1046,7 +1052,14 @@ public class MetadataToExcelGUI{
 	public void setMappedFiles(ArrayList<String> mappedFiles) {
 		this.mappedFiles = mappedFiles;
 	}
+	
+	public ArrayList<String> getIllegalCharFiles() {
+		return illegalCharFiles;
+	}
 
-
+	public void setIllegalCharFiles(ArrayList<String> illegalCharFiles) {
+		this.illegalCharFiles = illegalCharFiles;
+	}
+	
 
 }
