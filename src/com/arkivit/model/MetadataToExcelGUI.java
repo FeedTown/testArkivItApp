@@ -120,7 +120,7 @@ public class MetadataToExcelGUI{
 		if(mapping && !overwrite) 
 		{
 			copyFolder();
-			System.out.println("Copying folder.........");
+			//System.out.println("Copying folder.........");
 		}
 
 
@@ -157,7 +157,7 @@ public class MetadataToExcelGUI{
 		}
 		else
 		{
-			System.out.println("The list is already empty.");
+			//System.out.println("The list is already empty.");
 		}
 	}
 
@@ -182,7 +182,7 @@ public class MetadataToExcelGUI{
 
 
 				fileList.add(tempFile);
-				System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
+				//System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
 				fileCount++;
 			}
 
@@ -201,7 +201,7 @@ public class MetadataToExcelGUI{
 
 		}
 
-		System.out.println(fileCount);
+		//System.out.println(fileCount);
 
 
 	}
@@ -262,7 +262,7 @@ public class MetadataToExcelGUI{
 
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
-					System.out.println(fPath);
+					//System.out.println(fPath);
 					fPath = fPath.replace(sourceFolderPath, folderName);
 
 					if(getDecoding == null)
@@ -279,7 +279,7 @@ public class MetadataToExcelGUI{
 					filePathList.add(fPath);
 					fileDuration.getAudioVideoList().add(duration);
 
-					System.out.println("File size: " + fileSize);
+					//System.out.println("File size: " + fileSize);
 
 
 				}
@@ -287,7 +287,7 @@ public class MetadataToExcelGUI{
 			}
 			else
 			{
-				System.out.println("The list is empty");
+				//System.out.println("The list is empty");
 			}
 
 
@@ -297,7 +297,7 @@ public class MetadataToExcelGUI{
 
 		fileListeLength = fileNameList.size();
 
-		System.out.println("File name list length : " + fileListeLength);
+		//System.out.println("File name list length : " + fileListeLength);
 	
 		try {
 			createWorkbook();
@@ -670,14 +670,14 @@ public List<String> getContentList(){
 		File file = new File(targetexcelFilepath +"/"+ excelFileName);
 
 		try {
-			System.out.println("createExcelFile");
+			//System.out.println("createExcelFile");
 			WorkbookSettings wbSettings = new WorkbookSettings();
 			WritableWorkbook workbook = Workbook.createWorkbook(file,
 					wbSettings);
 			workbook.createSheet("Allmänt", 0);
 			workbook.createSheet("Filer", 1);
-			System.out.println("Excel file is created in path -- "
-					+ targetexcelFilepath);
+			//System.out.println("Excel file is created in path -- "
+			//		+ targetexcelFilepath);
 
 			WritableSheet generalSheet = (WritableSheet) workbook.getSheet(0);
 			WritableSheet excelSheet = (WritableSheet) workbook.getSheet(1);
@@ -687,7 +687,7 @@ public List<String> getContentList(){
 				excelSheet = createMetadataExcelSheet(excelSheet);
 
 			} else {
-				System.out.println("No matching files found");
+				//System.out.println("No matching files found");
 			} 
 			workbook.write();
 			workbook.close();

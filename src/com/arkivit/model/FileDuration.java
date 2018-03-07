@@ -40,8 +40,8 @@ public class FileDuration {
 		}
 		
 		final String formattedDuration = formatTimeStamp(demuxer.getDuration());
-		System.out.printf("Duration: %s \n", 
-				formattedDuration); 
+		//System.out.printf("Duration: %s \n", 
+		//		formattedDuration); 
 		
 		try {
 			demuxer.close();
