@@ -41,8 +41,8 @@ public class MappingLog {
 				int count = 0;
 				
 				for(String mappedTemp: model.getMappedFiles()) {
-					logger.info("Mapped file: " + mappedTemp + "\n" + 
-							"Orignal file: "+ model.getIllegalCharFiles().get(count)+ "\n");
+					logger.info("\n Mapped file: " + mappedTemp + "\n" + 
+						"Orignal file: "+ model.getIllegalCharFiles().get(count)+ "\n");
 					count++;
 					
 				}
@@ -63,9 +63,6 @@ public class MappingLog {
 			e.printStackTrace();  
 		}
 		
-		finally {
-			model.clearArrayList();
-		}
 		
 	}
 }
