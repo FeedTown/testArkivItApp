@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.bind.SchemaOutputResolver;
 
@@ -60,6 +62,7 @@ public class MetadataToExcelGUI{
 	private int fileListeLength;
 	private String targetexcelFilepath, backupFilePath;
 	private String sourceFolderPath;
+	private String newFolderPath;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
@@ -67,7 +70,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<File> fileList = new ArrayList<File>();
 	private ArrayList<String> mappedFiles = new ArrayList<String>();
 	private ArrayList<String> illegalCharFiles = new ArrayList<String>();
-	
+
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
@@ -119,6 +122,7 @@ public class MetadataToExcelGUI{
 
 		if(mapping && !overwrite) 
 		{
+
 			copyFolder();
 			//System.out.println("Copying folder.........");
 		}
@@ -126,7 +130,7 @@ public class MetadataToExcelGUI{
 
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
-	
+
 		//System.out.println(illegalCharFiles.toString());
 	}
 
@@ -135,7 +139,9 @@ public class MetadataToExcelGUI{
 	private void copyFolder() {
 		File selectedFolder = new File(sourceFolderPath);
 		try {
+
 			FileUtils.copyDirectoryToDirectory(selectedFolder, new File(backupFilePath + "/" + folderName + "_backup"));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -165,20 +171,42 @@ public class MetadataToExcelGUI{
 	 * If mapping = true All files with illegal characters are renamed.
 	 * If file is a directory the path will be retrieved.
 	 */
+	int counter = 0;
 	private void listOfFilesAndDirectory(String folderPathName)
 	{
 
+		String fileCounterName = Integer.toString(counter);
 		File folder = new File(folderPathName);
-		File tempFile;
-
+		File tempFile2 = new File(folderPathName + fileCounterName);
+		File tempFile = new File(folderPathName);
 		for(File currentFileOrDir : folder.listFiles())
 		{
 			tempFile = currentFileOrDir;
 			if(currentFileOrDir.isFile())
 			{
 				if(mapping)
-					//tempFile = getIllChars(tempFile,currentFileOrDir);
+				{
 					tempFile = doMapping(tempFile,currentFileOrDir);
+
+					/*if(tempFile.toString().contains("ä"))
+					{
+						tempFile = new File(currentFileOrDir.getParentFile().getAbsolutePath(), currentFileOrDir.getName() + counter);
+						currentFileOrDir.renameTo(tempFile);
+						counter++;
+					}*/
+				}
+				/*if(tempFile.toString().contains("ä")) 
+					{
+						System.out.println("FILE CONTAINS Ä: " + tempFile);
+						tempFile2 = currentFileOrDir;
+						tempFile2 = doMapping(tempFile2, currentFileOrDir);
+						counter++;
+					}
+					else 
+					{
+						System.out.println("FILE NOT CONTAINS Ä :" + tempFile);
+						tempFile = doMapping(tempFile,currentFileOrDir);
+					}*/
 
 
 				fileList.add(tempFile);
@@ -190,9 +218,29 @@ public class MetadataToExcelGUI{
 			{
 				//pathTest.add(tempFile.getAbsolutePath());
 
-				if(mapping)
-					//tempFile = getIllChars(tempFile,currentFileOrDir);
+				if(mapping) {
 					tempFile = doMapping(tempFile,currentFileOrDir);
+
+				/*	if(tempFile.toString().contains("ä"))
+					{
+						
+						tempFile = new File(currentFileOrDir.getParentFile().getAbsolutePath(), currentFileOrDir.getName() + counter);
+						currentFileOrDir.renameTo(tempFile);
+						counter++;
+
+					} */
+				}
+				/*if(tempFile.toString().contains("ä")) {
+						System.out.println("FOLDER CONTAINS Ä: " + tempFile);
+						tempFile2 = currentFileOrDir;
+						tempFile2 = doMapping(tempFile2, currentFileOrDir);
+						counter++;
+					}
+					else {
+						System.out.println("FOLDER NOT COINTAINS Ä: " + tempFile); 
+						tempFile = doMapping(tempFile,currentFileOrDir);						
+					}*/
+
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
 
@@ -201,27 +249,41 @@ public class MetadataToExcelGUI{
 
 		}
 
-		//System.out.println(fileCount);
+		System.out.println(fileCount);
 
 
 	}
 
 	public File doMapping(File tempFile, File currFileOrDir) {
-
-		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
-		currFileOrDir.renameTo(tempFile);
-
+		int counter = 1;
+		File temp = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+		//currFileOrDir.renameTo(temp);
+		
+		if(tempFile.toString().contains("ä") || currFileOrDir.toString().contains("ä")) {
+			
+		/*	for(File currentFileOrDir : temp.listFiles())
+			{
+				currentFileOrDir = new File(temp.getParentFile().getAbsolutePath(), temp.getName() + "(" + counter + ")");
+				currFileOrDir.renameTo(currentFileOrDir);
+				counter++;
+				System.out.println(currentFileOrDir + " " + counter);
+			}*/
+			System.out.println("CONTAINS  Ä " + temp);
+			temp = new File(temp.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName() + "_" + counter));
+			currFileOrDir.renameTo(temp);
+			counter++;
+			
+		}
+		
+		else {
+			temp = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+			currFileOrDir.renameTo(temp);
+			System.out.println("NO Ä " + temp);
+		}
 		return tempFile;
-
 
 	}
-	
-	/*public File getIllChars(File tempFile, File currFileOrDir) {
-		System.out.println("getIllllll");
-		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), illegalCharacters(currFileOrDir.getName()));
-		return tempFile;
-	} */
-	
+
 	/*
 	 * If fileList is not empty:  
 	 * 
@@ -298,7 +360,7 @@ public class MetadataToExcelGUI{
 		fileListeLength = fileNameList.size();
 
 		//System.out.println("File name list length : " + fileListeLength);
-	
+
 		try {
 			createWorkbook();
 		} catch (IOException e) {
@@ -379,7 +441,7 @@ public class MetadataToExcelGUI{
 		streamWorkbook.close();
 		//clearArrayList();
 	}
-	
+
 	private CellStyle createRedAndBoldFont(SXSSFWorkbook streamWorkbook) {
 		CellStyle style = streamWorkbook.createCellStyle();
 		Font redAndBoldFont = streamWorkbook.createFont();
@@ -389,9 +451,9 @@ public class MetadataToExcelGUI{
 		redAndBoldFont.setBold(true);
 		style.setFont(redAndBoldFont);
 		return style;
-		
+
 	}
-	
+
 	private CellStyle createBoldFont(SXSSFWorkbook streamWorkbook) {
 		CellStyle style = streamWorkbook.createCellStyle();
 		Font boldFont = streamWorkbook.createFont();
@@ -401,15 +463,15 @@ public class MetadataToExcelGUI{
 		boldFont.setBold(true);
 		style.setFont(boldFont);
 		return style;
-		
+
 	}
-	
+
 	private CellStyle unLocked(SXSSFWorkbook streamWorkbook) {
 		CellStyle locked = streamWorkbook.createCellStyle();
 		locked.setLocked(false);
 		return locked;
 	}
-	
+
 	public void createFirstSheet(SXSSFWorkbook streamWorkbook) throws IOException{
 
 		SXSSFSheet sheet1 = streamWorkbook.createSheet("Allmänt");
@@ -421,7 +483,7 @@ public class MetadataToExcelGUI{
 		headerFirstSheet.createCell(1).setCellValue("INNEHÅLL");
 		headerFirstSheet.getCell(0).setCellStyle(createBoldFont(streamWorkbook));
 		headerFirstSheet.getCell(1).setCellStyle(createBoldFont(streamWorkbook));
-		
+
 		for (int row = 0; row < getGeneralHeaders().size(); row++) {
 
 			getGeneralHeaders().get(row);
@@ -610,12 +672,12 @@ public class MetadataToExcelGUI{
 		generalHeaderList.add("Projektkod");
 		generalHeaderList.add("Accessions-ID");
 		generalHeaderList.add("Batch-ID");
-		
+
 		return generalHeaderList;
 	}
-	
-public List<String> getContentList(){
-		
+
+	public List<String> getContentList(){
+
 		List<String> contentList = new ArrayList<>();
 		contentList.add(0, "");
 		contentList.add(1, "");
@@ -637,7 +699,7 @@ public List<String> getContentList(){
 		contentList.add(17, "");
 		contentList.add(18, "");
 		contentList.add(19, "");
-		
+
 		return contentList;	
 	}
 
@@ -942,19 +1004,6 @@ public List<String> getContentList(){
 
 		return currentString;
 	}
-	
-	/*public String illegalCharacters(String illegalString) {
-
-		if(illegalString.contains("å") || illegalString.contains("ä") || illegalString.contains("ö")
-				|| illegalString.contains("ü") || illegalString.contains("Å") || illegalString.contains("Ä") 
-				|| illegalString.contains("Ö") || illegalString.contains("Ü"))
-		{
-			
-			illegalCharFiles.add(illegalString);
-		}
-
-		return illegalString;
-	} */
 
 	@SuppressWarnings("unused")
 	private int getLargestString(List<String> stringList) {
@@ -1052,7 +1101,7 @@ public List<String> getContentList(){
 	public void setMappedFiles(ArrayList<String> mappedFiles) {
 		this.mappedFiles = mappedFiles;
 	}
-	
+
 	public ArrayList<String> getIllegalCharFiles() {
 		return illegalCharFiles;
 	}
@@ -1060,6 +1109,6 @@ public List<String> getContentList(){
 	public void setIllegalCharFiles(ArrayList<String> illegalCharFiles) {
 		this.illegalCharFiles = illegalCharFiles;
 	}
-	
+
 
 }
