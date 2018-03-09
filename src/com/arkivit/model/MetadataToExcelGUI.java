@@ -221,9 +221,9 @@ public class MetadataToExcelGUI{
 				if(mapping) {
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
-				/*	if(tempFile.toString().contains("ä"))
+					/*	if(tempFile.toString().contains("ä"))
 					{
-						
+
 						tempFile = new File(currentFileOrDir.getParentFile().getAbsolutePath(), currentFileOrDir.getName() + counter);
 						currentFileOrDir.renameTo(tempFile);
 						counter++;
@@ -256,10 +256,11 @@ public class MetadataToExcelGUI{
 
 	public File doMapping(File tempFile, File currFileOrDir) {
 		int counter = 1;
-		File temp = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+		//tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath());
+		//File temp = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
 		//currFileOrDir.renameTo(temp);
-		
-		if(tempFile.toString().contains("ä") || currFileOrDir.toString().contains("ä")) {
+ //String fileNameWithOutExt = FilenameUtils.removeExtension(tempFile.toString());
+		if(tempFile.exists()) {
 			
 		/*	for(File currentFileOrDir : temp.listFiles())
 			{
@@ -268,17 +269,17 @@ public class MetadataToExcelGUI{
 				counter++;
 				System.out.println(currentFileOrDir + " " + counter);
 			}*/
-			System.out.println("CONTAINS  Ä " + temp);
-			temp = new File(temp.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName() + "_" + counter));
-			currFileOrDir.renameTo(temp);
+			System.out.println("CONTAINS  ä " + tempFile);
+			tempFile = new File(tempFile.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName() + "_" + counter));
+			currFileOrDir.renameTo(tempFile);
 			counter++;
 			
 		}
 		
 		else {
-			temp = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
-			currFileOrDir.renameTo(temp);
-			System.out.println("NO Ä " + temp);
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+			currFileOrDir.renameTo(tempFile);
+			System.out.println("NO ä " + tempFile);
 		}
 		return tempFile;
 
