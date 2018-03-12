@@ -219,9 +219,9 @@ public class MetadataToExcelGUI{
 			if(tempFile.exists()) {
 
 				tempFile = renameFile(tempFile,isDir,currFileOrDir);
-
+				
 			}
-
+			mappedFiles.add(tempFile.getName());
 		}
 		else
 		{
@@ -251,11 +251,14 @@ public class MetadataToExcelGUI{
 		if(!isDir)
 		{
 			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter + "." + fileExtension);
+	
 		}
 		else
 		{
 			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter);
+			
 		}
+		
 		return tempFile;
 	}
 
@@ -985,8 +988,7 @@ public class MetadataToExcelGUI{
 		currentString = StringUtils.replaceEach (currentString, 
 				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
-		mappedFiles.add(currentString);
-
+		//mappedFiles.add(currentString);
 
 		return currentString;
 	}
@@ -1084,9 +1086,9 @@ public class MetadataToExcelGUI{
 		return mappedFiles;
 	}
 
-	public void setMappedFiles(ArrayList<String> mappedFiles) {
+	/*public void setMappedFiles(ArrayList<String> mappedFiles) {
 		this.mappedFiles = mappedFiles;
-	}
+	} */
 
 	public ArrayList<String> getIllegalCharFiles() {
 		return illegalCharFiles;

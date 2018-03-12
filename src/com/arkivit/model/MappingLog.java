@@ -12,8 +12,6 @@ import com.arkivit.view.SecondScene;
 
 public class MappingLog {
 	MetadataToExcelGUI model = new MetadataToExcelGUI();
-	//ExcelControllerFX controller = new ExcelControllerFX();
-
 
 	public MappingLog() {
 
@@ -31,7 +29,8 @@ public class MappingLog {
 		String logName = model.getTargetexcelFilepath() + "/" + model.getExcelFileName() + ".log";
 
 		try {  
-
+			System.out.println(model.getMappedFiles().toString());
+			
 			if(!(model.getMappedFiles().isEmpty())) {
 
 				fh = new FileHandler(logName);
@@ -42,7 +41,7 @@ public class MappingLog {
 				
 				for(String mappedTemp: model.getMappedFiles()) {
 					logger.info("\n Mapped file: " + mappedTemp + "\n" + 
-						"Orignal file: "+ model.getIllegalCharFiles().get(count)+ "\n");
+						" Orignal file: "+ model.getIllegalCharFiles().get(count)+ "\n");
 					count++;
 					
 				}
