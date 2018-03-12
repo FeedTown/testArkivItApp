@@ -3,7 +3,6 @@ package Test.code;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,8 +26,8 @@ public class MappingRename {
 
 	public void init() throws IOException
 	{
-		inputPath = "H:\\Skrivbord\\TestFiles";
-		backupFilePath = "H:\\Skrivbord";
+		inputPath = "/Users/RobertoBlanco/Desktop/MappingMap";
+		backupFilePath = "/Users/RobertoBlanco/Desktop";
 		folderName = new File(inputPath).getName();
 
 

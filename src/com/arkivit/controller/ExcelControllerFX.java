@@ -435,6 +435,8 @@ public class ExcelControllerFX extends Application {
 				secondScene.getBtnOverwrite().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);
 				secondScene.getBtnDelete().setDisable(true);
+				secondScene.getConfidentialCheckBox().setSelected(false);
+				secondScene.getPersonalDataBox().setSelected(false);
 				mapping = false;
 				overwrite = false;
 			}

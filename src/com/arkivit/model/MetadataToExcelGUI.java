@@ -51,8 +51,8 @@ public class MetadataToExcelGUI{
 	//private File file;
 	private String excelFileName, folderName = "", confidentialChecked = "", personalDataChecked = "";  
 	private long fileSize;
-	private int fileListeLength;
-	private String targetexcelFilepath, backupFilePath;
+	private int fileListeLength, counter = 1;
+	private String targetexcelFilepath, backupFilePath, fileExtension = "", fileNameWithOutExt = "";
 	private String sourceFolderPath;
 	private String newFolderPath;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
@@ -163,14 +163,10 @@ public class MetadataToExcelGUI{
 	 * If mapping = true All files with illegal characters are renamed.
 	 * If file is a directory the path will be retrieved.
 	 */
-	int counter = 0;
-	private void listOfFilesAndDirectory(String folderPathName)
-	{
+	private void listOfFilesAndDirectory(String inputFolder){
+		File folder = new File(inputFolder);
+		File tempFile;
 
-		String fileCounterName = Integer.toString(counter);
-		File folder = new File(folderPathName);
-		File tempFile2 = new File(folderPathName + fileCounterName);
-		File tempFile = new File(folderPathName);
 		for(File currentFileOrDir : folder.listFiles())
 		{
 			tempFile = currentFileOrDir;
@@ -178,102 +174,102 @@ public class MetadataToExcelGUI{
 			{
 				if(mapping)
 				{
-					tempFile = doMapping(tempFile,currentFileOrDir);
-
-					/*if(tempFile.toString().contains("ä"))
-					{
-						tempFile = new File(currentFileOrDir.getParentFile().getAbsolutePath(), currentFileOrDir.getName() + counter);
-						currentFileOrDir.renameTo(tempFile);
-						counter++;
-					}*/
+					//tempFile = getIllChars(tempFile,currentFileOrDir);
+					tempFile = doMapping(currentFileOrDir,false);
 				}
-				/*if(tempFile.toString().contains("ä")) 
-					{
-						System.out.println("FILE CONTAINS Ä: " + tempFile);
-						tempFile2 = currentFileOrDir;
-						tempFile2 = doMapping(tempFile2, currentFileOrDir);
-						counter++;
-					}
-					else 
-					{
-						System.out.println("FILE NOT CONTAINS Ä :" + tempFile);
-						tempFile = doMapping(tempFile,currentFileOrDir);
-					}*/
 
+				System.out.println("Current File : "  + currentFileOrDir.getName());
 
 				fileList.add(tempFile);
-				//System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
+				System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
 				fileCount++;
 			}
-
 			else if(currentFileOrDir.isDirectory())	
 			{
 				//pathTest.add(tempFile.getAbsolutePath());
 
-				if(mapping) {
-					tempFile = doMapping(tempFile,currentFileOrDir);
-
-					/*	if(tempFile.toString().contains("ä"))
-					{
-
-						tempFile = new File(currentFileOrDir.getParentFile().getAbsolutePath(), currentFileOrDir.getName() + counter);
-						currentFileOrDir.renameTo(tempFile);
-						counter++;
-
-					} */
+				if(mapping)
+				{
+					//tempFile = getIllChars(tempFile,currentFileOrDir);
+					tempFile = doMapping(currentFileOrDir,true);
 				}
-				/*if(tempFile.toString().contains("ä")) {
-						System.out.println("FOLDER CONTAINS Ä: " + tempFile);
-						tempFile2 = currentFileOrDir;
-						tempFile2 = doMapping(tempFile2, currentFileOrDir);
-						counter++;
-					}
-					else {
-						System.out.println("FOLDER NOT COINTAINS Ä: " + tempFile); 
-						tempFile = doMapping(tempFile,currentFileOrDir);						
-					}*/
 
+				System.out.println("Current Dir : "  + currentFileOrDir.getName());
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
-
 
 			}
 
 		}
+	}
 
-		System.out.println(fileCount);
+	public File doMapping(File currFileOrDir, boolean isDir) {
 
+		File tempFile = null;
+		String currFile = "";//replaceIllegalChars(currFileOrDir.getName());
+
+
+		if(checkIfCurrentFileOrDirContainsIllegalChars(currFileOrDir))
+		{
+			currFile = replaceIllegalChars(currFileOrDir.getName());
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), currFile);
+
+			checkForFileOrDirAndSeparateWithExt(isDir,tempFile);
+
+			if(tempFile.exists()) {
+
+				tempFile = renameFile(tempFile,isDir,currFileOrDir);
+
+			}
+
+		}
+		else
+		{
+			tempFile = currFileOrDir;
+		}
+
+		currFileOrDir.renameTo(tempFile);
+
+		return tempFile;
 
 	}
 
-	public File doMapping(File tempFile, File currFileOrDir) {
-		int counter = 1;
-		//tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath());
-		//File temp = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
-		//currFileOrDir.renameTo(temp);
- //String fileNameWithOutExt = FilenameUtils.removeExtension(tempFile.toString());
-		if(tempFile.exists()) {
-			
-		/*	for(File currentFileOrDir : temp.listFiles())
-			{
-				currentFileOrDir = new File(temp.getParentFile().getAbsolutePath(), temp.getName() + "(" + counter + ")");
-				currFileOrDir.renameTo(currentFileOrDir);
-				counter++;
-				System.out.println(currentFileOrDir + " " + counter);
-			}*/
-			System.out.println("CONTAINS  ä " + tempFile);
-			tempFile = new File(tempFile .getParentFile().getAbsolutePath(), replaceIllegalChars(tempFile.getName() + "_" + counter));
-			currFileOrDir.renameTo(tempFile);
-			counter++;
-			
+	private void checkForFileOrDirAndSeparateWithExt(boolean isDir, File tempFile) {
+
+		if(!isDir)
+		{
+			fileExtension = FilenameUtils.getExtension(tempFile.getName());
+			fileNameWithOutExt = FilenameUtils.removeExtension(tempFile.getName());
 		}
-		
-		else {
-			tempFile = new File(tempFile .getParentFile().getAbsolutePath(), replaceIllegalChars(tempFile.getName()));
-			currFileOrDir.renameTo(tempFile);
-			System.out.println("NO ä " + tempFile);
+		else
+		{
+			fileNameWithOutExt = tempFile.getName();
+		}
+	}
+
+	private File renameFile(File tempFile, boolean isDir, File currFileOrDir) {
+		if(!isDir)
+		{
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter + "." + fileExtension);
+		}
+		else
+		{
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter);
 		}
 		return tempFile;
+	}
+
+	private boolean checkIfCurrentFileOrDirContainsIllegalChars(File currFileOrDir) {
+		if(currFileOrDir.getName().contains("å") || currFileOrDir.getName().contains("ä") || currFileOrDir.getName().contains("ö")
+				|| currFileOrDir.getName().contains("ü") || currFileOrDir.getName().contains("Å") || currFileOrDir.getName().contains("Ä") 
+				|| currFileOrDir.getName().contains("Ö") || currFileOrDir.getName().contains("Ü"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 
 	}
 
@@ -984,16 +980,13 @@ public class MetadataToExcelGUI{
 
 	//If String contains illegal characters they will be replaced and returned.
 	private String replaceIllegalChars(String currentString) {
-		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
-				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
-				|| currentString.contains("Ö") || currentString.contains("Ü"))
-		{
-			illegalCharFiles.add(currentString);
-			currentString = StringUtils.replaceEach (currentString, 
-					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
-					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
-			mappedFiles.add(currentString);
-		}
+		
+		illegalCharFiles.add(currentString);
+		currentString = StringUtils.replaceEach (currentString, 
+				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
+				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
+		mappedFiles.add(currentString);
+
 
 		return currentString;
 	}
