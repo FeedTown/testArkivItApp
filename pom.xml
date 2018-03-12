@@ -59,7 +59,6 @@
 		</dependency>
 	</dependencies>
 	<repositories>
-		
 	</repositories>
 	<build>
 		<sourceDirectory>src</sourceDirectory>

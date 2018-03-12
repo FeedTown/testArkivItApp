@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 import org.apache.commons.io.FileUtils;
@@ -34,9 +36,10 @@ public class MetadataToExcelGUI{
 	//private File file;
 	private String excelFileName, folderName = "", confidentialChecked = "", personalDataChecked = "";  
 	private long fileSize;
-	private int fileListeLength;
-	private String targetexcelFilepath, backupFilePath;
+	private int fileListeLength, counter = 1;
+	private String targetexcelFilepath, backupFilePath, fileExtension = "", fileNameWithOutExt = "";
 	private String sourceFolderPath;
+	private String newFolderPath;
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
@@ -96,8 +99,9 @@ public class MetadataToExcelGUI{
 
 		if(mapping && !overwrite) 
 		{
+
 			copyFolder();
-			System.out.println("Copying folder.........");
+			//System.out.println("Copying folder.........");
 		}
 
 
@@ -112,7 +116,9 @@ public class MetadataToExcelGUI{
 	private void copyFolder() {
 		File selectedFolder = new File(sourceFolderPath);
 		try {
+
 			FileUtils.copyDirectoryToDirectory(selectedFolder, new File(backupFilePath + "/" + folderName + "_backup"));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -134,7 +140,7 @@ public class MetadataToExcelGUI{
 		}
 		else
 		{
-			System.out.println("The list is already empty.");
+			//System.out.println("The list is already empty.");
 		}
 	}
 
@@ -142,10 +148,8 @@ public class MetadataToExcelGUI{
 	 * If mapping = true All files with illegal characters are renamed.
 	 * If file is a directory the path will be retrieved.
 	 */
-	private void listOfFilesAndDirectory(String folderPathName)
-	{
-
-		File folder = new File(folderPathName);
+	private void listOfFilesAndDirectory(String inputFolder){
+		File folder = new File(inputFolder);
 		File tempFile;
 
 		for(File currentFileOrDir : folder.listFiles())
@@ -154,50 +158,105 @@ public class MetadataToExcelGUI{
 			if(currentFileOrDir.isFile())
 			{
 				if(mapping)
+				{
 					//tempFile = getIllChars(tempFile,currentFileOrDir);
-					tempFile = doMapping(tempFile,currentFileOrDir);
+					tempFile = doMapping(currentFileOrDir,false);
+				}
 
+				System.out.println("Current File : "  + currentFileOrDir.getName());
 
 				fileList.add(tempFile);
 				System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
 				fileCount++;
 			}
-
 			else if(currentFileOrDir.isDirectory())	
 			{
 				//pathTest.add(tempFile.getAbsolutePath());
 
 				if(mapping)
+				{
 					//tempFile = getIllChars(tempFile,currentFileOrDir);
-					tempFile = doMapping(tempFile,currentFileOrDir);
+					tempFile = doMapping(currentFileOrDir,true);
+				}
+
+				System.out.println("Current Dir : "  + currentFileOrDir.getName());
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
-
 
 			}
 
 		}
-
-		System.out.println(fileCount);
-
-
 	}
 
-	public File doMapping(File tempFile, File currFileOrDir) {
+	public File doMapping(File currFileOrDir, boolean isDir) {
 
-		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+		File tempFile = null;
+		String currFile = "";//replaceIllegalChars(currFileOrDir.getName());
+
+
+		if(checkIfCurrentFileOrDirContainsIllegalChars(currFileOrDir))
+		{
+			currFile = replaceIllegalChars(currFileOrDir.getName());
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), currFile);
+
+			checkForFileOrDirAndSeparateWithExt(isDir,tempFile);
+
+			if(tempFile.exists()) {
+
+				tempFile = renameFile(tempFile,isDir,currFileOrDir);
+
+			}
+
+		}
+		else
+		{
+			tempFile = currFileOrDir;
+		}
+
 		currFileOrDir.renameTo(tempFile);
 
 		return tempFile;
 
-
 	}
 
-	/*public File getIllChars(File tempFile, File currFileOrDir) {
-		System.out.println("getIllllll");
-		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), illegalCharacters(currFileOrDir.getName()));
+	private void checkForFileOrDirAndSeparateWithExt(boolean isDir, File tempFile) {
+
+		if(!isDir)
+		{
+			fileExtension = FilenameUtils.getExtension(tempFile.getName());
+			fileNameWithOutExt = FilenameUtils.removeExtension(tempFile.getName());
+		}
+		else
+		{
+			fileNameWithOutExt = tempFile.getName();
+		}
+	}
+
+	private File renameFile(File tempFile, boolean isDir, File currFileOrDir) {
+		if(!isDir)
+		{
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter + "." + fileExtension);
+		}
+		else
+		{
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter);
+		}
 		return tempFile;
-	} */
+	}
+
+	private boolean checkIfCurrentFileOrDirContainsIllegalChars(File currFileOrDir) {
+		if(currFileOrDir.getName().contains("å") || currFileOrDir.getName().contains("ä") || currFileOrDir.getName().contains("ö")
+				|| currFileOrDir.getName().contains("ü") || currFileOrDir.getName().contains("Å") || currFileOrDir.getName().contains("Ä") 
+				|| currFileOrDir.getName().contains("Ö") || currFileOrDir.getName().contains("Ü"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
 
 	/*
 	 * If fileList is not empty:  
@@ -239,7 +298,7 @@ public class MetadataToExcelGUI{
 
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
-					System.out.println(fPath);
+					//System.out.println(fPath);
 					fPath = fPath.replace(sourceFolderPath, folderName);
 
 					if(getDecoding == null)
@@ -256,7 +315,7 @@ public class MetadataToExcelGUI{
 					filePathList.add(fPath);
 					fileDuration.getAudioVideoList().add(duration);
 
-					System.out.println("File size: " + fileSize);
+					//System.out.println("File size: " + fileSize);
 
 
 				}
@@ -264,7 +323,7 @@ public class MetadataToExcelGUI{
 			}
 			else
 			{
-				System.out.println("The list is empty");
+				//System.out.println("The list is empty");
 			}
 
 
@@ -275,6 +334,7 @@ public class MetadataToExcelGUI{
 		fileListeLength = fileNameList.size();
 
 		System.out.println("File name list length : " + fileListeLength);
+
 
 		try {
 			createWorkbook();
@@ -476,7 +536,6 @@ public class MetadataToExcelGUI{
 					cell = row.createCell(colNb);
 				} 
 
-
 				if (colNb==0)
 				{
 					cell.setCellValue(f.getFileNameColl()); 
@@ -514,8 +573,6 @@ public class MetadataToExcelGUI{
 			}
 		}  
 	} 
-
-
 
 
 	@SuppressWarnings("unused")
@@ -635,20 +692,49 @@ public class MetadataToExcelGUI{
 
 	}
 
+
+	/*
+	 * Instantiates source path and file name.
+	 * Creates the excel sheets and adds fileNameList to them if !fileNameList. 
+	 */
+	/*
+	 * Creates labels and adds them as column names and adds user input data into
+	 * specific rows.
+	 */
+	/*
+	 * Creates labels and adds them as column names and adds specific data into
+	 * the specific columns.
+	 */
+
 	//If String contains illegal characters they will be replaced and returned.
 	private String replaceIllegalChars(String currentString) {
-		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
-				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
-				|| currentString.contains("Ö") || currentString.contains("Ü"))
-		{
-			illegalCharFiles.add(currentString);
-			currentString = StringUtils.replaceEach (currentString, 
-					new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
-					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
-			mappedFiles.add(currentString);
-		}
+		
+		illegalCharFiles.add(currentString);
+		currentString = StringUtils.replaceEach (currentString, 
+				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
+				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
+		mappedFiles.add(currentString);
+
 
 		return currentString;
+	}
+
+	@SuppressWarnings("unused")
+	private int getLargestString(List<String> stringList) {
+
+		int largestString = stringList.get(0).length();
+		int index = 0;
+
+		for(int i = 0; i < stringList.size(); i++)
+		{
+			if(stringList.get(i).length() > largestString)
+			{
+				largestString = stringList.get(i).length();
+				index = i;
+			}
+		}
+
+		return index;
 	}
 
 	public int getFileListeLength() {
@@ -736,6 +822,5 @@ public class MetadataToExcelGUI{
 	public void setIllegalCharFiles(ArrayList<String> illegalCharFiles) {
 		this.illegalCharFiles = illegalCharFiles;
 	}
-
 
 }

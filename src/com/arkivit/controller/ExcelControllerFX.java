@@ -119,7 +119,6 @@ public class ExcelControllerFX extends Application {
 		//12
 		if(firstScene.getDatePicker().getValue() == null)
 		{
-			System.out.println("No value at date");
 			model.getGeneralBean().setDate("");
 		}
 		else
@@ -139,24 +138,22 @@ public class ExcelControllerFX extends Application {
 	private void createButton(ActionEvent event){
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
-			//model.init();
-			//setAlert();
 			progressBar();
-			//stopThread();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
 			model.clearArrayList();
+			secondScene.getBtnConvert().setDisable(true);
 		}
 		else if(check){
-			//model.init();
-			//setAlert();
 			progressBar();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
+			
 		}
 
 
 	}
+	
 	/**
 	 * Alert popup message for succeded excel file creation
 	 */
@@ -167,6 +164,7 @@ public class ExcelControllerFX extends Application {
 		alert.setContentText("File was successfully created");
 		alert.showAndWait();
 	}
+	
 	/**
 	 * Action that performs to save content in directory
 	 * @param event
@@ -187,12 +185,12 @@ public class ExcelControllerFX extends Application {
 		if (file != null) {
 			model.setTargetexcelFilepath(file.getParent());
 
-			System.out.println("PATH : " + file.getParent());
+			//System.out.println("PATH : " + file.getParent());
 
 			model.setExcelFileName(file.getName());
 
 			fileName = file.getName();
-			System.out.println(fileName);
+			//System.out.println(fileName);
 
 			secondScene.getSaveTxtField().setText(model.getTargetexcelFilepath());
 			secondScene.getBtnConvert().setDisable(false);
@@ -297,7 +295,7 @@ public class ExcelControllerFX extends Application {
 			model.setSourceFolderPath(selectedDir.getAbsolutePath());
 			secondScene.getOpenTxtField().setText(model.getSourceFolderPath());
 			path = selectedDir.getAbsolutePath();
-			System.out.println(path);
+			//System.out.println(path);
 			//view.getBtnSaveAs().setDisable(false);
 
 		}
@@ -437,6 +435,8 @@ public class ExcelControllerFX extends Application {
 				secondScene.getBtnOverwrite().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);
 				secondScene.getBtnDelete().setDisable(true);
+				secondScene.getConfidentialCheckBox().setSelected(false);
+				secondScene.getPersonalDataBox().setSelected(false);
 				mapping = false;
 				overwrite = false;
 			}
@@ -475,7 +475,7 @@ public class ExcelControllerFX extends Application {
 				if(mapping || overwrite)
 				{
 					log.mappedLog();
-				}
+				} 
 				
 
 				secondScene.getPi().setVisible(false);
