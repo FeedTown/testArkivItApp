@@ -138,10 +138,7 @@ public class MetadataToExcelGUI{
 			illegalCharFiles.clear();
 			mappedFiles.clear();
 		}
-		else
-		{
-			//System.out.println("The list is already empty.");
-		}
+
 	}
 
 	/* Goes through folder and subfolders and adding files to an ArrayList.
