@@ -204,5 +204,4 @@ public class MappingRename {
 		scan.close();
 
 	}
-
 }
