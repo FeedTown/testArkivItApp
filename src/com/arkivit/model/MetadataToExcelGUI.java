@@ -21,21 +21,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.tika.Tika;
 
-import Test.code.Person;
-import Test.code.WorkbookExample;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
-import jxl.format.BoldStyle;
 import jxl.format.Colour;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
@@ -270,14 +262,14 @@ public class MetadataToExcelGUI{
 				System.out.println(currentFileOrDir + " " + counter);
 			}*/
 			System.out.println("CONTAINS  ä " + tempFile);
-			tempFile = new File(tempFile.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName() + "_" + counter));
+			tempFile = new File(tempFile .getParentFile().getAbsolutePath(), replaceIllegalChars(tempFile.getName() + "_" + counter));
 			currFileOrDir.renameTo(tempFile);
 			counter++;
 			
 		}
 		
 		else {
-			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+			tempFile = new File(tempFile .getParentFile().getAbsolutePath(), replaceIllegalChars(tempFile.getName()));
 			currFileOrDir.renameTo(tempFile);
 			System.out.println("NO ä " + tempFile);
 		}
