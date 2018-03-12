@@ -35,7 +35,7 @@ public class testMain {
 		}
 			
 		
-		new testMapping(doMapping).init();
+		//new testMapping(doMapping).init();
 		
 		scan.close();
 	}

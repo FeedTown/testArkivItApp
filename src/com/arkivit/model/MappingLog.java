@@ -12,8 +12,6 @@ import com.arkivit.view.SecondScene;
 
 public class MappingLog {
 	MetadataToExcelGUI model = new MetadataToExcelGUI();
-	//ExcelControllerFX controller = new ExcelControllerFX();
-
 
 	public MappingLog() {
 
@@ -31,6 +29,7 @@ public class MappingLog {
 		String logName = model.getTargetexcelFilepath() + "/" + model.getExcelFileName() + ".log";
 
 		try {  
+			System.out.println(model.getMappedFiles().toString());
 
 			if(!(model.getMappedFiles().isEmpty())) {
 
@@ -39,14 +38,22 @@ public class MappingLog {
 				SimpleFormatter formatter = new SimpleFormatter();  
 				fh.setFormatter(formatter);  
 				int count = 0;
-				
-				for(String mappedTemp: model.getMappedFiles()) {
-					logger.info("\n Mapped file: " + mappedTemp + "\n" + 
-						"Orignal file: "+ model.getIllegalCharFiles().get(count)+ "\n");
-					count++;
+
+				for(File mappedTemp: model.getMappedFiles()) {
+					if(mappedTemp.isDirectory()) 
+					{
+						logger.info("\n Mapped folder: " + mappedTemp.getName() + "\n" + 
+								" Orignal folder: "+ model.getIllegalCharFiles().get(count)+ "\n");
+					}
 					
+					else 
+					{
+						logger.info("\n Mapped file: " + mappedTemp.getName() + "\n" + 
+								" Orignal file: "+ model.getIllegalCharFiles().get(count)+ "\n");
+					}
+					count++;
 				}
-				
+
 				fh.close();
 			}
 
@@ -54,7 +61,7 @@ public class MappingLog {
 
 				System.out.println("No log file was created."); 
 			}
-	
+
 		}
 
 		catch (SecurityException e) {  
@@ -62,8 +69,8 @@ public class MappingLog {
 		} catch (IOException e) {  
 			e.printStackTrace();  
 		}
-		
-		
+
+
 	}
 }
 
