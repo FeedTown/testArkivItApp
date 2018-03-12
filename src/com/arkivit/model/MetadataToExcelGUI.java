@@ -182,18 +182,11 @@ public class MetadataToExcelGUI{
 		for(File currentFileOrDir : folder.listFiles())
 		{
 			tempFile = currentFileOrDir;
-			if(currentFileOrDir.isFile())
+			if(currentFileOrDir.isFile() || currentFileOrDir.isDirectory())
 			{
 				if(mapping)
 				{
 					tempFile = doMapping(tempFile,currentFileOrDir);
-
-					/*if(tempFile.toString().contains("ä"))
-					{
-						tempFile = new File(currentFileOrDir.getParentFile().getAbsolutePath(), currentFileOrDir.getName() + counter);
-						currentFileOrDir.renameTo(tempFile);
-						counter++;
-					}*/
 				}
 				/*if(tempFile.toString().contains("ä")) 
 					{
@@ -214,7 +207,7 @@ public class MetadataToExcelGUI{
 				fileCount++;
 			}
 
-			else if(currentFileOrDir.isDirectory())	
+			/*else if(currentFileOrDir.isDirectory())	
 			{
 				//pathTest.add(tempFile.getAbsolutePath());
 
@@ -229,7 +222,7 @@ public class MetadataToExcelGUI{
 						counter++;
 
 					} */
-				}
+				//}
 				/*if(tempFile.toString().contains("ä")) {
 						System.out.println("FOLDER CONTAINS Ä: " + tempFile);
 						tempFile2 = currentFileOrDir;
@@ -249,38 +242,34 @@ public class MetadataToExcelGUI{
 
 		}
 
-		System.out.println(fileCount);
-
-
-	}
-
+	
 	public File doMapping(File tempFile, File currFileOrDir) {
 		int counter = 1;
-		File temp = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
-		//currFileOrDir.renameTo(temp);
-		
-		if(tempFile.toString().contains("ä") || currFileOrDir.toString().contains("ä")) {
-			
-		/*	for(File currentFileOrDir : temp.listFiles())
-			{
-				currentFileOrDir = new File(temp.getParentFile().getAbsolutePath(), temp.getName() + "(" + counter + ")");
-				currFileOrDir.renameTo(currentFileOrDir);
-				counter++;
-				System.out.println(currentFileOrDir + " " + counter);
-			}*/
-			System.out.println("CONTAINS  Ä " + temp);
-			temp = new File(temp.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName() + "_" + counter));
-			currFileOrDir.renameTo(temp);
-			counter++;
-			
-		}
-		
-		else {
-			temp = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
-			currFileOrDir.renameTo(temp);
-			System.out.println("NO Ä " + temp);
-		}
-		return tempFile;
+        tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+        //File temp = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+        //currFileOrDir.renameTo(temp);
+        if(tempFile.exists()) {
+            
+        /*    for(File currentFileOrDir : temp.listFiles())
+            {
+                currentFileOrDir = new File(temp.getParentFile().getAbsolutePath(), temp.getName() + "(" + counter + ")");
+                currFileOrDir.renameTo(currentFileOrDir);
+                counter++;
+                System.out.println(currentFileOrDir + " " + counter);
+            }*/
+            System.out.println("CONTAINS  ä " + tempFile);
+            tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName() + "_" + counter));
+            currFileOrDir.renameTo(tempFile);
+            counter++;
+            
+        }
+        
+        else {
+            tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+            currFileOrDir.renameTo(tempFile);
+            System.out.println("NO ä " + tempFile);
+        }
+        return tempFile;
 
 	}
 
