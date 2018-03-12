@@ -205,7 +205,6 @@ public class MetadataToExcelGUI{
 				System.out.println("Current Dir : "  + currentFileOrDir.getName());
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
-
 			}
 
 		}
@@ -229,7 +228,7 @@ public class MetadataToExcelGUI{
 				tempFile = renameFile(tempFile,isDir,currFileOrDir);
 
 			}
-
+			mappedFiles.add(tempFile.getName());
 		}
 		else
 		{
