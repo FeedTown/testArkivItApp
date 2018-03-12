@@ -214,9 +214,9 @@ public class MetadataToExcelGUI{
 				if(mapping) {
 					tempFile = doMapping(tempFile,currentFileOrDir);
 
-				/*	if(tempFile.toString().contains("ä"))
+					/*	if(tempFile.toString().contains("ä"))
 					{
-						
+
 						tempFile = new File(currentFileOrDir.getParentFile().getAbsolutePath(), currentFileOrDir.getName() + counter);
 						currentFileOrDir.renameTo(tempFile);
 						counter++;
@@ -270,7 +270,6 @@ public class MetadataToExcelGUI{
             System.out.println("NO ä " + tempFile);
         }
         return tempFile;
-
 	}
 
 	/*
