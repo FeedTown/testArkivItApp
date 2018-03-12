@@ -34,25 +34,20 @@ public class MetadataToExcelGUI{
 	//private File file;
 	private String excelFileName, folderName = "", confidentialChecked = "", personalDataChecked = "";  
 	private long fileSize;
-	private int fileListeLength;
-	private String targetexcelFilepath, backupFilePath;
+	private int fileListeLength, counter = 1;
+	private String targetexcelFilepath, backupFilePath, fileExtension = "", fileNameWithOutExt = "";
 	private String sourceFolderPath;
-	private ArrayList<String> fileNameList = new ArrayList<String>();
-	private ArrayList<String> filePathList = new ArrayList<String>();
-	private ArrayList<String> fileDecodeList = new ArrayList<String>();
+	private ArrayList<String> fileNameList, filePathList , fileDecodeList, mappedFiles, illegalCharFiles;
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
-	private ArrayList<String> mappedFiles = new ArrayList<String>();
-	private ArrayList<String> illegalCharFiles = new ArrayList<String>();
-
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration();
 	private GeneralBean generalBean = new GeneralBean();
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
-	private boolean mapping = false;
-	private boolean overwrite = false;
+	private boolean mapping = false, overwrite = false;
+	
 
 
 	/**
@@ -155,7 +150,7 @@ public class MetadataToExcelGUI{
 			{
 				if(mapping)
 					//tempFile = getIllChars(tempFile,currentFileOrDir);
-					tempFile = doMapping(tempFile,currentFileOrDir);
+					tempFile = doMapping(currentFileOrDir, false);
 
 
 				fileList.add(tempFile);
@@ -168,8 +163,9 @@ public class MetadataToExcelGUI{
 				//pathTest.add(tempFile.getAbsolutePath());
 
 				if(mapping)
-					//tempFile = getIllChars(tempFile,currentFileOrDir);
-					tempFile = doMapping(tempFile,currentFileOrDir);
+				{
+					tempFile = doMapping(currentFileOrDir, true);
+				}
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
 
@@ -183,15 +179,64 @@ public class MetadataToExcelGUI{
 
 	}
 
-	public File doMapping(File tempFile, File currFileOrDir) {
+	public File doMapping(File currFileOrDir,boolean isDir) {
 
-		tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), replaceIllegalChars(currFileOrDir.getName()));
+		File tempFile = null;
+		String currFile = "";//replaceIllegalChars(currFileOrDir.getName());
+
+
+		if(checkIfCurrentFileOrDirContainsIllegalChars(currFileOrDir))
+		{
+			currFile = replaceIllegalChars(currFileOrDir.getName());
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), currFile);
+
+			checkForFileOrDirAndSeparateWithExt(isDir,tempFile);
+
+			if(tempFile.exists()) {
+
+				tempFile = renameFile(tempFile,isDir,currFileOrDir);
+
+			}
+
+		}
+		else
+		{
+			tempFile = currFileOrDir;
+		}
+
 		currFileOrDir.renameTo(tempFile);
 
 		return tempFile;
 
 
 	}
+	
+	private boolean checkIfCurrentFileOrDirContainsIllegalChars(File currFileOrDir) {
+		if(currFileOrDir.getName().contains("å") || currFileOrDir.getName().contains("ä") || currFileOrDir.getName().contains("ö")
+				|| currFileOrDir.getName().contains("ü") || currFileOrDir.getName().contains("Å") || currFileOrDir.getName().contains("Ä") 
+				|| currFileOrDir.getName().contains("Ö") || currFileOrDir.getName().contains("Ü"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+	
+	private File renameFile(File tempFile, boolean isDir, File currFileOrDir) {
+		if(!isDir)
+		{
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter + "." + fileExtension);
+		}
+		else
+		{
+			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter);
+		}
+		return tempFile;
+	}
+
 
 	/*public File getIllChars(File tempFile, File currFileOrDir) {
 		System.out.println("getIllllll");
@@ -515,9 +560,6 @@ public class MetadataToExcelGUI{
 		}  
 	} 
 
-
-
-
 	@SuppressWarnings("unused")
 	private void testCodes()
 	{
@@ -636,7 +678,7 @@ public class MetadataToExcelGUI{
 	}
 
 	//If String contains illegal characters they will be replaced and returned.
-	private String replaceIllegalChars(String currentString) {
+	/*private String replaceIllegalChars(String currentString) {
 		if(currentString.contains("å") || currentString.contains("ä") || currentString.contains("ö")
 				|| currentString.contains("ü") || currentString.contains("Å") || currentString.contains("Ä") 
 				|| currentString.contains("Ö") || currentString.contains("Ü"))
@@ -647,6 +689,28 @@ public class MetadataToExcelGUI{
 					new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
 			mappedFiles.add(currentString);
 		}
+
+		return currentString;
+	}*/
+	private void checkForFileOrDirAndSeparateWithExt(boolean isDir, File tempFile) {
+
+		if(!isDir)
+		{
+			fileExtension = FilenameUtils.getExtension(tempFile.getName());
+			fileNameWithOutExt = FilenameUtils.removeExtension(tempFile.getName());
+		}
+		else
+		{
+			fileNameWithOutExt = tempFile.getName();
+		}
+	}
+	private String replaceIllegalChars(String currentString) {
+		illegalCharFiles.add(currentString);
+		currentString = StringUtils.replaceEach (currentString, 
+				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
+				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
+
+		mappedFiles.add(currentString);
 
 		return currentString;
 	}

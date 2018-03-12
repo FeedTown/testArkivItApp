@@ -2,6 +2,8 @@ package Test.code;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 import org.apache.commons.io.FileUtils;
@@ -61,13 +63,14 @@ public class testMapping {
 				{
 					tempFile = file;
 					
-					if(new File(file.getParentFile().getAbsolutePath()).isDirectory())
+					if(new File(file.getParent()).isDirectory())
 					{
-						System.out.println("Dir ? : " + file.getAbsolutePath());
-						System.out.println("Hi");
+						System.out.println("Dir ? : " + file.getParent());
+						System.out.println("**********************************");
 						
-						tempFile = doMapping(tempFile,new File(file.getParentFile().getAbsolutePath()));
+						tempFile = doMapping(tempFile,new File(file.getParent()));
 					}
+					
 					
 					
 					counter++;
@@ -149,8 +152,10 @@ public class testMapping {
 			if(currentFileOrDir.isFile())
 			{
 				if(mapping)
+				{
 					//tempFile = getIllChars(tempFile,currentFileOrDir);
 					tempFile = doMapping(tempFile,currentFileOrDir);
+				}
 
 				System.out.println("Current File : "  + currentFileOrDir.getName());
 
