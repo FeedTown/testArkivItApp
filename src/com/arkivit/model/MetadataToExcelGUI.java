@@ -204,8 +204,9 @@ public class MetadataToExcelGUI{
 			if(tempFile.exists()) {
 
 				tempFile = renameFile(tempFile,isDir,currFileOrDir);
-
+				
 			}
+			mappedFiles.add(tempFile.getName());
 
 		}
 		else
@@ -713,7 +714,7 @@ public class MetadataToExcelGUI{
 		currentString = StringUtils.replaceEach (currentString, 
 				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
-		mappedFiles.add(currentString);
+		//mappedFiles.add(currentString);
 
 
 		return currentString;
