@@ -45,7 +45,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
-	private ArrayList<String> mappedFiles = new ArrayList<String>();
+	private ArrayList<File> mappedFiles = new ArrayList<File>();
 	private ArrayList<String> illegalCharFiles = new ArrayList<String>();
 
 	private int fileCount = 0;
@@ -206,7 +206,7 @@ public class MetadataToExcelGUI{
 				tempFile = renameFile(tempFile,isDir,currFileOrDir);
 				
 			}
-			mappedFiles.add(tempFile.getName());
+			mappedFiles.add(tempFile);
 		}
 		else
 		{
@@ -808,7 +808,7 @@ public class MetadataToExcelGUI{
 	}
 
 
-	public ArrayList<String> getMappedFiles() {
+	public ArrayList<File> getMappedFiles() {
 		return mappedFiles;
 	}
 
