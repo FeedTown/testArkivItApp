@@ -1,4 +1,4 @@
-package Test.code;
+package com.arkivit.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,24 +13,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TestBufferedStreamLambda {
-	
+public class ReadAndUpdateLinks {
+
 	private String filePath;
-	
-	public TestBufferedStreamLambda(String filePath) {
+
+	public ReadAndUpdateLinks(String filePath) {
 		this.filePath = filePath;
 	}
-	
+
 	public List<String> testBuffer()
 	{
 		File f = new File(filePath);
 		List<String> list = new ArrayList<String>();
-		
+
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
 
 			//br returns as stream and convert it into a List
 			//list = br.lines().collect(Collectors.toList());
-			
+
 			String line = "";
 			while((line = br.readLine()) != null)
 			{
@@ -40,13 +40,13 @@ public class TestBufferedStreamLambda {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return list;
 	}
-	
+
 	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
 	{
-		
+
 		/*for(String currWord : brList)
 		{
 			if(currWord.equals(searchWord))
@@ -56,7 +56,7 @@ public class TestBufferedStreamLambda {
 			}
 			counter++;
 		}*/
-		
+
 		//System.out.println(brList.toString());
 		String word = "";
 		for(int i = 0; i < brList.size(); i++)
@@ -69,23 +69,23 @@ public class TestBufferedStreamLambda {
 				writeToFile(brList);
 			}
 		}
-		
+
 		System.out.println(brList.toString());
 	}
-	
-	
+
+
 	public void writeToFile(List<String> currFile) throws IOException
 	{
 		File f = new File(filePath);
 		//BufferedWriter writer = Files.newBufferedWriter(new File(filePath).toPath());
 		BufferedWriter w = new BufferedWriter(new FileWriter(filePath));
-		
+
 		for(String x : currFile)
 		{
 			w.write(x);
 			w.newLine();
 		}
-		
+
 		/*currFile.forEach(x -> {
 			try {
 				w.write(x);
@@ -96,30 +96,28 @@ public class TestBufferedStreamLambda {
 			}
 		});*/
 		w.close();
-		
-}
-			
-	
-	
-	
-	public static void main(String[] args) throws IOException
+
+	}
+
+	/*public static void main(String[] args) throws IOException
 	{
 		String filePath = "/Users/RobertoBlanco/Desktop/TestDokument.txt";
-		
-		TestBufferedStreamLambda reader = new TestBufferedStreamLambda(filePath);
+
+		ReadAndUpdateLinks reader = new ReadAndUpdateLinks(filePath);
 		List<String> list = new ArrayList<String>();
 		System.out.println("******* Before update ******");
 		list = reader.testBuffer();
-		
+
 		//list.forEach(System.out::println);
 		//reader.writeToFile(list);
-		
+
 		//reader.updateInfoInFile("<a href=exäämUppgiftSida2.html>Kladdkaka Recept</a>", "<a href= examUppgiftSida2.html>Kladdkaka Recept</a>", list);
 		reader.updateInfoInFile("skäteboard","longboard", list);
 		System.out.println(list.toString());
-		
+
 		System.out.println("******* After update  ******");
 		//list.forEach(System.out::println);
-			
-	}
+
+	} */
 }
+
