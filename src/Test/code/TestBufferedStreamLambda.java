@@ -23,7 +23,6 @@ public class TestBufferedStreamLambda {
 	
 	private List<String> testBuffer()
 	{
-		File f = new File(filePath);
 		List<String> list = new ArrayList<String>();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
@@ -46,7 +45,7 @@ public class TestBufferedStreamLambda {
 	
 	private void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
 	{
-		int counter = 0;
+		
 		/*for(String currWord : brList)
 		{
 			if(currWord.equals(searchWord))
@@ -58,14 +57,14 @@ public class TestBufferedStreamLambda {
 		}*/
 		
 		//System.out.println(brList.toString());
-		
+		String word = "";
 		for(int i = 0; i < brList.size(); i++)
 		{
 			if(brList.get(i).contains(searchWord))
 			{
 				System.out.println(brList.get(i).toString());
-				brList.get(i).replace(searchWord, updatedWord);
-				//brList.set(i, updatedWord);
+				word = brList.get(i).replaceAll(searchWord, updatedWord);
+				brList.set(i, word);
 				writeToFile(brList);
 			}
 		}
@@ -75,7 +74,7 @@ public class TestBufferedStreamLambda {
 	
 	private void writeToFile(List<String> currFile) throws IOException
 	{
-		File f = new File(filePath);
+		//File f = new File(filePath);
 		//BufferedWriter writer = Files.newBufferedWriter(new File(filePath).toPath());
 		BufferedWriter w = new BufferedWriter(new FileWriter(filePath));
 		
@@ -106,8 +105,11 @@ public class TestBufferedStreamLambda {
 		String filePath = "H:\\Skrivbord\\HtmlTestFile\\examUppgift.html";
 		
 		TestBufferedStreamLambda reader = new TestBufferedStreamLambda(filePath);
+		
 		List<String> list = new ArrayList<String>();
+		
 		System.out.println("******* Before update ******");
+		
 		list = reader.testBuffer();
 		
 		//list.forEach(System.out::println);
@@ -118,6 +120,7 @@ public class TestBufferedStreamLambda {
 		
 		//reader.updateInfoInFile("<a href=exäämUppgiftSida2.html>Kladdkaka Recept</a>", "<a href= examUppgiftSida2.html>Kladdkaka Recept</a>", list);
 		reader.updateInfoInFile("\"exäämUppgiftSida2.html\"","\"examUppgiftSida2.html\"", list);
+		
 		System.out.println(list.toString());
 		
 		System.out.println("******* After update  ******");
