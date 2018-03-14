@@ -3,15 +3,11 @@ package com.arkivit.model;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReadAndUpdateLinks {
 
@@ -28,7 +24,6 @@ public class ReadAndUpdateLinks {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
 
-			//br returns as stream and convert it into a List
 			String line = "";
 			while((line = br.readLine()) != null)
 			{
