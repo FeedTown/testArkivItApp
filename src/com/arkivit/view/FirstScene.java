@@ -193,8 +193,7 @@ public class FirstScene {
 		content.add(ANtxt);
 		content.add(SNtxt);
 		content.add(KOMtxt);
-		
-		
+			
 	}
 	
 	/**
