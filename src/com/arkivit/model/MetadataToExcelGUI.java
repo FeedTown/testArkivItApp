@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,9 +33,7 @@ public class MetadataToExcelGUI{
 	private String excelFileName, folderName = "", confidentialChecked = "", personalDataChecked = "";  
 	private long fileSize;
 	private int fileListeLength, counter = 1;
-	private String targetexcelFilepath, backupFilePath, fileExtension = "", fileNameWithOutExt = "";
-	private String sourceFolderPath;
-	private String newFolderPath;
+	private String sourceFolderPath, targetexcelFilepath, backupFilePath, fileExtension = "", fileNameWithOutExt = "";
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
@@ -812,9 +806,9 @@ public class MetadataToExcelGUI{
 		return mappedFiles;
 	}
 
-	/*public void setMappedFiles(ArrayList<String> mappedFiles) {
+	public void setMappedFiles(ArrayList<File> mappedFiles) {
 		this.mappedFiles = mappedFiles;
-	} */
+	} 
 
 	public ArrayList<String> getIllegalCharFiles() {
 		return illegalCharFiles;

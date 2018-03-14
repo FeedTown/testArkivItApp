@@ -154,9 +154,6 @@ public class SecondScene{
 		secondGrid.setHgap(10);
 		secondGrid.setVgap(10);
 		secondGrid.setPadding(new Insets(-5, 0, 0, 15));
-		
-		
-		
 
 		//Open dir components
 		firstGrid.add(dirLabel, 0, 0);
@@ -353,8 +350,5 @@ public class SecondScene{
 	public void setPersonalDataBox(CheckBox personalDataBox) {
 		this.personalDataBox = personalDataBox;
 	}
-	
-	
-	
 	
 }
