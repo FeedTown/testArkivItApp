@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +18,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.tika.Tika;
+
+import Test.code.TestBufferedStreamLambda;
 
 /**
  * This class is handling the process of sending data and importing metadata
@@ -37,9 +35,7 @@ public class MetadataToExcelGUI{
 	private String excelFileName, folderName = "", confidentialChecked = "", personalDataChecked = "";  
 	private long fileSize;
 	private int fileListeLength, counter = 1;
-	private String targetexcelFilepath, backupFilePath, fileExtension = "", fileNameWithOutExt = "";
-	private String sourceFolderPath;
-	private String newFolderPath;
+	private String sourceFolderPath, targetexcelFilepath, backupFilePath, fileExtension = "", fileNameWithOutExt = "";
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
@@ -200,7 +196,7 @@ public class MetadataToExcelGUI{
 			if(tempFile.exists()) {
 
 				tempFile = renameFile(tempFile,isDir,currFileOrDir);
-				
+
 			}
 			mappedFiles.add(tempFile);
 		}
@@ -232,14 +228,14 @@ public class MetadataToExcelGUI{
 		if(!isDir)
 		{
 			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter + "." + fileExtension);
-	
+
 		}
 		else
 		{
 			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), fileNameWithOutExt + "_" + counter);
-			
+
 		}
-		
+
 		return tempFile;
 	}
 
@@ -288,9 +284,15 @@ public class MetadataToExcelGUI{
 					getDecoding = null;
 					if(file.getName().endsWith(".html") || file.getName().endsWith(".xhtml") || file.getName().endsWith(".xml")
 							|| file.getName().endsWith(".css") || file.getName().endsWith(".xsd") || file.getName().endsWith(".dtd") 
-							|| file.getName().endsWith(".xsl") || file.getName().endsWith(".txt") || file.getName().endsWith(".js")) {
+							|| file.getName().endsWith(".xsl") || file.getName().endsWith(".txt") || file.getName().endsWith(".js")) 
+					{
 						getDecoding = getFileDecoder(fullPathforCurrentFile);
 
+					}
+
+					if(mapping)
+					{
+						changeLinkInFile(file);
 					}
 
 					checkForAudioVideoDuration(file);
@@ -343,6 +345,23 @@ public class MetadataToExcelGUI{
 
 	}
 
+	private void changeLinkInFile(File file) throws IOException {
+		ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
+		List<String> list = new ArrayList<String>();
+		list = br.testBuffer(); 
+		int counter = 0;
+		
+		if(file.getName().endsWith(".html") || file.getName().endsWith(".css") || file.getName().endsWith(".js"))
+		{
+			for(File s : mappedFiles) 
+			{
+				br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);
+			}
+
+		}
+		list.clear();
+	}
+
 	//Checking what kind of charset the file has
 	private Charset getFileDecoder(String fullPathforCurrentFile) {
 		File currentFile = new File(fullPathforCurrentFile);
@@ -375,9 +394,9 @@ public class MetadataToExcelGUI{
 	}
 
 	private void sortFileList() {
-		
+
 		fileList.sort((o1,o2) -> o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase()));
-		
+
 		fileList.sort(new Comparator<File>() {
 			@Override
 			public int compare(File o1, File o2) {
@@ -710,7 +729,7 @@ public class MetadataToExcelGUI{
 
 	//If String contains illegal characters they will be replaced and returned.
 	private String replaceIllegalChars(String currentString) {
-		
+
 		illegalCharFiles.add(currentString);
 		currentString = StringUtils.replaceEach (currentString, 
 				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
@@ -811,9 +830,9 @@ public class MetadataToExcelGUI{
 		return mappedFiles;
 	}
 
-	/*public void setMappedFiles(ArrayList<String> mappedFiles) {
+	public void setMappedFiles(ArrayList<File> mappedFiles) {
 		this.mappedFiles = mappedFiles;
-	} */
+	} 
 
 	public ArrayList<String> getIllegalCharFiles() {
 		return illegalCharFiles;

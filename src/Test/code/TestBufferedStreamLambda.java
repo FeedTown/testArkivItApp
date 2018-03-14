@@ -21,7 +21,7 @@ public class TestBufferedStreamLambda {
 		this.filePath = filePath;
 	}
 	
-	private List<String> testBuffer()
+	public List<String> testBuffer()
 	{
 		File f = new File(filePath);
 		List<String> list = new ArrayList<String>();
@@ -44,7 +44,7 @@ public class TestBufferedStreamLambda {
 		return list;
 	}
 	
-	private void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
+	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
 	{
 		
 		/*for(String currWord : brList)
@@ -74,7 +74,8 @@ public class TestBufferedStreamLambda {
 	}
 	
 	
-	private void writeToFile(List<String> currFile) throws IOException
+
+	public void writeToFile(List<String> currFile) throws IOException
 	{
 		File f = new File(filePath);
 		//BufferedWriter writer = Files.newBufferedWriter(new File(filePath).toPath());
@@ -104,7 +105,7 @@ public class TestBufferedStreamLambda {
 	
 	public static void main(String[] args) throws IOException
 	{
-		String filePath = "H:\\Skrivbord\\HtmlTestFile\\examUppgift.html";
+		String filePath = "/Users/RobertoBlanco/Desktop/TestDokument.txt";
 		
 		TestBufferedStreamLambda reader = new TestBufferedStreamLambda(filePath);
 		List<String> list = new ArrayList<String>();
@@ -112,20 +113,14 @@ public class TestBufferedStreamLambda {
 		list = reader.testBuffer();
 		
 		//list.forEach(System.out::println);
-		
-		
-		
 		//reader.writeToFile(list);
 		
 		//reader.updateInfoInFile("<a href=exäämUppgiftSida2.html>Kladdkaka Recept</a>", "<a href= examUppgiftSida2.html>Kladdkaka Recept</a>", list);
-		reader.updateInfoInFile("\"exäämUppgiftSida2.html\"","\"examUppgiftSida2.html\"", list);
+		reader.updateInfoInFile("skäteboard","longboard", list);
 		System.out.println(list.toString());
 		
 		System.out.println("******* After update  ******");
 		//list.forEach(System.out::println);
-		
-		
-		
-		
+			
 	}
 }
