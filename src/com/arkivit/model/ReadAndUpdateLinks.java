@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ReadAndUpdateLinks {
 
 	private String filePath;
@@ -22,7 +21,7 @@ public class ReadAndUpdateLinks {
 		List<String> list = new ArrayList<String>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
-
+			
 			String line = "";
 			while((line = br.readLine()) != null)
 			{
