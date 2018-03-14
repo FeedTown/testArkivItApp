@@ -46,7 +46,7 @@ public class TestBufferedStreamLambda {
 	
 	private void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
 	{
-		int counter = 0;
+		
 		/*for(String currWord : brList)
 		{
 			if(currWord.equals(searchWord))
@@ -58,20 +58,21 @@ public class TestBufferedStreamLambda {
 		}*/
 		
 		//System.out.println(brList.toString());
-		
+		String word = "";
 		for(int i = 0; i < brList.size(); i++)
 		{
 			if(brList.get(i).contains(searchWord))
 			{
 				System.out.println(brList.get(i).toString());
-				brList.get(i).replace(searchWord, updatedWord);
-				//brList.set(i, updatedWord);
+				word = brList.get(i).replaceAll(searchWord, updatedWord);
+				brList.set(i, word);
 				writeToFile(brList);
 			}
 		}
 		
 		System.out.println(brList.toString());
 	}
+	
 	
 	private void writeToFile(List<String> currFile) throws IOException
 	{
@@ -99,7 +100,7 @@ public class TestBufferedStreamLambda {
 }
 			
 	
-	
+	String mapInFile;
 	
 	public static void main(String[] args) throws IOException
 	{
