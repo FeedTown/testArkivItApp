@@ -356,6 +356,7 @@ public class MetadataToExcelGUI{
 			for(File s : mappedFiles) 
 			{
 				br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);
+				counter++;
 			}
 
 		}
