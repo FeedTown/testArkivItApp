@@ -22,6 +22,7 @@ public class ReadAndUpdateLinks {
 		List<String> list = new ArrayList<String>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
+			
 			String line = "";
 			while((line = br.readLine()) != null)
 			{
@@ -67,5 +68,6 @@ public class ReadAndUpdateLinks {
 		w.close();
 
 	}
+
 }
 

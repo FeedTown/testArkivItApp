@@ -103,10 +103,16 @@ public class MetadataToExcelGUI{
 
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
+		//createExFile();
 
 		//System.out.println(illegalCharFiles.toString());
 	}
 
+
+	/*private void createExFile() {
+		//ExcelFileCreator execlFile = new ExcelFileCreator();
+		
+	}*/
 
 	//Copying folder to outside of the root folder
 	private void copyFolder() {
@@ -289,12 +295,12 @@ public class MetadataToExcelGUI{
 						getDecoding = getFileDecoder(fullPathforCurrentFile);
 
 					}
-
+					
 					if(mapping)
 					{
 						changeLinkInFile(file);
-					}
-
+					} 
+					
 					checkForAudioVideoDuration(file);
 
 					fileSize = file.length();
@@ -317,8 +323,6 @@ public class MetadataToExcelGUI{
 					fileDuration.getAudioVideoList().add(duration);
 
 					//System.out.println("File size: " + fileSize);
-
-
 				}
 
 			}
@@ -346,12 +350,11 @@ public class MetadataToExcelGUI{
 	}
 
 	private void changeLinkInFile(File file) throws IOException {
-		
-		List<String> list = new ArrayList<String>();
-		
+
 		
 		if(file.getName().endsWith(".html") || file.getName().endsWith(".css") || file.getName().endsWith(".js"))
 		{
+			List<String> list = new ArrayList<String>();
 			ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
 			list = br.testBuffer(); 
 			int counter = 0;
@@ -361,9 +364,9 @@ public class MetadataToExcelGUI{
 				br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);
 				counter++;
 			}
-
+			list.clear();
 		}
-		list.clear();
+		
 	}
 
 	//Checking what kind of charset the file has
@@ -389,6 +392,7 @@ public class MetadataToExcelGUI{
 
 		if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
 		{
+			
 			fileDuration.getDuration(currentfile.getParentFile().getAbsolutePath()
 					+ "/" + currentFileName); 
 
@@ -399,8 +403,7 @@ public class MetadataToExcelGUI{
 
 	private void sortFileList() {
 
-		fileList.sort((o1,o2) -> o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase()));
-
+		//fileList.sort((o1,o2) -> o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase()));
 		fileList.sort(new Comparator<File>() {
 			@Override
 			public int compare(File o1, File o2) {
@@ -758,6 +761,12 @@ public class MetadataToExcelGUI{
 		}
 
 		return index;
+	}
+	
+	
+
+	public String getFolderName() {
+		return folderName;
 	}
 
 	public int getFileListeLength() {

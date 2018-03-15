@@ -517,7 +517,8 @@ public class ExcelControllerFX extends Application {
 					firstScene.getBALtxt().getStyleClass().remove("error");
 
 				}
-
+				stage.setScene(secondScene.getSecondScene());
+				//firstScene.getBALtxt().getStyleClass().remove("error");
 				/*view.getBtnOverwrite().setDisable(true);HI
 				view.getCheckBox().setDisable(true);
 				view.getOverwriteCheckBox().setDisable(true);

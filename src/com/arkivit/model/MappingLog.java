@@ -46,16 +46,26 @@ public class MappingLog {
 				logger.info(" Number of Mapped folders and files: " + mappedFilecount + "\n"); 
 				
 				// Displays mapped folders and files 
+				String path ="";
 				for(File mappedTemp: model.getMappedFiles()) {
+					
+					//Path for mapped files
+					path = mappedTemp.getParentFile().getAbsolutePath();
+					path = path.replace(model.getSourceFolderPath(), model.getFolderName());
+					
 					if(mappedTemp.isDirectory()) 
 					{
-						logger.info("\n Mapped folder: " + mappedTemp.getName() + "\n" + 
+					
+						
+						logger.info("\n Path: " + path
+								+ "\n Mapped folder: " + mappedTemp.getName() + "\n" + 
 								" Orignal folder: "+ model.getIllegalCharFiles().get(count)+ "\n");
 					}
 
 					else 
 					{
-						logger.info("\n Mapped file: " + mappedTemp.getName() + "\n" + 
+						logger.info("\n Path: " + path
+								+ "\n Mapped file: " + mappedTemp.getName() + "\n" + 
 								" Orignal file: "+ model.getIllegalCharFiles().get(count)+ "\n");
 					}
 					count++;
