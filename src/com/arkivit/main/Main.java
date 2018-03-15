@@ -2,7 +2,6 @@ package com.arkivit.main;
 
 import com.arkivit.controller.ExcelControllerFX;
 import com.arkivit.model.MetadataToExcelGUI;
-import com.arkivit.model.MappingLog;
 import com.arkivit.view.SecondScene;
 import com.arkivit.view.FirstScene;
 

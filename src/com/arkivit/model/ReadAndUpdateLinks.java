@@ -2,6 +2,7 @@ package com.arkivit.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class ReadAndUpdateLinks {
 
 	public void writeToFile(List<String> currFile) throws IOException
 	{
+
 		BufferedWriter w = new BufferedWriter(new FileWriter(filePath));
 
 		for(String x : currFile)
