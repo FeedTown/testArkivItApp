@@ -510,12 +510,12 @@ public class ExcelControllerFX extends Application {
 			{
 				saveContentButton();
 
-				if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
+				//if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
 
 				stage.setScene(secondScene.getSecondScene());
-				firstScene.getBALtxt().getStyleClass().remove("error");
+				//firstScene.getBALtxt().getStyleClass().remove("error");
 
-				}
+				//}
 				
 				/*view.getBtnOverwrite().setDisable(true);
 				view.getCheckBox().setDisable(true);
