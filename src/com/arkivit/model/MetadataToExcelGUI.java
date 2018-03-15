@@ -346,13 +346,16 @@ public class MetadataToExcelGUI{
 	}
 
 	private void changeLinkInFile(File file) throws IOException {
-		ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
+		
 		List<String> list = new ArrayList<String>();
-		list = br.testBuffer(); 
-		int counter = 0;
+		
 		
 		if(file.getName().endsWith(".html") || file.getName().endsWith(".css") || file.getName().endsWith(".js"))
 		{
+			ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
+			list = br.testBuffer(); 
+			int counter = 0;
+			
 			for(File s : mappedFiles) 
 			{
 				br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);

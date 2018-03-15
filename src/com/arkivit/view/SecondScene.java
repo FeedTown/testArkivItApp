@@ -40,7 +40,7 @@ public class SecondScene{
 	private Label mapLabel;// = new Label("Map");
 	private Label overwriteLabel, waitLabel, confidentialLabel, personalDataLabel;
 	private CheckBox mappCheckBox;
-	private CheckBox overwriteCheckBox, confidentialCheckBox, personalDataBox;
+	private CheckBox overwriteCheckBox, confidentialCheckBox, personalDataBox, confidentialYesBox, personalDataYesBox;
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
 	private ProgressBar pb;
 	private ProgressIndicator pi;
@@ -99,14 +99,26 @@ public class SecondScene{
 		);
 		btnOverwrite.setTooltip(tooltip3);
 		confidentialLabel = new Label("Confidential");
-		confidentialCheckBox = new CheckBox();
+		confidentialYesBox = new CheckBox("Yes ");
+		final Tooltip confidentialYesTooltip = new Tooltip();
+		confidentialYesTooltip.setText(
+		    "Set 'Sekretessgrad hos myndighet' to 'JA'\n"
+		);
+		confidentialYesBox.setTooltip(confidentialYesTooltip);
+		confidentialCheckBox = new CheckBox("No");
 		final Tooltip confidentialTooltip = new Tooltip();
 		confidentialTooltip.setText(
 		    "Set 'Sekretessgrad hos myndighet' to 'NEJ'\n"
 		);
 		confidentialCheckBox.setTooltip(confidentialTooltip);
 		personalDataLabel = new Label("Personal Data");
-		personalDataBox = new CheckBox();
+		personalDataYesBox = new CheckBox("Yes ");
+		final Tooltip personalDataYesTooltip = new Tooltip();
+		personalDataYesTooltip.setText(
+		    "Set 'Behandling av personuppgifter' to 'JA'\n"
+		);
+		personalDataYesBox.setTooltip(personalDataYesTooltip);
+		personalDataBox = new CheckBox("No");
 		final Tooltip personalDataTooltip = new Tooltip();
 		personalDataTooltip.setText(
 		    "Set 'Behandling av personuppgifter' to 'NEJ'\n"
@@ -140,10 +152,10 @@ public class SecondScene{
 		HBox.setMargin(overwriteCheckBox,new Insets(10,10,10,10));
 		HBox hBox3 = new HBox(btnOverwrite, btnDelete);
 		hBox3.setAlignment(Pos.CENTER_RIGHT);
-		HBox hBox4 = new HBox(confidentialLabel, confidentialCheckBox);
+		HBox hBox4 = new HBox(confidentialLabel, confidentialYesBox, confidentialCheckBox);
 		hBox4.setAlignment(Pos.CENTER_LEFT);
 		HBox.setMargin(confidentialLabel,new Insets(0,10,0,0));
-		HBox hBox5 = new HBox(personalDataLabel, personalDataBox);
+		HBox hBox5 = new HBox(personalDataLabel, personalDataYesBox, personalDataBox);
 		hBox5.setAlignment(Pos.CENTER_RIGHT);
 		HBox.setMargin(personalDataLabel,new Insets(0,10,0,0));
 		
@@ -170,8 +182,8 @@ public class SecondScene{
 		//firstGrid.add(btnOverwrite, 2, 1);
 		
 		//classification and personal data
-		firstGrid.add(hBox4, 0, 2);
-		firstGrid.add(hBox5, 1, 2);
+		firstGrid.add(hBox4, 1, 2);
+		firstGrid.add(hBox5, 2, 2);
 
 		//Out dir components
 		firstGrid.add(outputLabel, 0, 3);
