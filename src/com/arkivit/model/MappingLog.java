@@ -49,6 +49,7 @@ public class MappingLog {
 				String path ="";
 				for(File mappedTemp: model.getMappedFiles()) {
 					
+					//Path for mapped files
 					path = mappedTemp.getParentFile().getAbsolutePath();
 					path = path.replace(model.getSourceFolderPath(), model.getFolderName());
 					
