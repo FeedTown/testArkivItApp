@@ -145,9 +145,9 @@ public class MetadataToExcelGUI{
 
 	/* Goes through folder and subfolders and adding files to an ArrayList.
 	 * If mapping = true All files with illegal characters are renamed.
-	 * If file is a directory the path will be retrieved.
+	 * If file is a directory the path will be retrieved.a
 	 */
-	private void listOfFilesAndDirectory(String inputFolder){
+	private void listOfFilesAndDirectory(String inputFolder) {
 		File folder = new File(inputFolder);
 		File tempFile;
 
