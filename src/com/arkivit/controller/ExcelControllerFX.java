@@ -54,7 +54,7 @@ public class ExcelControllerFX extends Application {
 		secondScene = new SecondScene();
 		//launch();
 	}
-	
+
 	/**
 	 * Args constructor with following parameters
 	 * @param model object of MetadataToExcelGUI
@@ -68,7 +68,7 @@ public class ExcelControllerFX extends Application {
 		this.model = model;
 		this.firstScene = firstScene;
 		this.secondScene = secondScene;
-		
+
 	}
 
 	/**
@@ -148,12 +148,12 @@ public class ExcelControllerFX extends Application {
 			progressBar();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
-			
+
 		}
 
 
 	}
-	
+
 	/**
 	 * Alert popup message for succeded excel file creation
 	 */
@@ -164,7 +164,7 @@ public class ExcelControllerFX extends Application {
 		alert.setContentText("File was successfully created");
 		alert.showAndWait();
 	}
-	
+
 	/**
 	 * Action that performs to save content in directory
 	 * @param event
@@ -202,7 +202,7 @@ public class ExcelControllerFX extends Application {
 			secondScene.getMappCheckBox().setDisable(false);
 		}
 	}
-	
+
 	private void overwriteButton(ActionEvent event, Stage stage) {
 		//model.setBackupFilePath();
 		backupDir = secondScene.getDirectoryChooser().showDialog(stage);
@@ -211,29 +211,29 @@ public class ExcelControllerFX extends Application {
 			model.setBackupFilePath(backupDir.getAbsolutePath());
 			secondScene.getBtnSaveAs().setDisable(false);
 			secondScene.getBtnDelete().setDisable(true);
-			
-			
+
+
 			if(event.getSource() == secondScene.getBtnOverwrite() && backupDir != null) {
 				secondScene.getOverwriteCheckBox().setDisable(true);
 				secondScene.getBtnDelete().setDisable(false);
 			}
-			
+
 
 		}
 	}
-	
+
 	private void deleteButton(ActionEvent event) {
 		backupDir = null;
-		
+
 		if(backupDir == null) {
 			secondScene.getBtnDelete().setDisable(true);
 			secondScene.getOverwriteCheckBox().setDisable(false);
 			secondScene.getBtnSaveAs().setDisable(true);
 		}
 	}
-	
-	
-	
+
+
+
 	private void checkBox() {
 		if(secondScene.getMappCheckBox().isSelected()) {
 			secondScene.getOverwriteCheckBox().setDisable(false);
@@ -245,7 +245,7 @@ public class ExcelControllerFX extends Application {
 			secondScene.getOverwriteCheckBox().setSelected(false);
 			secondScene.getBtnOverwrite().setDisable(true);
 			secondScene.getBtnSaveAs().setDisable(false);
-				
+
 		}
 	}
 	private void checkBox2() {
@@ -257,13 +257,23 @@ public class ExcelControllerFX extends Application {
 			secondScene.getBtnSaveAs().setDisable(true);
 			secondScene.getBtnOverwrite().setDisable(false);
 		}
-		
+
 	}
+	private void confidentialYesBox() {
+		if(secondScene.getConfidentialYesBox().isSelected()) {
+			secondScene.getConfidentialCheckBox().setSelected(false);
+			model.setConfidentialChecked("JA");
+		}
+		else {
+			model.setConfidentialChecked("");
+		}
+	}
+	
 	private void confidentialBox() {
+		
 		if(secondScene.getConfidentialCheckBox().isSelected()) {
+			secondScene.getConfidentialYesBox().setSelected(false);
 			model.setConfidentialChecked("NEJ");
-			//tempLabel.equals(model.getConfidentialityColl());
-			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
 		}
 		else {
 			model.setConfidentialChecked("");
@@ -272,10 +282,20 @@ public class ExcelControllerFX extends Application {
 	
 	private void personalDataBox() {
 		if(secondScene.getPersonalDataBox().isSelected()) {
+			secondScene.getPersonalDataYesBox().setSelected(false);
 			model.setPersonalDataChecked("NEJ");
-			//tempLabel.equals(model.getConfidentialityColl());
-			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
 		}
+		else {
+			model.setPersonalDataChecked("");
+		}
+	}
+	
+	private void personalDataYesBox() {
+		if(secondScene.getPersonalDataYesBox().isSelected()) {
+			secondScene.getPersonalDataBox().setSelected(false);
+			model.setPersonalDataChecked("JA");
+		}
+
 		else {
 			model.setPersonalDataChecked("");
 		}
@@ -309,7 +329,7 @@ public class ExcelControllerFX extends Application {
 			secondScene.getMappCheckBox().setDisable(false);
 		}
 	}
-	
+
 	/*
 	 * Checks if mandatory field is empty or not.
 	 * If empty a red border will be visual, an alert will pop up and user cannot
@@ -341,7 +361,7 @@ public class ExcelControllerFX extends Application {
 		}
 		return checkFields;
 	}
-	
+
 	public void setInfoAlert() {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setTitle("Not a valid number");
@@ -349,7 +369,7 @@ public class ExcelControllerFX extends Application {
 		alert.setContentText("This field only allows numbers");
 		alert.showAndWait();
 	}
-	
+
 	/**
 	 * Validates email format in the first scene
 	 * @return true or false
@@ -372,7 +392,7 @@ public class ExcelControllerFX extends Application {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Validates number format in first scene if specified fields have numbers or not
 	 * @return true or false
@@ -384,16 +404,16 @@ public class ExcelControllerFX extends Application {
 		{	
 			if(firstScene.validateNumberList().get(i).getText().matches("[0-9-]*")) {
 				firstScene.validateNumberList().get(i).setId("");
-				
+
 			}
 			else
 			{
 				firstScene.validateNumberList().get(i).setId("error");
 				notNumber++;
-				
+
 			}
 		}
-		
+
 		if(notNumber >= 1)
 		{
 			setInfoAlert();
@@ -401,7 +421,7 @@ public class ExcelControllerFX extends Application {
 		}
 		return checkFieldsForNumbers;
 	}
-	
+
 	/**
 	 * Thread that runs simultaneously with Fx application thread to show loading progress
 	 * Tasks performed and bound/unbound to progress bar
@@ -435,8 +455,12 @@ public class ExcelControllerFX extends Application {
 				secondScene.getBtnOverwrite().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);
 				secondScene.getBtnDelete().setDisable(true);
+				secondScene.getConfidentialYesBox().setSelected(false);
 				secondScene.getConfidentialCheckBox().setSelected(false);
+				secondScene.getPersonalDataYesBox().setSelected(false);
 				secondScene.getPersonalDataBox().setSelected(false);
+				model.setConfidentialChecked("");
+				model.setPersonalDataChecked("");
 				mapping = false;
 				overwrite = false;
 			}
@@ -468,15 +492,15 @@ public class ExcelControllerFX extends Application {
 						overwrite = true;
 					}
 				}
-				
+
 
 				model.init(mapping, overwrite);
-				
+
 				if(mapping || overwrite)
 				{
 					log.mappedLog();
 				} 
-				
+
 
 				secondScene.getPi().setVisible(false);
 				secondScene.getWaitLabel().setVisible(false);
@@ -494,7 +518,7 @@ public class ExcelControllerFX extends Application {
 		};
 
 	}
-	
+
 	/**
 	 * 
 	 * Action events on when buttons are clicked
@@ -506,25 +530,24 @@ public class ExcelControllerFX extends Application {
 		@Override
 		public void handle(ActionEvent event) {
 
-			if(event.getSource().equals(firstScene.getSaveButton()))
-			{
+			//if(event.getSource().equals(firstScene.getSaveButton()))
+			//{
 				saveContentButton();
 
-				//if(checkRequestedFields() && validateEmail() && validateNumbers() == true) {
+				//if(checkRequestedFields() && validateEmail() && validateNumbers() == true) 
+				//{
 
-				stage.setScene(secondScene.getSecondScene());
+					stage.setScene(secondScene.getSecondScene());
 				//firstScene.getBALtxt().getStyleClass().remove("error");
 
-				//}
-				/*view.getBtnOverwrite().setDisable(true);
-				view.getCheckBox().setDisable(true);
-				view.getOverwriteCheckBox().setDisable(true);
-				view.getBtnConvert().setDisable(true);
-				view.getBtnSaveAs().setDisable(true);*/
-				
-				
-			}
-			else if(event.getSource().equals(secondScene.getBtnOpenFile()))
+				/*secondScene.getMappCheckBox().setDisable(true);
+				secondScene.getOverwriteCheckBox().setDisable(true);
+				secondScene.getBtnConvert().setDisable(true);
+				secondScene.getBtnSaveAs().setDisable(true);*/
+
+
+			//}
+			 if(event.getSource().equals(secondScene.getBtnOpenFile()))
 			{
 				openButton(event, stage);
 			}
@@ -547,13 +570,19 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(secondScene.getBtnOverwrite())) {
 				overwriteButton(event, stage);
-				
+
 			}
 			else if(event.getSource().equals(secondScene.getBtnDelete())) {
 				deleteButton(event);
 			}
+			else if(event.getSource().equals(secondScene.getConfidentialYesBox())) {
+				confidentialYesBox();
+			}
 			else if(event.getSource().equals(secondScene.getConfidentialCheckBox())) {
 				confidentialBox();
+			}
+			else if(event.getSource().equals(secondScene.getPersonalDataYesBox())) {
+				personalDataYesBox();
 			}
 			else if(event.getSource().equals(secondScene.getPersonalDataBox())) {
 				personalDataBox();
