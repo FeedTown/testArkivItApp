@@ -42,6 +42,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
 	private ArrayList<File> mappedFiles = new ArrayList<File>();
+	private ArrayList<String> mappedFile = new ArrayList<String>();
 	private ArrayList<String> illegalCharFiles = new ArrayList<String>();
 
 	private int fileCount = 0;
@@ -273,7 +274,6 @@ public class MetadataToExcelGUI{
 	{
 		Charset getDecoding;
 		sortFileList();
-
 		String fullPathforCurrentFile = "";
 
 		try {
@@ -288,15 +288,16 @@ public class MetadataToExcelGUI{
 							|| file.getName().endsWith(".xsl") || file.getName().endsWith(".txt") || file.getName().endsWith(".js")) 
 					{
 						getDecoding = getFileDecoder(fullPathforCurrentFile);
-
 					}
+
+					checkForAudioVideoDuration(file);
 
 					if(mapping)
 					{
 						changeLinkInFile(file);
 					}
 
-					checkForAudioVideoDuration(file);
+
 
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
@@ -316,9 +317,6 @@ public class MetadataToExcelGUI{
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					fileDuration.getAudioVideoList().add(duration);
-
-					//System.out.println("File size: " + fileSize);
-
 
 				}
 
@@ -347,20 +345,25 @@ public class MetadataToExcelGUI{
 	}
 
 	private void changeLinkInFile(File file) throws IOException {
-		ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
-		List<String> list = new ArrayList<String>();
-		list = br.testBuffer(); 
-		int counter = 0;
-		
+
+
 		if(file.getName().endsWith(".html") || file.getName().endsWith(".css") || file.getName().endsWith(".js"))
 		{
+			List<String> list = new ArrayList<String>(); 
+			int counter = 0;
+			ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
+			list = br.testBuffer();
+
 			for(File s : mappedFiles) 
 			{
 				br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);
+				counter++;			
 			}
+			list.clear();
 
 		}
-		list.clear();
+
+
 	}
 
 	//Checking what kind of charset the file has
@@ -390,13 +393,14 @@ public class MetadataToExcelGUI{
 					+ "/" + currentFileName); 
 
 			duration = fileDuration.getAudioVideoDuration();
-		} 
 
+		} 
+		
 	}
 
 	private void sortFileList() {
 
-		fileList.sort((o1,o2) -> o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase()));
+		//fileList.sort((o1,o2) -> o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase()));
 
 		fileList.sort(new Comparator<File>() {
 			@Override
@@ -735,7 +739,7 @@ public class MetadataToExcelGUI{
 		currentString = StringUtils.replaceEach (currentString, 
 				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
-		//mappedFiles.add(currentString);
+		mappedFile.add(currentString);
 		return currentString;
 	}
 

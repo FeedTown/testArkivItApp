@@ -2,7 +2,6 @@ package com.arkivit.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,8 +18,12 @@ public class ReadAndUpdateLinks {
 
 	public List<String> testBuffer()
 	{
-		File f = new File(filePath);
 		List<String> list = new ArrayList<String>();
+		/*if(!list.isEmpty())
+		{
+			list.clear();
+		}*/
+		
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
 
@@ -52,8 +55,6 @@ public class ReadAndUpdateLinks {
 				writeToFile(brList);
 			}
 		}
-
-		System.out.println(brList.toString());
 	}
 
 
