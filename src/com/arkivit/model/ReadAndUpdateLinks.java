@@ -26,7 +26,7 @@ public class ReadAndUpdateLinks {
 		
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
-
+			
 			String line = "";
 			while((line = br.readLine()) != null)
 			{
@@ -42,8 +42,6 @@ public class ReadAndUpdateLinks {
 
 	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
 	{
-
-		//System.out.println(brList.toString());
 		String word = "";
 		for(int i = 0; i < brList.size(); i++)
 		{

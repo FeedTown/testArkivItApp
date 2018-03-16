@@ -104,10 +104,16 @@ public class MetadataToExcelGUI{
 
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
+		//createExFile();
 
 		//System.out.println(illegalCharFiles.toString());
 	}
 
+
+	/*private void createExFile() {
+		//ExcelFileCreator execlFile = new ExcelFileCreator();
+		
+	}*/
 
 	//Copying folder to outside of the root folder
 	private void copyFolder() {
@@ -125,8 +131,8 @@ public class MetadataToExcelGUI{
 	//Clear ArrayList(s) if they aren't empty
 	public void clearArrayList() {
 
-		if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
-		{
+		//if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
+		//{
 			fileList.clear();
 			fileNameList.clear();
 			sizeList.clear();
@@ -134,7 +140,7 @@ public class MetadataToExcelGUI{
 			fileDuration.getAudioVideoList().clear();
 			illegalCharFiles.clear();
 			mappedFiles.clear();
-		}
+		//}
 
 	}
 
@@ -176,7 +182,6 @@ public class MetadataToExcelGUI{
 				System.out.println("Current Dir : "  + currentFileOrDir.getName());
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
-
 			}
 
 		}
@@ -290,13 +295,13 @@ public class MetadataToExcelGUI{
 						getDecoding = getFileDecoder(fullPathforCurrentFile);
 					}
 
-					checkForAudioVideoDuration(file);
-
+					
 					if(mapping)
 					{
 						changeLinkInFile(file);
-					}
-
+					} 
+					
+					checkForAudioVideoDuration(file);
 
 
 					fileSize = file.length();
@@ -345,25 +350,31 @@ public class MetadataToExcelGUI{
 	}
 
 	private void changeLinkInFile(File file) throws IOException {
-
-
+		
 		if(file.getName().endsWith(".html") || file.getName().endsWith(".css") || file.getName().endsWith(".js"))
 		{
-			List<String> list = new ArrayList<String>(); 
-			int counter = 0;
+			List<String> list = new ArrayList<String>();
 			ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
-			list = br.testBuffer();
-
+			list = br.testBuffer(); 
+			int counter = 0;
+			String href = "href=\"";
+			String endLink = "\"" ;
+			String src = "src=\"" ;
+			
 			for(File s : mappedFiles) 
 			{
-				br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);
-				counter++;			
+				if(file.getName().endsWith(".html") || file.getName().endsWith(".css")) {
+				br.updateInfoInFile(href+illegalCharFiles.get(counter)+endLink, href+s.getName()+endLink, list) ;
+				}
+				
+				if(file.getName().endsWith(".js")) {
+					br.updateInfoInFile(src+illegalCharFiles.get(counter)+endLink, src+s.getName()+endLink, list);
+				}
+				counter++;
 			}
 			list.clear();
-
 		}
-
-
+		
 	}
 
 	//Checking what kind of charset the file has
@@ -389,6 +400,7 @@ public class MetadataToExcelGUI{
 
 		if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
 		{
+			
 			fileDuration.getDuration(currentfile.getParentFile().getAbsolutePath()
 					+ "/" + currentFileName); 
 
@@ -401,7 +413,6 @@ public class MetadataToExcelGUI{
 	private void sortFileList() {
 
 		//fileList.sort((o1,o2) -> o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase()));
-
 		fileList.sort(new Comparator<File>() {
 			@Override
 			public int compare(File o1, File o2) {
@@ -759,6 +770,12 @@ public class MetadataToExcelGUI{
 		}
 
 		return index;
+	}
+	
+	
+
+	public String getFolderName() {
+		return folderName;
 	}
 
 	public int getFileListeLength() {

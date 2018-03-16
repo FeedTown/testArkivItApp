@@ -27,7 +27,7 @@ public class MappingLog {
 		Logger logger = Logger.getLogger("MyLog");  
 		FileHandler fh;
 		String logName = model.getTargetexcelFilepath() + "/" + model.getExcelFileName() + ".log";
-		//int count = 0 ;
+		
 		try {  
 
 			if(!(model.getMappedFiles().isEmpty())) {
@@ -46,52 +46,31 @@ public class MappingLog {
 				logger.info(" Number of Mapped folders and files: " + mappedFilecount + "\n"); 
 				
 				// Displays mapped folders and files 
+				String path ="";
 				for(File mappedTemp: model.getMappedFiles()) {
+					
+					//Path for mapped files
+					path = mappedTemp.getParentFile().getAbsolutePath();
+					path = path.replace(model.getSourceFolderPath(), model.getFolderName());
+					
 					if(mappedTemp.isDirectory()) 
 					{
-						logger.info("\n Mapped folder: " + mappedTemp.getName() + "\n" + 
+					
+						
+						logger.info("\n Path: " + path
+								+ "\n Mapped folder: " + mappedTemp.getName() + "\n" + 
 								" Orignal folder: "+ model.getIllegalCharFiles().get(count)+ "\n");
 					}
 
 					else 
 					{
-						logger.info("\n Mapped file: " + mappedTemp.getName() + "\n" + 
+						logger.info("\n Path: " + path
+								+ "\n Mapped file: " + mappedTemp.getName() + "\n" + 
 								" Orignal file: "+ model.getIllegalCharFiles().get(count)+ "\n");
 					}
 					count++;
 				} 
 								
-			/*	final AtomicInteger counter = new AtomicInteger();
-				
-				model.getMappedFiles().forEach(mappedTemp -> {
-					if(mappedTemp.isDirectory()) {
-						logger.info(" Mapped folder: " + mappedTemp.getName() + "\n" + 
-								    "       Orignal folder: "+ model.getIllegalCharFiles().get(counter.intValue())+ "\n");
-					}
-					else {
-						logger.info(" Mapped file: " + mappedTemp.getName() + "\n" + 
-							 	    "       Orignal file: "+ model.getIllegalCharFiles().get(counter.intValue())+ "\n");
-					}
-					
-					counter.incrementAndGet();
-					System.out.println("INCREMENT ATOMIC INTEGER " + counter);
-				});   */
-
-			/*	model.getMappedFiles().stream()
-				.filter(mappedTemp -> mappedTemp.isFile())
-				.forEach(mappedTemp ->{logger.info("\n Mapped File: " + mappedTemp.getName() + "\n" + 
-													" Orignal file: "+ model.getIllegalCharFiles().get(test.intValue()) + "\n");
-				test.incrementAndGet();
-				});
-
-				model.getMappedFiles().stream()
-				.filter(mappedTemp -> mappedTemp.isDirectory())
-				.forEach(mappedTemp -> { logger.info("\n Mapped folder: " + mappedTemp.getName() + "\n" + 
-													" Orignal folder: "+ model.getIllegalCharFiles().get(test.intValue()) + "\n");
-
-				test.incrementAndGet();
-				});  */
-
 				fh.close();
 			}
 

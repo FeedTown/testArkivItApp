@@ -73,6 +73,7 @@ public class TestBufferedStreamLambda {
 	}
 	
 	
+
 	public void writeToFile(List<String> currFile) throws IOException
 	{
 		//File f = new File(filePath);
@@ -99,7 +100,7 @@ public class TestBufferedStreamLambda {
 }
 			
 	
-	
+	String mapInFile;
 	
 	public static void main(String[] args) throws IOException
 	{
