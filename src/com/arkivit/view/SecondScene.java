@@ -227,7 +227,9 @@ public class SecondScene{
 		mappCheckBox.setOnAction(listenForEvent);
 		overwriteCheckBox.setOnAction(listenForEvent);
 		btnDelete.setOnAction(listenForEvent);
+		confidentialYesBox.setOnAction(listenForEvent);
 		confidentialCheckBox.setOnAction(listenForEvent);
+		personalDataYesBox.setOnAction(listenForEvent);
 		personalDataBox.setOnAction(listenForEvent);
 	}
 		
@@ -362,5 +364,26 @@ public class SecondScene{
 	public void setPersonalDataBox(CheckBox personalDataBox) {
 		this.personalDataBox = personalDataBox;
 	}
+
+
+	public CheckBox getConfidentialYesBox() {
+		return confidentialYesBox;
+	}
+
+
+	public void setConfidentialYesBox(CheckBox confidentialYesBox) {
+		this.confidentialYesBox = confidentialYesBox;
+	}
+
+
+	public CheckBox getPersonalDataYesBox() {
+		return personalDataYesBox;
+	}
+
+
+	public void setPersonalDataYesBox(CheckBox personalDataYesBox) {
+		this.personalDataYesBox = personalDataYesBox;
+	}
+	
 	
 }

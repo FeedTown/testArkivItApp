@@ -259,23 +259,43 @@ public class ExcelControllerFX extends Application {
 		}
 
 	}
-	private void confidentialBox() {
-		if(secondScene.getConfidentialCheckBox().isSelected()) {
-			model.setConfidentialChecked("NEJ");
-			//tempLabel.equals(model.getConfidentialityColl());
-			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
+	private void confidentialYesBox() {
+		if(secondScene.getConfidentialYesBox().isSelected()) {
+			secondScene.getConfidentialCheckBox().setSelected(false);
+			model.setConfidentialChecked("JA");
 		}
 		else {
 			model.setConfidentialChecked("");
 		}
 	}
-
+	
+	private void confidentialBox() {
+		
+		if(secondScene.getConfidentialCheckBox().isSelected()) {
+			secondScene.getConfidentialYesBox().setSelected(false);
+			model.setConfidentialChecked("NEJ");
+		}
+		else {
+			model.setConfidentialChecked("");
+		}
+	}
+	
 	private void personalDataBox() {
 		if(secondScene.getPersonalDataBox().isSelected()) {
+			secondScene.getPersonalDataYesBox().setSelected(false);
 			model.setPersonalDataChecked("NEJ");
-			//tempLabel.equals(model.getConfidentialityColl());
-			//model.getConfidentialityColl().equals(new Label(7, model.getRowNum()+1, "JA"));
 		}
+		else {
+			model.setPersonalDataChecked("");
+		}
+	}
+	
+	private void personalDataYesBox() {
+		if(secondScene.getPersonalDataYesBox().isSelected()) {
+			secondScene.getPersonalDataBox().setSelected(false);
+			model.setPersonalDataChecked("JA");
+		}
+
 		else {
 			model.setPersonalDataChecked("");
 		}
@@ -435,8 +455,12 @@ public class ExcelControllerFX extends Application {
 				secondScene.getBtnOverwrite().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);
 				secondScene.getBtnDelete().setDisable(true);
+				secondScene.getConfidentialYesBox().setSelected(false);
 				secondScene.getConfidentialCheckBox().setSelected(false);
+				secondScene.getPersonalDataYesBox().setSelected(false);
 				secondScene.getPersonalDataBox().setSelected(false);
+				model.setConfidentialChecked("");
+				model.setPersonalDataChecked("");
 				mapping = false;
 				overwrite = false;
 			}
@@ -517,7 +541,7 @@ public class ExcelControllerFX extends Application {
 					firstScene.getBALtxt().getStyleClass().remove("error");
 
 				}
-				stage.setScene(secondScene.getSecondScene());
+				//stage.setScene(secondScene.getSecondScene());
 				//firstScene.getBALtxt().getStyleClass().remove("error");
 				/*view.getBtnOverwrite().setDisable(true);HI
 				view.getCheckBox().setDisable(true);
@@ -555,8 +579,14 @@ public class ExcelControllerFX extends Application {
 			else if(event.getSource().equals(secondScene.getBtnDelete())) {
 				deleteButton(event);
 			}
+			else if(event.getSource().equals(secondScene.getConfidentialYesBox())) {
+				confidentialYesBox();
+			}
 			else if(event.getSource().equals(secondScene.getConfidentialCheckBox())) {
 				confidentialBox();
+			}
+			else if(event.getSource().equals(secondScene.getPersonalDataYesBox())) {
+				personalDataYesBox();
 			}
 			else if(event.getSource().equals(secondScene.getPersonalDataBox())) {
 				personalDataBox();

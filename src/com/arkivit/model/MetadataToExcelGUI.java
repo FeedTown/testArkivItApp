@@ -130,8 +130,8 @@ public class MetadataToExcelGUI{
 	//Clear ArrayList(s) if they aren't empty
 	public void clearArrayList() {
 
-		if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
-		{
+		//if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
+		//{
 			fileList.clear();
 			fileNameList.clear();
 			sizeList.clear();
@@ -139,7 +139,7 @@ public class MetadataToExcelGUI{
 			fileDuration.getAudioVideoList().clear();
 			illegalCharFiles.clear();
 			mappedFiles.clear();
-		}
+		//}
 
 	}
 
