@@ -357,10 +357,19 @@ public class MetadataToExcelGUI{
 			ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
 			list = br.testBuffer(); 
 			int counter = 0;
+			String href = "href=\"";
+			String endLink = "\"" ;
+			String src = "src=\"" ;
 			
 			for(File s : mappedFiles) 
 			{
-				br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);
+				if(file.getName().endsWith(".html") || file.getName().endsWith(".css")) {
+				br.updateInfoInFile(href+illegalCharFiles.get(counter)+endLink, href+s.getName()+endLink, list) ;
+				}
+				
+				if(file.getName().endsWith(".js")) {
+					br.updateInfoInFile(src+illegalCharFiles.get(counter)+endLink, src+s.getName()+endLink, list);
+				}
 				counter++;
 			}
 			list.clear();
