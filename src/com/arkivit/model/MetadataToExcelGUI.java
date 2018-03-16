@@ -41,9 +41,9 @@ public class MetadataToExcelGUI{
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
-	private ArrayList<File> mappedFiles = new ArrayList<File>();
-	private ArrayList<String> mappedFile = new ArrayList<String>();
-	private ArrayList<String> illegalCharFiles = new ArrayList<String>();
+	private ArrayList<File> mappedFiles = new ArrayList<File>(), mappedFolder = new ArrayList<File>();
+	//private ArrayList<String> mappedFile = new ArrayList<String>();
+	private ArrayList<String> illegalCharFiles = new ArrayList<String>(), illegarCharFolders = new ArrayList<String>();
 
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration();
@@ -112,7 +112,7 @@ public class MetadataToExcelGUI{
 
 	/*private void createExFile() {
 		//ExcelFileCreator execlFile = new ExcelFileCreator();
-		
+
 	}*/
 
 	//Copying folder to outside of the root folder
@@ -133,13 +133,13 @@ public class MetadataToExcelGUI{
 
 		//if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
 		//{
-			fileList.clear();
-			fileNameList.clear();
-			sizeList.clear();
-			filePathList.clear();
-			fileDuration.getAudioVideoList().clear();
-			illegalCharFiles.clear();
-			mappedFiles.clear();
+		fileList.clear();
+		fileNameList.clear();
+		sizeList.clear();
+		filePathList.clear();
+		fileDuration.getAudioVideoList().clear();
+		illegalCharFiles.clear();
+		mappedFiles.clear();
 		//}
 
 	}
@@ -195,6 +195,17 @@ public class MetadataToExcelGUI{
 
 		if(checkIfCurrentFileOrDirContainsIllegalChars(currFileOrDir))
 		{
+			if(isDir)
+			{
+				illegarCharFolders.add(currFileOrDir.getName());
+			}
+			else
+			{	
+				illegalCharFiles.add(currFileOrDir.getName());
+			}
+
+			//addToList(illegarCharMapp, illegalCharFiles, currFileOrDir.getName(),isDir);
+
 			currFile = replaceIllegalChars(currFileOrDir.getName());
 			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), currFile);
 
@@ -205,7 +216,18 @@ public class MetadataToExcelGUI{
 				tempFile = renameFile(tempFile,isDir,currFileOrDir);
 
 			}
-			mappedFiles.add(tempFile);
+
+			if(isDir)
+			{
+				mappedFolder.add(tempFile);
+			}
+			else
+			{	
+				mappedFiles.add(tempFile);
+			}
+
+
+			//mappedFiles.add(tempFile);
 		}
 		else
 		{
@@ -216,6 +238,28 @@ public class MetadataToExcelGUI{
 
 		return tempFile;
 
+	}
+
+	/*private void addToList(ArrayList<String> fileList, ArrayList<String> folderList, String name, boolean isDir) {
+
+		if(isDir)
+		{
+			fileList.add(name);
+		}
+		else
+		{	
+			folderList.add(name);
+		}
+	}*/
+
+	//If String contains illegal characters they will be replaced and returned.
+	private String replaceIllegalChars(String currentString) {
+
+		currentString = StringUtils.replaceEach (currentString, 
+				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
+				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
+
+		return currentString;
 	}
 
 	private void checkForFileOrDirAndSeparateWithExt(boolean isDir, File tempFile) {
@@ -295,12 +339,12 @@ public class MetadataToExcelGUI{
 						getDecoding = getFileDecoder(fullPathforCurrentFile);
 					}
 
-					
+
 					if(mapping)
 					{
 						changeLinkInFile(file);
 					} 
-					
+
 					checkForAudioVideoDuration(file);
 
 
@@ -350,31 +394,37 @@ public class MetadataToExcelGUI{
 	}
 
 	private void changeLinkInFile(File file) throws IOException {
-		
+
 		if(file.getName().endsWith(".html") || file.getName().endsWith(".css") || file.getName().endsWith(".js"))
 		{
 			List<String> list = new ArrayList<String>();
+			FileExtension ext;
 			ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
 			list = br.testBuffer(); 
 			int counter = 0;
 			String href = "href=\"";
 			String endLink = "\"" ;
 			String src = "src=\"" ;
-			
+
 			for(File s : mappedFiles) 
 			{
-				if(file.getName().endsWith(".html") || file.getName().endsWith(".css")) {
-				br.updateInfoInFile(href+illegalCharFiles.get(counter)+endLink, href+s.getName()+endLink, list) ;
-				}
-				
-				if(file.getName().endsWith(".js")) {
-					br.updateInfoInFile(src+illegalCharFiles.get(counter)+endLink, src+s.getName()+endLink, list);
+				if(!s.isDirectory())
+				{
+					ext = new FileExtension(s.getName());
+					if(ext.getHtmlCssFileExtension()) {
+
+						br.updateInfoInFile(/*href+*/illegalCharFiles.get(counter)/*+endLink*/, /*href+*/s.getName()+endLink, list) ;
+					}
+
+					if(ext.getJsImgFileExtension()) {
+						br.updateInfoInFile(/*src+*/illegalCharFiles.get(counter)/*+endLink*/, /*src+*/s.getName()+endLink, list);
+					}
 				}
 				counter++;
 			}
 			list.clear();
 		}
-		
+
 	}
 
 	//Checking what kind of charset the file has
@@ -400,18 +450,17 @@ public class MetadataToExcelGUI{
 
 		if(tempString.equals("video/"+newFileString) || tempString.equals("audio/"+newFileString))
 		{
-			
+
 			fileDuration.getDuration(currentfile.getParentFile().getAbsolutePath()
 					+ "/" + currentFileName); 
 
 			duration = fileDuration.getAudioVideoDuration();
 
 		} 
-		
+
 	}
 
 	private void sortFileList() {
-
 		//fileList.sort((o1,o2) -> o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase()));
 		fileList.sort(new Comparator<File>() {
 			@Override
@@ -434,7 +483,7 @@ public class MetadataToExcelGUI{
 			}});
 
 	}
-
+	
 	//Checks what type of file it is and returns the type.
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
@@ -743,16 +792,6 @@ public class MetadataToExcelGUI{
 	 * the specific columns.
 	 */
 
-	//If String contains illegal characters they will be replaced and returned.
-	private String replaceIllegalChars(String currentString) {
-
-		illegalCharFiles.add(currentString);
-		currentString = StringUtils.replaceEach (currentString, 
-				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
-				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
-		mappedFile.add(currentString);
-		return currentString;
-	}
 
 	@SuppressWarnings("unused")
 	private int getLargestString(List<String> stringList) {
@@ -771,8 +810,8 @@ public class MetadataToExcelGUI{
 
 		return index;
 	}
-	
-	
+
+
 
 	public String getFolderName() {
 		return folderName;
@@ -863,5 +902,15 @@ public class MetadataToExcelGUI{
 	public void setIllegalCharFiles(ArrayList<String> illegalCharFiles) {
 		this.illegalCharFiles = illegalCharFiles;
 	}
+
+	public ArrayList<File> getMappedFolder() {
+		return mappedFolder;
+	}
+
+	public ArrayList<String> getIllegarCharFolders() {
+		return illegarCharFolders;
+	}
+	
+	
 
 }
