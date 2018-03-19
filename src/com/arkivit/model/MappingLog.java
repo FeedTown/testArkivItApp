@@ -46,30 +46,36 @@ public class MappingLog {
 				logger.info(" Number of Mapped folders and files: " + mappedFilecount + "\n"); 
 				
 				// Displays mapped folders and files 
+				
+				
 				String path ="";
-				for(File mappedTemp: model.getMappedFiles()) {
+				getLog(model.getMappedFiles(), model.getIllegalCharFiles(),logger, "Original file:","Mapped file:");
+				getLog(model.getMappedFolder(), model.getIllegarCharFolders(),logger , "Original folder:","Mapped folder:");
+				
+				
+				/*for(File mappedTemp: model.getMappedFiles()) 
+				{
 					
 					//Path for mapped files
 					path = mappedTemp.getParentFile().getAbsolutePath();
 					path = path.replace(model.getSourceFolderPath(), model.getFolderName());
 					
-					if(mappedTemp.isDirectory()) 
+					/*if(mappedTemp.isDirectory()) 
 					{
 					
 						
 						logger.info("\n Path: " + path
 								+ "\n Mapped folder: " + mappedTemp.getName() + "\n" + 
 								" Orignal folder: "+ model.getIllegalCharFiles().get(count)+ "\n");
-					}
+					}*/
 
-					else 
-					{
-						logger.info("\n Path: " + path
+					
+				/*		logger.info("\n Path: " + path
 								+ "\n Mapped file: " + mappedTemp.getName() + "\n" + 
 								" Orignal file: "+ model.getIllegalCharFiles().get(count)+ "\n");
-					}
+					
 					count++;
-				} 
+				} */
 								
 				fh.close();
 			}
@@ -88,6 +94,26 @@ public class MappingLog {
 		}
 
 
+	}
+
+	private void getLog(ArrayList<File> charMappedList, ArrayList<String> charIllegalList, Logger log, String orgName, String mappedName) {
+		int count = 0;
+		String path ="";
+		for(File mappedTemp: charMappedList) 
+		{
+			//Path for mapped files
+			path = mappedTemp.getParentFile().getAbsolutePath();
+			path = path.replace(model.getSourceFolderPath(), model.getFolderName());
+			
+			
+			log.info("\n Path: " + path
+						+ "\n "+ mappedName+" " + mappedTemp.getName() + "\n" + 
+						 orgName + " "+ charIllegalList.get(count)+ "\n");
+			
+			count++;
+		} 
+		
+		
 	}
 }
 

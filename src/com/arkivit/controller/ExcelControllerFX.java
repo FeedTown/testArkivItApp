@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.text.View;
 
+import com.arkivit.model.ExcelFileCreator;
 import com.arkivit.model.MappingLog;
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.SecondScene;
@@ -68,7 +69,7 @@ public class ExcelControllerFX extends Application {
 		this.model = model;
 		this.firstScene = firstScene;
 		this.secondScene = secondScene;
-
+	
 	}
 
 	/**
@@ -88,12 +89,12 @@ public class ExcelControllerFX extends Application {
 
 
 	}
-
-
+	
 	/**
 	 * Gets the users input from text fields from the first scene
 	 */
 	public void saveContentButton() {
+	
 		//1
 		model.getGeneralBean().setDescDelivery(firstScene.getBALtxt().getText());
 		//2

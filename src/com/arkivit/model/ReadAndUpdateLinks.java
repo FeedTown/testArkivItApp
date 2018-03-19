@@ -2,7 +2,6 @@ package com.arkivit.model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class ReadAndUpdateLinks {
 	public List<String> testBuffer()
 	{
 		List<String> list = new ArrayList<String>();
-
+	
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
 			
 			String line = "";
@@ -39,18 +38,27 @@ public class ReadAndUpdateLinks {
 	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
 	{
 		String word = "";
+		String[] arr;
 		for(int i = 0; i < brList.size(); i++)
 		{
 			if(brList.get(i).contains(searchWord))
 			{
+				
 				System.out.println(brList.get(i).toString());
+				
+				/*arr = brList.get(i).split("\\\\");
+				int newCounter = 0;
+				for(String tmp : arr)
+				{
+					
+					newCounter++;
+				}*/
+				
 				word = brList.get(i).replaceAll(searchWord, updatedWord);
 				brList.set(i, word);
 				writeToFile(brList);
 			}
 		}
-
-		System.out.println(brList.toString());
 	}
 
 

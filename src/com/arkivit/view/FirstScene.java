@@ -179,7 +179,7 @@ public class FirstScene {
 	/**
 	 * Adds all text fields to an array list
 	 */
-	private void addContentToList() {
+	public void addContentToList() {
 		content = new ArrayList<TextField>();
 		content.add(BALtxt);
 		content.add(AKtxt);
