@@ -388,7 +388,7 @@ public class MetadataToExcelGUI{
 			List<String> list = new ArrayList<String>();
 			FileExtension ext;
 			ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
-			list = br.testBuffer(); 
+			list = br.readFileAndAddInfoToList(); 
 			int counter = 0;
 			String href = "href=\"";
 			String endLink = "\"" ;
@@ -401,11 +401,11 @@ public class MetadataToExcelGUI{
 					ext = new FileExtension(s.getName());
 					if(ext.getHtmlCssFileExtension()) {
 
-						br.updateInfoInFile(/*href+*/illegalCharFiles.get(counter)/*+endLink*/, /*href+*/s.getName()+endLink, list) ;
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list) ;
 					}
 
 					if(ext.getJsImgFileExtension()) {
-						br.updateInfoInFile(/*src+*/illegalCharFiles.get(counter)/*+endLink*/, /*src+*/s.getName()+endLink, list);
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);
 					}
 				}
 				counter++;
@@ -476,8 +476,6 @@ public class MetadataToExcelGUI{
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
 	}
-
-
 
 	@SuppressWarnings("unused")
 	private int getLargestString(List<String> stringList) {

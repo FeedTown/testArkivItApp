@@ -9,7 +9,6 @@ public class FileExtension {
 		this.getFileName = getFileName;
 	}
 
-
 	public boolean getHtmlCssFileExtension()
 	{
 		String htmlExt = ".html", cssExt = ".css";
