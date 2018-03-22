@@ -42,6 +42,7 @@ public class MetadataToExcelGUI{
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	private ExcelFileCreator ex = new ExcelFileCreator();
 	private GeneralBean generalBean = new GeneralBean();
+	//private ImageFileConverter img = new ImageFileConverter(this);
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	
@@ -75,13 +76,14 @@ public class MetadataToExcelGUI{
 	 * if mapping = true the method copyFolder gets called.
 	 * listOfFilesAndDirectory and getAndAddFileDataToList get called.
 	 * @param mapping A boolean, false by default
+	 * @throws IOException 
 	 */
-	public void init(boolean mapp, boolean overW) {
+	public void init(boolean mapp, boolean overW) throws IOException {
 
 		this.mapping = mapp;
 		this.overwrite = overW;
 		folderName = new File(sourceFolderPath).getName();
-
+		ImageFileConverter img = new ImageFileConverter(this);
 
 		if(mapping && !overwrite) 
 		{
@@ -92,6 +94,7 @@ public class MetadataToExcelGUI{
 
 
 		listOfFilesAndDirectory(sourceFolderPath);
+		img.convertImage();
 		getAndAddFileDataToList();
 		//createExFile();
 
@@ -393,7 +396,7 @@ public class MetadataToExcelGUI{
 			String href = "href=\"";
 			String endLink = "\"" ;
 			String src = "src=\"" ;
-
+			
 			for(File s : mappedFiles) 
 			{
 				if(!s.isDirectory())
@@ -401,11 +404,11 @@ public class MetadataToExcelGUI{
 					ext = new FileExtension(s.getName());
 					if(ext.getHtmlCssFileExtension()) {
 
-						br.updateInfoInFile(/*href+*/illegalCharFiles.get(counter)/*+endLink*/, /*href+*/s.getName()+endLink, list) ;
+						br.updateInfoInFile(/*href+*/illegalCharFiles.get(counter)/*+endLink*/, /*href+*/s.getName()/*+endLink*/, list) ;
 					}
 
 					if(ext.getJsImgFileExtension()) {
-						br.updateInfoInFile(/*src+*/illegalCharFiles.get(counter)/*+endLink*/, /*src+*/s.getName()+endLink, list);
+						br.updateInfoInFile(/*src+*/illegalCharFiles.get(counter)/*+endLink*/, /*src+*/s.getName()/*+endLink*/, list);
 					}
 				}
 				counter++;
@@ -595,5 +598,11 @@ public class MetadataToExcelGUI{
 	public GeneralBean getGeneralBean() {
 		return generalBean;
 	}
+
+	public ArrayList<File> getFileList() {
+		return fileList;
+	}
+	
+	
 	
 }
