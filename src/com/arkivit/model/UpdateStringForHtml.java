@@ -55,6 +55,7 @@ public class UpdateStringForHtml {
 							backupList.add(innerTmp);
 							System.out.println("4");
 							arr3 = innerTmp.split("/");
+							//testList.addAll();
 							testList.addAll(Arrays.asList(arr3));
 							int count = 0;
 							for(String furtherInnerTmp : testList)
@@ -62,7 +63,6 @@ public class UpdateStringForHtml {
 								System.out.println("Arr3" + testList);
 								if(furtherInnerTmp.equals(searchWord))
 								{
-
 									String word = furtherInnerTmp.replaceAll(searchWord, updatedWord);
 									testList.set(count, word);
 								}

@@ -393,19 +393,32 @@ public class MetadataToExcelGUI{
 			String href = "href=\"";
 			String endLink = "\"" ;
 			String src = "src=\"" ;
+			String pathName = "";
 
 			for(File s : mappedFiles) 
 			{
 				if(!s.isDirectory())
 				{
+					
+					
 					ext = new FileExtension(s.getName());
-					if(ext.getHtmlCssFileExtension()) {
-
-						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list) ;
+					if(ext.getHtmlCssFileExtension()) 
+					{
+						if(!s.getParentFile().getName().equals(folderName))
+						{
+							pathName = s.getParentFile().getName();
+						}
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, pathName) ;
 					}
 
-					if(ext.getJsImgFileExtension()) {
-						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);
+					if(ext.getJsImgFileExtension())
+					{
+						if(!s.getParentFile().getName().equals(folderName))
+						{
+							pathName = s.getParentFile().getName();
+						}
+						
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, s.getParentFile().getName());
 					}
 				}
 				counter++;
