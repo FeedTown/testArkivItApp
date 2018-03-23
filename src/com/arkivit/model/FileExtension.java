@@ -1,8 +1,15 @@
 package com.arkivit.model;
 
+import java.util.ArrayList;
+
 public class FileExtension {
 
 	private String getFileName;
+	ArrayList<String> convertExList;
+
+	public FileExtension() {
+
+	}
 
 	public FileExtension(String getFileName)
 	{
@@ -22,7 +29,7 @@ public class FileExtension {
 			return false;
 		}
 
-		
+
 	}
 
 	public boolean getJsImgFileExtension()
@@ -40,8 +47,8 @@ public class FileExtension {
 				pdfExt = ".pdf"
 				/*docExt = ".doc",
 				docxExt = ".docx"*/;
-		
-		
+
+
 		if(getFileName.endsWith(pdfExt) || getFileName.endsWith(gifExt) || getFileName.endsWith(pngExt) || getFileName.endsWith(jpgExt) ||
 				getFileName.endsWith(jpegExt) || getFileName.endsWith(jsExt) || getFileName.endsWith(imgExt))
 		{
@@ -51,8 +58,30 @@ public class FileExtension {
 		{
 			return false;
 		}
-	
+
+	}
+
+
+	public ArrayList<String> checkForConvertableFileExtensions() {
+
+		convertExList = new ArrayList<>();
 		
+		String docExt = ".doc",
+				docxExt = ".docx",
+				xlsxExt = ".xlsx",
+				xlsExt = ".xls",
+				pptExt = ".ppt",
+				pptxExt = ".pptx";
+
+		convertExList.add(docExt);
+		convertExList.add(docxExt);
+		convertExList.add(xlsxExt);
+		convertExList.add(xlsExt);
+		convertExList.add(pptExt);
+		convertExList.add(pptxExt);
+
+		return convertExList;
+
 	}
 
 }
