@@ -69,7 +69,7 @@ public class ExcelControllerFX extends Application {
 		this.model = model;
 		this.firstScene = firstScene;
 		this.secondScene = secondScene;
-	
+
 	}
 
 	/**
@@ -89,12 +89,12 @@ public class ExcelControllerFX extends Application {
 
 
 	}
-	
+
 	/**
 	 * Gets the users input from text fields from the first scene
 	 */
 	public void saveContentButton() {
-	
+
 		//1
 		model.getGeneralBean().setDescDelivery(firstScene.getBALtxt().getText());
 		//2
@@ -269,9 +269,9 @@ public class ExcelControllerFX extends Application {
 			model.setConfidentialChecked("");
 		}
 	}
-	
+
 	private void confidentialBox() {
-		
+
 		if(secondScene.getConfidentialCheckBox().isSelected()) {
 			secondScene.getConfidentialYesBox().setSelected(false);
 			model.setConfidentialChecked("NEJ");
@@ -280,7 +280,7 @@ public class ExcelControllerFX extends Application {
 			model.setConfidentialChecked("");
 		}
 	}
-	
+
 	private void personalDataBox() {
 		if(secondScene.getPersonalDataBox().isSelected()) {
 			secondScene.getPersonalDataYesBox().setSelected(false);
@@ -290,7 +290,7 @@ public class ExcelControllerFX extends Application {
 			model.setPersonalDataChecked("");
 		}
 	}
-	
+
 	private void personalDataYesBox() {
 		if(secondScene.getPersonalDataYesBox().isSelected()) {
 			secondScene.getPersonalDataBox().setSelected(false);
@@ -533,22 +533,23 @@ public class ExcelControllerFX extends Application {
 
 			//if(event.getSource().equals(firstScene.getSaveButton()))
 			//{
-				saveContentButton();
+			saveContentButton();
 
-				//if(checkRequestedFields() && validateEmail() && validateNumbers() == true) 
-				//{
+			if(checkRequestedFields() && validateEmail() && validateNumbers() == true) 
+			{
 
-					stage.setScene(secondScene.getSecondScene());
-				//firstScene.getBALtxt().getStyleClass().remove("error");
+			stage.setScene(secondScene.getSecondScene());
+			//firstScene.getBALtxt().getStyleClass().remove("error");
 
-				/*secondScene.getMappCheckBox().setDisable(true);
+			/*secondScene.getMappCheckBox().setDisable(true);
 				secondScene.getOverwriteCheckBox().setDisable(true);
 				secondScene.getBtnConvert().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);*/
 
 
-			//}
-			 if(event.getSource().equals(secondScene.getBtnOpenFile()))
+			}
+
+			if(event.getSource().equals(secondScene.getBtnOpenFile()))
 			{
 				openButton(event, stage);
 			}
