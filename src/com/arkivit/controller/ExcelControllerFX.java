@@ -5,9 +5,6 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.text.View;
-
-import com.arkivit.model.ExcelFileCreator;
 import com.arkivit.model.MappingLog;
 import com.arkivit.model.MetadataToExcelGUI;
 import com.arkivit.view.SecondScene;
@@ -22,7 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import jxl.write.Label;
+
 
 /**
  * 

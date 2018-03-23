@@ -84,7 +84,7 @@ public class FirstScene {
 		TTK = new Label("*Telefonnummer till kontaktperson:");
 		EK = new Label("*E-post-adress till kontakperson:");
 		AN = new Label("*Arkivets namn:");
-		SN = new Label("*Systemts namn:");
+		SN = new Label("*Systemets namn:");
 		UD = new Label("Uttagsdatum:");
 		KOM = new Label("Kommentar:");
 		
