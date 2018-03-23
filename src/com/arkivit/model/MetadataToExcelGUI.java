@@ -34,14 +34,14 @@ public class MetadataToExcelGUI{
 	private ArrayList<File> mappedFiles = new ArrayList<File>(), mappedFolder = new ArrayList<File>();
 	//private ArrayList<String> mappedFile = new ArrayList<String>();
 	private ArrayList<String> illegalCharFiles = new ArrayList<String>(), illegarCharFolders = new ArrayList<String>();
-
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration(); 
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
-	private ExcelFileCreator ex = new ExcelFileCreator();
+	//private ExcelFileCreator ex = new ExcelFileCreator();
 	private GeneralBean generalBean = new GeneralBean();
+	private Converter converter = new Converter();
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	
@@ -133,7 +133,9 @@ public class MetadataToExcelGUI{
 	 */
 	private void listOfFilesAndDirectory(String inputFolder){
 		File folder = new File(inputFolder);
+		int convertExtCounter = 0;
 		File tempFile;
+		FileExtension ext = new FileExtension();
 
 		for(File currentFileOrDir : folder.listFiles())
 		{
@@ -145,7 +147,12 @@ public class MetadataToExcelGUI{
 					//tempFile = getIllChars(tempFile,currentFileOrDir);
 					tempFile = doMapping(currentFileOrDir,false);
 				}
-
+				
+				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
+				{
+				converter.openLibreOffice();
+				}
+				
 				System.out.println("Current File : "  + currentFileOrDir.getName());
 
 				fileList.add(tempFile);
@@ -166,8 +173,9 @@ public class MetadataToExcelGUI{
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
 			}
-
+			
 		}
+		//converter.closeLibreOffice();
 	}
 
 	public File doMapping(File currFileOrDir, boolean isDir) {
