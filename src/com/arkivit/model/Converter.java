@@ -3,27 +3,25 @@ package com.arkivit.model;
 import java.io.IOException;
 
 public class Converter {
+
 	private String libreOfficeApp = "LibreOffice.app";
-	Process pr;
 	Runtime rt = Runtime.getRuntime();
+
 	public boolean openLibreOffice() {
+		try 
+		{
 
-	
-			try {
-				System.out.println("OPENING...");
-				rt.exec("open -a " + libreOfficeApp);
-				System.out.println("App is open!"); 
-				return true;
+			rt.exec("open -a " + libreOfficeApp);
+			return true;
 
-			} 
-			catch (IOException e) 
-			{
+		} 
+		catch (IOException e) 
+		{
 
-				e.printStackTrace();
-			}
-		
-		
-		//return open;
+			e.printStackTrace();
+		}
+
+
 		return false;
 	}
 
@@ -31,9 +29,7 @@ public class Converter {
 		try 
 		{
 
-			System.out.println("DESTROYING");
 			rt.exec("pkill -f " + libreOfficeApp);
-			System.out.println("DESTROYED!!!!!!!!!");
 
 		} 
 

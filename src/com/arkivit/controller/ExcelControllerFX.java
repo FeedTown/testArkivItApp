@@ -160,15 +160,17 @@ public class ExcelControllerFX extends Application {
 	/**
 	 * Alert popup message for succeded excel file creation
 	 */
-	private void setAlert() {
-		//boolean open = false;
+	private void setAlert() 
+	{
 		converter = new Converter();
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("ArkivIT");
 		alert.setHeaderText(null);
 		alert.setContentText("File was successfully created");
 		alert.showAndWait();
-		if(converter.openLibreOffice() == true) {
+		
+		if(converter.openLibreOffice() == true) 
+		{
 		converter.closeLibreOffice();
 		}
 	}

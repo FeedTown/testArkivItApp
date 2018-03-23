@@ -175,7 +175,7 @@ public class MetadataToExcelGUI{
 			}
 			
 		}
-		//converter.closeLibreOffice();
+		
 	}
 
 	public File doMapping(File currFileOrDir, boolean isDir) {
