@@ -44,7 +44,8 @@ public class MetadataToExcelGUI{
 	private Converter converter = new Converter();
 	private boolean mapping = false;
 	private boolean overwrite = false;
-	
+	private boolean isLibreOfficeOpen = false;
+
 	/**
 	 * No args constructor
 	 */
@@ -69,7 +70,7 @@ public class MetadataToExcelGUI{
 		//fileList = new ArrayList<File>();
 		//testMeth();
 	} 
-	
+
 	/**
 	 * Name of source folder instantiated and
 	 * if mapping = true the method copyFolder gets called.
@@ -93,6 +94,17 @@ public class MetadataToExcelGUI{
 
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
+
+		if(isLibreOfficeOpen) 
+		{
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			converter.closeLibreOffice();
+		}
 		//createExFile();
 
 		//System.out.println(illegalCharFiles.toString());
@@ -147,12 +159,13 @@ public class MetadataToExcelGUI{
 					//tempFile = getIllChars(tempFile,currentFileOrDir);
 					tempFile = doMapping(currentFileOrDir,false);
 				}
-				
+
 				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
 				{
-				converter.openLibreOffice();
+					isLibreOfficeOpen = converter.openLibreOffice(); 
+
 				}
-				
+
 				System.out.println("Current File : "  + currentFileOrDir.getName());
 
 				fileList.add(tempFile);
@@ -173,9 +186,9 @@ public class MetadataToExcelGUI{
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
 			}
-			
+
 		}
-		
+
 	}
 
 	public File doMapping(File currFileOrDir, boolean isDir) {
@@ -377,7 +390,7 @@ public class MetadataToExcelGUI{
 
 
 		try {
-			
+
 			System.out.println("Creating workbook......");
 			ExcelFileCreator createExcelF = new ExcelFileCreator(fileDuration, fileNameList, filePathList,
 					fileDecodeList, sizeList, fileList, generalBean,targetexcelFilepath, excelFileName, confidentialChecked,personalDataChecked);
@@ -479,7 +492,7 @@ public class MetadataToExcelGUI{
 			}});
 
 	}
-	
+
 	//Checks what type of file it is and returns the type.
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
@@ -599,9 +612,14 @@ public class MetadataToExcelGUI{
 	public ArrayList<String> getIllegarCharFolders() {
 		return illegarCharFolders;
 	}
-		
+
 	public GeneralBean getGeneralBean() {
 		return generalBean;
 	}
-	
+
+	public boolean isLibreOfficeOpen() {
+		return isLibreOfficeOpen;
+	}
+
+
 }

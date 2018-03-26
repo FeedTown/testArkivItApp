@@ -169,10 +169,6 @@ public class ExcelControllerFX extends Application {
 		alert.setContentText("File was successfully created");
 		alert.showAndWait();
 		
-		if(converter.openLibreOffice() == true) 
-		{
-		converter.closeLibreOffice();
-		}
 	}
 
 	/**
