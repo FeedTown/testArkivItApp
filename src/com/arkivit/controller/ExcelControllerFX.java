@@ -23,7 +23,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import jxl.write.Label;
 
 /**
  * 
@@ -168,7 +167,7 @@ public class ExcelControllerFX extends Application {
 		alert.setHeaderText(null);
 		alert.setContentText("File was successfully created");
 		alert.showAndWait();
-		
+
 	}
 
 	/**

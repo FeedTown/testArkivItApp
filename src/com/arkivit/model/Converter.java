@@ -8,35 +8,53 @@ import java.io.InputStreamReader;
 public class Converter {
 
 
-
-	private String libreOfficeApp = "LibreOffice.app";
 	Runtime rt = Runtime.getRuntime();
+	private String libreOfficeApp = "LibreOffice.app";
+	private String libOffice ="soffice.exe", osName;
+
+	Process p;
 
 	public boolean openLibreOffice() {
 		try 
 		{
-
-			//Process pr = Runtime.getRuntime().exec("/Users/RobertoBlanco/Desktop/script.sh");
-			Process pr1 = Runtime.getRuntime().exec("/Users/RobertoBlanco/eclipse-workspace-JavaEE/testArkivItApp/lib/script1.sh");
-			readBashScript(pr1.getInputStream());
-			rt.exec("open -a " + libreOfficeApp);
+			osName = System.getProperty("os.name");
+			
+			if(osName.contains("Windows"))
+			{
+				p = rt.exec("cmd /c start " + libOffice);
+				//readBashScript(pr1.getInputStream());
+			}
+			else if(osName.contains("Mac"))
+			{
+				Process pr1 = Runtime.getRuntime().exec("/Users/RobertoBlanco/eclipse-workspace-JavaEE/testArkivItApp/lib/script1.sh");
+				rt.exec("open -a " + libreOfficeApp);
+				readBashScript(pr1.getInputStream());
+			}
+			
 			return true;
 
-		} 
-		catch (IOException e) 
-		{
-
+		}
+		catch(IOException e) {
 			e.printStackTrace();
-		} 
-
-
+		}
 		return false;
 	}
 
 	public void closeLibreOffice() {		
 		try 
-		{	
-			rt.exec("pkill -f " + libreOfficeApp);
+
+		{
+			//test(p.getInputStream());
+			if(osName.contains("Windows"))
+			{
+				rt.exec("taskkill /IM soffice.bin");
+			}
+			else if(osName.contains("Mac"))
+			{
+				rt.exec("pkill -f " + libreOfficeApp);
+			}
+
+
 
 		} 
 
@@ -44,6 +62,7 @@ public class Converter {
 		{
 
 			e.printStackTrace();
+
 		} 
 	} 
 
@@ -65,10 +84,23 @@ public class Converter {
 		}
 	}
 
-	/*public static void main(String[] vad ) {
-		new Converter().openLibreOffice();
-	} */
+
+
+
+
+	public static void main(String[] args)
+	{
+		Converter c = new Converter();
+		c.openLibreOffice();
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		c.closeLibreOffice();
+	}
 
 }
-
 

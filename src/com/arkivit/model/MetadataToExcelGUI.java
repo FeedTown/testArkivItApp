@@ -160,6 +160,7 @@ public class MetadataToExcelGUI{
 					tempFile = doMapping(currentFileOrDir,false);
 				}
 
+
 				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
 				{
 					isLibreOfficeOpen = converter.openLibreOffice(); 
@@ -186,7 +187,7 @@ public class MetadataToExcelGUI{
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
 			}
-
+			
 		}
 
 	}
@@ -409,24 +410,37 @@ public class MetadataToExcelGUI{
 			List<String> list = new ArrayList<String>();
 			FileExtension ext;
 			ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
-			list = br.testBuffer(); 
+			list = br.readFileAndAddInfoToList(); 
 			int counter = 0;
 			String href = "href=\"";
 			String endLink = "\"" ;
 			String src = "src=\"" ;
+			String pathName = "";
 
 			for(File s : mappedFiles) 
 			{
 				if(!s.isDirectory())
 				{
+					
+					
 					ext = new FileExtension(s.getName());
-					if(ext.getHtmlCssFileExtension()) {
-
-						br.updateInfoInFile(/*href+*/illegalCharFiles.get(counter)/*+endLink*/, /*href+*/s.getName()+endLink, list) ;
+					if(ext.getHtmlCssFileExtension()) 
+					{
+						if(!s.getParentFile().getName().equals(folderName))
+						{
+							pathName = s.getParentFile().getName();
+						}
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, pathName) ;
 					}
 
-					if(ext.getJsImgFileExtension()) {
-						br.updateInfoInFile(/*src+*/illegalCharFiles.get(counter)/*+endLink*/, /*src+*/s.getName()+endLink, list);
+					if(ext.getJsImgFileExtension())
+					{
+						if(!s.getParentFile().getName().equals(folderName))
+						{
+							pathName = s.getParentFile().getName();
+						}
+						
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, s.getParentFile().getName());
 					}
 				}
 				counter++;
@@ -497,8 +511,6 @@ public class MetadataToExcelGUI{
 	private String checkVideoAudioFiles(String fileType) {
 		return this.fileType.detect(fileType);
 	}
-
-
 
 	@SuppressWarnings("unused")
 	private int getLargestString(List<String> stringList) {
