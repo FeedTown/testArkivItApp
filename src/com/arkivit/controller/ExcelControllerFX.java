@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import javax.swing.text.View;
 
-import com.arkivit.model.Converter;
 import com.arkivit.model.ExcelFileCreator;
 import com.arkivit.model.MappingLog;
 import com.arkivit.model.MetadataToExcelGUI;
@@ -39,7 +38,6 @@ public class ExcelControllerFX extends Application {
 	private FirstScene firstScene;
 	private Stage stage;
 	private Thread loadingThread;
-	Converter converter;
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private Task<?> progressTask;
@@ -161,7 +159,6 @@ public class ExcelControllerFX extends Application {
 	 */
 	private void setAlert() 
 	{
-		converter = new Converter();
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("ArkivIT");
 		alert.setHeaderText(null);

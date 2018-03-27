@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 public class Converter {
 
 
-	Runtime rt = Runtime.getRuntime();
+	private Runtime rt = Runtime.getRuntime();
 	private String libreOfficeApp = "LibreOffice.app";
 	private String libOffice ="soffice.exe", osName;
 
@@ -83,10 +83,6 @@ public class Converter {
 			e.printStackTrace();
 		}
 	}
-
-
-
-
 
 	public static void main(String[] args)
 	{
