@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 public class Converter {
 
 
-	Runtime rt = Runtime.getRuntime();
+	private Runtime rt = Runtime.getRuntime();
 	private String libreOfficeApp = "LibreOffice.app";
 	private String libOffice ="soffice.exe", osName;
 
@@ -24,7 +24,7 @@ public class Converter {
 				p = rt.exec("cmd /c start " + libOffice);
 				//readBashScript(pr1.getInputStream());
 			}
-			else if(osName.contains("Mac"))
+			else if(osName.contains("Mac") || osName.contains("Ubuntu") || osName.contains("Debian"))
 			{
 				Process pr1 = Runtime.getRuntime().exec("/Users/RobertoBlanco/eclipse-workspace-JavaEE/testArkivItApp/lib/script1.sh");
 				rt.exec("open -a " + libreOfficeApp);
@@ -49,11 +49,10 @@ public class Converter {
 			{
 				rt.exec("taskkill /IM soffice.bin");
 			}
-			else if(osName.contains("Mac"))
+			else if(osName.contains("Mac") || osName.contains("Ubuntu") || osName.contains("Debian"))
 			{
 				rt.exec("pkill -f " + libreOfficeApp);
 			}
-
 
 
 		} 
