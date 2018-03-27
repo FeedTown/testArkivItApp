@@ -1,4 +1,13 @@
+
 package Test.code;
+
+import com.sun.star.beans.PropertyValue;
+import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.frame.XDesktop;
+import com.sun.star.frame.XStorable;
+import com.sun.star.lang.XComponent;
+import com.sun.star.lang.XMultiComponentFactory;
+
 /* -*- Mode: Java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
@@ -36,6 +45,7 @@ package Test.code;
 
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
+import com.sun.star.util.XCloseable;
 
 import ooo.connector.BootstrapSocketConnector;
 
@@ -51,6 +61,7 @@ public class DocumentConverter {
 	/** Containing the loaded documents
 	 */
 	static com.sun.star.frame.XComponentLoader xCompLoader = null;
+	static XDesktop xDesktop;
 	/** Containing the given type to convert to
 	 */
 	static String sConvertType = "";
@@ -112,54 +123,48 @@ public class DocumentConverter {
 							+ entries[ i ].getAbsolutePath().replace( '\\', '/' );
 
 					// Loading the wanted document
-					com.sun.star.beans.PropertyValue propertyValues[] =
-							new com.sun.star.beans.PropertyValue[1];
-					propertyValues[0] = new com.sun.star.beans.PropertyValue();
+					PropertyValue propertyValues[] = new PropertyValue[1];
+					propertyValues[0] = new PropertyValue();
 					propertyValues[0].Name = "Hidden";
 					propertyValues[0].Value = Boolean.TRUE;
-
-					Object oDocToStore =
-							DocumentConverter.xCompLoader.loadComponentFromURL(
+					Object oDocToStore = xCompLoader.loadComponentFromURL(
 									sUrl, "_blank", 0, propertyValues);
 
 					// Getting an object that will offer a simple way to store
 					// a document to a URL.
-					com.sun.star.frame.XStorable xStorable =
-							UnoRuntime.queryInterface(
-									com.sun.star.frame.XStorable.class, oDocToStore );
+					XStorable xStorable =
+							UnoRuntime.queryInterface(XStorable.class, oDocToStore );
 
 					// Preparing properties for converting the document
-					propertyValues = new com.sun.star.beans.PropertyValue[2];
+					propertyValues = new PropertyValue[2];
 					// Setting the flag for overwriting
-					propertyValues[0] = new com.sun.star.beans.PropertyValue();
+					propertyValues[0] = new PropertyValue();
 					propertyValues[0].Name = "Overwrite";
 					propertyValues[0].Value = Boolean.TRUE;
 					// Setting the filter name
-					propertyValues[1] = new com.sun.star.beans.PropertyValue();
+					propertyValues[1] = new PropertyValue();
 					propertyValues[1].Name = "FilterName";
-					propertyValues[1].Value = DocumentConverter.sConvertType;
+					propertyValues[1].Value = sConvertType;
 
 					// Appending the favoured extension to the origin document name
 					int index1 = sUrl.lastIndexOf('/');
 					int index2 = sUrl.lastIndexOf('.');
 					String sStoreUrl = sOutUrl + sUrl.substring(index1, index2 + 1)
-					+ DocumentConverter.sExtension;
+					+ sExtension;
 
 					// Storing and converting the document
-					xStorable.storeAsURL(sStoreUrl, propertyValues);
+					xStorable.storeToURL(sStoreUrl, propertyValues);
 
 					// Closing the converted document. Use XCloseable.close if the
 					// interface is supported, otherwise use XComponent.dispose
-					com.sun.star.util.XCloseable xCloseable =
-							UnoRuntime.queryInterface(
-									com.sun.star.util.XCloseable.class, xStorable);
+					XCloseable xCloseable =
+							UnoRuntime.queryInterface(XCloseable.class, xStorable);
 
 					if ( xCloseable != null ) {
 						xCloseable.close(false);
 					} else {
-						com.sun.star.lang.XComponent xComp =
-								UnoRuntime.queryInterface(
-										com.sun.star.lang.XComponent.class, xStorable);
+						XComponent xComp =
+								UnoRuntime.queryInterface(XComponent.class, xStorable);
 
 						xComp.dispose();
 					}
@@ -182,53 +187,44 @@ public class DocumentConverter {
 	 *             all files should be converted, the favoured converting type
 	 *             and the wanted extension
 	 */
-	public static void main( String[] args ) {
-		/*if ( args.length < 3 ) {
-			System.out.println("usage: java -jar DocumentConverter.jar " +
-					"\"<directory to convert>\" \"<type to convert to>\" " +
-					"\"<extension>\" \"<output_directory>\"");
-			System.out.println("\ne.g.:");
-			System.out.println("usage: java -jar DocumentConverter.jar " +
-					"\"c:/myoffice\" \"swriter: MS Word 97\" \"doc\"");
-			System.exit(1);
-		} */
-
-		com.sun.star.uno.XComponentContext xContext = null;
-		String oooExeFolder = "/Applications/LibreOffice.app/Contents/MacOs/";
+	public static void main( String args[] ) {
+	
+		
+		//String path = "C:\\Program Files\\LibreOffice\\program";
+		String path = "/Applications/LibreOffice.app/Contents/MacOs/";
+		XComponentContext xContext = null;
 
 		try {
-
 			// get the remote office component context
-			//xContext = (XComponentContext) com.sun.star.comp.helper.Bootstrap.createSimpleServiceManager();
-			xContext = BootstrapSocketConnector.bootstrap(oooExeFolder);
-			//xContext = com.sun.star.comp.helper.Bootstrap.bootstrap();
-
-
+			//xContext = Bootstrap.bootstrap();
+			xContext = BootstrapSocketConnector.bootstrap(path);
 			System.out.println("Connected to a running office ...");
 
 			// get the remote office service manager
-			com.sun.star.lang.XMultiComponentFactory xMCF =
+			XMultiComponentFactory xMCF =
 					xContext.getServiceManager();
 
 			Object oDesktop = xMCF.createInstanceWithContext(
 					"com.sun.star.frame.Desktop", xContext);
-
+			
+			xDesktop = (XDesktop) UnoRuntime.queryInterface(XDesktop.class, oDesktop);
+			
 			xCompLoader = UnoRuntime.queryInterface(com.sun.star.frame.XComponentLoader.class,
-					oDesktop);
-
-
+					xDesktop);
+			
+			
 			// Getting the given starting directory
 			File file = new File("/Users/RobertoBlanco/Desktop/TestFiler");
 
 			// Getting the given type to convert to
-			sConvertType = "pdf";
+			sConvertType = "writer_pdf_Export";
 
 			// Getting the given extension that should be appended to the
 			// origin document
-			sExtension = ".pdf";
+			sExtension = "pdf";
 
 			// Getting the given type to convert to
-			sOutputDir = "/Users/RobertoBlanco/Desktop/Con_map/";
+			sOutputDir = "/Users/RobertoBlanco/Desktop/Con_map";
 
 			// Starting the conversion of documents in the given directory
 			// and subdirectories
@@ -243,3 +239,4 @@ public class DocumentConverter {
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
+

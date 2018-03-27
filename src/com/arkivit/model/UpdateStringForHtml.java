@@ -36,7 +36,7 @@ public class UpdateStringForHtml {
 			System.out.println("2");
 			splittedValue = checkWord;
 			arr = testPath.split(splittedValue);
-			testList3.addAll(Arrays.asList(arr));
+			testList3.addAll(Arrays.asList(arr)); 
 			int counter = 0;
 			for(String tmp : testList3)
 			{

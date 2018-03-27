@@ -61,8 +61,8 @@ public class ReadAndUpdateLinks {
 				}*/
 
 				//word = brList.get(i).replaceAll(searchWord, updatedWord);
-				//word = htmlWordUpdater.updateWordInString(brList.get(i), searchWord, updatedWord);
-				word = tJsoup.jSoupExtractElementsFromHtmlFile2(brList.get(i), searchWord, updatedWord, filePath);
+				word = htmlWordUpdater.updateWordInString(brList.get(i), searchWord, updatedWord);
+				//word = tJsoup.jSoupExtractElementsFromHtmlFile2(brList.get(i), searchWord, updatedWord, filePath);
 
 				
 					brList.set(i, word);

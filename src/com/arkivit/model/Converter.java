@@ -83,10 +83,6 @@ public class Converter {
 		}
 	}
 
-
-
-
-
 	public static void main(String[] args)
 	{
 		Converter c = new Converter();

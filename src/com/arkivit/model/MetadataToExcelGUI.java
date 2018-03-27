@@ -95,7 +95,7 @@ public class MetadataToExcelGUI{
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 
-		if(isLibreOfficeOpen) 
+		/*if(isLibreOfficeOpen) 
 		{
 			try {
 				Thread.sleep(5000);
@@ -104,7 +104,7 @@ public class MetadataToExcelGUI{
 				e.printStackTrace();
 			}
 			converter.closeLibreOffice();
-		}
+		}*/
 		//createExFile();
 
 		//System.out.println(illegalCharFiles.toString());
@@ -161,11 +161,11 @@ public class MetadataToExcelGUI{
 				}
 
 
-				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
+				/*if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
 				{
 					isLibreOfficeOpen = converter.openLibreOffice(); 
 
-				}
+				}*/
 
 				System.out.println("Current File : "  + currentFileOrDir.getName());
 
