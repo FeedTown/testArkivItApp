@@ -35,6 +35,9 @@ package Test.code;
  *************************************************************************/
 
 import com.sun.star.uno.UnoRuntime;
+import com.sun.star.uno.XComponentContext;
+
+import ooo.connector.BootstrapSocketConnector;
 
 import java.io.File;
 
@@ -179,7 +182,7 @@ public class DocumentConverter {
 	 *             all files should be converted, the favoured converting type
 	 *             and the wanted extension
 	 */
-	public static void main( String args[] ) {
+	public static void main( String[] args ) {
 		/*if ( args.length < 3 ) {
 			System.out.println("usage: java -jar DocumentConverter.jar " +
 					"\"<directory to convert>\" \"<type to convert to>\" " +
@@ -191,11 +194,16 @@ public class DocumentConverter {
 		} */
 
 		com.sun.star.uno.XComponentContext xContext = null;
+		String oooExeFolder = "/Applications/LibreOffice.app/Contents/MacOs/";
 
 		try {
+
 			// get the remote office component context
-			//xContext = com.sun.c
-			xContext = com.sun.star.comp.helper.Bootstrap.bootstrap();
+			//xContext = (XComponentContext) com.sun.star.comp.helper.Bootstrap.createSimpleServiceManager();
+			xContext = BootstrapSocketConnector.bootstrap(oooExeFolder);
+			//xContext = com.sun.star.comp.helper.Bootstrap.bootstrap();
+
+
 			System.out.println("Connected to a running office ...");
 
 			// get the remote office service manager
@@ -207,8 +215,8 @@ public class DocumentConverter {
 
 			xCompLoader = UnoRuntime.queryInterface(com.sun.star.frame.XComponentLoader.class,
 					oDesktop);
-			
-			
+
+
 			// Getting the given starting directory
 			File file = new File("/Users/RobertoBlanco/Desktop/TestFiler");
 
