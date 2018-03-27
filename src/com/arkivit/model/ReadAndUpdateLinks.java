@@ -8,21 +8,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Test.code.TestJsoup;
+
 public class ReadAndUpdateLinks {
 
 	private String filePath;
+	private UpdateStringForHtml htmlWordUpdater = new UpdateStringForHtml();
+	private TestJsoup tJsoup = new TestJsoup();
 
 	public ReadAndUpdateLinks(String filePath) {
 		this.filePath = filePath;
 	}
 
-	public List<String> testBuffer()
+	public List<String> readFileAndAddInfoToList()
 	{
 		List<String> list = new ArrayList<String>();
-	
+
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
-			
+
 			String line = "";
+			
 			while((line = br.readLine()) != null)
 			{
 				list.add(line);
@@ -35,28 +40,34 @@ public class ReadAndUpdateLinks {
 		return list;
 	}
 
-	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
+	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList, String filePath) throws IOException
 	{
 		String word = "";
+		String splittedValue ="";
 		String[] arr;
 		for(int i = 0; i < brList.size(); i++)
 		{
 			if(brList.get(i).contains(searchWord))
 			{
-				
+
 				System.out.println(brList.get(i).toString());
-				
+
 				/*arr = brList.get(i).split("\\\\");
 				int newCounter = 0;
 				for(String tmp : arr)
 				{
-					
+
 					newCounter++;
 				}*/
+
+				//word = brList.get(i).replaceAll(searchWord, updatedWord);
+				//word = htmlWordUpdater.updateWordInString(brList.get(i), searchWord, updatedWord);
+				word = tJsoup.jSoupExtractElementsFromHtmlFile2(brList.get(i), searchWord, updatedWord, filePath);
+
 				
-				word = brList.get(i).replaceAll(searchWord, updatedWord);
-				brList.set(i, word);
-				writeToFile(brList);
+					brList.set(i, word);
+					writeToFile(brList);
+	
 			}
 		}
 	}
