@@ -49,6 +49,8 @@ import com.sun.star.util.XCloseable;
 import ooo.connector.BootstrapSocketConnector;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /** The class <CODE>DocumentConverter</CODE> allows you to convert all documents
@@ -79,7 +81,6 @@ public class DocumentConverter {
 		this.sConvertType = sConvertType;
 		this.sExtension = sExtension;
 		this.sOutputDir = sOutputDir;
-
 	}
 
 	/** Traversing the given directory recursively and converting their files to
@@ -131,11 +132,16 @@ public class DocumentConverter {
 
 					// Getting an object that will offer a simple way to store
 					// a document to a URL.
+					
+					
+					
+					
 					XStorable xStorable =
 							UnoRuntime.queryInterface(XStorable.class, oDocToStore );
-
+					
+					
 					// Preparing properties for converting the document
-					propertyValues = new PropertyValue[2];
+					propertyValues = new PropertyValue[3];
 					// Setting the flag for overwriting
 					propertyValues[0] = new PropertyValue();
 					propertyValues[0].Name = "Overwrite";
@@ -144,6 +150,10 @@ public class DocumentConverter {
 					propertyValues[1] = new PropertyValue();
 					propertyValues[1].Name = "FilterName";
 					propertyValues[1].Value = sConvertType;
+					
+					propertyValues[2] = new PropertyValue();
+					propertyValues[2].Name = "PDFViewSelection";
+					propertyValues[2].Value = 2;
 
 					// Appending the favoured extension to the origin document name
 					int index1 = sUrl.lastIndexOf('/');
