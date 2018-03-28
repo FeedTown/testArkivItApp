@@ -161,11 +161,12 @@ public class MetadataToExcelGUI{
 				}
 
 
-				/*if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
+				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
 				{
-					isLibreOfficeOpen = converter.openLibreOffice(); 
+					//isLibreOfficeOpen = converter.openLibreOffice();
+					//tempFile = convertToPDF(currentFileOrDir);
 
-				}*/
+				}
 
 				System.out.println("Current File : "  + currentFileOrDir.getName());
 

@@ -1,55 +1,18 @@
 
 package Test.code;
 
+import com.sun.star.uno.UnoRuntime;
+import com.sun.star.uno.XComponentContext;
+import com.sun.star.util.XCloseable;
+import ooo.connector.BootstrapSocketConnector;
+import java.io.File;
 import com.sun.star.beans.PropertyValue;
-import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XStorable;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 
-/* -*- Mode: Java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
-/*************************************************************************
- *
- *  The Contents of this file are made available subject to the terms of
- *  the BSD license.
- *
- *  Copyright 2000, 2010 Oracle and/or its affiliates.
- *  All rights reserved.
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions
- *  are met:
- *  1. Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *  3. Neither the name of Sun Microsystems, Inc. nor the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- *************************************************************************/
-
-import com.sun.star.uno.UnoRuntime;
-import com.sun.star.uno.XComponentContext;
-import com.sun.star.util.XCloseable;
-
-import ooo.connector.BootstrapSocketConnector;
-
-import java.io.File;
 
 
 /** The class <CODE>DocumentConverter</CODE> allows you to convert all documents
@@ -60,7 +23,7 @@ import java.io.File;
 public class DocumentConverter {
 	/** Containing the loaded documents
 	 */
-	static com.sun.star.frame.XComponentLoader xCompLoader = null;
+	static XComponentLoader xCompLoader = null;
 	static XDesktop xDesktop;
 	/** Containing the given type to convert to
 	 */
@@ -80,7 +43,6 @@ public class DocumentConverter {
 		this.sConvertType = sConvertType;
 		this.sExtension = sExtension;
 		this.sOutputDir = sOutputDir;
-
 	}
 
 	/** Traversing the given directory recursively and converting their files to
@@ -127,16 +89,18 @@ public class DocumentConverter {
 					propertyValues[0] = new PropertyValue();
 					propertyValues[0].Name = "Hidden";
 					propertyValues[0].Value = Boolean.TRUE;
+					
 					Object oDocToStore = xCompLoader.loadComponentFromURL(
 									sUrl, "_blank", 0, propertyValues);
 
 					// Getting an object that will offer a simple way to store
-					// a document to a URL.
+					// a document to a URL.			
+					
 					XStorable xStorable =
 							UnoRuntime.queryInterface(XStorable.class, oDocToStore );
-
+								
 					// Preparing properties for converting the document
-					propertyValues = new PropertyValue[2];
+					propertyValues = new PropertyValue[3];
 					// Setting the flag for overwriting
 					propertyValues[0] = new PropertyValue();
 					propertyValues[0].Name = "Overwrite";
@@ -145,6 +109,10 @@ public class DocumentConverter {
 					propertyValues[1] = new PropertyValue();
 					propertyValues[1].Name = "FilterName";
 					propertyValues[1].Value = sConvertType;
+					
+					propertyValues[2] = new PropertyValue();
+					propertyValues[2].Name = "PDFViewSelection";
+					propertyValues[2].Value = 2;
 
 					// Appending the favoured extension to the origin document name
 					int index1 = sUrl.lastIndexOf('/');
@@ -190,13 +158,13 @@ public class DocumentConverter {
 	public static void main( String args[] ) {
 	
 		
-		//String path = "C:\\Program Files\\LibreOffice\\program";
-		String path = "/Applications/LibreOffice.app/Contents/MacOs/";
+		String path = "/Applications/LibreOffice.app/Contents/MacOS/";
+		
 		XComponentContext xContext = null;
 
 		try {
 			// get the remote office component context
-			//xContext = Bootstrap.bootstrap();
+			//xContext = BootstrapSocketConnector.bootstrap(path, "localhost", 8100);
 			xContext = BootstrapSocketConnector.bootstrap(path);
 			System.out.println("Connected to a running office ...");
 
@@ -214,7 +182,7 @@ public class DocumentConverter {
 			
 			
 			// Getting the given starting directory
-			File file = new File("/Users/RobertoBlanco/Desktop/TestFiler");
+			File file = new File("/Users/RobertoBlanco/Desktop/TestFiler/");
 
 			// Getting the given type to convert to
 			sConvertType = "writer_pdf_Export";
@@ -224,7 +192,7 @@ public class DocumentConverter {
 			sExtension = "pdf";
 
 			// Getting the given type to convert to
-			sOutputDir = "/Users/RobertoBlanco/Desktop/Con_map";
+			sOutputDir = "/Users/RobertoBlanco/Desktop/Con_map/";
 
 			// Starting the conversion of documents in the given directory
 			// and subdirectories
@@ -237,6 +205,4 @@ public class DocumentConverter {
 		}
 	}
 }
-
-/* vim:set shiftwidth=4 softtabstop=4 expandtab: */
 

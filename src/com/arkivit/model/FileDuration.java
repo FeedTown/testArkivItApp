@@ -39,7 +39,7 @@ public class FileDuration {
 			
 		}
 		
-		final String formattedDuration = formatTimeStamp(demuxer.getDuration());
+		//final String formattedDuration = formatTimeStamp(demuxer.getDuration());
 		//System.out.printf("Duration: %s \n", 
 		//		formattedDuration); 
 		
