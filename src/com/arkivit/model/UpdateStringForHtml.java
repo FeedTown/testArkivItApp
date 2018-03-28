@@ -6,36 +6,37 @@ import java.util.Arrays;
 import Test.code.GetHtmlEndTag;
 
 public class UpdateStringForHtml {
-
+	
+	String[] arr,arr2,arr3;
+	String splittedValue ="", checkWord;
+	String test1="",test2="",test3="";
+	GetHtmlEndTag checkForHtmlEndTag = new GetHtmlEndTag();
+	ArrayList<String> testList = new ArrayList<String>(), testList2 = new ArrayList<String>(), testList3 = new ArrayList<String>(),
+			backupList = new ArrayList<String>();
 
 	public UpdateStringForHtml() {
 
 	}
 
-	public String updateWordInString(String testPath, String searchWord, String updatedWord )
+	public String updateWordInString(String currentTextLine, String searchWord, String updatedWord )
 	{
-		String[] arr,arr2,arr3;
-		String splittedValue ="", checkWord;
-		String test1="",test2="",test3="";
-		GetHtmlEndTag checkForHtmlEndTag = new GetHtmlEndTag();
-		ArrayList<String> testList = new ArrayList<String>(), testList2 = new ArrayList<String>(), testList3 = new ArrayList<String>(),
-				backupList = new ArrayList<String>();
+		
 
 		//String testPath = "href=\"../style/täst.html\">täst.html</script>\n";
 		//String testPath = "href=\"täst.html\">täst.html</a>\n";
 		//+ "href=\"test2.html\"></a>\\n";
 
-		System.out.println("Before splited : " + testPath);
-		checkWord = checkForHtmlEndTag.getLinkRef(testPath);
+		System.out.println("Before splited : " + currentTextLine);
+		checkWord = checkForHtmlEndTag.getLinkRef(currentTextLine);
 
 		System.out.println("1");
 
 
-		if(testPath.contains(checkWord) && !checkWord.equals("")) 
+		if(currentTextLine.contains(checkWord) && !checkWord.equals("")) 
 		{
 			System.out.println("2");
 			splittedValue = checkWord;
-			arr = testPath.split(splittedValue);
+			arr = currentTextLine.split(splittedValue);
 			testList3.addAll(Arrays.asList(arr)); 
 			int counter = 0;
 			for(String tmp : testList3)

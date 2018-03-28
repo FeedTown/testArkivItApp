@@ -94,4 +94,28 @@ public class GetHtmlEndTag {
 		
 		return linkRef;
 	}
+	
+	public String getLinkRefTest(String currentWord, int splitedNum)
+	{
+		String linkRef = "";
+		
+		if(currentWord.contains(href))
+		{
+			linkRef = href;
+		}
+		else if(currentWord.contains(src))
+		{
+			linkRef = src;
+		}
+		else if(splitedNum == 2)
+		{
+			linkRef = "\"";
+		}
+		else if(splitedNum == 3)
+		{
+			linkRef = "/";
+		}
+		
+		return linkRef;
+	}
 }

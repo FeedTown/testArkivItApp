@@ -1,12 +1,5 @@
 package Test.code;
 
-import com.sun.star.beans.PropertyValue;
-import com.sun.star.comp.helper.Bootstrap;
-import com.sun.star.frame.XDesktop;
-import com.sun.star.frame.XStorable;
-import com.sun.star.lang.XComponent;
-import com.sun.star.lang.XMultiComponentFactory;
-
 /* -*- Mode: Java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
@@ -46,11 +39,17 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XCloseable;
 
+import ooo.connector.BootstrapConnector;
 import ooo.connector.BootstrapSocketConnector;
-
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import com.sun.star.beans.PropertyValue;
+import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.frame.XComponentLoader;
+import com.sun.star.frame.XDesktop;
+import com.sun.star.frame.XStorable;
+import com.sun.star.lang.XComponent;
+import com.sun.star.lang.XMultiComponentFactory;
+
 
 
 /** The class <CODE>DocumentConverter</CODE> allows you to convert all documents
@@ -61,7 +60,7 @@ import java.util.Map;
 public class DocumentConverter {
 	/** Containing the loaded documents
 	 */
-	static com.sun.star.frame.XComponentLoader xCompLoader = null;
+	static XComponentLoader xCompLoader = null;
 	static XDesktop xDesktop;
 	/** Containing the given type to convert to
 	 */
@@ -127,6 +126,7 @@ public class DocumentConverter {
 					propertyValues[0] = new PropertyValue();
 					propertyValues[0].Name = "Hidden";
 					propertyValues[0].Value = Boolean.TRUE;
+					
 					Object oDocToStore = xCompLoader.loadComponentFromURL(
 									sUrl, "_blank", 0, propertyValues);
 
@@ -204,7 +204,7 @@ public class DocumentConverter {
 
 		try {
 			// get the remote office component context
-			//xContext = Bootstrap.bootstrap();
+			//xContext = BootstrapSocketConnector.bootstrap(path, "localhost", 8100);
 			xContext = BootstrapSocketConnector.bootstrap(path);
 			System.out.println("Connected to a running office ...");
 
