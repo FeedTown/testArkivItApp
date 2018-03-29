@@ -11,6 +11,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
 
+import Test.code.DocumentConverter;
+
 /**
  * This class is handling the process of sending data and importing metadata
  * to two excel sheets.
@@ -42,6 +44,7 @@ public class MetadataToExcelGUI{
 	//private ExcelFileCreator ex = new ExcelFileCreator();
 	private GeneralBean generalBean = new GeneralBean();
 	private Converter converter = new Converter();
+	//private DocumentConverter docCon = new DocumentConverter();
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private boolean isLibreOfficeOpen = false;
@@ -163,6 +166,12 @@ public class MetadataToExcelGUI{
 
 				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
 				{
+					System.out.println("About to traverse...");
+					//docCon = new DocumentConverter();
+					//currentFileOrDir = DocumentConverter.getOutdir();
+					//DocumentConverter cv = new DocumentConverter(currentFileOrDir);
+					DocumentConverter.testMethod(tempFile);
+					//System.out.println("Done traversing....");
 					//isLibreOfficeOpen = converter.openLibreOffice();
 					//tempFile = convertToPDF(currentFileOrDir);
 
@@ -349,7 +358,9 @@ public class MetadataToExcelGUI{
 					if(mapping)
 					{
 						changeLinkInFile(file);
-					} 
+					}
+					
+					//DocumentConverter.testMethod(file);
 
 					checkForAudioVideoDuration(file);
 
