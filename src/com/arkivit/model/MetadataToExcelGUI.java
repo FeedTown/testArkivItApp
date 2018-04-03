@@ -421,8 +421,6 @@ public class MetadataToExcelGUI{
 			{
 				if(!s.isDirectory())
 				{
-					
-					
 					ext = new FileExtension(s.getName());
 					if(ext.getHtmlCssFileExtension()) 
 					{
@@ -430,7 +428,7 @@ public class MetadataToExcelGUI{
 						{
 							pathName = s.getParentFile().getName();
 						}
-						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, pathName) ;
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list) ;
 					}
 
 					if(ext.getJsImgFileExtension())
@@ -440,7 +438,7 @@ public class MetadataToExcelGUI{
 							pathName = s.getParentFile().getName();
 						}
 						
-						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, s.getParentFile().getName());
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list);
 					}
 				}
 				counter++;

@@ -39,7 +39,6 @@ public class AlgorithmForUpdateString {
 
 	public void updateWordInString(String currentTextLine, int splitedValueNum)
 	{
-
 		if(splitedValueNum < 4)
 		{
 			System.out.println("\nSplited num : "+splitedValueNum);

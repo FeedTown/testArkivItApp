@@ -40,7 +40,7 @@ public class ReadAndUpdateLinks {
 		return list;
 	}
 
-	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList, String filePath) throws IOException
+	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
 	{
 		String word = "";
 		String splittedValue ="";
