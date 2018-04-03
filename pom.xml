@@ -112,7 +112,7 @@
 			<groupId>org.jclarion</groupId>
 			<artifactId>image4j</artifactId>
 			<version>0.7</version>
-		</dependency>	
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -148,6 +148,12 @@
 			<groupId>org.libreoffice</groupId>
 			<artifactId>unoil</artifactId>
 			<version>5.4.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-transcoder -->
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-transcoder</artifactId>
+			<version>1.9</version>
 		</dependency>
 	</dependencies>
 	<repositories>

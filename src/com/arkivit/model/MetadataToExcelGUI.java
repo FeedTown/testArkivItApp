@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import org.apache.batik.transcoder.TranscoderException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -78,8 +80,9 @@ public class MetadataToExcelGUI{
 	 * listOfFilesAndDirectory and getAndAddFileDataToList get called.
 	 * @param mapping A boolean, false by default
 	 * @throws IOException 
+	 * @throws TranscoderException 
 	 */
-	public void init(boolean mapp, boolean overW) throws IOException {
+	public void init(boolean mapp, boolean overW) throws IOException, TranscoderException {
 
 		this.mapping = mapp;
 		this.overwrite = overW;
