@@ -82,7 +82,7 @@ public class MetadataToExcelGUI{
 	 * @throws IOException 
 	 * @throws TranscoderException 
 	 */
-	public void init(boolean mapp, boolean overW) throws IOException, TranscoderException {
+	public void init(boolean mapp, boolean overW) throws IOException{
 
 		this.mapping = mapp;
 		this.overwrite = overW;

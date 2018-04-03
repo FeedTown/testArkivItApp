@@ -3,8 +3,10 @@ package com.arkivit.model;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -50,10 +52,20 @@ public class ImageFileConverter {
 			}
 
 			else if(s.getName().endsWith(".ico") || s.getName().endsWith(".ICO")) {
-				List<BufferedImage> bi = ICODecoder.read(new File(s.getAbsolutePath()));
-				System.out.println("reading2");
+				/*List<BufferedImage> bi = ICODecoder.read(new File(s.getAbsolutePath()));
+				System.out.println("reading");
 				ImageIO.write(bi.get(0), "png", new File(s.getParentFile().getAbsoluteFile(), fileNameWithOutExt + ".png"));
-				System.out.println("Ico was converted.");
+				System.out.println("Ico was converted.");*/
+				
+				File oldFile = new File(s.getAbsolutePath());
+				try (InputStream inputStream = new FileInputStream(oldFile)) {
+				     List<BufferedImage> bi = ICODecoder.read(inputStream);
+				     ImageIO.write(bi.get(0), "png", new File(s.getParentFile().getAbsoluteFile(), fileNameWithOutExt + ".png"));
+
+				} catch (IOException e) {
+				   e.printStackTrace();
+				}
+				
 			}
 
 			else {
@@ -67,16 +79,21 @@ public class ImageFileConverter {
 
 	}
 
-	public void storeOriginalImages() throws IOException {
-		for(File s: model.getFileList()) {
-			if(s.getName().endsWith(".GIF") || s.getName().endsWith(".gif") || s.getName().endsWith(".JPG") 
-					|| s.getName().endsWith(".jpg") || s.getName().endsWith(".BMP") 
-					|| s.getName().endsWith(".bmp") || s.getName().endsWith(".ico") || s.getName().endsWith(".ICO")) {
+	public void storeOriginalImages() {
+		for(File file: model.getFileList()) {
+			if(file.getName().endsWith(".GIF") || file.getName().endsWith(".gif") || file.getName().endsWith(".JPG") 
+					|| file.getName().endsWith(".jpg")  || file.getName().endsWith(".ico") || file.getName().endsWith(".ICO")
+					|| file.getName().endsWith(".BMP") || file.getName().endsWith(".bmp")) {
 				System.out.println("in copy else");
-				File illegalExtension = new File(s.getAbsolutePath());
+				File illegalExtension = new File(file.getAbsolutePath());
 				File illegalExtensionDest = new File(model.getTargetexcelFilepath() + "/" + model.getFolderName() + "_img_backup");
 				System.out.println(illegalExtension + "/" + illegalExtensionDest);
-				FileUtils.moveFileToDirectory(illegalExtension, illegalExtensionDest, true);
+				
+				try {
+					FileUtils.moveFileToDirectory(illegalExtension, illegalExtensionDest, true);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
