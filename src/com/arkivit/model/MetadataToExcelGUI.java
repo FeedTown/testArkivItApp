@@ -47,6 +47,7 @@ public class MetadataToExcelGUI{
 	private DocumentConverter docCon = new DocumentConverter();
 	private boolean mapping = false;
 	private boolean overwrite = false;
+	private boolean converting = false;
 	private boolean isLibreOfficeOpen = false;
 
 	/**
@@ -166,6 +167,7 @@ public class MetadataToExcelGUI{
 
 				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
 				{
+					converting = true;
 					//DocumentConverter docCon1 = new DocumentConverter(sourceFolderPath,targetexcelFilepath,currentFileOrDir.getName());
 					System.out.println("About to traverse...");
 					//docCon = new DocumentConverter();
@@ -176,9 +178,10 @@ public class MetadataToExcelGUI{
 					//tempFile = DocumentConverter.getConvertedFiles();
 					//File testFile = new File(tempFile.getAbsolutePath());
 					//testFile = DocumentConverter.getConvertedFiles();
+					
 					//DocumentConverter.testMethod(DocumentConverter.getConvertedFiles());
 					docCon.testMethod(tempFile);
-				
+					//tempFile = docCon.getFilezz();
 					//System.out.println("METADATA FILES CONVERTED : " + testFile.getName());
 					//System.out.println("Done traversing....");
 					//isLibreOfficeOpen = converter.openLibreOffice();
@@ -372,7 +375,12 @@ public class MetadataToExcelGUI{
 						changeLinkInFile(file);
 					}
 					
-					file = docCon.getFilezz();
+					
+					if(converting) {
+						file = docCon.getFilezz();
+						
+					}
+					
 					//docCon.setFilezz(file);
 					//DocumentConverter.testMethod(DocumentConverter.getConvertedFiles());
 					/*if(file.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 

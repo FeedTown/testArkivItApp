@@ -63,7 +63,7 @@ public class DocumentConverter {
 		this.filezz = filezz;
 	}
 
-	public  ArrayList<String> getConvertedFiles() {
+	public ArrayList<String> getConvertedFiles() {
 		return convertedFiles;
 	}
 
