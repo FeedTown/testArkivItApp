@@ -6,6 +6,9 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.XCloseable;
 import ooo.connector.BootstrapSocketConnector;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.arkivit.model.FileExtension;
 import com.sun.star.beans.PropertyValue;
@@ -29,61 +32,80 @@ public class DocumentConverter {
 	private static XDesktop xDesktop;
 	/** Containing the given type to convert to
 	 */
-	private static String sConvertType = "";
+	private String sConvertType = "";
 	/** Containing the given extension
 	 */
-	private static String sExtension = "";
+	private String sExtension = "";
 	/** Containing the current file or directory
 	 */
-	private static String sIndent = "";
+	private String sIndent = "";
 	/** Containing the directory where the converted files are saved
 	 */
-	private static String sOutputDir = "";
+	private String sOutputDir = "";
 
-	private static String targetPath = "";
-	
-	private static String sOutUrl;
-	
-	private static File outdir; 
+	private String targetPath = "";
+
+	private String sOutUrl;
+
+	private File outdir;
+
+	ArrayList<String> convertedFiles;
+	File filezz;
 
 
-	
-	
-	public static File getOutdir() {
+
+
+	public  File getFilezz() {
+		return filezz;
+	}
+
+	public  void setFilezz(File filezz) {
+		this.filezz = filezz;
+	}
+
+	public  ArrayList<String> getConvertedFiles() {
+		return convertedFiles;
+	}
+
+	public void setConvertedFiles(ArrayList<String> convertedFiles) {
+		this.convertedFiles = convertedFiles;
+	}
+
+	public  File getOutdir() {
 		return outdir;
 	}
 
-	public static void setOutdir(File outdir) {
-		DocumentConverter.outdir = outdir;
+	public  void setOutdir(File outdir) {
+		this.outdir = outdir;
 	}
 
-	public static String getsOutUrl() {
+	public String getsOutUrl() {
 		return sOutUrl;
 	}
 
-	public static void setsOutUrl(String sOutUrl) {
-		DocumentConverter.sOutUrl = sOutUrl;
+	public void setsOutUrl(String sOutUrl) {
+		this.sOutUrl = sOutUrl;
 	}
 
 	public DocumentConverter() {
 
 	}
-	
+
 	public DocumentConverter(String sOutUrl) {
-		DocumentConverter.sOutUrl = sOutUrl;
+		this.sOutUrl = sOutUrl;
 	}
 
 	public DocumentConverter(String sConvertType, String sExtension, String sOutputDir ) {
-		DocumentConverter.sConvertType = sConvertType;
-		DocumentConverter.sExtension = sExtension;
-		DocumentConverter.sOutputDir = sOutputDir;
+		this.sConvertType = sConvertType;
+		this.sExtension = sExtension;
+		this.sOutputDir = sOutputDir;
 	}
 
 	/** Traversing the given directory recursively and converting their files to
 	 * the favoured type if possible
 	 * @param fileDirectory Containing the directory
 	 */
-	public static void traverse(File fileDirectory) {
+	public  void traverse(File fileDirectory) {
 		// Testing, if the file is a directory, and if so, it throws an exception
 		if ( !fileDirectory.isDirectory() ) {
 			throw new IllegalArgumentException(
@@ -92,7 +114,7 @@ public class DocumentConverter {
 		}
 
 		// Prepare Url for the output directory
-		outdir = new File(DocumentConverter.sOutputDir);
+		outdir = new File(targetPath);
 		sOutUrl = "file:///" + outdir.getAbsolutePath().replace( '\\', '/' );
 
 		System.out.println("\nThe converted documents will stored in \""
@@ -103,13 +125,14 @@ public class DocumentConverter {
 
 		// Getting all files and directories in the current directory
 		File[] entries = fileDirectory.listFiles();
-		//FileExtension ext = new FileExtension();
-		//int counter = 0;	
+		List<File> testEntries = Arrays.asList(entries);
+		FileExtension ext = new FileExtension();
+		int counter = 0;	
 
 		// Iterating for each file and directory
-		for ( int i = 0; i < entries.length; ++i ) {
+		for ( int i = 0; i < testEntries.size(); ++i ) {
 			// Testing, if the entry in the list is a directory
-			if ( entries[ i ].isDirectory() ) {
+			if ( testEntries.get(i).isDirectory() ) {
 				// Recursive call for the new directory
 				traverse( entries[i]);
 			} else {
@@ -117,12 +140,15 @@ public class DocumentConverter {
 				try {
 
 					//if(fileDirectory.getName().endsWith(ext.checkForConvertableFileExtensions().get(counter))) {
-						// Composing the URL by replacing all backslashes
-						String sUrl = "file:///"
-								+ entries[ i ].getAbsolutePath().replace( '\\', '/' );
-						
-						System.out.println("Original Files: "+  entries[i].getName());
-						
+					// Composing the URL by replacing all backslashes
+					String sUrl = "file:///"
+							+ testEntries.get(i).getAbsolutePath().replace( '\\', '/' );
+
+					System.out.println("Original Files: "+  testEntries.get(i).getName());
+
+					if(entries[i].getName().endsWith(".docx") || entries[i].getName().endsWith(".doc") ||
+							entries[i].getName().endsWith(".ppt")) { 
+						//if(entries[i].getName().endsWith(ext.checkForConvertableFileExtensions().get(counter))) {
 						// Loading the wanted document
 						PropertyValue propertyValues[] = new PropertyValue[1];
 						propertyValues[0] = new PropertyValue();
@@ -158,12 +184,14 @@ public class DocumentConverter {
 						int index2 = sUrl.lastIndexOf('.');
 						String sStoreUrl = sOutUrl + sUrl.substring(index1, index2 + 1)
 						+ sExtension;
-						File convertedFiles = new File(sStoreUrl);
-			
+						convertedFiles = new ArrayList<String>();
+						convertedFiles.add(sStoreUrl);
+						filezz = new File(convertedFiles.get(counter));
+
 						// Storing and converting the document
 						xStorable.storeToURL(sStoreUrl, propertyValues);
-						System.out.println("Converted Files " + convertedFiles .getName());
-						
+						System.out.println("Converted Files " + filezz.getName());
+
 
 
 						// Closing the converted document. Use XCloseable.close if the
@@ -182,6 +210,10 @@ public class DocumentConverter {
 							xComp.dispose();
 						}
 					}
+					else {
+						System.out.println("No files to convert..");
+					}
+				}
 				//}
 				catch( Exception e ) {
 					e.printStackTrace(System.err);
@@ -194,14 +226,14 @@ public class DocumentConverter {
 		sIndent = sIndent.substring(2);
 	}
 
-	public static void testMethod(File file) {
+	public void testMethod(File file) {
 
 		String path = "/Applications/LibreOffice.app/Contents/MacOS/";
 
 		XComponentContext xContext = null;
 
 		try {
-			
+
 			// get the remote office component context
 			xContext = BootstrapSocketConnector.bootstrap(path);
 			System.out.println("Connected to a running office ...");
@@ -230,10 +262,11 @@ public class DocumentConverter {
 			sExtension = "pdf";
 
 			// Getting the given type to convert to
-			//sOutputDir = "/Users/RobertoBlanco/Desktop/Con_map/";
-			//outDir = new File("/Users/RobertoBlanco/Desktop/Con_map/");
+			sOutputDir = "/Users/RobertoBlanco/Desktop/Con_map/";
+			//outdir = new File("/Users/RobertoBlanco/Desktop/Con_map/");
+			targetPath = "/Users/RobertoBlanco/Desktop/Test_map/";
 
-			targetPath = "";
+			//targetPath = "";
 
 			// Starting the conversion of documents in the given directory
 			// and subdirectories
@@ -247,7 +280,7 @@ public class DocumentConverter {
 		}
 	}
 
-	
+
 	/** Bootstrap UNO, getting the remote component context, getting a new instance
 	 * of the desktop (used interface XComponentLoader) and calling the
 	 * static method traverse

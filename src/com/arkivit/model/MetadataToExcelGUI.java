@@ -36,6 +36,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<File> mappedFiles = new ArrayList<File>(), mappedFolder = new ArrayList<File>();
 	//private ArrayList<String> mappedFile = new ArrayList<String>();
 	private ArrayList<String> illegalCharFiles = new ArrayList<String>(), illegarCharFolders = new ArrayList<String>();
+	private ArrayList<File> convertedFiles = new ArrayList<File>();
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration(); 
 	private Tika fileType = new Tika();
@@ -43,8 +44,7 @@ public class MetadataToExcelGUI{
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	//private ExcelFileCreator ex = new ExcelFileCreator();
 	private GeneralBean generalBean = new GeneralBean();
-	private Converter converter = new Converter();
-	//private DocumentConverter docCon = new DocumentConverter();
+	private DocumentConverter docCon = new DocumentConverter();
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private boolean isLibreOfficeOpen = false;
@@ -166,17 +166,26 @@ public class MetadataToExcelGUI{
 
 				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
 				{
+					//DocumentConverter docCon1 = new DocumentConverter(sourceFolderPath,targetexcelFilepath,currentFileOrDir.getName());
 					System.out.println("About to traverse...");
 					//docCon = new DocumentConverter();
+					
 					//currentFileOrDir = DocumentConverter.getOutdir();
 					//DocumentConverter cv = new DocumentConverter(currentFileOrDir);
-					DocumentConverter.testMethod(tempFile);
+					//tempFile = DocumentConverter.getOutdir();
+					//tempFile = DocumentConverter.getConvertedFiles();
+					//File testFile = new File(tempFile.getAbsolutePath());
+					//testFile = DocumentConverter.getConvertedFiles();
+					//DocumentConverter.testMethod(DocumentConverter.getConvertedFiles());
+					docCon.testMethod(tempFile);
+				
+					//System.out.println("METADATA FILES CONVERTED : " + testFile.getName());
 					//System.out.println("Done traversing....");
 					//isLibreOfficeOpen = converter.openLibreOffice();
 					//tempFile = convertToPDF(currentFileOrDir);
 
-				}
-
+				} 
+				
 				System.out.println("Current File : "  + currentFileOrDir.getName());
 
 				fileList.add(tempFile);
@@ -339,6 +348,9 @@ public class MetadataToExcelGUI{
 		Charset getDecoding;
 		sortFileList();
 		String fullPathforCurrentFile = "";
+		int convertExtCounter = 0;
+		//File tempFile;
+		FileExtension ext = new FileExtension();
 
 		try {
 			if(!fileList.isEmpty())
@@ -359,6 +371,24 @@ public class MetadataToExcelGUI{
 					{
 						changeLinkInFile(file);
 					}
+					
+					file = docCon.getFilezz();
+					//docCon.setFilezz(file);
+					//DocumentConverter.testMethod(DocumentConverter.getConvertedFiles());
+					/*if(file.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
+					{
+						System.out.println("About to traverse...");
+						file = DocumentConverter.getConvertedFiles();
+						DocumentConverter.testMethod(file);
+						//docCon = new DocumentConverter();
+						//currentFileOrDir = DocumentConverter.getOutdir();
+						//DocumentConverter cv = new DocumentConverter(currentFileOrDir);
+						//DocumentConverter.testMethod(file);
+						//System.out.println("Done traversing....");
+						//isLibreOfficeOpen = converter.openLibreOffice();
+						//tempFile = convertToPDF(currentFileOrDir);
+
+					}  */
 					
 					//DocumentConverter.testMethod(file);
 
@@ -611,7 +641,14 @@ public class MetadataToExcelGUI{
 		this.personalDataChecked = personalDataChecked;
 	}
 
-
+	public ArrayList<File> getConvertedFiles(){
+		return convertedFiles;
+	}
+	
+	public void setConvertedFiles(ArrayList<File> convertedFiles) {
+		this.convertedFiles = convertedFiles;
+	}
+	
 	public ArrayList<File> getMappedFiles() {
 		return mappedFiles;
 	}

@@ -40,6 +40,7 @@ public class ExcelControllerFX extends Application {
 	private Thread loadingThread;
 	private boolean mapping = false;
 	private boolean overwrite = false;
+	private boolean converte = false;
 	private Task<?> progressTask;
 	private File backupDir;
 
