@@ -351,8 +351,8 @@ public class MetadataToExcelGUI{
 		Charset getDecoding;
 		sortFileList();
 		String fullPathforCurrentFile = "";
-		int convertExtCounter = 0;
-		//File tempFile;
+		int counter = 0;
+		File tempFile;
 		FileExtension ext = new FileExtension();
 
 		try {
@@ -377,7 +377,8 @@ public class MetadataToExcelGUI{
 					
 					
 					if(converting) {
-						file = docCon.getFilezz();
+						
+						fileNameList.add(docCon.getFilezz().getName());
 						
 					}
 					
