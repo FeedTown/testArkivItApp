@@ -517,7 +517,7 @@ public class MetadataToExcelGUI{
 					+ "/" + currentFileName); 
 
 			duration = fileDuration.getAudioVideoDuration();
-
+		
 		} 
 
 	}
