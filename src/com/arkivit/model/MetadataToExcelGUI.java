@@ -31,6 +31,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
+	private ArrayList<File> convertedFileList = new ArrayList<File>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
 	private ArrayList<File> mappedFiles = new ArrayList<File>(), mappedFolder = new ArrayList<File>();
@@ -97,6 +98,7 @@ public class MetadataToExcelGUI{
 
 
 		listOfFilesAndDirectory(sourceFolderPath);
+		System.out.println("FileList before entering getAndAddFileToDataList: " + fileList);
 		getAndAddFileDataToList();
 
 		/*if(isLibreOfficeOpen) 
@@ -132,6 +134,7 @@ public class MetadataToExcelGUI{
 
 		//if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
 		//{
+		//convertedFileList.clear();
 		fileList.clear();
 		fileNameList.clear();
 		sizeList.clear();
@@ -139,6 +142,8 @@ public class MetadataToExcelGUI{
 		fileDuration.getAudioVideoList().clear();
 		illegalCharFiles.clear();
 		mappedFiles.clear();
+
+
 		//}
 
 	}
@@ -149,15 +154,17 @@ public class MetadataToExcelGUI{
 	 */
 	private void listOfFilesAndDirectory(String inputFolder){
 		File folder = new File(inputFolder);
-		int convertExtCounter = 0;
 		File tempFile;
-		FileExtension ext = new FileExtension();
 
 		for(File currentFileOrDir : folder.listFiles())
 		{
 			tempFile = currentFileOrDir;
+
+
+
 			if(currentFileOrDir.isFile())
 			{
+
 				if(mapping)
 				{
 					//tempFile = getIllChars(tempFile,currentFileOrDir);
@@ -165,36 +172,18 @@ public class MetadataToExcelGUI{
 				}
 
 
-				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
-				{
-					converting = true;
-					//DocumentConverter docCon1 = new DocumentConverter(sourceFolderPath,targetexcelFilepath,currentFileOrDir.getName());
-					System.out.println("About to traverse...");
-					//docCon = new DocumentConverter();
-					
-					//currentFileOrDir = DocumentConverter.getOutdir();
-					//DocumentConverter cv = new DocumentConverter(currentFileOrDir);
-					//tempFile = DocumentConverter.getOutdir();
-					//tempFile = DocumentConverter.getConvertedFiles();
-					//File testFile = new File(tempFile.getAbsolutePath());
-					//testFile = DocumentConverter.getConvertedFiles();
-					
-					//DocumentConverter.testMethod(DocumentConverter.getConvertedFiles());
-					docCon.testMethod(tempFile);
-					//tempFile = docCon.getFilezz();
-					//System.out.println("METADATA FILES CONVERTED : " + testFile.getName());
-					//System.out.println("Done traversing....");
-					//isLibreOfficeOpen = converter.openLibreOffice();
-					//tempFile = convertToPDF(currentFileOrDir);
 
-				} 
-				
-				System.out.println("Current File : "  + currentFileOrDir.getName());
 
 				fileList.add(tempFile);
+
+
+				System.out.println("Current File : "  + tempFile.getName());
+
+
 				System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
 				fileCount++;
 			}
+
 			else if(currentFileOrDir.isDirectory())	
 			{
 				//pathTest.add(tempFile.getAbsolutePath());
@@ -209,7 +198,7 @@ public class MetadataToExcelGUI{
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
 			}
-			
+
 		}
 
 	}
@@ -349,17 +338,26 @@ public class MetadataToExcelGUI{
 	private void getAndAddFileDataToList() 
 	{
 		Charset getDecoding;
+
+
+		//System.out.println("FILELIST BEFORE " + fileList);
+		//fileList = docCon.testMethod2(fileList, sourceFolderPath); 
+		//System.out.println("FILELIST AFTER " + fileList);
+
+	
+		//int counter = 0;
+
 		sortFileList();
 		String fullPathforCurrentFile = "";
-		int counter = 0;
-		File tempFile;
-		FileExtension ext = new FileExtension();
-
+		//ArrayList<String> tempList = new ArrayList<>();
 		try {
 			if(!fileList.isEmpty())
 			{
 				for(File file : fileList)
 				{
+
+
+
 					fullPathforCurrentFile = file.getAbsolutePath();
 					getDecoding = null;
 					if(file.getName().endsWith(".html") || file.getName().endsWith(".xhtml") || file.getName().endsWith(".xml")
@@ -370,44 +368,25 @@ public class MetadataToExcelGUI{
 					}
 
 
+
+
 					if(mapping)
 					{
 						changeLinkInFile(file);
 					}
-					
-					
-					if(converting) {
-						
-						fileNameList.add(docCon.getFilezz().getName());
-						
-					}
-					
-					//docCon.setFilezz(file);
-					//DocumentConverter.testMethod(DocumentConverter.getConvertedFiles());
-					/*if(file.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
-					{
-						System.out.println("About to traverse...");
-						file = DocumentConverter.getConvertedFiles();
-						DocumentConverter.testMethod(file);
-						//docCon = new DocumentConverter();
-						//currentFileOrDir = DocumentConverter.getOutdir();
-						//DocumentConverter cv = new DocumentConverter(currentFileOrDir);
-						//DocumentConverter.testMethod(file);
-						//System.out.println("Done traversing....");
-						//isLibreOfficeOpen = converter.openLibreOffice();
-						//tempFile = convertToPDF(currentFileOrDir);
 
-					}  */
-					
-					//DocumentConverter.testMethod(file);
 
 					checkForAudioVideoDuration(file);
 
 
+
+
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
-					//System.out.println(fPath);
 					fPath = fPath.replace(sourceFolderPath, folderName);
+
+
+
 
 					if(getDecoding == null)
 					{
@@ -418,19 +397,26 @@ public class MetadataToExcelGUI{
 						fileDecodeList.add(getDecoding.name());
 					}
 
-					fileNameList.add(currentFileName);
+
+
+					fileNameList.add(currentFileName);			
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					fileDuration.getAudioVideoList().add(duration);
-
+					
+					/*if(file.getName().endsWith(".doc") || file.getName().endsWith(".docx")) 
+					{
+						
+						//fileNameList.remove(file.getName());
+						file.delete();
+						
+					} */
+		
+					//counter++;
 				}
 
 			}
-			else
-			{
-				//System.out.println("The list is empty");
-			}
-
+		
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -440,18 +426,20 @@ public class MetadataToExcelGUI{
 
 		System.out.println("File name list length : " + fileListeLength);
 
-
+		//System.out.println("DOC? " + fileNameList);
+	
 		try {
 
 			System.out.println("Creating workbook......");
-			ExcelFileCreator createExcelF = new ExcelFileCreator(fileDuration, fileNameList, filePathList,
-					fileDecodeList, sizeList, fileList, generalBean,targetexcelFilepath, excelFileName, confidentialChecked,personalDataChecked);
+			ExcelFileCreator createExcelF = new ExcelFileCreator(fileDuration, fileNameList , filePathList,
+					fileDecodeList, sizeList, fileList,  generalBean,targetexcelFilepath, excelFileName, confidentialChecked,personalDataChecked);
 			createExcelF.createWorkbook();
 			System.out.println("Workbook created!");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-
+		
 	}
 
 	private void changeLinkInFile(File file) throws IOException {
@@ -472,8 +460,8 @@ public class MetadataToExcelGUI{
 			{
 				if(!s.isDirectory())
 				{
-					
-					
+
+
 					ext = new FileExtension(s.getName());
 					if(ext.getHtmlCssFileExtension()) 
 					{
@@ -490,7 +478,7 @@ public class MetadataToExcelGUI{
 						{
 							pathName = s.getParentFile().getName();
 						}
-						
+
 						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, s.getParentFile().getName());
 					}
 				}
@@ -653,11 +641,11 @@ public class MetadataToExcelGUI{
 	public ArrayList<File> getConvertedFiles(){
 		return convertedFiles;
 	}
-	
+
 	public void setConvertedFiles(ArrayList<File> convertedFiles) {
 		this.convertedFiles = convertedFiles;
 	}
-	
+
 	public ArrayList<File> getMappedFiles() {
 		return mappedFiles;
 	}
