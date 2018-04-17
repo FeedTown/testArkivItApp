@@ -169,6 +169,50 @@ public class ExcelControllerFX extends Application {
 		alert.showAndWait();
 
 	}
+	
+	private void sweLangButton(ActionEvent event) {
+		firstScene.getBAL().setText("*Beskrivning av leverans:");
+		firstScene.getAK().setText("*Arkivbildare:");
+		firstScene.getOA().setText("*Organisationsnummer arkivbildare:");
+		firstScene.getLM().setText("*Levererande myndighet:");
+		firstScene.getOLM().setText("*Organisationsnummer levererande myndighet:");
+		firstScene.getKFL().setText("*Kontaktperson för leverans:");
+		firstScene.getSK().setText("Servicebyrå/Konsult:");
+		firstScene.getTTK().setText("*Telefonnummer till kontaktperson:");
+		firstScene.getEK().setText("*E-post-adress till kontakperson:");
+		firstScene.getEKtxt().setPromptText("exempel@arkivit.se");
+		firstScene.getAN().setText("*Arkivets namn:");
+		firstScene.getSN().setText("*Systemts namn:");
+		firstScene.getUD().setText("Uttagsdatum:");
+		firstScene.getKOM().setText("Kommentar:");
+		firstScene.getSaveButton().setText("Spara");
+		secondScene.getBtnOpenFile().setText("Välj mapp..");
+		secondScene.getBtnOverwrite().setText("Välj katalog...");
+		secondScene.getBtnSaveAs().setText("Spara som...");
+		secondScene.getBtnConvert().setText("Skapa");
+	}
+	
+	private void engLangButton(ActionEvent event) {
+		firstScene.getBAL().setText("*Description of delivery:");
+		firstScene.getAK().setText("*Archive creator:");
+		firstScene.getOA().setText("*Organisation number archive creator:");
+		firstScene.getLM().setText("*Supplying authority:");
+		firstScene.getOLM().setText("*Organisation number supplying authority:");
+		firstScene.getKFL().setText("*Contact person for delivery:");
+		firstScene.getSK().setText("Servicebureau/consultant:");
+		firstScene.getTTK().setText("*Contact persons phone number");
+		firstScene.getEK().setText("*Contact persons e-mail-adress");
+		firstScene.getEKtxt().setPromptText("example@arkivit.se");
+		firstScene.getAN().setText("*Name of archive:");
+		firstScene.getSN().setText("*Name of the System:");
+		firstScene.getUD().setText("Withdrawal date:");
+		firstScene.getKOM().setText("Comment:");
+		firstScene.getSaveButton().setText("Save");
+		secondScene.getBtnOpenFile().setText("Select folder..");
+		secondScene.getBtnOverwrite().setText("Select directory...");
+		secondScene.getBtnSaveAs().setText("Save as...");
+		secondScene.getBtnConvert().setText("Create");
+	}
 
 	/**
 	 * Action that performs to save content in directory
@@ -591,6 +635,12 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(secondScene.getPersonalDataBox())) {
 				personalDataBox();
+			}
+			else if(event.getSource().equals(firstScene.getSweBtn())){
+				sweLangButton(event);
+			}
+			else if(event.getSource().equals(firstScene.getEngBtn())) {
+				engLangButton(event);
 			}
 
 		}

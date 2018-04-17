@@ -49,6 +49,23 @@
     -fx-font-size: 14px;
 }
 
+#sweButton{
+	-fx-graphic: url("/resources/style/Sweden-Flag.png");
+	-fx-background-color: transparent;
+}
+#sweButton:hover{
+	-fx-graphic: url("/resources/style/swe-hover.png");
+	-fx-background-color: transparent;
+}
+#engButton{
+	-fx-graphic: url("/resources/style/United-Kingdom-Flag.png");
+	-fx-background-color: transparent;
+}
+#engButton:hover{
+	-fx-graphic: url("/resources/style/uk-hover.png");
+	-fx-background-color: transparent;
+}
+
 #waitLabel{
 	-fx-font-size: 14px;
 }
