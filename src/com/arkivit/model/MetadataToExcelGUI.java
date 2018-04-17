@@ -83,7 +83,6 @@ public class MetadataToExcelGUI{
 	 * @param mapping A boolean, false by default
 	 */
 	public void init(boolean mapp, boolean overW) {
-
 		this.mapping = mapp;
 		this.overwrite = overW;
 		folderName = new File(sourceFolderPath).getName();
@@ -96,9 +95,9 @@ public class MetadataToExcelGUI{
 			//System.out.println("Copying folder.........");
 		}
 
-
+		//docCon.testMethod2(fileList, sourceFolderPath); 
 		listOfFilesAndDirectory(sourceFolderPath);
-		System.out.println("FileList before entering getAndAddFileToDataList: " + fileList);
+		//System.out.println("FileList before entering getAndAddFileToDataList: " + fileList);
 		getAndAddFileDataToList();
 
 		/*if(isLibreOfficeOpen) 
@@ -172,14 +171,8 @@ public class MetadataToExcelGUI{
 				}
 
 
-
-
 				fileList.add(tempFile);
-
-
 				System.out.println("Current File : "  + tempFile.getName());
-
-
 				System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
 				fileCount++;
 			}
@@ -339,17 +332,14 @@ public class MetadataToExcelGUI{
 	{
 		Charset getDecoding;
 
-
-		//System.out.println("FILELIST BEFORE " + fileList);
 		//fileList = docCon.testMethod2(fileList, sourceFolderPath); 
-		//System.out.println("FILELIST AFTER " + fileList);
-
+		
 	
 		//int counter = 0;
 
 		sortFileList();
 		String fullPathforCurrentFile = "";
-		//ArrayList<String> tempList = new ArrayList<>();
+		
 		try {
 			if(!fileList.isEmpty())
 			{
@@ -368,8 +358,6 @@ public class MetadataToExcelGUI{
 					}
 
 
-
-
 					if(mapping)
 					{
 						changeLinkInFile(file);
@@ -379,12 +367,9 @@ public class MetadataToExcelGUI{
 					checkForAudioVideoDuration(file);
 
 
-
-
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
 					fPath = fPath.replace(sourceFolderPath, folderName);
-
 
 
 
@@ -407,7 +392,7 @@ public class MetadataToExcelGUI{
 					/*if(file.getName().endsWith(".doc") || file.getName().endsWith(".docx")) 
 					{
 						
-						//fileNameList.remove(file.getName());
+						fileNameList.remove(file.getName());
 						file.delete();
 						
 					} */
@@ -426,7 +411,8 @@ public class MetadataToExcelGUI{
 
 		System.out.println("File name list length : " + fileListeLength);
 
-		//System.out.println("DOC? " + fileNameList);
+	
+		System.out.println("Last list check....:" + fileNameList);
 	
 		try {
 

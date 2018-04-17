@@ -8,6 +8,7 @@ import ooo.connector.BootstrapSocketConnector;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -62,11 +63,11 @@ public class DocumentConverter {
 	public DocumentConverter() {
 
 	}
-	
-public ArrayList<File> traverse(ArrayList<File> fileDirectory, String targetPath) {
-		
+
+	public ArrayList<File> traverse(ArrayList<File> fileDirectory, String targetPath) {
+
 		sOutUrl = "file:///" + targetPath.replace( '\\', '/' );
-		
+
 
 		// Iterating for each file and directory
 		for ( int i = 0; i < fileDirectory.size(); ++i ) {
@@ -138,8 +139,8 @@ public ArrayList<File> traverse(ArrayList<File> fileDirectory, String targetPath
 						fileDirectory.add(convertedFiles);
 
 						System.out.println("Converted Files " + convertedFiles.getName());
-						
-					
+
+						removeIndex(fileDirectory);
 						// Closing the converted document. Use XCloseable.close if the
 						// interface is supported, otherwise use XComponent.dispose
 						XCloseable xCloseable =
@@ -175,15 +176,14 @@ public ArrayList<File> traverse(ArrayList<File> fileDirectory, String targetPath
 
 		}
 
-
 		//sIndent = sIndent.substring(0);
 		return  fileDirectory;
 	}
 
 	/*public ArrayList<File> traverse(ArrayList<File> fileDirectory, String targetPath) {
-		
+
 		sOutUrl = "file:///" + targetPath.replace( '\\', '/' );
-		
+
 
 		// Iterating for each file and directory
 		for ( int i = 0; i < fileDirectory.size(); ++i ) {
@@ -346,9 +346,39 @@ public ArrayList<File> traverse(ArrayList<File> fileDirectory, String targetPath
 
 			// Starting the conversion of documents in the given directory
 			// and subdirectories
-			
 
+
+			/*for(int i = 0; i<file.size(); i++) 
+			{
+
+				if(file.get(i).getName().endsWith(".docx") || file.get(i).getName().endsWith(".doc")) 
+				{
+					//File tempFile = file.get(i);
+					//System.out.println("BEFORE DELETED: "  + tempFile.getName());
+					//file.remove(tempFile);
+					//System.out.println("DELETED FILES IN LIST : " + tempFile.getName());
+					//tempFile.delete();
+
+
+				}
+
+
+			} */
+			/*	Iterator<File> testIt = file.iterator();
+			while(testIt.hasNext()) 
+			{
+				if(testIt.next().getName().endsWith(".doc") ||  testIt.next().getName().endsWith(".docx")) 
+				{
+					testIt.remove();
+					testIt.next().delete();
+					break;
+
+				}
+
+			} */
+		
 			file = traverse(file, targetPath);
+			//removeIndex(file);
 
 
 		} 
@@ -358,20 +388,23 @@ public ArrayList<File> traverse(ArrayList<File> fileDirectory, String targetPath
 			e.printStackTrace(System.err);
 			System.exit(1);
 		}
-	
+
+
+
+
 
 		//BYT TILL gamla klassisk for loop, kan funja
-		for(File tempFile: file) {
+		/*for(File tempFile: file) {
 			if(tempFile.getName().endsWith(".docx") || tempFile.getName().endsWith(".doc")) 
 			{
 				System.out.println("About to remove doc files---");
 				file.remove(tempFile);
 				System.out.println("DONE REMOVING...");
 				tempFile.delete();
-				
+
 			}
 			return file;
-		}
+		} */
 
 		return file;
 	}
@@ -429,6 +462,36 @@ public ArrayList<File> traverse(ArrayList<File> fileDirectory, String targetPath
 			System.exit(1);
 		}
 	} */
+
+	public void removeIndex(ArrayList<File> file) 
+	{
+		/*Iterator<File> testIt = file.iterator();
+		while(testIt.hasNext()) 
+		{
+			if(testIt.next().getName().endsWith(".doc") ||  testIt.next().getName().endsWith(".docx")) 
+			{
+				testIt.remove();
+				testIt.next().delete();
+				break;
+
+			}
+
+		} */
+		for(int i = 0; i<file.size(); i++) 
+		{
+
+			if(file.get(i).getName().endsWith(".docx") || file.get(i).getName().endsWith(".doc")) 
+			{
+				File tempFile = file.get(i);
+				//System.out.println("BEFORE DELETED: "  + tempFile.getName());
+				file.remove(tempFile);
+				//System.out.println("DELETED FILES IN LIST : " + tempFile.getName());
+				tempFile.delete();
+			}
+
+		} 
+		//removeIndex(file);
+	}
 
 
 	public ArrayList<File> getConvertedFiles() {
