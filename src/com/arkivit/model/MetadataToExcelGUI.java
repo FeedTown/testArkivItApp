@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import org.apache.batik.transcoder.TranscoderException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +47,8 @@ public class MetadataToExcelGUI{
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	//private ExcelFileCreator ex = new ExcelFileCreator();
 	private GeneralBean generalBean = new GeneralBean();
+	//private ImageFileConverter img = new ImageFileConverter(this);
+	private Converter converter = new Converter();
 	private DocumentConverter docCon = new DocumentConverter();
 	private boolean mapping = false;
 	private boolean overwrite = false;
@@ -81,12 +85,15 @@ public class MetadataToExcelGUI{
 	 * if mapping = true the method copyFolder gets called.
 	 * listOfFilesAndDirectory and getAndAddFileDataToList get called.
 	 * @param mapping A boolean, false by default
+	 * @throws IOException 
+	 * @throws TranscoderException 
 	 */
-	public void init(boolean mapp, boolean overW) {
+
+	public void init(boolean mapp, boolean overW) throws IOException{
 		this.mapping = mapp;
 		this.overwrite = overW;
 		folderName = new File(sourceFolderPath).getName();
-
+		ImageFileConverter img = new ImageFileConverter(this);
 
 		if(mapping && !overwrite) 
 		{
@@ -98,6 +105,9 @@ public class MetadataToExcelGUI{
 		//docCon.testMethod2(fileList, sourceFolderPath); 
 		listOfFilesAndDirectory(sourceFolderPath);
 		//System.out.println("FileList before entering getAndAddFileToDataList: " + fileList);
+
+		img.convertImage();
+		System.out.println("FileList before entering getAndAddFileToDataList: " + fileList);
 		getAndAddFileDataToList();
 
 		/*if(isLibreOfficeOpen) 
@@ -149,9 +159,9 @@ public class MetadataToExcelGUI{
 
 	/* Goes through folder and subfolders and adding files to an ArrayList.
 	 * If mapping = true All files with illegal characters are renamed.
-	 * If file is a directory the path will be retrieved.
+	 * If file is a directory the path will be retrieved.a
 	 */
-	private void listOfFilesAndDirectory(String inputFolder){
+	private void listOfFilesAndDirectory(String inputFolder) {
 		File folder = new File(inputFolder);
 		File tempFile;
 
@@ -449,28 +459,35 @@ public class MetadataToExcelGUI{
 
 
 					ext = new FileExtension(s.getName());
-					if(ext.getHtmlCssFileExtension()) 
-					{
-						if(!s.getParentFile().getName().equals(folderName))
-						{
-							pathName = s.getParentFile().getName();
-						}
-						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, pathName) ;
-					}
 
-					if(ext.getJsImgFileExtension())
-					{
-						if(!s.getParentFile().getName().equals(folderName))
+				
+
+					if(ext.getJsImgFileExtension()) {
+
+						if(ext.getHtmlCssFileExtension()) 
 						{
-							pathName = s.getParentFile().getName();
+							if(!s.getParentFile().getName().equals(folderName))
+							{
+								pathName = s.getParentFile().getName();
+							}
+							br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, pathName) ;
 						}
 
-						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, s.getParentFile().getName());
+						if(ext.getJsImgFileExtension())
+						{
+							if(!s.getParentFile().getName().equals(folderName))
+							{
+								pathName = s.getParentFile().getName();
+							}
+
+							br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, s.getParentFile().getName());
+						}
+
 					}
+					counter++;
 				}
-				counter++;
+				list.clear();
 			}
-			list.clear();
 		}
 
 	}
@@ -661,9 +678,12 @@ public class MetadataToExcelGUI{
 		return generalBean;
 	}
 
+	public ArrayList<File> getFileList() {
+		return fileList;
+	}
+
 	public boolean isLibreOfficeOpen() {
 		return isLibreOfficeOpen;
 	}
-
 
 }
