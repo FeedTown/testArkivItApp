@@ -1,0 +1,4 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Mon Mar 26 14:11:21 CEST 2018
+@default-central-https\://repo.maven.apache.org/maven2/.lastUpdated=1522066281631
+https\://repo.maven.apache.org/maven2/.error=Could not transfer artifact org.libreoffice\:unoil\:jar\:5.4.2 from/to central (https\://repo.maven.apache.org/maven2)\: /Users/RobertoBlanco/.m2/repository/org/libreoffice/unoil/5.4.2/aether-fddfa05d-5b8c-48ed-8d7b-8ed22f3dfdac-unoil-5.4.2.jar-in-progress (No such file or directory)

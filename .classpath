@@ -12,6 +12,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/unoil-5.4.2.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+=======
+>>>>>>> c80ca15102ad7d8e400d301c6267b3a47775bdb1
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -24,6 +24,7 @@ public class ExcelFileCreator {
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
+	private ArrayList<File> converterFileList = new ArrayList<File>();
 	ArrayList<String> contentList = new ArrayList<>();
 	private String targetexcelFilepath, excelFileName, confidentialChecked = "", personalDataChecked = ""; 
 

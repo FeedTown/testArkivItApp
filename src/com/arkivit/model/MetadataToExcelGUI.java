@@ -13,6 +13,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
 
+import Test.code.DocumentConverter;
+
 /**
  * This class is handling the process of sending data and importing metadata
  * to two excel sheets.
@@ -31,11 +33,13 @@ public class MetadataToExcelGUI{
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
+	private ArrayList<File> convertedFileList = new ArrayList<File>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
 	private ArrayList<File> mappedFiles = new ArrayList<File>(), mappedFolder = new ArrayList<File>();
 	//private ArrayList<String> mappedFile = new ArrayList<String>();
 	private ArrayList<String> illegalCharFiles = new ArrayList<String>(), illegarCharFolders = new ArrayList<String>();
+	private ArrayList<File> convertedFiles = new ArrayList<File>();
 	private int fileCount = 0;
 	private FileDuration  fileDuration = new FileDuration(); 
 	private Tika fileType = new Tika();
@@ -45,8 +49,10 @@ public class MetadataToExcelGUI{
 	private GeneralBean generalBean = new GeneralBean();
 	//private ImageFileConverter img = new ImageFileConverter(this);
 	private Converter converter = new Converter();
+	private DocumentConverter docCon = new DocumentConverter();
 	private boolean mapping = false;
 	private boolean overwrite = false;
+	private boolean converting = false;
 	private boolean isLibreOfficeOpen = false;
 
 	/**
@@ -99,9 +105,10 @@ public class MetadataToExcelGUI{
 
 		listOfFilesAndDirectory(sourceFolderPath);
 		img.convertImage();
+		System.out.println("FileList before entering getAndAddFileToDataList: " + fileList);
 		getAndAddFileDataToList();
 
-		if(isLibreOfficeOpen) 
+		/*if(isLibreOfficeOpen) 
 		{
 			try {
 				Thread.sleep(5000);
@@ -110,7 +117,7 @@ public class MetadataToExcelGUI{
 				e.printStackTrace();
 			}
 			converter.closeLibreOffice();
-		}
+		}*/
 		//createExFile();
 
 		//System.out.println(illegalCharFiles.toString());
@@ -134,6 +141,7 @@ public class MetadataToExcelGUI{
 
 		//if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
 		//{
+		//convertedFileList.clear();
 		fileList.clear();
 		fileNameList.clear();
 		sizeList.clear();
@@ -141,6 +149,8 @@ public class MetadataToExcelGUI{
 		fileDuration.getAudioVideoList().clear();
 		illegalCharFiles.clear();
 		mappedFiles.clear();
+
+
 		//}
 
 	}
@@ -151,15 +161,17 @@ public class MetadataToExcelGUI{
 	 */
 	private void listOfFilesAndDirectory(String inputFolder) {
 		File folder = new File(inputFolder);
-		int convertExtCounter = 0;
 		File tempFile;
-		FileExtension ext = new FileExtension();
 
 		for(File currentFileOrDir : folder.listFiles())
 		{
 			tempFile = currentFileOrDir;
+
+
+
 			if(currentFileOrDir.isFile())
 			{
+
 				if(mapping)
 				{
 					//tempFile = getIllChars(tempFile,currentFileOrDir);
@@ -167,18 +179,18 @@ public class MetadataToExcelGUI{
 				}
 
 
-				if(currentFileOrDir.getName().endsWith(ext.checkForConvertableFileExtensions().get(convertExtCounter))) 
-				{
-					isLibreOfficeOpen = converter.openLibreOffice(); 
 
-				}
-
-				System.out.println("Current File : "  + currentFileOrDir.getName());
 
 				fileList.add(tempFile);
+
+
+				System.out.println("Current File : "  + tempFile.getName());
+
+
 				System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
 				fileCount++;
 			}
+
 			else if(currentFileOrDir.isDirectory())	
 			{
 				//pathTest.add(tempFile.getAbsolutePath());
@@ -333,14 +345,26 @@ public class MetadataToExcelGUI{
 	private void getAndAddFileDataToList() 
 	{
 		Charset getDecoding;
+
+
+		//System.out.println("FILELIST BEFORE " + fileList);
+		//fileList = docCon.testMethod2(fileList, sourceFolderPath); 
+		//System.out.println("FILELIST AFTER " + fileList);
+
+	
+		//int counter = 0;
+
 		sortFileList();
 		String fullPathforCurrentFile = "";
-
+		//ArrayList<String> tempList = new ArrayList<>();
 		try {
 			if(!fileList.isEmpty())
 			{
 				for(File file : fileList)
 				{
+
+
+
 					fullPathforCurrentFile = file.getAbsolutePath();
 					getDecoding = null;
 					if(file.getName().endsWith(".html") || file.getName().endsWith(".xhtml") || file.getName().endsWith(".xml")
@@ -351,18 +375,25 @@ public class MetadataToExcelGUI{
 					}
 
 
+
+
 					if(mapping)
 					{
 						changeLinkInFile(file);
-					} 
+					}
+
 
 					checkForAudioVideoDuration(file);
 
 
+
+
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
-					//System.out.println(fPath);
 					fPath = fPath.replace(sourceFolderPath, folderName);
+
+
+
 
 					if(getDecoding == null)
 					{
@@ -373,19 +404,26 @@ public class MetadataToExcelGUI{
 						fileDecodeList.add(getDecoding.name());
 					}
 
-					fileNameList.add(currentFileName);
+
+
+					fileNameList.add(currentFileName);			
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					fileDuration.getAudioVideoList().add(duration);
-
+					
+					/*if(file.getName().endsWith(".doc") || file.getName().endsWith(".docx")) 
+					{
+						
+						//fileNameList.remove(file.getName());
+						file.delete();
+						
+					} */
+		
+					//counter++;
 				}
 
 			}
-			else
-			{
-				//System.out.println("The list is empty");
-			}
-
+		
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -395,18 +433,20 @@ public class MetadataToExcelGUI{
 
 		System.out.println("File name list length : " + fileListeLength);
 
-
+		//System.out.println("DOC? " + fileNameList);
+	
 		try {
 
 			System.out.println("Creating workbook......");
-			ExcelFileCreator createExcelF = new ExcelFileCreator(fileDuration, fileNameList, filePathList,
-					fileDecodeList, sizeList, fileList, generalBean,targetexcelFilepath, excelFileName, confidentialChecked,personalDataChecked);
+			ExcelFileCreator createExcelF = new ExcelFileCreator(fileDuration, fileNameList , filePathList,
+					fileDecodeList, sizeList, fileList,  generalBean,targetexcelFilepath, excelFileName, confidentialChecked,personalDataChecked);
 			createExcelF.createWorkbook();
 			System.out.println("Workbook created!");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-
+		
 	}
 
 	private void changeLinkInFile(File file) throws IOException {
@@ -453,6 +493,7 @@ public class MetadataToExcelGUI{
 
 							br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, s.getParentFile().getName());
 						}
+
 					}
 					counter++;
 				}
@@ -490,7 +531,7 @@ public class MetadataToExcelGUI{
 					+ "/" + currentFileName); 
 
 			duration = fileDuration.getAudioVideoDuration();
-
+		
 		} 
 
 	}
@@ -611,6 +652,13 @@ public class MetadataToExcelGUI{
 		this.personalDataChecked = personalDataChecked;
 	}
 
+	public ArrayList<File> getConvertedFiles(){
+		return convertedFiles;
+	}
+
+	public void setConvertedFiles(ArrayList<File> convertedFiles) {
+		this.convertedFiles = convertedFiles;
+	}
 
 	public ArrayList<File> getMappedFiles() {
 		return mappedFiles;
