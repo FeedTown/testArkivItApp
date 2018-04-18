@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import javax.imageio.ImageIO;
@@ -31,8 +33,8 @@ public class ImageFileConverter {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void convertImage() throws IOException{
-		for(File s : model.getFileList())
+	public void convertImage(ArrayList<File> file, String sourceFolderPath) throws IOException{
+		for(File s : file)
 		{
 			fileNameWithOutExt = FilenameUtils.removeExtension(s.getName());
 			if(s.getName().endsWith(".GIF") || s.getName().endsWith(".gif") || s.getName().endsWith(".JPG") || s.getName().endsWith(".jpg")
@@ -83,12 +85,11 @@ public class ImageFileConverter {
 			}
 
 		}
-
-
+		
 	}
 
-	public void storeOriginalImages() throws IOException {
-		for(File s: model.getFileList()) {
+	/*public void storeOriginalImages(ArrayList<File> file) throws IOException {
+		for(File s: file) {
 			if(s.getName().endsWith(".GIF") || s.getName().endsWith(".gif") || s.getName().endsWith(".JPG") 
 					|| s.getName().endsWith(".jpg") || s.getName().endsWith(".BMP") 
 					|| s.getName().endsWith(".bmp") || s.getName().endsWith(".ico") || s.getName().endsWith(".ICO")) {
@@ -108,7 +109,7 @@ public class ImageFileConverter {
 			}
 		}
 
-	}
+	} */
 
 	public void storeOriginalImages1(File illegalExtension) throws IOException 
 	{

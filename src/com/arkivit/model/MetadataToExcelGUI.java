@@ -50,6 +50,7 @@ public class MetadataToExcelGUI{
 	//private ImageFileConverter img = new ImageFileConverter(this);
 	private Converter converter = new Converter();
 	private DocumentConverter docCon = new DocumentConverter();
+	private ImageFileConverter img = new ImageFileConverter(this);
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private boolean converting = false;
@@ -93,7 +94,7 @@ public class MetadataToExcelGUI{
 		this.mapping = mapp;
 		this.overwrite = overW;
 		folderName = new File(sourceFolderPath).getName();
-		ImageFileConverter img = new ImageFileConverter(this);
+
 
 		if(mapping && !overwrite) 
 		{
@@ -102,12 +103,9 @@ public class MetadataToExcelGUI{
 			//System.out.println("Copying folder.........");
 		}
 
-		//docCon.testMethod2(fileList, sourceFolderPath); 
+		//docCon.testMethod2(fileList, sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
-		//System.out.println("FileList before entering getAndAddFileToDataList: " + fileList);
-
-		img.convertImage();
-		System.out.println("FileList before entering getAndAddFileToDataList: " + fileList);
+		//img.convertImage();
 		getAndAddFileDataToList();
 
 		/*if(isLibreOfficeOpen) 
@@ -161,14 +159,24 @@ public class MetadataToExcelGUI{
 	 * If mapping = true All files with illegal characters are renamed.
 	 * If file is a directory the path will be retrieved.a
 	 */
-	private void listOfFilesAndDirectory(String inputFolder) {
+	private void listOfFilesAndDirectory(String inputFolder) throws IOException {
 		File folder = new File(inputFolder);
 		File tempFile;
+		int testC = 0;
+
 
 		for(File currentFileOrDir : folder.listFiles())
 		{
+
+
 			tempFile = currentFileOrDir;
 
+			if(tempFile.getName().endsWith(".doc") || tempFile.getName().endsWith(".docx") || tempFile.getName().endsWith(".xlsx")) {
+				fileList = docCon.testMethod2(fileList, sourceFolderPath);
+			}
+			
+
+			//img.convertImage(fileList, sourceFolderPath);
 
 
 			if(currentFileOrDir.isFile())
@@ -342,14 +350,9 @@ public class MetadataToExcelGUI{
 	{
 		Charset getDecoding;
 
-		//fileList = docCon.testMethod2(fileList, sourceFolderPath); 
-		
-	
-		//int counter = 0;
-
 		sortFileList();
 		String fullPathforCurrentFile = "";
-		
+
 		try {
 			if(!fileList.isEmpty())
 			{
@@ -398,20 +401,11 @@ public class MetadataToExcelGUI{
 					sizeList.add(fileSize);
 					filePathList.add(fPath);
 					fileDuration.getAudioVideoList().add(duration);
-					
-					/*if(file.getName().endsWith(".doc") || file.getName().endsWith(".docx")) 
-					{
-						
-						fileNameList.remove(file.getName());
-						file.delete();
-						
-					} */
-		
-					//counter++;
+
 				}
 
 			}
-		
+
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -421,9 +415,9 @@ public class MetadataToExcelGUI{
 
 		System.out.println("File name list length : " + fileListeLength);
 
-	
+
 		System.out.println("Last list check....:" + fileNameList);
-	
+
 		try {
 
 			System.out.println("Creating workbook......");
@@ -431,11 +425,11 @@ public class MetadataToExcelGUI{
 					fileDecodeList, sizeList, fileList,  generalBean,targetexcelFilepath, excelFileName, confidentialChecked,personalDataChecked);
 			createExcelF.createWorkbook();
 			System.out.println("Workbook created!");
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-		
+
 	}
 
 	private void changeLinkInFile(File file) throws IOException {
@@ -460,7 +454,7 @@ public class MetadataToExcelGUI{
 
 					ext = new FileExtension(s.getName());
 
-				
+
 
 					if(ext.getJsImgFileExtension()) {
 
@@ -520,7 +514,7 @@ public class MetadataToExcelGUI{
 					+ "/" + currentFileName); 
 
 			duration = fileDuration.getAudioVideoDuration();
-		
+
 		} 
 
 	}
