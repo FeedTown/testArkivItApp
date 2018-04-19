@@ -62,10 +62,10 @@ public class FileExtension {
 	}
 
 
-	public ArrayList<String> checkForConvertableFileExtensions() {
+	public ArrayList<String> getOfficeFileExtensions() {
 
 		convertExList = new ArrayList<>();
-		
+
 		String docExt = ".doc",
 				docxExt = ".docx",
 				xlsxExt = ".xlsx",
@@ -79,9 +79,15 @@ public class FileExtension {
 		convertExList.add(xlsExt);
 		convertExList.add(pptExt);
 		convertExList.add(pptxExt);
+		
+		for(String e : convertExList) 
+		{
+			
+		}
 
 		return convertExList;
 
-	}
+	} 
+	
 
 }

@@ -55,15 +55,13 @@ public class DocumentConverter {
 	ArrayList<File> convertedFiles;
 	ArrayList<File> fileDirectory;
 
-
-	List<File> testEntries; 
-	File filezz;
+	ArrayList<File> fileList = new ArrayList<>(); 
 
 
 	public DocumentConverter() {
 
 	}
-
+	/*
 	public ArrayList<File> traverse(ArrayList<File> fileDirectory, String targetPath) {
 
 		sOutUrl = "file:///" + targetPath.replace( '\\', '/' );
@@ -78,20 +76,20 @@ public class DocumentConverter {
 
 			else if(fileDirectory.get(i).isFile()) 
 			{
-				// Converting the document to the favoured type
+
 				try 
 				{
-					// Composing the URL by replacing all backslashes
+
 					String sUrl = "file:///"
 							+ fileDirectory.get(i).getAbsolutePath().replace( '\\', '/' ); 
 
 
-					System.out.println("Original Files: "+  fileDirectory.get(i).getName());
+
 
 					if(fileDirectory.get(i).getName().endsWith(".doc") || fileDirectory.get(i).getName().endsWith(".docx") || 
 							fileDirectory.get(i).getName().endsWith(".xlsx")) 
 					{ 
-
+						System.out.println("Original Files: "+  fileDirectory.get(i).getName());
 						// Loading the wanted document
 						PropertyValue propertyValues[] = new PropertyValue[1];
 						propertyValues[0] = new PropertyValue();
@@ -101,15 +99,13 @@ public class DocumentConverter {
 						Object oDocToStore = xCompLoader.loadComponentFromURL(
 								sUrl, "_blank", 0, propertyValues);
 
-						// Getting an object that will offer a simple way to store
-						// a document to a URL.			
+
 
 						XStorable xStorable =
 								UnoRuntime.queryInterface(XStorable.class, oDocToStore );
 
-						// Preparing properties for converting the document
 						propertyValues = new PropertyValue[3];
-						// Setting the flag for overwriting
+
 						propertyValues[0] = new PropertyValue();
 						propertyValues[0].Name = "Overwrite";
 						propertyValues[0].Value = Boolean.TRUE;
@@ -122,15 +118,11 @@ public class DocumentConverter {
 						propertyValues[2].Name = "PDFViewSelection";
 						propertyValues[2].Value = 2;
 
-						// Appending the favoured extension to the origin document name
+
 
 						String tmp = FilenameUtils.removeExtension(fileDirectory.get(i).getName());
 
-						//int index1 = sUrl.lastIndexOf('/');
-						//int index2 = sUrl.lastIndexOf('.');
 
-						/*String sStoreUrl = sOutUrl + sUrl.substring(index1, index2 + 1) + sExtension; */
-						//String test = sOutUrl.replace("file:///", "");
 						String sStoreUrl = sOutUrl+ "/" + tmp + "." + sExtension;  
 						xStorable.storeToURL(sStoreUrl, propertyValues);
 
@@ -141,9 +133,7 @@ public class DocumentConverter {
 
 						System.out.println("Converted Files " + convertedFiles.getName());
 
-						//removeFile(fileDirectory);
-						// Closing the converted document. Use XCloseable.close if the
-						// interface is supported, otherwise use XComponent.dispose
+
 						XCloseable xCloseable =
 								UnoRuntime.queryInterface(XCloseable.class, xStorable);
 
@@ -178,9 +168,9 @@ public class DocumentConverter {
 		}
 
 		return  fileDirectory;
-	}
+	} */
 
-
+	/*
 	public ArrayList<File> testMethod2(ArrayList<File> file, String targetPath) {
 
 		String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
@@ -230,9 +220,9 @@ public class DocumentConverter {
 		return file;
 	}
 
+	 */
 
-
-	public void removeFile(ArrayList<File> file) 
+	/*	public void removeFile(ArrayList<File> file) 
 	{
 
 		for(int i = 0; i<file.size(); i++) 
@@ -248,7 +238,8 @@ public class DocumentConverter {
 
 		} 
 
-	}
+	}*/
+
 
 
 	public ArrayList<File> getFileDirectory() {
@@ -283,6 +274,185 @@ public class DocumentConverter {
 		this.sOutUrl = sOutUrl;
 	}
 
+
+	public File testMethod3(File file, String targetPath) {
+
+		String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
+
+		XComponentContext xContext = null;
+
+		try {
+
+			// get the remote office component context
+			xContext = BootstrapSocketConnector.bootstrap(libreOfficePath);
+			System.out.println("Connected to a running office ...");
+
+			// get the remote office service manager
+			XMultiComponentFactory xMCF =
+					xContext.getServiceManager();
+
+			Object oDesktop = xMCF.createInstanceWithContext(
+					"com.sun.star.frame.Desktop", xContext);
+
+			xDesktop = (XDesktop) UnoRuntime.queryInterface(XDesktop.class, oDesktop);
+
+			xCompLoader = UnoRuntime.queryInterface(com.sun.star.frame.XComponentLoader.class,
+					xDesktop);
+
+
+			// Getting the given type to convert to
+			sConvertType = "writer_pdf_Export";
+
+			// Getting the given extension that should be appended to the
+			// origin document
+			sExtension = "pdf";
+
+
+			file = traverse3(file, targetPath);
+			removeFile3(file);
+
+		} 
+
+		catch( Exception e ) 
+		{
+			e.printStackTrace(System.err);
+			System.exit(1);
+		}
+		return file;
+	}
+
+	public File traverse3(File fileDirectory, String targetPath) {
+		//ArrayList<File> fileList = new ArrayList<>(); 
+		fileList.add(fileDirectory);
+		sOutUrl = "file:///" + targetPath.replace( '\\', '/' );
+		for (int i = 0; i<fileList.size(); i++) 
+		{
+
+
+			if(fileList.get(i).isDirectory())
+			{
+				System.out.println("This is a folder");
+			}
+
+			else if(fileList.get(i).isFile()) 
+			{
+				// Converting the document to the favoured type
+				try 
+				{
+					// Composing the URL by replacing all backslashes
+					String sUrl = "file:///"
+							+ fileDirectory.getAbsolutePath().replace( '\\', '/' ); 
+
+
+					if(fileList.get(i).getName().endsWith(".doc") || fileList.get(i).getName().endsWith(".docx") || 
+							fileList.get(i).getName().endsWith(".xlsx")) 
+					{ 
+						System.out.println("Original Files: "+  fileList.get(i).getName());
+						// Loading the wanted document
+						PropertyValue propertyValues[] = new PropertyValue[1];
+						propertyValues[0] = new PropertyValue();
+						propertyValues[0].Name = "Hidden";
+						propertyValues[0].Value = Boolean.TRUE;
+
+						Object oDocToStore = xCompLoader.loadComponentFromURL(
+								sUrl, "_blank", 0, propertyValues);
+
+						// Getting an object that will offer a simple way to store
+						// a document to a URL.			
+
+						XStorable xStorable =
+								UnoRuntime.queryInterface(XStorable.class, oDocToStore );
+
+						// Preparing properties for converting the document
+						propertyValues = new PropertyValue[3];
+						// Setting the flag for overwriting
+						propertyValues[0] = new PropertyValue();
+						propertyValues[0].Name = "Overwrite";
+						propertyValues[0].Value = Boolean.TRUE;
+						// Setting the filter name
+						propertyValues[1] = new PropertyValue();
+						propertyValues[1].Name = "FilterName";
+						propertyValues[1].Value = sConvertType;
+
+						propertyValues[2] = new PropertyValue();
+						propertyValues[2].Name = "PDFViewSelection";
+						propertyValues[2].Value = 2;
+
+						// Appending the favoured extension to the origin document name
+
+						String tmp = FilenameUtils.removeExtension(fileList.get(i).getName());
+
+						//int index1 = sUrl.lastIndexOf('/');
+						//int index2 = sUrl.lastIndexOf('.');
+
+						/*String sStoreUrl = sOutUrl + sUrl.substring(index1, index2 + 1) + sExtension; */
+						//String test = sOutUrl.replace("file:///", "");
+						String sStoreUrl = sOutUrl+ "/" + tmp + "." + sExtension;  
+						xStorable.storeToURL(sStoreUrl, propertyValues);
+
+						String removeBeginningOfPath = sStoreUrl.replace("file:///", "");
+						//File convertedFiles = new File(removeBeginningOfPath);
+						fileDirectory = new File(removeBeginningOfPath);
+
+						fileList.add(fileDirectory);
+						System.out.println("Converted Files " + fileDirectory.getName());
+
+						//removeFile(fileDirectory);
+						// Closing the converted document. Use XCloseable.close if the
+						// interface is supported, otherwise use XComponent.dispose
+						XCloseable xCloseable =
+								UnoRuntime.queryInterface(XCloseable.class, xStorable);
+
+
+						if ( xCloseable != null ) 
+						{
+							xCloseable.close(false);
+						} 
+
+						else 
+						{
+							XComponent xComp =
+									UnoRuntime.queryInterface(XComponent.class, xStorable);
+
+							xComp.dispose();
+						}
+					}
+
+					else 
+					{
+						System.out.println("NOT CONVERTED : " + fileList.get(i).getName());
+
+					} 
+				}
+
+				catch( Exception e ) 
+				{
+					e.printStackTrace(System.err);
+				}
+			}
+
+		}
+
+		return fileDirectory;
+
+	}
+
+	public void removeFile3(File file) 
+	{
+
+		for(int i = 0; i<fileList.size(); i++) 
+		{
+
+			if(fileList.get(i).getName().endsWith(".docx") || fileList.get(i).getName().endsWith(".doc") || 
+					fileList.get(i).getName().endsWith(".xlsx")) 
+			{
+				File tempFile = fileList.get(i);
+				fileList.remove(tempFile);
+				tempFile.delete();
+			}
+
+		} 
+	}
 
 }
 

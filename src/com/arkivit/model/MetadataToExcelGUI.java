@@ -33,11 +33,9 @@ public class MetadataToExcelGUI{
 	private ArrayList<String> fileNameList = new ArrayList<String>();
 	private ArrayList<String> filePathList = new ArrayList<String>();
 	private ArrayList<String> fileDecodeList = new ArrayList<String>();
-	private ArrayList<File> convertedFileList = new ArrayList<File>();
 	private ArrayList<Long> sizeList = new ArrayList<Long>();
 	private ArrayList<File> fileList = new ArrayList<File>();
 	private ArrayList<File> mappedFiles = new ArrayList<File>(), mappedFolder = new ArrayList<File>();
-	//private ArrayList<String> mappedFile = new ArrayList<String>();
 	private ArrayList<String> illegalCharFiles = new ArrayList<String>(), illegarCharFolders = new ArrayList<String>();
 	private ArrayList<File> convertedFiles = new ArrayList<File>();
 	private int fileCount = 0;
@@ -45,15 +43,12 @@ public class MetadataToExcelGUI{
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
-	//private ExcelFileCreator ex = new ExcelFileCreator();
 	private GeneralBean generalBean = new GeneralBean();
-	//private ImageFileConverter img = new ImageFileConverter(this);
-	private Converter converter = new Converter();
+	private FileExtension fileEx = new FileExtension();
 	private DocumentConverter docCon = new DocumentConverter();
 	private ImageFileConverter img = new ImageFileConverter(this);
 	private boolean mapping = false;
 	private boolean overwrite = false;
-	private boolean converting = false;
 	private boolean isLibreOfficeOpen = false;
 
 	/**
@@ -171,16 +166,22 @@ public class MetadataToExcelGUI{
 
 			tempFile = currentFileOrDir;
 
-			if(tempFile.getName().endsWith(".doc") || tempFile.getName().endsWith(".docx") || tempFile.getName().endsWith(".xlsx")) {
-				fileList = docCon.testMethod2(fileList, sourceFolderPath);
-			}
-			
+
 
 			//img.convertImage(fileList, sourceFolderPath);
 
 
 			if(currentFileOrDir.isFile())
 			{
+
+
+				if(tempFile.getName().endsWith(".doc") || tempFile.getName().endsWith(".docx") || tempFile.getName().endsWith(".xlsx")) {
+				//if(tempFile.getName().endsWith(fileEx.getOfficeFileExtensions().get(testC))) 
+				//{
+					//fileList = docCon.testMethod2(fileList, sourceFolderPath);
+					tempFile = docCon.testMethod3(currentFileOrDir, sourceFolderPath);
+
+				}
 
 				if(mapping)
 				{
@@ -193,6 +194,7 @@ public class MetadataToExcelGUI{
 				System.out.println("Current File : "  + tempFile.getName());
 				System.out.println("Nr " + fileCount + " : " + currentFileOrDir.getName());
 				fileCount++;
+
 			}
 
 			else if(currentFileOrDir.isDirectory())	
