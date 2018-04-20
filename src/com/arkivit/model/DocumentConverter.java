@@ -1,36 +1,24 @@
+package com.arkivit.model;
 
-package Test.code;
-
-import com.sun.star.uno.UnoRuntime;
-import com.sun.star.uno.XComponentContext;
-import com.sun.star.util.XCloseable;
-import ooo.connector.BootstrapSocketConnector;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
-import com.arkivit.model.FileExtension;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XStorable;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
+import com.sun.star.uno.UnoRuntime;
+import com.sun.star.uno.XComponentContext;
+import com.sun.star.util.XCloseable;
 
+import ooo.connector.BootstrapSocketConnector;
 
-
-/** The class <CODE>DocumentConverter</CODE> allows you to convert all documents
- * in a given directory and in its subdirectories to a given type. A converted
- * document will be created in the same directory as the origin document.
- *
- */
 public class DocumentConverter {
-	/** Containing the loaded documents
-	 */
+
 	private XComponentLoader xCompLoader = null;
 	private XDesktop xDesktop;
 	/** Containing the given type to convert to
@@ -455,6 +443,4 @@ public class DocumentConverter {
 
 		} 
 	}
-
 }
-

@@ -62,9 +62,9 @@ public class FileExtension {
 	}
 
 
-	public ArrayList<String> getOfficeFileExtensions() {
+	public boolean hasFileOfficeExtension() {
 
-		convertExList = new ArrayList<>();
+		//convertExList = new ArrayList<>();
 
 		String docExt = ".doc",
 				docxExt = ".docx",
@@ -73,21 +73,26 @@ public class FileExtension {
 				pptExt = ".ppt",
 				pptxExt = ".pptx";
 
-		convertExList.add(docExt);
+		/*convertExList.add(docExt);
 		convertExList.add(docxExt);
 		convertExList.add(xlsxExt);
 		convertExList.add(xlsExt);
 		convertExList.add(pptExt);
-		convertExList.add(pptxExt);
-		
-		for(String e : convertExList) 
+		convertExList.add(pptxExt);*/
+
+
+		if(getFileName.endsWith(docExt) || getFileName.endsWith(docxExt) || getFileName.endsWith(xlsxExt) || getFileName.endsWith(xlsExt) ||
+				getFileName.endsWith(pptExt) || getFileName.endsWith(pptxExt))
 		{
-			
+			return true;
+		}
+		else 
+		{
+			return false;
 		}
 
-		return convertExList;
 
 	} 
-	
+
 
 }

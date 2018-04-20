@@ -13,7 +13,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
 
-import Test.code.DocumentConverter;
 
 /**
  * This class is handling the process of sending data and importing metadata
@@ -44,7 +43,6 @@ public class MetadataToExcelGUI{
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	private GeneralBean generalBean = new GeneralBean();
-	private FileExtension fileEx = new FileExtension();
 	private DocumentConverter docCon = new DocumentConverter();
 	private ImageFileConverter img = new ImageFileConverter(this);
 	private boolean mapping = false;
@@ -175,11 +173,11 @@ public class MetadataToExcelGUI{
 			{
 
 
-				if(tempFile.getName().endsWith(".doc") || tempFile.getName().endsWith(".docx") || tempFile.getName().endsWith(".xlsx")) {
-				//if(tempFile.getName().endsWith(fileEx.getOfficeFileExtensions().get(testC))) 
-				//{
-					//fileList = docCon.testMethod2(fileList, sourceFolderPath);
-					tempFile = docCon.testMethod3(currentFileOrDir, sourceFolderPath);
+				if(tempFile.getName().endsWith(".doc") || tempFile.getName().endsWith(".docx") || 
+						tempFile.getName().endsWith("xls") || tempFile.getName().endsWith("xlsx") ||
+						tempFile.getName().endsWith(".ppt") || tempFile.getName().endsWith(".pptx")) {
+				
+					tempFile = docCon.testMethod3(currentFileOrDir, inputFolder);
 
 				}
 
