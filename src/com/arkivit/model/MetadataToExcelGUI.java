@@ -179,7 +179,7 @@ public class MetadataToExcelGUI{
 				//if(tempFile.getName().endsWith(fileEx.getOfficeFileExtensions().get(testC))) 
 				//{
 					//fileList = docCon.testMethod2(fileList, sourceFolderPath);
-					tempFile = docCon.testMethod3(currentFileOrDir, sourceFolderPath);
+					tempFile = docCon.testMethod3(currentFileOrDir, inputFolder);
 
 				}
 
