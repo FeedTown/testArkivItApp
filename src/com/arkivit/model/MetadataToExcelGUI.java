@@ -44,7 +44,7 @@ public class MetadataToExcelGUI{
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	private GeneralBean generalBean = new GeneralBean();
 	private DocumentConverter docCon = new DocumentConverter();
-	private ImageFileConverter img = new ImageFileConverter(this);
+	private ImageFileConverter img = new ImageFileConverter();
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private boolean isLibreOfficeOpen = false;
@@ -82,38 +82,43 @@ public class MetadataToExcelGUI{
 	 * @throws IOException 
 	 * @throws TranscoderException 
 	 */
-
 	public void init(boolean mapp, boolean overW) throws IOException{
 		this.mapping = mapp;
 		this.overwrite = overW;
 		folderName = new File(sourceFolderPath).getName();
-
+		
 
 		if(mapping && !overwrite) 
 		{
 
 			copyFolder();
-			//System.out.println("Copying folder.........");
-		}
 
-		//docCon.testMethod2(fileList, sourceFolderPath);
+		}
+		
+		docCon.testMethod3(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
 		//img.convertImage();
 		getAndAddFileDataToList();
 
-		/*if(isLibreOfficeOpen) 
-		{
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			converter.closeLibreOffice();
-		}*/
-		//createExFile();
+	}
+	
 
-		//System.out.println(illegalCharFiles.toString());
+	public void removeFile3(File file) 
+	{
+
+		for(int i = 0; i<fileList.size(); i++) 
+		{
+
+			if(fileList.get(i).getName().endsWith(".doc") || fileList.get(i).getName().endsWith(".docx") || 
+					fileList.get(i).getName().endsWith(".xls") ||fileList.get(i).getName().endsWith(".xlsx") ||
+					fileList.get(i).getName().endsWith(".ppt") || fileList.get(i).getName().endsWith(".pptx")) 
+			{
+				File tempFile = fileList.get(i);
+				fileList.remove(tempFile);
+				tempFile.delete();
+			}
+
+		} 
 	}
 
 	//Copying folder to outside of the root folder
@@ -155,7 +160,6 @@ public class MetadataToExcelGUI{
 	private void listOfFilesAndDirectory(String inputFolder) throws IOException {
 		File folder = new File(inputFolder);
 		File tempFile;
-		int testC = 0;
 
 
 		for(File currentFileOrDir : folder.listFiles())
@@ -164,22 +168,11 @@ public class MetadataToExcelGUI{
 
 			tempFile = currentFileOrDir;
 
-
-
 			//img.convertImage(fileList, sourceFolderPath);
-
 
 			if(currentFileOrDir.isFile())
 			{
 
-
-				if(tempFile.getName().endsWith(".doc") || tempFile.getName().endsWith(".docx") || 
-						tempFile.getName().endsWith("xls") || tempFile.getName().endsWith("xlsx") ||
-						tempFile.getName().endsWith(".ppt") || tempFile.getName().endsWith(".pptx")) {
-				
-					tempFile = docCon.testMethod3(currentFileOrDir, inputFolder);
-
-				}
 
 				if(mapping)
 				{
