@@ -40,24 +40,15 @@ public class DocumentConverter {
 
 	private File outdir;
 	private File testFile;
-	
-	ArrayList<File> originalListFile;
+
+	ArrayList<File> originalListFile = new ArrayList<>();
 	ArrayList<File> convertedFiles;
-	ArrayList<File> fileDirectory;
+	File fileDirectory;
 	ArrayList<File> fileList = new ArrayList<>(); 
 
 
 	public DocumentConverter() {
 
-	}
-
-
-	public ArrayList<File> getFileDirectory() {
-		return fileDirectory;
-	}
-
-	public void setFileDirectory(ArrayList<File> fileDirectory) {
-		this.fileDirectory = fileDirectory;
 	}
 
 	public ArrayList<File> getConvertedFiles() {
@@ -117,7 +108,6 @@ public class DocumentConverter {
 			// origin document
 			sExtension = "pdf";
 
-
 			traverse3(targetPath);
 			//removeFile3(file);
 
@@ -134,15 +124,16 @@ public class DocumentConverter {
 	public void traverse3(String targetPath) {
 		//ArrayList<File> fileList = new ArrayList<>(); 
 		//fileList.add(fileDirectory);
-		File fileDirectory = new File(targetPath);
+		fileDirectory = new File(targetPath);
 		sOutUrl = "file:///" + fileDirectory.getAbsolutePath().replace( '\\', '/' );
 
 
 		for(File f : fileDirectory.listFiles())
 		{
-		
+
 			if(f.isFile())
 			{
+				//Stores the original files for the html/css/js parser
 				originalListFile.add(f);
 				// Converting the document to the favoured type
 				try 
@@ -192,11 +183,6 @@ public class DocumentConverter {
 
 						String tmp = FilenameUtils.removeExtension(f.getName());
 
-						//int index1 = sUrl.lastIndexOf('/');
-						//int index2 = sUrl.lastIndexOf('.');
-
-						/*String sStoreUrl = sOutUrl + sUrl.substring(index1, index2 + 1) + sExtension; */
-						//String test = sOutUrl.replace("file:///", "");
 						String sStoreUrl = testUrl+ "/" + tmp + "." + sExtension;  
 						xStorable.storeToURL(sStoreUrl, propertyValues);
 
@@ -246,7 +232,6 @@ public class DocumentConverter {
 			}
 		}
 
-		//return fileDirectory;
 
 	}
 
