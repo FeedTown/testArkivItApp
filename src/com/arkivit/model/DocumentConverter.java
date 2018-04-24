@@ -42,21 +42,13 @@ public class DocumentConverter {
 	private File testFile;
 
 	ArrayList<File> originalListFile = new ArrayList<>();
-	ArrayList<File> convertedFiles;
+	
 	File fileDirectory;
 	ArrayList<File> fileList = new ArrayList<>(); 
 
 
 	public DocumentConverter() {
 
-	}
-
-	public ArrayList<File> getConvertedFiles() {
-		return convertedFiles;
-	}
-
-	public void setConvertedFiles(ArrayList<File> convertedFiles) {
-		this.convertedFiles = convertedFiles;
 	}
 
 	public  File getOutdir() {
@@ -187,7 +179,6 @@ public class DocumentConverter {
 						xStorable.storeToURL(sStoreUrl, propertyValues);
 
 						String removeBeginningOfPath = sStoreUrl.replace("file:///", "");
-						//File convertedFiles = new File(removeBeginningOfPath);
 						testFile = new File(removeBeginningOfPath);
 
 						fileList.add(testFile);
