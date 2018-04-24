@@ -95,9 +95,9 @@ public class MetadataToExcelGUI{
 
 		}
 		
-		docCon.testMethod3(sourceFolderPath);
+		//docCon.testMethod3(sourceFolderPath);
+		img.convertImage(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
-		//img.convertImage();
 		getAndAddFileDataToList();
 
 	}
