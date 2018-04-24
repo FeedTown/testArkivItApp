@@ -41,7 +41,7 @@ public class DocumentConverter {
 	private File outdir;
 	private File testFile;
 	
-	ArrayList<File> originalListFile;
+	ArrayList<File> originalListFile = new ArrayList<>();
 	ArrayList<File> convertedFiles;
 	ArrayList<File> fileDirectory;
 	ArrayList<File> fileList = new ArrayList<>(); 
@@ -87,7 +87,7 @@ public class DocumentConverter {
 
 	public void testMethod3(String targetPath) {
 
-		String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
+		String libreOfficePath = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
 
 		XComponentContext xContext = null;
 
