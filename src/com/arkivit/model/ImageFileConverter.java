@@ -28,6 +28,7 @@ public class ImageFileConverter {
 	private String fileNameWithOutExt = "";
 	private File imgFile;
 	private ArrayList<File> imgList = new ArrayList<>();
+	private ArrayList<File> orignalImageFileList = new ArrayList<>();
 
 
 	/*public ImageFileConverter(MetadataToExcelGUI model) {
@@ -42,14 +43,22 @@ public class ImageFileConverter {
 	@SuppressWarnings("deprecation")
 	public void convertImage(String sourceFolderPath) throws IOException{
 
+		//	String fileDirectory = imgFile.getAbsolutePath();
 		imgFile = new File(sourceFolderPath);
-		//File tempFile = new File(imgFile.getName());
+
 		for(File s : imgFile.listFiles())
 		{
-			s.getParentFile().getAbsolutePath();
-			if(s.isFile()) {
+			if(s.isDirectory()) 
+			{
+
+				convertImage(s.getAbsolutePath());
+
+			}
+
+			else if(s.isFile()) {
 				
-				System.out.println("first " + s.getName());
+				orignalImageFileList.add(s);
+				
 				fileNameWithOutExt = FilenameUtils.removeExtension(s.getName());
 				if(s.getName().endsWith(".GIF") || s.getName().endsWith(".gif") || s.getName().endsWith(".JPG") || s.getName().endsWith(".jpg")
 						|| s.getName().endsWith(".BMP") || s.getName().endsWith(".bmp") || s.getName().endsWith(".WBMP") || s.getName().endsWith(".wbmp")) {
@@ -58,22 +67,24 @@ public class ImageFileConverter {
 					ImageIO.write(bi, "jpeg", new File(s.getParentFile().getAbsoluteFile(), fileNameWithOutExt + ".jpeg"));
 
 					System.out.println("Image " + s.getName() + " was converted succesfully.");
-					storeOriginalImages1(s);
+					//imgList.add(s);
+					//storeOriginalImages1(s);
+		
 				}
-				
+
 				if(s.getName().endsWith(".ico") || s.getName().endsWith(".ICO")) 
 				{
 
 					InputStream inputStream = new FileInputStream(s);
-					System.out.println("reading2");
 					ImageIO.write(ICODecoder.read(inputStream).get(0), "png", new File(s.getParentFile().getAbsoluteFile(), fileNameWithOutExt + ".png"));
 					System.out.println("Ico was converted.");
 					inputStream.close();
-
-					storeOriginalImages1(s);
+					//imgList.add(s);
+					//storeOriginalImages1(s);
+					
 
 				}
-				
+
 				if(s.getName().endsWith(".svg") || s.getName().endsWith(".SVG")) 
 				{
 
@@ -90,24 +101,20 @@ public class ImageFileConverter {
 
 					try {
 						t.transcode(input, output);
+						//imgList.add(s);
 					} catch (TranscoderException e) {
 						e.printStackTrace();
 					}
 					// flush and close the stream
 					ostream.flush();
 					ostream.close();
-					storeOriginalImages1(s);
+					//storeOriginalImages1(s);
 				}
-
-				//System.out.println("list " + imgList);
+				imgList.add(s);
+				
 			}
 
-			if(s.isDirectory()) {
-				System.out.println("no files converted");
 
-				System.out.println("last " + s.getName());
-			}
-			imgList.add(s);
 		}
 
 	}

@@ -95,24 +95,38 @@ public class MetadataToExcelGUI{
 
 		}
 		
-		//docCon.testMethod3(sourceFolderPath);
+		docCon.testMethod3(sourceFolderPath);
 		img.convertImage(sourceFolderPath);
+		deleteFiles(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 
 	}
 	
 
-	public void removeFile3(File file) 
+	public void deleteFiles(String path) 
 	{
 
 		for(int i = 0; i<fileList.size(); i++) 
 		{
 
-			if(fileList.get(i).getName().endsWith(".doc") || fileList.get(i).getName().endsWith(".docx") || 
-					fileList.get(i).getName().endsWith(".xls") ||fileList.get(i).getName().endsWith(".xlsx") ||
-					fileList.get(i).getName().endsWith(".ppt") || fileList.get(i).getName().endsWith(".pptx")) 
+			if(fileList.get(i).getName().endsWith(".doc") || fileList.get(i).getName().endsWith(".DOC") || 
+					fileList.get(i).getName().endsWith(".docx") || fileList.get(i).getName().endsWith(".DOCX") ||
+					fileList.get(i).getName().endsWith(".xls") ||fileList.get(i).getName().endsWith(".XLS") ||
+					fileList.get(i).getName().endsWith(".xlsx") || fileList.get(i).getName().endsWith(".XLSX") ||
+					fileList.get(i).getName().endsWith(".ppt") || fileList.get(i).getName().endsWith(".PPT") ||
+				     fileList.get(i).getName().endsWith(".pptx") || fileList.get(i).getName().endsWith(".PPTX"))
 			{
+				File tempFile = fileList.get(i);
+				fileList.remove(tempFile);
+				tempFile.delete();
+			}
+			if(fileList.get(i).getName().endsWith(".gif") || fileList.get(i).getName().endsWith(".GIF") || 
+					fileList.get(i).getName().endsWith(".jpg") || fileList.get(i).getName().endsWith(".JPG") ||
+					fileList.get(i).getName().endsWith(".bmp") || fileList.get(i).getName().endsWith(".BMP") || 
+					fileList.get(i).getName().endsWith(".wbmp") || fileList.get(i).getName().endsWith("WBMP") ||
+					fileList.get(i).getName().endsWith(".ico") || fileList.get(i).getName().endsWith(".ICO") ||
+					fileList.get(i).getName().endsWith(".svg") || fileList.get(i).getName().endsWith(".SVG")) {
 				File tempFile = fileList.get(i);
 				fileList.remove(tempFile);
 				tempFile.delete();

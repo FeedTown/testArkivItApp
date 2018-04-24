@@ -128,6 +128,7 @@ public class DocumentConverter {
 			{
 				//Stores the original files for the html/css/js parser
 				originalListFile.add(f);
+				
 				// Converting the document to the favoured type
 				try 
 				{
