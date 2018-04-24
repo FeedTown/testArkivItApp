@@ -48,30 +48,19 @@ public class DocumentConverter {
 	ArrayList<File> fileList = new ArrayList<>(); 
 
 
+	
+
 	public DocumentConverter() {
 
 	}
 
-	public  File getOutdir() {
-		return outdir;
-	}
-
-	public  void setOutdir(File outdir) {
-		this.outdir = outdir;
-	}
-
-	public String getsOutUrl() {
-		return sOutUrl;
-	}
-
-	public void setsOutUrl(String sOutUrl) {
-		this.sOutUrl = sOutUrl;
-	}
+	
 
 
 	public void testMethod3(String targetPath) {
 
-		String libreOfficePath = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
+		//String libreOfficePath = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
+		String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
 
 		XComponentContext xContext = null;
 
@@ -102,7 +91,8 @@ public class DocumentConverter {
 			sExtension = "pdf";
 
 			traverse3(targetPath);
-			//removeFile3(file);
+			//removeFile3(fileDirectory);
+		
 
 		} 
 
@@ -244,5 +234,25 @@ public class DocumentConverter {
 			}
 
 		} 
+	}
+	
+	public  File getOutdir() {
+		return outdir;
+	}
+
+	public  void setOutdir(File outdir) {
+		this.outdir = outdir;
+	}
+
+	public String getsOutUrl() {
+		return sOutUrl;
+	}
+
+	public void setsOutUrl(String sOutUrl) {
+		this.sOutUrl = sOutUrl;
+	}
+	
+	public ArrayList<File> getOriginalListFile() {
+		return originalListFile;
 	}
 }

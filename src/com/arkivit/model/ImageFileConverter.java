@@ -24,7 +24,7 @@ import org.apache.batik.transcoder.TranscoderOutput;
 public class ImageFileConverter {
 
 
-	private MetadataToExcelGUI model;
+	//private MetadataToExcelGUI model;
 	private String fileNameWithOutExt = "";
 	private File imgFile;
 	private ArrayList<File> imgList = new ArrayList<>();
@@ -142,7 +142,7 @@ public class ImageFileConverter {
 
 	} */
 
-	public void storeOriginalImages1(File illegalExtension) throws IOException 
+	/*public void storeOriginalImages1(File illegalExtension) throws IOException 
 	{
 		File illegalExtensionDest = new File(model.getTargetexcelFilepath() + "/" + model.getFolderName() + "_img_backup");
 		System.out.println(illegalExtension + "/" + illegalExtensionDest);
@@ -153,6 +153,11 @@ public class ImageFileConverter {
 			e.printStackTrace();
 		}
 
-	} 
+	}  */
+	
+	public ArrayList<File> getOrignalImageFileList() {
+		return orignalImageFileList;
+	}
+
 
 }
