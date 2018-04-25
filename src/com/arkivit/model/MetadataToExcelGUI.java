@@ -97,8 +97,8 @@ public class MetadataToExcelGUI{
 
 		docCon.testMethod3(sourceFolderPath);
 		deleteOfficeFiles(sourceFolderPath);
-		//img.convertImage(sourceFolderPath);
-		//deleteImageFiles(sourceFolderPath);
+		img.convertImage(sourceFolderPath);
+		deleteIllegalImageFiles(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 
@@ -107,61 +107,49 @@ public class MetadataToExcelGUI{
 
 	public void deleteOfficeFiles(String officePath) 
 	{
-		File tempFile;
-		for(int i = 0; i<docCon.getOriginalListFile().size(); i++) 
+		ArrayList<File> deletedOfficeFilesList = new ArrayList<>();
+		
+		for(File f : docCon.getOriginalListFile()) 
 		{
 
-				if(docCon.getOriginalListFile().get(i).getName().endsWith(".doc") || docCon.getOriginalListFile().get(i).getName().endsWith(".DOC") || 
-						docCon.getOriginalListFile().get(i).getName().endsWith(".docx") || docCon.getOriginalListFile().get(i).getName().endsWith(".DOCX") ||
-						docCon.getOriginalListFile().get(i).getName().endsWith(".xls") ||docCon.getOriginalListFile().get(i).getName().endsWith(".XLS") ||
-						docCon.getOriginalListFile().get(i).getName().endsWith(".xlsx") || docCon.getOriginalListFile().get(i).getName().endsWith(".XLSX") ||
-						docCon.getOriginalListFile().get(i).getName().endsWith(".ppt") || docCon.getOriginalListFile().get(i).getName().endsWith(".PPT") ||
-						docCon.getOriginalListFile().get(i).getName().endsWith(".pptx") || docCon.getOriginalListFile().get(i).getName().endsWith(".PPTX"))
+				if(f.getName().endsWith(".doc") || f.getName().endsWith(".DOC") || 
+						f.getName().endsWith(".docx") || f.getName().endsWith(".DOCX") ||
+						f.getName().endsWith(".xls") || f.getName().endsWith(".XLS") ||
+						f.getName().endsWith(".xlsx") || f.getName().endsWith(".XLSX") ||
+						f.getName().endsWith(".ppt") || f.getName().endsWith(".PPT") ||
+						f.getName().endsWith(".pptx") || f.getName().endsWith(".PPTX"))
 				{
 
-					tempFile = docCon.getOriginalListFile().get(i);
-					docCon.getOriginalListFile().remove(tempFile);
-					tempFile.delete();
+					deletedOfficeFilesList.remove(f);
+					f.delete();
 				}
 			
-			
+		
 		}
 
-		/*for(int i = 0; i<img.getOrignalImageFileList().size(); i++) {
-			imgFile = img.getOrignalImageFileList().get(i);
-			if(img.getOrignalImageFileList().get(i).getName().endsWith(".gif") || img.getOrignalImageFileList().get(i).getName().endsWith(".GIF") || 
-					img.getOrignalImageFileList().get(i).getName().endsWith(".jpg") || img.getOrignalImageFileList().get(i).getName().endsWith(".JPG") ||
-					img.getOrignalImageFileList().get(i).getName().endsWith(".bmp") || img.getOrignalImageFileList().get(i).getName().endsWith(".BMP") || 
-					img.getOrignalImageFileList().get(i).getName().endsWith(".wbmp") || img.getOrignalImageFileList().get(i).getName().endsWith("WBMP") ||
-					img.getOrignalImageFileList().get(i).getName().endsWith(".ico") || img.getOrignalImageFileList().get(i).getName().endsWith(".ICO") ||
-					img.getOrignalImageFileList().get(i).getName().endsWith(".svg") || img.getOrignalImageFileList().get(i).getName().endsWith(".SVG")) {
-
-				img.getOrignalImageFileList().remove(imgFile);
-				imgFile.delete();
-			}
-
-		} */
+		
 	}
 
-	public void deleteImageFiles(String imgPath) {
+	public void deleteIllegalImageFiles(String imagePath) {
 
-		File imgFile;
-		for(int i = 0; i<img.getOrignalImageFileList().size(); i++) {
+		ArrayList<File> deletedImageFilesList = new ArrayList<>();
+		
+		for(File f : img.getOrignalImageFileList()) {
 
-			if(img.getOrignalImageFileList().get(i).getName().endsWith(".gif") || img.getOrignalImageFileList().get(i).getName().endsWith(".GIF") || 
-					img.getOrignalImageFileList().get(i).getName().endsWith(".jpg") || img.getOrignalImageFileList().get(i).getName().endsWith(".JPG") ||
-					img.getOrignalImageFileList().get(i).getName().endsWith(".bmp") || img.getOrignalImageFileList().get(i).getName().endsWith(".BMP") || 
-					img.getOrignalImageFileList().get(i).getName().endsWith(".wbmp") || img.getOrignalImageFileList().get(i).getName().endsWith("WBMP") ||
-					img.getOrignalImageFileList().get(i).getName().endsWith(".ico") || img.getOrignalImageFileList().get(i).getName().endsWith(".ICO") ||
-					img.getOrignalImageFileList().get(i).getName().endsWith(".svg") || img.getOrignalImageFileList().get(i).getName().endsWith(".SVG")) {
-				imgFile = img.getOrignalImageFileList().get(i);
-				img.getOrignalImageFileList().remove(imgFile);
-				imgFile.delete();
+			if(f.getName().endsWith(".gif") || f.getName().endsWith(".GIF") || 
+					f.getName().endsWith(".jpg") || f.getName().endsWith(".JPG") ||
+					f.getName().endsWith(".bmp") || f.getName().endsWith(".BMP") || 
+					f.getName().endsWith(".wbmp") || f.getName().endsWith("WBMP") ||
+					f.getName().endsWith(".ico") || f.getName().endsWith(".ICO") ||
+					f.getName().endsWith(".svg") || f.getName().endsWith(".SVG")) {
+				
+				deletedImageFilesList.remove(f);
+				f.delete();
 			}
 
 		} 
 
-	}
+	} 
 
 	//Copying folder to outside of the root folder
 	private void copyFolder() {
@@ -179,9 +167,6 @@ public class MetadataToExcelGUI{
 	//Clear ArrayList(s) if they aren't empty
 	public void clearArrayList() {
 
-		//if(!(fileList.isEmpty() || fileNameList.isEmpty() || sizeList.isEmpty() || filePathList.isEmpty()))
-		//{
-		//convertedFileList.clear();
 		fileList.clear();
 		fileNameList.clear();
 		sizeList.clear();
@@ -189,10 +174,7 @@ public class MetadataToExcelGUI{
 		fileDuration.getAudioVideoList().clear();
 		illegalCharFiles.clear();
 		mappedFiles.clear();
-
-
-		//}
-
+		
 	}
 
 	/* Goes through folder and subfolders and adding files to an ArrayList.
@@ -216,16 +198,15 @@ public class MetadataToExcelGUI{
 			{
 				
 
-				if(tempFile.getName().endsWith(".gif") || tempFile.getName().endsWith(".GIF") || 
-						tempFile.getName().endsWith(".jpg") || tempFile.getName().endsWith(".JPG") ||
-						tempFile.getName().endsWith(".bmp") || tempFile.getName().endsWith(".BMP") || 
-						tempFile.getName().endsWith(".wbmp") || tempFile.getName().endsWith("WBMP") ||
-						tempFile.getName().endsWith(".ico") || tempFile.getName().endsWith(".ICO") ||
-						tempFile.getName().endsWith(".svg") || tempFile.getName().endsWith(".SVG")) {
+				/*if(tempFile.getName().endsWith(".doc") || tempFile.getName().endsWith(".DOC") || 
+						tempFile.getName().endsWith(".docx") || tempFile.getName().endsWith(".DOCX") ||
+						tempFile.getName().endsWith(".xls") || tempFile.getName().endsWith(".XLS") ||
+						tempFile.getName().endsWith(".xlsx") || tempFile.getName().endsWith(".XLSX"))
+				{ 
 					//imgFile = img.getOrignalImageFileList().get(i);
 					fileList.remove(tempFile);
 					tempFile.delete();
-				}
+				} */
 
 				if(mapping)
 				{
