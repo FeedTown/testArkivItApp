@@ -57,7 +57,7 @@ public class DocumentConverter {
 	
 
 
-	public void testMethod3(String targetPath) {
+	public void libreOfficeConnectionMethod(String targetPath) {
 
 		//String libreOfficePath = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
 		String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
@@ -90,7 +90,7 @@ public class DocumentConverter {
 			// origin document
 			sExtension = "pdf";
 
-			traverse3(targetPath);
+			traverseAndConvert(targetPath);
 			//removeFile3(fileDirectory);
 		
 
@@ -101,10 +101,10 @@ public class DocumentConverter {
 			e.printStackTrace(System.err);
 			System.exit(1);
 		}
-		//return file;
+	
 	}
 
-	public void traverse3(String targetPath) {
+	public void traverseAndConvert(String targetPath) {
 		//ArrayList<File> fileList = new ArrayList<>(); 
 		//fileList.add(fileDirectory);
 		fileDirectory = new File(targetPath);
@@ -211,7 +211,7 @@ public class DocumentConverter {
 			}
 			else if (f.isDirectory()) 
 			{
-				traverse3(f.getAbsolutePath());
+				traverseAndConvert(f.getAbsolutePath());
 			}
 		}
 

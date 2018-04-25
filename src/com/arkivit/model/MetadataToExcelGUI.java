@@ -95,10 +95,10 @@ public class MetadataToExcelGUI{
 
 		}
 
-		//docCon.testMethod3(sourceFolderPath);
-		//deleteOfficeFiles(sourceFolderPath);
-		//img.convertImage(sourceFolderPath);
-		//deleteIllegalImageFiles(sourceFolderPath);
+		docCon.libreOfficeConnectionMethod(sourceFolderPath);
+		deleteOfficeFiles(sourceFolderPath);
+		img.convertImage(sourceFolderPath);
+		deleteIllegalImageFiles(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 
