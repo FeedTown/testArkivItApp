@@ -109,9 +109,4 @@ public class FileInfoStorageBean {
 		this.commentColl = commentColl;
 	}
 
-	
-	
-	
-	
-
 }

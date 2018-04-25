@@ -86,8 +86,8 @@ public class FirstScene {
 		OA = new Label("*Organisationsnummer arkivbildare:");
 		LM = new Label("*Levererande myndighet:");
 	    OLM = new Label("*Organisationsnummer levererande myndighet:");
-		KFL = new Label("*Kontaktperson för leverans:");
-		SK = new Label("Servicebyrå/Konsult:");
+		KFL = new Label("*Kontaktperson fï¿½r leverans:");
+		SK = new Label("Servicebyrï¿½/Konsult:");
 		TTK = new Label("*Telefonnummer till kontaktperson:");
 		EK = new Label("*E-post-adress till kontakperson:");
 		AN = new Label("*Arkivets namn:");
@@ -462,9 +462,5 @@ public class FirstScene {
 	public void setKOM(Label kOM) {
 		KOM = kOM;
 	}
-	
-	
-	
-
-
+		
 }

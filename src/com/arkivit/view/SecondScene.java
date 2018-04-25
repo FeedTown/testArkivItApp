@@ -383,7 +383,5 @@ public class SecondScene{
 
 	public void setPersonalDataYesBox(CheckBox personalDataYesBox) {
 		this.personalDataYesBox = personalDataYesBox;
-	}
-	
-	
+	}	
 }

@@ -95,10 +95,10 @@ public class MetadataToExcelGUI{
 
 		}
 
-		docCon.testMethod3(sourceFolderPath);
-		deleteOfficeFiles(sourceFolderPath);
-		img.convertImage(sourceFolderPath);
-		deleteIllegalImageFiles(sourceFolderPath);
+		//docCon.testMethod3(sourceFolderPath);
+		//deleteOfficeFiles(sourceFolderPath);
+		//img.convertImage(sourceFolderPath);
+		//deleteIllegalImageFiles(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
 
@@ -443,7 +443,7 @@ public class MetadataToExcelGUI{
 		System.out.println("File name list length : " + fileListeLength);
 
 
-		System.out.println("Last list check....:" + fileNameList);
+		//System.out.println("Last list check....:" + fileNameList);
 
 		try {
 
