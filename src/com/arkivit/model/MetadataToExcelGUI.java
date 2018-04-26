@@ -45,6 +45,7 @@ public class MetadataToExcelGUI{
 	private GeneralBean generalBean = new GeneralBean();
 	private DocumentConverter docCon = new DocumentConverter();
 	private ImageFileConverter img = new ImageFileConverter();
+	private FileExtension officeFileEx = new FileExtension();
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private boolean isLibreOfficeOpen = false;
@@ -95,8 +96,11 @@ public class MetadataToExcelGUI{
 
 		}
 
+
 		docCon.libreOfficeConnectionMethod(sourceFolderPath);
 		deleteOfficeFiles(sourceFolderPath);
+
+
 		img.convertImage(sourceFolderPath);
 		deleteIllegalImageFiles(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
@@ -108,32 +112,32 @@ public class MetadataToExcelGUI{
 	public void deleteOfficeFiles(String officePath) 
 	{
 		ArrayList<File> deletedOfficeFilesList = new ArrayList<>();
-		
+
 		for(File f : docCon.getOriginalListFile()) 
 		{
 
-				if(f.getName().endsWith(".doc") || f.getName().endsWith(".DOC") || 
-						f.getName().endsWith(".docx") || f.getName().endsWith(".DOCX") ||
-						f.getName().endsWith(".xls") || f.getName().endsWith(".XLS") ||
-						f.getName().endsWith(".xlsx") || f.getName().endsWith(".XLSX") ||
-						f.getName().endsWith(".ppt") || f.getName().endsWith(".PPT") ||
-						f.getName().endsWith(".pptx") || f.getName().endsWith(".PPTX"))
-				{
+			if(f.getName().endsWith(".doc") || f.getName().endsWith(".DOC") || 
+					f.getName().endsWith(".docx") || f.getName().endsWith(".DOCX") ||
+					f.getName().endsWith(".xls") || f.getName().endsWith(".XLS") ||
+					f.getName().endsWith(".xlsx") || f.getName().endsWith(".XLSX") ||
+					f.getName().endsWith(".ppt") || f.getName().endsWith(".PPT") ||
+					f.getName().endsWith(".pptx") || f.getName().endsWith(".PPTX"))
+			{
 
-					deletedOfficeFilesList.remove(f);
-					f.delete();
-				}
-			
-		
+				deletedOfficeFilesList.remove(f);
+				f.delete();
+			}
+
+
 		}
 
-		
+
 	}
 
 	public void deleteIllegalImageFiles(String imagePath) {
 
 		ArrayList<File> deletedImageFilesList = new ArrayList<>();
-		
+
 		for(File f : img.getOrignalImageFileList()) {
 
 			if(f.getName().endsWith(".gif") || f.getName().endsWith(".GIF") || 
@@ -142,7 +146,7 @@ public class MetadataToExcelGUI{
 					f.getName().endsWith(".wbmp") || f.getName().endsWith("WBMP") ||
 					f.getName().endsWith(".ico") || f.getName().endsWith(".ICO") ||
 					f.getName().endsWith(".svg") || f.getName().endsWith(".SVG")) {
-				
+
 				deletedImageFilesList.remove(f);
 				f.delete();
 			}
@@ -174,7 +178,7 @@ public class MetadataToExcelGUI{
 		fileDuration.getAudioVideoList().clear();
 		illegalCharFiles.clear();
 		mappedFiles.clear();
-		
+
 	}
 
 	/* Goes through folder and subfolders and adding files to an ArrayList.
@@ -196,17 +200,7 @@ public class MetadataToExcelGUI{
 
 			if(currentFileOrDir.isFile())
 			{
-				
 
-				/*if(tempFile.getName().endsWith(".doc") || tempFile.getName().endsWith(".DOC") || 
-						tempFile.getName().endsWith(".docx") || tempFile.getName().endsWith(".DOCX") ||
-						tempFile.getName().endsWith(".xls") || tempFile.getName().endsWith(".XLS") ||
-						tempFile.getName().endsWith(".xlsx") || tempFile.getName().endsWith(".XLSX"))
-				{ 
-					//imgFile = img.getOrignalImageFileList().get(i);
-					fileList.remove(tempFile);
-					tempFile.delete();
-				} */
 
 				if(mapping)
 				{

@@ -1,5 +1,6 @@
 package com.arkivit.model;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class FileExtension {
@@ -58,6 +59,39 @@ public class FileExtension {
 		{
 			return false;
 		}
+
+	}
+
+	public String getOfficeExtensions()
+	{
+		convertExList = new ArrayList<>();		
+		String tempEx;
+		for(String f : convertExList)
+		{	
+			if(f.endsWith(".doc") || f.endsWith(".DOC") || 
+					f.endsWith(".docx") || f.endsWith(".DOCX") ||
+					f.endsWith(".xls") || f.endsWith(".XLS") ||
+					f.endsWith(".xlsx") || f.endsWith(".XLSX") ||
+					f.endsWith(".ppt") || f.endsWith(".PPT") ||
+					f.endsWith(".pptx") || f.endsWith(".PPTX"))
+			{
+				f = getFileName;
+				convertExList.add(getFileName);
+			}
+			
+			/*if(f.getName().endsWith(".doc") || f.getName().endsWith(".DOC") || 
+					f.getName().endsWith(".docx") || f.getName().endsWith(".DOCX") ||
+					f.getName().endsWith(".xls") || f.getName().endsWith(".XLS") ||
+					f.getName().endsWith(".xlsx") || f.getName().endsWith(".XLSX") ||
+					f.getName().endsWith(".ppt") || f.getName().endsWith(".PPT") ||
+					f.getName().endsWith(".pptx") || f.getName().endsWith(".PPTX"))
+			{
+				convertExList.add(f);
+			} */
+			return getFileName;
+		}
+		return getFileName;
+
 
 	}
 
