@@ -52,7 +52,6 @@ public class ImageFileConverter {
 
 		}
 
-
 	}
 
 	public void storeOriginalImages() throws IOException {

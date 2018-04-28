@@ -13,7 +13,7 @@ import Test.code.TestJsoup;
 public class ReadAndUpdateLinks {
 
 	private String filePath;
-	private UpdateStringForHtml htmlWordUpdater = new UpdateStringForHtml();
+	//private UpdateStringForHtml htmlWordUpdater = new UpdateStringForHtml();
 	private TestJsoup tJsoup = new TestJsoup();
 
 	public ReadAndUpdateLinks(String filePath) {
@@ -27,7 +27,7 @@ public class ReadAndUpdateLinks {
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath));) {
 
 			String line = "";
-			
+
 			while((line = br.readLine()) != null)
 			{
 				list.add(line);
@@ -40,38 +40,32 @@ public class ReadAndUpdateLinks {
 		return list;
 	}
 
-	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList) throws IOException
+	public void updateInfoInFile(String searchWord, String updatedWord, List<String> brList, String fileExt) throws IOException
 	{
+		
 		String word = "";
-		String splittedValue ="";
-		String[] arr;
+		//String splittedValue ="";
+		//String[] arr;
 		for(int i = 0; i < brList.size(); i++)
 		{
+			//System.out.println("Line "+ i+1 + brList.get(i).toString());
 			if(brList.get(i).contains(searchWord))
 			{
-
-				System.out.println(brList.get(i).toString());
-
-				/*arr = brList.get(i).split("\\\\");
-				int newCounter = 0;
-				for(String tmp : arr)
+				if(fileExt.equals("css"))
 				{
-
-					newCounter++;
-				}*/
-
-				//word = brList.get(i).replaceAll(searchWord, updatedWord);
-				word = htmlWordUpdater.updateWordInString(brList.get(i), searchWord, updatedWord);
-				//word = tJsoup.jSoupExtractElementsFromHtmlFile2(brList.get(i), searchWord, updatedWord, filePath);
-
+					word = updateCssString(brList.get(i), searchWord, updatedWord);
+				}
+				else
+				{
+					word = tJsoup.jSoupExtractElementsFromHtmlFile(brList.get(i), searchWord, updatedWord);
+				}
 				
-					brList.set(i, word);
-					writeToFile(brList);
-	
+				brList.set(i, word);
+				writeToFile(brList);
+
 			}
 		}
 	}
-
 
 	public void writeToFile(List<String> currFile) throws IOException
 	{
@@ -86,6 +80,14 @@ public class ReadAndUpdateLinks {
 
 		w.close();
 
+	}
+	
+	public String updateCssString(String currentLine, String searchWord, String updatedWord)
+	{
+		//System.out.println("Cssline before update : " + currentLine);
+		currentLine = currentLine.replaceAll("\\b"+searchWord+"\\b", updatedWord);
+	
+		return currentLine;
 	}
 
 }
