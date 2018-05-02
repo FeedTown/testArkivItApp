@@ -1,4 +1,4 @@
-package Test.code;
+package com.hibernate;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +15,7 @@ public class TestJDBC {
 			System.out.println("Connetcing to database.."  + jdbcUrl);
 			Connection myCon = DriverManager.getConnection(jdbcUrl, user, password);
 			System.out.println("Connection is sucessfull!");
+
 		}
 
 		catch(Exception e) 
