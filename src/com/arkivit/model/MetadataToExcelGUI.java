@@ -12,6 +12,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+import com.arkivit.model.db.Webbleveranser;
+import com.arkivit.view.FirstScene;
 
 
 /**
@@ -24,7 +30,7 @@ import org.apache.tika.Tika;
  */
 public class MetadataToExcelGUI{
 
-	//private File file;
+	private FirstScene firstScene = new FirstScene();
 	private String excelFileName, folderName = "", confidentialChecked = "", personalDataChecked = "";  
 	private long fileSize;
 	private int fileListeLength, counter = 1;
@@ -96,19 +102,60 @@ public class MetadataToExcelGUI{
 
 		}
 
-
+		//hibSession();
 		docCon.libreOfficeConnectionMethod(sourceFolderPath);
 		deleteOfficeFiles(sourceFolderPath);
-
-
 		img.convertImage(sourceFolderPath);
 		deleteIllegalImageFiles(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
-
+		
+		
 	}
 
+	public void hibSession() {
+		
+		System.out.println("SessionFactory skapas..");
+		SessionFactory factory = new Configuration().
+				configure("hibernate.cfg.xml").
+				addAnnotatedClass(Webbleveranser.class).
+				buildSessionFactory();
+		System.out.println("SessionFactory skapad..");
 
+		/*
+		 * Radera alla rader och nollställ auto increment: truncate ArkivIT.webbleveranser
+		 */
+
+		//Create session
+		System.out.println("Session skapas..");
+		Session session = factory.getCurrentSession();
+		System.out.println("Session skapad..");
+
+		try 
+		{
+
+			//create a webleverans object
+			System.out.println("Create a new object");
+			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , excelFileName, "TEST");
+			//start a transaction
+			session.beginTransaction();
+
+			//save the object
+			System.out.println("Saving the object...");
+			session.save(webLev);
+
+			//commit transaction
+			session.getTransaction().commit();
+			System.out.println("Done!");
+		}
+		finally
+		{
+			System.out.println("Factory is about to close.....");
+			factory.close();
+			System.out.println("Factory is closed!");
+		}
+		
+	}
 	public void deleteOfficeFiles(String officePath) 
 	{
 		ArrayList<File> deletedOfficeFilesList = new ArrayList<>();
@@ -438,19 +485,19 @@ public class MetadataToExcelGUI{
 
 
 		//System.out.println("Last list check....:" + fileNameList);
-
 		try {
 
 			System.out.println("Creating workbook......");
 			ExcelFileCreator createExcelF = new ExcelFileCreator(fileDuration, fileNameList , filePathList,
 					fileDecodeList, sizeList, fileList,  generalBean,targetexcelFilepath, excelFileName, confidentialChecked,personalDataChecked);
 			createExcelF.createWorkbook();
+			//hibSession();
 			System.out.println("Workbook created!");
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-
+		
 	}
 
 	private void changeLinkInFile(File file) throws IOException {

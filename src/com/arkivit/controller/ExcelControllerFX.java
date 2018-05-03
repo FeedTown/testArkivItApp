@@ -5,11 +5,14 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.text.View;
 
-import com.arkivit.model.ExcelFileCreator;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import com.arkivit.model.MappingLog;
 import com.arkivit.model.MetadataToExcelGUI;
+import com.arkivit.model.db.Webbleveranser;
 import com.arkivit.view.SecondScene;
 import com.arkivit.view.FirstScene;
 
@@ -29,7 +32,6 @@ import javafx.stage.Stage;
  * Class that connects the model with the view
  *
  */
-
 public class ExcelControllerFX extends Application {
 
 	private MetadataToExcelGUI model;
@@ -40,9 +42,9 @@ public class ExcelControllerFX extends Application {
 	private Thread loadingThread;
 	private boolean mapping = false;
 	private boolean overwrite = false;
-	private boolean converte = false;
 	private Task<?> progressTask;
 	private File backupDir;
+	File file;
 
 	/**
 	 * No args constructor with objects from classes MetadataToExcelGUI, MappingLog,  FirstScene and SecondScene
@@ -69,7 +71,7 @@ public class ExcelControllerFX extends Application {
 		this.model = model;
 		this.firstScene = firstScene;
 		this.secondScene = secondScene;
-	
+
 	}
 
 	/**
@@ -89,12 +91,12 @@ public class ExcelControllerFX extends Application {
 
 
 	}
-	
+
 	/**
 	 * Gets the users input from text fields from the first scene
 	 */
 	public void saveContentButton() {
-	
+
 		//1
 		model.getGeneralBean().setDescDelivery(firstScene.getBALtxt().getText());
 		//2
@@ -167,15 +169,15 @@ public class ExcelControllerFX extends Application {
 		alert.showAndWait();
 
 	}
-	
+
 	private void sweLangButton(ActionEvent event) {
 		firstScene.getBAL().setText("*Beskrivning av leverans:");
 		firstScene.getAK().setText("*Arkivbildare:");
 		firstScene.getOA().setText("*Organisationsnummer arkivbildare:");
 		firstScene.getLM().setText("*Levererande myndighet:");
 		firstScene.getOLM().setText("*Organisationsnummer levererande myndighet:");
-		firstScene.getKFL().setText("*Kontaktperson för leverans:");
-		firstScene.getSK().setText("Servicebyrå/Konsult:");
+		firstScene.getKFL().setText("*Kontaktperson fï¿½r leverans:");
+		firstScene.getSK().setText("Servicebyrï¿½/Konsult:");
 		firstScene.getTTK().setText("*Telefonnummer till kontaktperson:");
 		firstScene.getEK().setText("*E-post-adress till kontakperson:");
 		firstScene.getEKtxt().setPromptText("exempel@arkivit.se");
@@ -184,12 +186,12 @@ public class ExcelControllerFX extends Application {
 		firstScene.getUD().setText("Uttagsdatum:");
 		firstScene.getKOM().setText("Kommentar:");
 		firstScene.getSaveButton().setText("Spara");
-		secondScene.getBtnOpenFile().setText("Välj mapp..");
-		secondScene.getBtnOverwrite().setText("Välj katalog...");
+		secondScene.getBtnOpenFile().setText("Vï¿½lj mapp..");
+		secondScene.getBtnOverwrite().setText("Vï¿½lj katalog...");
 		secondScene.getBtnSaveAs().setText("Spara som...");
 		secondScene.getBtnConvert().setText("Skapa");
 	}
-	
+
 	private void engLangButton(ActionEvent event) {
 		firstScene.getBAL().setText("*Description of delivery:");
 		firstScene.getAK().setText("*Archive creator:");
@@ -226,7 +228,7 @@ public class ExcelControllerFX extends Application {
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		//Show save file dialog
-		File file = fileChooser.showSaveDialog(stage);
+		file = fileChooser.showSaveDialog(stage);
 
 		//If file is not null, write to file using output stream.
 		if (file != null) {
@@ -315,9 +317,9 @@ public class ExcelControllerFX extends Application {
 			model.setConfidentialChecked("");
 		}
 	}
-	
+
 	private void confidentialBox() {
-		
+
 		if(secondScene.getConfidentialCheckBox().isSelected()) {
 			secondScene.getConfidentialYesBox().setSelected(false);
 			model.setConfidentialChecked("NEJ");
@@ -326,7 +328,7 @@ public class ExcelControllerFX extends Application {
 			model.setConfidentialChecked("");
 		}
 	}
-	
+
 	private void personalDataBox() {
 		if(secondScene.getPersonalDataBox().isSelected()) {
 			secondScene.getPersonalDataYesBox().setSelected(false);
@@ -336,7 +338,7 @@ public class ExcelControllerFX extends Application {
 			model.setPersonalDataChecked("");
 		}
 	}
-	
+
 	private void personalDataYesBox() {
 		if(secondScene.getPersonalDataYesBox().isSelected()) {
 			secondScene.getPersonalDataBox().setSelected(false);
@@ -579,22 +581,22 @@ public class ExcelControllerFX extends Application {
 
 			//if(event.getSource().equals(firstScene.getSaveButton()))
 			//{
-				saveContentButton();
+			saveContentButton();
 
-				//if(checkRequestedFields() && validateEmail() && validateNumbers() == true) 
-				//{
+			//if(checkRequestedFields() && validateEmail() && validateNumbers() == true) 
+			//{
 
-					stage.setScene(secondScene.getSecondScene());
-				//firstScene.getBALtxt().getStyleClass().remove("error");
+			stage.setScene(secondScene.getSecondScene());
+			//firstScene.getBALtxt().getStyleClass().remove("error");
 
-				/*secondScene.getMappCheckBox().setDisable(true);
+			/*secondScene.getMappCheckBox().setDisable(true);
 				secondScene.getOverwriteCheckBox().setDisable(true);
 				secondScene.getBtnConvert().setDisable(true);
 				secondScene.getBtnSaveAs().setDisable(true);*/
 
 
 			//}
-			 if(event.getSource().equals(secondScene.getBtnOpenFile()))
+			if(event.getSource().equals(secondScene.getBtnOpenFile()))
 			{
 				openButton(event, stage);
 			}
@@ -605,6 +607,7 @@ public class ExcelControllerFX extends Application {
 			else if(event.getSource().equals(secondScene.getBtnConvert()))
 			{
 				createButton(event);
+				hibernateSession();				
 			}
 			else if(event.getSource().equals(secondScene.getBtnBack())){
 				stage.setScene(firstScene.getFirstScene());
@@ -644,6 +647,49 @@ public class ExcelControllerFX extends Application {
 		}
 
 	}
+	
+	public void hibernateSession() {
+		System.out.println("SessionFactory skapas..");
+		SessionFactory factory = new Configuration().
+				configure("hibernate.cfg.xml").
+				addAnnotatedClass(Webbleveranser.class).
+				buildSessionFactory();
+		System.out.println("SessionFactory skapad..");
+
+		/*
+		 * Radera alla rader och nollstÃ¤ll auto increment: truncate ArkivIT.webbleveranser
+		 */
+
+		//Create session
+		System.out.println("Session skapas..");
+		Session session = factory.getCurrentSession();
+		System.out.println("Session skapad..");
+
+		try 
+		{
+
+			//create a webleverans object
+			System.out.println("Create a new object");
+			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , file.getName(), "TESTT");
+			//start a transaction
+			session.beginTransaction();
+
+			//save the object
+			System.out.println("Saving the object...");
+			session.save(webLev);
+
+			//commit transaction
+			session.getTransaction().commit();
+			System.out.println("Done!");
+		}
+		finally
+		{
+			System.out.println("Factory is about to close.....");
+			factory.close();
+			System.out.println("Factory is closed!");
+		}
+	}
+
 
 }
 
