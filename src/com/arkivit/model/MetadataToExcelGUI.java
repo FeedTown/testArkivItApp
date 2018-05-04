@@ -12,11 +12,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
-import com.arkivit.model.db.Webbleveranser;
 import com.arkivit.view.FirstScene;
 
 
@@ -30,7 +25,6 @@ import com.arkivit.view.FirstScene;
  */
 public class MetadataToExcelGUI{
 
-	private FirstScene firstScene = new FirstScene();
 	private String excelFileName, folderName = "", confidentialChecked = "", personalDataChecked = "";  
 	private long fileSize;
 	private int fileListeLength, counter = 1;
@@ -51,7 +45,6 @@ public class MetadataToExcelGUI{
 	private GeneralBean generalBean = new GeneralBean();
 	private DocumentConverter docCon = new DocumentConverter();
 	private ImageFileConverter img = new ImageFileConverter();
-	private FileExtension officeFileEx = new FileExtension();
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private boolean isLibreOfficeOpen = false;
@@ -80,6 +73,7 @@ public class MetadataToExcelGUI{
 		//fileList = new ArrayList<File>();
 		//testMeth();
 	} 
+	
 
 	/**
 	 * Name of source folder instantiated and
@@ -90,6 +84,9 @@ public class MetadataToExcelGUI{
 	 * @throws TranscoderException 
 	 */
 	public void init(boolean mapp, boolean overW) throws IOException{
+		
+		
+		
 		this.mapping = mapp;
 		this.overwrite = overW;
 		folderName = new File(sourceFolderPath).getName();
@@ -102,60 +99,17 @@ public class MetadataToExcelGUI{
 
 		}
 
-		//hibSession();
 		docCon.libreOfficeConnectionMethod(sourceFolderPath);
 		deleteOfficeFiles(sourceFolderPath);
 		img.convertImage(sourceFolderPath);
 		deleteIllegalImageFiles(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
 		getAndAddFileDataToList();
-		
-		
-	}
-
-	public void hibSession() {
-		
-		System.out.println("SessionFactory skapas..");
-		SessionFactory factory = new Configuration().
-				configure("hibernate.cfg.xml").
-				addAnnotatedClass(Webbleveranser.class).
-				buildSessionFactory();
-		System.out.println("SessionFactory skapad..");
-
-		/*
-		 * Radera alla rader och nollställ auto increment: truncate ArkivIT.webbleveranser
-		 */
-
-		//Create session
-		System.out.println("Session skapas..");
-		Session session = factory.getCurrentSession();
-		System.out.println("Session skapad..");
-
-		try 
-		{
-
-			//create a webleverans object
-			System.out.println("Create a new object");
-			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , excelFileName, "TEST");
-			//start a transaction
-			session.beginTransaction();
-
-			//save the object
-			System.out.println("Saving the object...");
-			session.save(webLev);
-
-			//commit transaction
-			session.getTransaction().commit();
-			System.out.println("Done!");
-		}
-		finally
-		{
-			System.out.println("Factory is about to close.....");
-			factory.close();
-			System.out.println("Factory is closed!");
-		}
+		closeLibreOffice();
 		
 	}
+
+	
 	public void deleteOfficeFiles(String officePath) 
 	{
 		ArrayList<File> deletedOfficeFilesList = new ArrayList<>();
@@ -632,6 +586,38 @@ public class MetadataToExcelGUI{
 		}
 
 		return index;
+	}
+	
+	public void closeLibreOffice() {
+		Runtime rt = Runtime.getRuntime();
+		String libreOfficeApp = "LibreOffice.app";
+		String  osName;
+		
+		try 
+
+		{
+			osName = System.getProperty("os.name");
+			//test(p.getInputStream());
+			if(osName.contains("Windows"))
+			{
+				rt.exec("taskkill /IM soffice.bin");
+			}
+			else if(osName.contains("Mac") || osName.contains("Ubuntu") || osName.contains("Debian"))
+			{
+				rt.exec("pkill -f " + libreOfficeApp);
+			}
+
+
+		} 
+
+		catch (IOException e) 
+		{
+
+			e.printStackTrace();
+
+		} 
+		
+		
 	}
 
 	public String getFolderName() {

@@ -2,6 +2,9 @@ package com.arkivit.controller;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,22 +141,27 @@ public class ExcelControllerFX extends Application {
 	 * Actions that performs to create the excel file
 	 * @param event
 	 */
-	private void createButton(ActionEvent event){
+	private void createButton(ActionEvent event, OnConvertFinish onFinish){
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
-			progressBar();
+			progressBar(onFinish);
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
 			model.clearArrayList();
 			secondScene.getBtnConvert().setDisable(true);
 		}
 		else if(check){
-			progressBar();
+			progressBar(onFinish);
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
 
 		}
-
+		/*try {
+			hibernateSession();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} */
 
 	}
 
@@ -477,10 +485,9 @@ public class ExcelControllerFX extends Application {
 	 * Actions performed when tasks are succeeded
 	 * Mapping of illegal characters
 	 */
-	public void progressBar() {
+	public void progressBar(OnConvertFinish onFinish) {
 
 		progressTask = getProgress();
-
 		secondScene.getPi().setVisible(true);
 		secondScene.getWaitLabel().setVisible(true);
 		//secondScene.getPb().setProgress(0);
@@ -512,6 +519,8 @@ public class ExcelControllerFX extends Application {
 				model.setPersonalDataChecked("");
 				mapping = false;
 				overwrite = false;
+				
+				onFinish.proceed();
 			}
 
 		});
@@ -549,8 +558,7 @@ public class ExcelControllerFX extends Application {
 				{
 					log.mappedLog();
 				} 
-
-
+				
 				secondScene.getPi().setVisible(false);
 				secondScene.getWaitLabel().setVisible(false);
 				//secondScene.getPb().setVisible(true);
@@ -606,8 +614,13 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(secondScene.getBtnConvert()))
 			{
-				createButton(event);
-				hibernateSession();				
+				//try {
+					createButton(event, () -> hibernateSession());
+				/*	hibernateSession();
+				} catch ( IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	 */			
 			}
 			else if(event.getSource().equals(secondScene.getBtnBack())){
 				stage.setScene(firstScene.getFirstScene());
@@ -648,7 +661,7 @@ public class ExcelControllerFX extends Application {
 
 	}
 	
-	public void hibernateSession() {
+	public void hibernateSession()  {
 		System.out.println("SessionFactory skapas..");
 		SessionFactory factory = new Configuration().
 				configure("hibernate.cfg.xml").
@@ -664,13 +677,13 @@ public class ExcelControllerFX extends Application {
 		System.out.println("Session skapas..");
 		Session session = factory.getCurrentSession();
 		System.out.println("Session skapad..");
-
+		//FileInputStream dbFile = new FileInputStream(file);
 		try 
 		{
-
+			
 			//create a webleverans object
 			System.out.println("Create a new object");
-			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , file.getName(), "TESTT");
+			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , file);
 			//start a transaction
 			session.beginTransaction();
 
@@ -686,6 +699,7 @@ public class ExcelControllerFX extends Application {
 		{
 			System.out.println("Factory is about to close.....");
 			factory.close();
+			//dbFile.close();
 			System.out.println("Factory is closed!");
 		}
 	}

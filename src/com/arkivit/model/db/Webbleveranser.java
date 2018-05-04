@@ -1,12 +1,14 @@
 package com.arkivit.model.db;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -21,21 +23,20 @@ public class Webbleveranser {
 
 		@Column(name="Company")
 		private String company;
-
-		@Column(name="Excel_File")
-		private String excelFile;
-
-		@Column(name="Log")
-		private String log;
 		
+		@Lob
+		@Column(name="Excel_File")
+		private File excelFile;
+
+
 		public Webbleveranser() {
 			
 		}
 
-		public Webbleveranser(String company, String excelFile, String log) {
+		public Webbleveranser(String company, File excelFile) {
 			this.company = company;
 			this.excelFile = excelFile;
-			this.log = log;
+
 		}
 
 		public int getId() {
@@ -54,25 +55,18 @@ public class Webbleveranser {
 			this.company = company;
 		}
 
-		public String getExcelFile() {
+		public File getExcelFile() {
 			return excelFile;
 		}
 
-		public void setExcelFile(String excelFile) {
+		public void setExcelFile(File excelFile) {
 			this.excelFile = excelFile;
 		}
 
-		public String getLog() {
-			return log;
-		}
-
-		public void setLog(String log) {
-			this.log = log;
-		}
 
 		@Override
 		public String toString() {
-			return "WebLev [id=" + id + ", company=" + company + ", excelFile=" + excelFile + ", log=" + log + "]";
+			return "WebLev [id=" + id + ", company=" + company + ", excelFile=" + excelFile + "]";
 		}
 
 	}

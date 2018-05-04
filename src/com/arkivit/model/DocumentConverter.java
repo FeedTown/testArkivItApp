@@ -69,10 +69,11 @@ public class DocumentConverter {
 			// get the remote office component context
 			xContext = BootstrapSocketConnector.bootstrap(libreOfficePath);
 			System.out.println("Connected to a running office ...");
-
+		
 			// get the remote office service manager
 			XMultiComponentFactory xMCF =
 					xContext.getServiceManager();
+
 
 			Object oDesktop = xMCF.createInstanceWithContext(
 					"com.sun.star.frame.Desktop", xContext);
@@ -82,7 +83,7 @@ public class DocumentConverter {
 			xCompLoader = UnoRuntime.queryInterface(com.sun.star.frame.XComponentLoader.class,
 					xDesktop);
 
-
+	
 			// Getting the given type to convert to
 			sConvertType = "writer_pdf_Export";
 
