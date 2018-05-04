@@ -672,6 +672,7 @@ public class ExcelControllerFX extends Application {
 			//commit transaction
 			session.getTransaction().commit();
 			System.out.println("Done!");
+			//session.close();
 	
 		}
 		/*finally
