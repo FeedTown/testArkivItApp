@@ -48,6 +48,7 @@ public class ExcelControllerFX extends Application {
 	private Task<?> progressTask;
 	private File backupDir;
 	File file;
+	private String aa;
 
 	/**
 	 * No args constructor with objects from classes MetadataToExcelGUI, MappingLog,  FirstScene and SecondScene
