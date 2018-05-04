@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -649,23 +649,13 @@ public class ExcelControllerFX extends Application {
 	}
 	
 	public void hibernateSession()  {
-		System.out.println("SessionFactory skapas..");
-		/*SessionFactory factory = new Configuration().
-				configure("hibernate.cfg.xml").
-				addAnnotatedClass(Webbleveranser.class).
-				buildSessionFactory(); */
-		System.out.println("SessionFactory skapad..");
-
+		
 		/*
 		 * Radera alla rader och nollställ auto increment: truncate ArkivIT.webbleveranser
 		 */
 
-		//Create session
-		System.out.println("Session skapas..");
-		//Session session = factory.getCurrentSession();
 		Session session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
-		System.out.println("Session skapad..");
-		//FileInputStream dbFile = new FileInputStream(file);
+		
 		try 
 		{
 			
@@ -684,12 +674,19 @@ public class ExcelControllerFX extends Application {
 			System.out.println("Done!");
 	
 		}
-		finally
+		/*finally
 		{
-			System.out.println("Factory is about to close.....");
+			//System.out.println("Factory is about to close.....");
+			System.out.println("Session is about to close...");
 			//factory.close();
-			FactorySessionSingleton.getSessionFactoryInstance().close();
-			System.out.println("Factory is closed!");
+			//session.close();
+			System.out.println("Session is closed"); 
+			//FactorySessionSingleton.getSessionFactoryInstance().close();
+			//System.out.println("Factory is closed!");
+		}*/
+		catch(HibernateException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 

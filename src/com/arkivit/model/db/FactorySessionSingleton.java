@@ -12,7 +12,7 @@ public class FactorySessionSingleton {
 
 	}
 
-	public static SessionFactory getSessionFactoryInstance()
+	public static synchronized SessionFactory getSessionFactoryInstance()
 	{
 
 		if(factoryInstance == null) 
@@ -21,15 +21,12 @@ public class FactorySessionSingleton {
 					configure("hibernate.cfg.xml").
 					addAnnotatedClass(Webbleveranser.class).
 					buildSessionFactory();
+			
 		}
-		else 
-		{
-			factoryInstance.close();
-		}
+	
 		return factoryInstance;
 	}
-	
-	
+		
 }
 
 
