@@ -305,7 +305,7 @@ public class MetadataToExcelGUI{
 	private String replaceIllegalChars(String currentString) {
 
 		currentString = StringUtils.replaceEach (currentString, 
-				new String[] { "Ã¥",  "Ã¤",  "Ã¶",  "Ã¼", "Ã…",  "Ã„",  "Ã–", "Ãœ", " "}, 
+				new String[] { "å",  "ä",  "ö",  "ü", "Å",  "Ä",  "Ö", "Ü", " "}, 
 				new String[] {"aa", "ae", "oe", "ue","AA", "AE", "OE", "UE", "_"});
 
 		return currentString;
@@ -340,9 +340,9 @@ public class MetadataToExcelGUI{
 	}
 
 	private boolean checkIfCurrentFileOrDirContainsIllegalChars(File currFileOrDir) {
-		if(currFileOrDir.getName().contains("Ã¥") || currFileOrDir.getName().contains("Ã¤") || currFileOrDir.getName().contains("Ã¶")
-				|| currFileOrDir.getName().contains("Ã¼") || currFileOrDir.getName().contains("Ã…") || currFileOrDir.getName().contains("Ã„") 
-				|| currFileOrDir.getName().contains("Ã–") || currFileOrDir.getName().contains("Ãœ"))
+		if(currFileOrDir.getName().contains("å") || currFileOrDir.getName().contains("ä") || currFileOrDir.getName().contains("ö")
+				|| currFileOrDir.getName().contains("ü") || currFileOrDir.getName().contains("Å") || currFileOrDir.getName().contains("Ä") 
+				|| currFileOrDir.getName().contains("Ö") || currFileOrDir.getName().contains("Ü"))
 		{
 			return true;
 		}

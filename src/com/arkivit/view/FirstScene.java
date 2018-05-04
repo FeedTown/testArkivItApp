@@ -65,8 +65,6 @@ public class FirstScene {
 	private Label KOM;
 	private TextField KOMtxt; 
 	
-	private Button sweBtn;
-	private Button engBtn;
 	private Button saveButton;
 	private VBox root = new VBox();
 	private Scene firstScene;
@@ -75,10 +73,6 @@ public class FirstScene {
 	 * Adds all components to the first scene.
 	 */
 	public void startFirstScene() {
-		sweBtn = new Button();
-		sweBtn.setId("sweButton");
-		engBtn = new Button();
-		engBtn.setId("engButton");
 		saveButton = new Button("Spara");
 		saveButton.setId("saveButton");
 		BAL = new Label("*Beskrivning av leverans:");
@@ -86,8 +80,8 @@ public class FirstScene {
 		OA = new Label("*Organisationsnummer arkivbildare:");
 		LM = new Label("*Levererande myndighet:");
 	    OLM = new Label("*Organisationsnummer levererande myndighet:");
-		KFL = new Label("*Kontaktperson fï¿½r leverans:");
-		SK = new Label("Servicebyrï¿½/Konsult:");
+		KFL = new Label("*Kontaktperson för leverans:");
+		SK = new Label("Servicebyrå/Konsult:");
 		TTK = new Label("*Telefonnummer till kontaktperson:");
 		EK = new Label("*E-post-adress till kontakperson:");
 		AN = new Label("*Arkivets namn:");
@@ -115,21 +109,11 @@ public class FirstScene {
 		//setUpGridPane(grid);
 		//  scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 		//grid.add(scenetitle, 0, 0, 2, 1);
-		langGrid = new GridPane();
-		langGrid.setAlignment(Pos.TOP_RIGHT);
-		langGrid.setHgap(10);
-		langGrid.setVgap(10);
-		langGrid.setPadding(new Insets(35, 40, 0, 0));
-		
-		HBox hLangBox = new HBox(sweBtn, engBtn);
-		hLangBox.setAlignment(Pos.TOP_RIGHT);
-		langGrid.add(hLangBox, 0, 0);
-		
 		grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(35, 25, 25, 25));
+		grid.setPadding(new Insets(100, 25, 25, 25));
 		
 		grid.add(BAL, 0, 1);
 		grid.add(BALtxt, 1, 1);
@@ -176,7 +160,6 @@ public class FirstScene {
 		hbBtn.getChildren().add(saveButton);
 		grid.add(hbBtn, 1, 14);
 		
-		root.getChildren().add(langGrid);
 		root.getChildren().add(grid);
 		firstScene = new Scene(root, 800, 620);
 		firstScene.getStylesheets().add("resources/style/style.css");
@@ -191,8 +174,6 @@ public class FirstScene {
 	public void addActionListenerForButton(EventHandler<ActionEvent> listenForEvent)
 	{
 		saveButton.setOnAction(listenForEvent);
-		sweBtn.setOnAction(listenForEvent);
-		engBtn.setOnAction(listenForEvent);
 	}
 	
 	/**
@@ -341,22 +322,6 @@ public class FirstScene {
 	
 	public void setSaveButton(Button saveButton) {
 		this.saveButton = saveButton;
-	}
-
-	public Button getSweBtn() {
-		return sweBtn;
-	}
-
-	public void setSweBtn(Button sweBtn) {
-		this.sweBtn = sweBtn;
-	}
-
-	public Button getEngBtn() {
-		return engBtn;
-	}
-
-	public void setEngBtn(Button engBtn) {
-		this.engBtn = engBtn;
 	}
 
 	public Label getBAL() {

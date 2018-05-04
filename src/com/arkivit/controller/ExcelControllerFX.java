@@ -651,12 +651,6 @@ public class ExcelControllerFX extends Application {
 			else if(event.getSource().equals(secondScene.getPersonalDataBox())) {
 				personalDataBox();
 			}
-			else if(event.getSource().equals(firstScene.getSweBtn())){
-				sweLangButton(event);
-			}
-			else if(event.getSource().equals(firstScene.getEngBtn())) {
-				engLangButton(event);
-			}
 
 		}
 

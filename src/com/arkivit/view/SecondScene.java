@@ -44,41 +44,42 @@ public class SecondScene{
 	private DirectoryChooser directoryChooser = new DirectoryChooser();
 	private ProgressBar pb;
 	private ProgressIndicator pi;
-	
+	//hej
 	
 	/**
-	 * Adds all the components for the second scene to the second scene
+	 * Adds all the components for the second scene to the second scene.
+	 * ee
 	 */
 	public void startSecondScene()
 	{
 		VBox root2 = new VBox();
 		openTxtField = new TextField();
 		saveTxtField = new TextField();
-		dirLabel = new Label("Directory");
-		outputLabel = new Label("Output");
-		mapLabel = new Label("Map");
+		dirLabel = new Label("Katalog");
+		outputLabel = new Label("Utmatning");
+		mapLabel = new Label("Mappa");
 		mappCheckBox = new CheckBox("");
 		mappCheckBox.setDisable(true);
 		final Tooltip tooltip = new Tooltip();
 		tooltip.setText(
-		    "Replacing Illegal characters 'å, ä, ö, ü with aa, ae, oe, ue'\n" +
-		    "and copies the original content to a backup folder. \n"  
+		    "Byter ut följande bokstäver 'å, ä, ö, ü' till 'aa, ae, oe, ue'\n" +
+		    "på filnamn och vissa filer och kopierar orginala filer till en backup mapp. \n"  
 		);
 		mappCheckBox.setTooltip(tooltip);
 		
-		overwriteLabel = new Label("Overwrite");
+		overwriteLabel = new Label("Skriv över");
 		overwriteCheckBox = new CheckBox("");
 		overwriteCheckBox.setDisable(true);
 		final Tooltip tooltip2 = new Tooltip();
 		tooltip2.setText(
-		    "By checking overwrite you will overwrite \n" +
-		    "and replace the original content. \n"  
+		    "Checka i 'Skriv över' om du vill skriva över \n" +
+		    "och byta ut orginal filer med mappade bokstäver. \n"  
 		);
 		overwriteCheckBox.setTooltip(tooltip2);
-		btnOpenFile = new Button("Select folder...");
+		btnOpenFile = new Button("Välj katalog...");
 		btnOpenFile.setId("saveButton");
 		btnOpenFile.setMaxWidth(Double.MAX_VALUE);
-		btnOverwrite = new Button("Select directory...");
+		btnOverwrite = new Button("Välj katalog...");
 		btnOverwrite.setDisable(true);
 		btnOverwrite.setId("saveButton");
 		btnOverwrite.setMaxWidth(Double.MAX_VALUE);
@@ -88,55 +89,55 @@ public class SecondScene{
 		btnDelete.setMaxWidth(Double.MAX_VALUE);
 		final Tooltip tooltip4 = new Tooltip();
 		tooltip4.setText(
-		    "Remove the chosen directory for the backup content"
+		    "Ta bort den valda katalogen för backup filer"
 		);
 		tooltip4.setId("tooltip");
 		btnDelete.setTooltip(tooltip4);
 		final Tooltip tooltip3 = new Tooltip();
 		tooltip3.setText(
-		    "Choose the directory where you want to save the  \n" +
-		    "original content. \n"  
+		    "Välj katalogen du vill spara dem  \n" +
+		    "originala filerna i. \n"  
 		);
 		btnOverwrite.setTooltip(tooltip3);
-		confidentialLabel = new Label("Confidential");
-		confidentialYesBox = new CheckBox("Yes ");
+		confidentialLabel = new Label("Sekretess");
+		confidentialYesBox = new CheckBox("Ja ");
 		final Tooltip confidentialYesTooltip = new Tooltip();
 		confidentialYesTooltip.setText(
-		    "Set 'Sekretessgrad hos myndighet' to 'JA'\n"
+		    "Sätter 'Sekretessgrad hos myndighet' till 'JA'\n"
 		);
 		confidentialYesBox.setTooltip(confidentialYesTooltip);
-		confidentialCheckBox = new CheckBox("No");
+		confidentialCheckBox = new CheckBox("Nej");
 		final Tooltip confidentialTooltip = new Tooltip();
 		confidentialTooltip.setText(
-		    "Set 'Sekretessgrad hos myndighet' to 'NEJ'\n"
+		    "Sätter 'Sekretessgrad hos myndighet' till 'NEJ'\n"
 		);
 		confidentialCheckBox.setTooltip(confidentialTooltip);
-		personalDataLabel = new Label("Personal Data");
-		personalDataYesBox = new CheckBox("Yes ");
+		personalDataLabel = new Label("Personuppgifter");
+		personalDataYesBox = new CheckBox("Ja ");
 		final Tooltip personalDataYesTooltip = new Tooltip();
 		personalDataYesTooltip.setText(
-		    "Set 'Behandling av personuppgifter' to 'JA'\n"
+		    "Sätter 'Behandling av personuppgifter' till 'JA'\n"
 		);
 		personalDataYesBox.setTooltip(personalDataYesTooltip);
-		personalDataBox = new CheckBox("No");
+		personalDataBox = new CheckBox("Nej");
 		final Tooltip personalDataTooltip = new Tooltip();
 		personalDataTooltip.setText(
-		    "Set 'Behandling av personuppgifter' to 'NEJ'\n"
+		    "Sätter 'Behandling av personuppgifter' till 'NEJ'\n"
 		);
 		personalDataBox.setTooltip(personalDataTooltip);
-		btnSaveAs = new Button("Save As...");
+		btnSaveAs = new Button("Spara som...");
 		btnSaveAs.setDisable(true);
 		btnSaveAs.setId("saveButton");
 		btnSaveAs.setMaxWidth(Double.MAX_VALUE);
-		btnConvert = new Button("Create");
+		btnConvert = new Button("Skapa");
 		btnConvert.setDisable(true);
 		btnConvert.setId("saveButton");
 		//pb = new ProgressBar(0);
 		//pb.setMaxWidth(Double.MAX_VALUE);
 		pi = new ProgressIndicator();
-		waitLabel = new Label("Please wait...");
+		waitLabel = new Label("Var god vänta...");
 		waitLabel.setId("waitLabel");
-		btnBack = new Button("◀ Back");
+		btnBack = new Button("◀ Bakåt");
 		btnBack.setId("saveButton");
 		
 		firstGrid = new GridPane();
