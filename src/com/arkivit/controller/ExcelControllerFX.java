@@ -498,7 +498,8 @@ public class ExcelControllerFX extends Application {
 
 			@Override
 			public void handle(WorkerStateEvent arg0) {
-
+				
+				onFinish.proceed();
 				setAlert();
 				//secondScene.getPb().setVisible(false);
 				stage.setScene(firstScene.getFirstScene());
@@ -520,7 +521,7 @@ public class ExcelControllerFX extends Application {
 				mapping = false;
 				overwrite = false;
 				
-				onFinish.proceed();
+				
 			}
 
 		});
