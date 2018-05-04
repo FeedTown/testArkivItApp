@@ -15,6 +15,7 @@ import org.hibernate.cfg.Configuration;
 
 import com.arkivit.model.MappingLog;
 import com.arkivit.model.MetadataToExcelGUI;
+import com.arkivit.model.db.FactorySessionSingleton;
 import com.arkivit.model.db.Webbleveranser;
 import com.arkivit.view.SecondScene;
 import com.arkivit.view.FirstScene;
@@ -156,13 +157,7 @@ public class ExcelControllerFX extends Application {
 			secondScene.getSaveTxtField().setText("");
 
 		}
-		/*try {
-			hibernateSession();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} */
-
+		
 	}
 
 	/**
@@ -528,13 +523,9 @@ public class ExcelControllerFX extends Application {
 
 
 		//Start Thread
-
 		//System.out.println("Thread was not alive.");
 		loadingThread = new Thread(progressTask);
 		loadingThread.start();
-
-
-
 		//startThread(progressTask);
 
 	}
@@ -615,13 +606,8 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(secondScene.getBtnConvert()))
 			{
-				//try {
 					createButton(event, () -> hibernateSession());
-				/*	hibernateSession();
-				} catch ( IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	 */			
+						
 			}
 			else if(event.getSource().equals(secondScene.getBtnBack())){
 				stage.setScene(firstScene.getFirstScene());
@@ -664,10 +650,10 @@ public class ExcelControllerFX extends Application {
 	
 	public void hibernateSession()  {
 		System.out.println("SessionFactory skapas..");
-		SessionFactory factory = new Configuration().
+		/*SessionFactory factory = new Configuration().
 				configure("hibernate.cfg.xml").
 				addAnnotatedClass(Webbleveranser.class).
-				buildSessionFactory();
+				buildSessionFactory(); */
 		System.out.println("SessionFactory skapad..");
 
 		/*
@@ -676,7 +662,8 @@ public class ExcelControllerFX extends Application {
 
 		//Create session
 		System.out.println("Session skapas..");
-		Session session = factory.getCurrentSession();
+		//Session session = factory.getCurrentSession();
+		Session session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
 		System.out.println("Session skapad..");
 		//FileInputStream dbFile = new FileInputStream(file);
 		try 
@@ -695,12 +682,13 @@ public class ExcelControllerFX extends Application {
 			//commit transaction
 			session.getTransaction().commit();
 			System.out.println("Done!");
+	
 		}
 		finally
 		{
 			System.out.println("Factory is about to close.....");
-			factory.close();
-			//dbFile.close();
+			//factory.close();
+			FactorySessionSingleton.getSessionFactoryInstance().close();
 			System.out.println("Factory is closed!");
 		}
 	}
