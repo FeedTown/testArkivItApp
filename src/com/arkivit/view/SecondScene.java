@@ -78,7 +78,7 @@ public class SecondScene{
 		btnOpenFile = new Button("Select folder...");
 		btnOpenFile.setId("saveButton");
 		btnOpenFile.setMaxWidth(Double.MAX_VALUE);
-		btnOverwrite = new Button("Select Directory...");
+		btnOverwrite = new Button("Select directory...");
 		btnOverwrite.setDisable(true);
 		btnOverwrite.setId("saveButton");
 		btnOverwrite.setMaxWidth(Double.MAX_VALUE);
@@ -383,7 +383,5 @@ public class SecondScene{
 
 	public void setPersonalDataYesBox(CheckBox personalDataYesBox) {
 		this.personalDataYesBox = personalDataYesBox;
-	}
-	
-	
+	}	
 }

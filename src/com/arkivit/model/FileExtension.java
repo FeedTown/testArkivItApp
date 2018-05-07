@@ -1,5 +1,6 @@
 package com.arkivit.model;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class FileExtension {
@@ -61,11 +62,44 @@ public class FileExtension {
 
 	}
 
+	public String getOfficeExtensions()
+	{
+		convertExList = new ArrayList<>();		
+		String tempEx;
+		for(String f : convertExList)
+		{	
+			if(f.endsWith(".doc") || f.endsWith(".DOC") || 
+					f.endsWith(".docx") || f.endsWith(".DOCX") ||
+					f.endsWith(".xls") || f.endsWith(".XLS") ||
+					f.endsWith(".xlsx") || f.endsWith(".XLSX") ||
+					f.endsWith(".ppt") || f.endsWith(".PPT") ||
+					f.endsWith(".pptx") || f.endsWith(".PPTX"))
+			{
+				f = getFileName;
+				convertExList.add(getFileName);
+			}
+			
+			/*if(f.getName().endsWith(".doc") || f.getName().endsWith(".DOC") || 
+					f.getName().endsWith(".docx") || f.getName().endsWith(".DOCX") ||
+					f.getName().endsWith(".xls") || f.getName().endsWith(".XLS") ||
+					f.getName().endsWith(".xlsx") || f.getName().endsWith(".XLSX") ||
+					f.getName().endsWith(".ppt") || f.getName().endsWith(".PPT") ||
+					f.getName().endsWith(".pptx") || f.getName().endsWith(".PPTX"))
+			{
+				convertExList.add(f);
+			} */
+			return getFileName;
+		}
+		return getFileName;
 
-	public ArrayList<String> checkForConvertableFileExtensions() {
 
-		convertExList = new ArrayList<>();
-		
+	}
+
+
+	public boolean hasFileOfficeExtension() {
+
+		//convertExList = new ArrayList<>();
+
 		String docExt = ".doc",
 				docxExt = ".docx",
 				xlsxExt = ".xlsx",
@@ -73,15 +107,26 @@ public class FileExtension {
 				pptExt = ".ppt",
 				pptxExt = ".pptx";
 
-		convertExList.add(docExt);
+		/*convertExList.add(docExt);
 		convertExList.add(docxExt);
 		convertExList.add(xlsxExt);
 		convertExList.add(xlsExt);
 		convertExList.add(pptExt);
-		convertExList.add(pptxExt);
+		convertExList.add(pptxExt);*/
 
-		return convertExList;
 
-	}
+		if(getFileName.endsWith(docExt) || getFileName.endsWith(docxExt) || getFileName.endsWith(xlsxExt) || getFileName.endsWith(xlsExt) ||
+				getFileName.endsWith(pptExt) || getFileName.endsWith(pptxExt))
+		{
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
+
+
+	} 
+
 
 }
