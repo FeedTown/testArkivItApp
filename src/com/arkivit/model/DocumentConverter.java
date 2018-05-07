@@ -48,28 +48,40 @@ public class DocumentConverter {
 	ArrayList<File> fileList = new ArrayList<>(); 
 
 
-	
+
 
 	public DocumentConverter() {
 
 	}
 
-	
+
 
 
 	public void libreOfficeConnectionMethod(String targetPath) {
 
-		//String libreOfficePath = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
-		String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
+		String libreOfficePathWin = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
+		String libreOfficePathMac = "/Applications/LibreOffice.app/Contents/MacOS/";
 
 		XComponentContext xContext = null;
 
 		try {
 
+
 			// get the remote office component context
-			xContext = BootstrapSocketConnector.bootstrap(libreOfficePath);
-			System.out.println("Connected to a running office ...");
-		
+			String osName = System.getProperty("os.name");
+			if(osName.contains("Windows"))
+			{
+
+				xContext = BootstrapSocketConnector.bootstrap(libreOfficePathWin);
+				System.out.println("Connected to a running office ...");
+			}
+			else if(osName.contains("Mac") || osName.contains("Ubuntu") || osName.contains("Debian"))
+			{
+				xContext = BootstrapSocketConnector.bootstrap(libreOfficePathMac);
+				System.out.println("Connected to a running office ...");
+			}
+
+
 			// get the remote office service manager
 			XMultiComponentFactory xMCF =
 					xContext.getServiceManager();
@@ -83,7 +95,7 @@ public class DocumentConverter {
 			xCompLoader = UnoRuntime.queryInterface(com.sun.star.frame.XComponentLoader.class,
 					xDesktop);
 
-	
+
 			// Getting the given type to convert to
 			sConvertType = "writer_pdf_Export";
 
@@ -93,7 +105,7 @@ public class DocumentConverter {
 
 			traverseAndConvert(targetPath);
 			//removeFile3(fileDirectory);
-		
+
 
 		} 
 
@@ -102,7 +114,7 @@ public class DocumentConverter {
 			e.printStackTrace(System.err);
 			System.exit(1);
 		}
-	
+
 	}
 
 	public void traverseAndConvert(String targetPath) {
@@ -119,7 +131,7 @@ public class DocumentConverter {
 			{
 				//Stores the original files for the html/css/js parser
 				originalListFile.add(f);
-				
+
 				// Converting the document to the favoured type
 				try 
 				{
@@ -236,7 +248,7 @@ public class DocumentConverter {
 
 		} 
 	}
-	
+
 	public  File getOutdir() {
 		return outdir;
 	}
@@ -252,7 +264,7 @@ public class DocumentConverter {
 	public void setsOutUrl(String sOutUrl) {
 		this.sOutUrl = sOutUrl;
 	}
-	
+
 	public ArrayList<File> getOriginalListFile() {
 		return originalListFile;
 	}
