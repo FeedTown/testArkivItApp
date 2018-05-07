@@ -12,8 +12,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
-
-import com.arkivit.model.db.Webbleveranser;
 import com.arkivit.view.FirstScene;
 
 
@@ -47,8 +45,6 @@ public class MetadataToExcelGUI{
 	private GeneralBean generalBean = new GeneralBean();
 	private DocumentConverter docCon = new DocumentConverter();
 	private ImageFileConverter img = new ImageFileConverter();
-	private FileExtension officeFileEx = new FileExtension();
-
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private boolean isLibreOfficeOpen = false;
@@ -77,6 +73,7 @@ public class MetadataToExcelGUI{
 		//fileList = new ArrayList<File>();
 		//testMeth();
 	} 
+	
 
 	/**
 	 * Name of source folder instantiated and
@@ -87,6 +84,9 @@ public class MetadataToExcelGUI{
 	 * @throws TranscoderException 
 	 */
 	public void init(boolean mapp, boolean overW) throws IOException{
+		
+		
+		
 		this.mapping = mapp;
 		this.overwrite = overW;
 		folderName = new File(sourceFolderPath).getName();
@@ -97,7 +97,6 @@ public class MetadataToExcelGUI{
 			copyFolder();
 		}
 
-		//hibSession();
 		docCon.libreOfficeConnectionMethod(sourceFolderPath);
 		deleteOfficeFiles(sourceFolderPath);
 		img.convertImage(sourceFolderPath);
@@ -106,11 +105,10 @@ public class MetadataToExcelGUI{
 		//img.convertImage();
 
 		getAndAddFileDataToList();
-		
+		closeLibreOffice();
 		
 	}
-
-
+	
 	public void deleteOfficeFiles(String officePath) 
 	{
 		ArrayList<File> deletedOfficeFilesList = new ArrayList<>();
@@ -573,6 +571,38 @@ public class MetadataToExcelGUI{
 		}
 
 		return index;
+	}
+	
+	public void closeLibreOffice() {
+		Runtime rt = Runtime.getRuntime();
+		String libreOfficeApp = "LibreOffice.app";
+		String  osName;
+		
+		try 
+
+		{
+			osName = System.getProperty("os.name");
+			//test(p.getInputStream());
+			if(osName.contains("Windows"))
+			{
+				rt.exec("taskkill /IM soffice.bin");
+			}
+			else if(osName.contains("Mac") || osName.contains("Ubuntu") || osName.contains("Debian"))
+			{
+				rt.exec("pkill -f " + libreOfficeApp);
+			}
+
+
+		} 
+
+		catch (IOException e) 
+		{
+
+			e.printStackTrace();
+
+		} 
+		
+		
 	}
 
 	public String getFolderName() {

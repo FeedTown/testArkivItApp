@@ -2,15 +2,23 @@ package com.arkivit.controller;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+<<<<<<< HEAD
+=======
+import org.hibernate.HibernateException;
+>>>>>>> ce8f309baae631f9f151df4752e68ef062fad6d4
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import com.arkivit.model.MappingLog;
 import com.arkivit.model.MetadataToExcelGUI;
+import com.arkivit.model.db.FactorySessionSingleton;
 import com.arkivit.model.db.Webbleveranser;
 import com.arkivit.view.SecondScene;
 import com.arkivit.view.FirstScene;
@@ -137,23 +145,22 @@ public class ExcelControllerFX extends Application {
 	 * Actions that performs to create the excel file
 	 * @param event
 	 */
-	private void createButton(ActionEvent event){
+	private void createButton(ActionEvent event, OnConvertFinish onFinish){
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
-			progressBar();
+			progressBar(onFinish);
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
 			model.clearArrayList();
 			secondScene.getBtnConvert().setDisable(true);
 		}
 		else if(check){
-			progressBar();
+			progressBar(onFinish);
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
 
 		}
-
-
+		
 	}
 
 	/**
@@ -476,10 +483,9 @@ public class ExcelControllerFX extends Application {
 	 * Actions performed when tasks are succeeded
 	 * Mapping of illegal characters
 	 */
-	public void progressBar() {
+	public void progressBar(OnConvertFinish onFinish) {
 
 		progressTask = getProgress();
-
 		secondScene.getPi().setVisible(true);
 		secondScene.getWaitLabel().setVisible(true);
 		//secondScene.getPb().setProgress(0);
@@ -490,7 +496,8 @@ public class ExcelControllerFX extends Application {
 
 			@Override
 			public void handle(WorkerStateEvent arg0) {
-
+				
+				onFinish.proceed();
 				setAlert();
 				//secondScene.getPb().setVisible(false);
 				stage.setScene(firstScene.getFirstScene());
@@ -511,19 +518,17 @@ public class ExcelControllerFX extends Application {
 				model.setPersonalDataChecked("");
 				mapping = false;
 				overwrite = false;
+				
+				
 			}
 
 		});
 
 
 		//Start Thread
-
 		//System.out.println("Thread was not alive.");
 		loadingThread = new Thread(progressTask);
 		loadingThread.start();
-
-
-
 		//startThread(progressTask);
 
 	}
@@ -548,8 +553,7 @@ public class ExcelControllerFX extends Application {
 				{
 					log.mappedLog();
 				} 
-
-
+				
 				secondScene.getPi().setVisible(false);
 				secondScene.getWaitLabel().setVisible(false);
 				//secondScene.getPb().setVisible(true);
@@ -605,8 +609,8 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(secondScene.getBtnConvert()))
 			{
-				createButton(event);
-				hibernateSession();				
+					createButton(event, () -> hibernateSession());
+						
 			}
 			else if(event.getSource().equals(secondScene.getBtnBack())){
 				stage.setScene(firstScene.getFirstScene());
@@ -647,26 +651,17 @@ public class ExcelControllerFX extends Application {
 
 	}
 	
-	public void hibernateSession() {
-		System.out.println("SessionFactory skapas..");
-		SessionFactory factory = new Configuration().
-				configure("hibernate.cfg.xml").
-				addAnnotatedClass(Webbleveranser.class).
-				buildSessionFactory();
-		System.out.println("SessionFactory skapad..");
-
+	public void hibernateSession()  {
+		
 		/*
 		 * Radera alla rader och nollställ auto increment: truncate ArkivIT.webbleveranser
 		 */
 
-		//Create session
-		System.out.println("Session skapas..");
-		Session session = factory.getCurrentSession();
-		System.out.println("Session skapad..");
-
+		Session session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
+		
 		try 
 		{
-
+			
 			//create a webleverans object
 			System.out.println("Create a new object");
 			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , file);
@@ -680,12 +675,22 @@ public class ExcelControllerFX extends Application {
 			//commit transaction
 			session.getTransaction().commit();
 			System.out.println("Done!");
+			//session.close();
+	
 		}
-		finally
+		/*finally
 		{
-			System.out.println("Factory is about to close.....");
-			factory.close();
-			System.out.println("Factory is closed!");
+			//System.out.println("Factory is about to close.....");
+			System.out.println("Session is about to close...");
+			//factory.close();
+			//session.close();
+			System.out.println("Session is closed"); 
+			//FactorySessionSingleton.getSessionFactoryInstance().close();
+			//System.out.println("Factory is closed!");
+		}*/
+		catch(HibernateException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 

@@ -1,12 +1,14 @@
 package com.arkivit.model.db;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -21,9 +23,11 @@ public class Webbleveranser {
 
 		@Column(name="Company")
 		private String company;
-
+		
+		@Lob
 		@Column(name="Excel_File")
 		private File excelFile;
+
 
 		public Webbleveranser() {
 			
@@ -32,7 +36,7 @@ public class Webbleveranser {
 		public Webbleveranser(String company, File excelFile) {
 			this.company = company;
 			this.excelFile = excelFile;
-			
+
 		}
 
 		public int getId() {
