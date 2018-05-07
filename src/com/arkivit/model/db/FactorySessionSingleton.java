@@ -12,7 +12,7 @@ public class FactorySessionSingleton {
 
 	}
 
-	public static synchronized SessionFactory getSessionFactoryInstance()
+	public static SessionFactory getSessionFactoryInstance()
 	{
 
 		if(factoryInstance == null) 
@@ -23,7 +23,6 @@ public class FactorySessionSingleton {
 					buildSessionFactory();
 			
 		}
-	
 		return factoryInstance;
 	}
 		

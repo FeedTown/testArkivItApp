@@ -1,7 +1,7 @@
 package com.arkivit.model.db;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="webbleveranser")
@@ -27,15 +29,19 @@ public class Webbleveranser {
 		@Lob
 		@Column(name="Excel_File")
 		private File excelFile;
-
+		
+		@Temporal(TemporalType.DATE)
+		@Column(name="creation_date")
+		private Date creationDate;
 
 		public Webbleveranser() {
 			
 		}
 
-		public Webbleveranser(String company, File excelFile) {
+		public Webbleveranser(String company, File excelFile, Date creationDate) {
 			this.company = company;
 			this.excelFile = excelFile;
+			this.creationDate = creationDate;
 
 		}
 
@@ -59,11 +65,19 @@ public class Webbleveranser {
 		public void setExcelFile(File excelFile) {
 			this.excelFile = excelFile;
 		}
+		
+		public Date getCreationDate() {
+			return creationDate;
+		}
+
+		public void setCreationDate(Date creationDate) {
+			this.creationDate = creationDate;
+		}
 
 
 		@Override
 		public String toString() {
-			return "WebLev [id=" + id + ", company=" + company + ", excelFile=" + excelFile + "]";
+			return "WebLev [id=" + id + ", company=" + company + ", excelFile=" + excelFile + "date= "+ creationDate +"]";
 		}
 
 	}

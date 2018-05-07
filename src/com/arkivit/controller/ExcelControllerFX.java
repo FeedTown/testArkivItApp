@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -655,7 +656,7 @@ public class ExcelControllerFX extends Application {
 			
 			//create a webleverans object
 			System.out.println("Create a new object");
-			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , file);
+			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , file, new Date());
 			//start a transaction
 			session.beginTransaction();
 
