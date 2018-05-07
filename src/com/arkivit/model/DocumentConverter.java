@@ -60,7 +60,9 @@ public class DocumentConverter {
 	public void libreOfficeConnectionMethod(String targetPath) {
 
 		//String libreOfficePath = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
-		String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
+		//String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
+		String libreOfficePath = "C:/Program Files/LibreOffice/program/soffice.exe/";
+		
 
 		XComponentContext xContext = null;
 

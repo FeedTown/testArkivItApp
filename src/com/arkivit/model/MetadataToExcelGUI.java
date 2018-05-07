@@ -37,6 +37,7 @@ public class MetadataToExcelGUI{
 	private ArrayList<String> illegalCharFiles = new ArrayList<String>(), illegarCharFolders = new ArrayList<String>();
 	private ArrayList<File> convertedFiles = new ArrayList<File>();
 	private int fileCount = 0;
+	private int count;
 	private FileDuration  fileDuration = new FileDuration(); 
 	private Tika fileType = new Tika();
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
@@ -185,7 +186,7 @@ public class MetadataToExcelGUI{
 	private void listOfFilesAndDirectory(String inputFolder) throws IOException {
 		File folder = new File(inputFolder);
 		File tempFile;
-
+		
 
 		for(File currentFileOrDir : folder.listFiles())
 		{
@@ -223,6 +224,7 @@ public class MetadataToExcelGUI{
 
 				listOfFilesAndDirectory(tempFile.getAbsolutePath());
 			}
+			count++;
 
 		}
 
@@ -253,7 +255,6 @@ public class MetadataToExcelGUI{
 			if(tempFile.exists()) {
 
 				tempFile = renameFile(tempFile,isDir,currFileOrDir);
-
 			}
 
 			if(isDir)
