@@ -7,11 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-<<<<<<< HEAD
-=======
 import org.hibernate.HibernateException;
->>>>>>> ce8f309baae631f9f151df4752e68ef062fad6d4
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
