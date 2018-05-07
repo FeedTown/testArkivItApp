@@ -60,8 +60,8 @@ public class DocumentConverter {
 	public void libreOfficeConnectionMethod(String targetPath) {
 
 		//String libreOfficePath = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
-		//String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
-		String libreOfficePath = "C:/Program Files/LibreOffice/program/soffice.exe/";
+		String libreOfficePathMac = "/Applications/LibreOffice.app/Contents/MacOS/";
+		String libreOfficePathWin = "C:/Program Files/LibreOffice/program/soffice.exe/";
 		
 
 		XComponentContext xContext = null;
@@ -69,8 +69,18 @@ public class DocumentConverter {
 		try {
 
 			// get the remote office component context
-			xContext = BootstrapSocketConnector.bootstrap(libreOfficePath);
-			System.out.println("Connected to a running office ...");
+			String osName = System.getProperty("os.name");
+			if(osName.contains("Windows"))
+			{
+				
+				xContext = BootstrapSocketConnector.bootstrap(libreOfficePathWin);
+				System.out.println("Connected to a running office ...");
+			}
+			else if(osName.contains("Mac") || osName.contains("Ubuntu") || osName.contains("Debian"))
+			{
+				xContext = BootstrapSocketConnector.bootstrap(libreOfficePathMac);
+				System.out.println("Connected to a running office ...");
+			}
 
 			// get the remote office service manager
 			XMultiComponentFactory xMCF =
