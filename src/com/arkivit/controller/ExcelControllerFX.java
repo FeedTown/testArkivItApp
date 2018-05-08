@@ -8,13 +8,14 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import com.arkivit.model.MappingLog;
 import com.arkivit.model.MetadataToExcelGUI;
+import com.arkivit.model.db.FactorySessionSingleton;
 import com.arkivit.model.db.Webbleveranser;
 import com.arkivit.view.SecondScene;
 import com.arkivit.view.FirstScene;
@@ -156,13 +157,7 @@ public class ExcelControllerFX extends Application {
 			secondScene.getSaveTxtField().setText("");
 
 		}
-		/*try {
-			hibernateSession();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} */
-
+		
 	}
 
 	/**
@@ -528,13 +523,9 @@ public class ExcelControllerFX extends Application {
 
 
 		//Start Thread
-
 		//System.out.println("Thread was not alive.");
 		loadingThread = new Thread(progressTask);
 		loadingThread.start();
-
-
-
 		//startThread(progressTask);
 
 	}
@@ -615,13 +606,8 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(secondScene.getBtnConvert()))
 			{
-				//try {
 					createButton(event, () -> hibernateSession());
-				/*	hibernateSession();
-				} catch ( IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	 */			
+						
 			}
 			else if(event.getSource().equals(secondScene.getBtnBack())){
 				stage.setScene(firstScene.getFirstScene());
@@ -657,22 +643,13 @@ public class ExcelControllerFX extends Application {
 	}
 	
 	public void hibernateSession()  {
-		System.out.println("SessionFactory skapas..");
-		SessionFactory factory = new Configuration().
-				configure("hibernate.cfg.xml").
-				addAnnotatedClass(Webbleveranser.class).
-				buildSessionFactory();
-		System.out.println("SessionFactory skapad..");
-
+		
 		/*
 		 * Radera alla rader och nollställ auto increment: truncate ArkivIT.webbleveranser
 		 */
 
-		//Create session
-		System.out.println("Session skapas..");
-		Session session = factory.getCurrentSession();
-		System.out.println("Session skapad..");
-		//FileInputStream dbFile = new FileInputStream(file);
+		Session session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
+		
 		try 
 		{
 			
@@ -689,13 +666,22 @@ public class ExcelControllerFX extends Application {
 			//commit transaction
 			session.getTransaction().commit();
 			System.out.println("Done!");
+			//session.close();
+	
 		}
-		finally
+		/*finally
 		{
-			System.out.println("Factory is about to close.....");
-			factory.close();
-			//dbFile.close();
-			System.out.println("Factory is closed!");
+			//System.out.println("Factory is about to close.....");
+			System.out.println("Session is about to close...");
+			//factory.close();
+			//session.close();
+			System.out.println("Session is closed"); 
+			//FactorySessionSingleton.getSessionFactoryInstance().close();
+			//System.out.println("Factory is closed!");
+		}*/
+		catch(HibernateException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 
