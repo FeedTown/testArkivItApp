@@ -604,8 +604,9 @@ public class ExcelControllerFX extends Application {
 		/*
 		 * Radera alla rader och nollställ auto increment: truncate ArkivIT.webbleveranser
 		 */
-
+		System.out.println("Creating Session Factory.....");
 		Session session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
+		System.out.println("Creating Session Factory created!!");
 		
 		try 
 		{

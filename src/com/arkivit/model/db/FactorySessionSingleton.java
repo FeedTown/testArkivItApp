@@ -11,7 +11,8 @@ public class FactorySessionSingleton {
 	{
 
 	}
-
+	
+	
 	public static SessionFactory getSessionFactoryInstance()
 	{
 
