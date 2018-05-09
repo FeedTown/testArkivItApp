@@ -4,9 +4,15 @@ package com.arkivit.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -655,22 +661,44 @@ public class ExcelControllerFX extends Application {
 
 		Session session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
 		
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Blob blob = Hibernate.getLobCreator(session).createBlob(inputStream, file.length());
+		
 		try 
 		{
 			
 			//create a webleverans object
 			System.out.println("Create a new object");
-			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , file);
+			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , blob, new Date());
 			//start a transaction
+			
 			session.beginTransaction();
-
+			
 			//save the object
 			System.out.println("Saving the object...");
 			session.save(webLev);
-
+			blob.free();
 			//commit transaction
 			session.getTransaction().commit();
 			System.out.println("Done!");
+			
+			
+			//Getting file from database
+			webLev = null;
+			session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
+			session.beginTransaction();
+			webLev = (Webbleveranser) session.get(Webbleveranser.class, 1);
+			blob = webLev.getExcelFile();
+			byte[] blobBytes = blob.getBytes(1, (int) blob.length());
+			saveBytesToFile("H:\\Skrivbord\\exelFileTest.xlsx", blobBytes);
+			blob.free();
+			
 			//session.close();
 	
 		}
@@ -687,7 +715,19 @@ public class ExcelControllerFX extends Application {
 		catch(HibernateException e) 
 		{
 			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
+
+	private void saveBytesToFile(String path, byte[] blobBytes) throws IOException {
+		FileOutputStream outputStream = new FileOutputStream(path);
+        outputStream.write(blobBytes);
+        outputStream.close();
 	}
 
 
