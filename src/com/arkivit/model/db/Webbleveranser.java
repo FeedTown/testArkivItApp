@@ -61,7 +61,9 @@ public class Webbleveranser {
 			this.company = company;
 		}
 
-	
+		public File getExcelFile() {
+			return excelFile;
+		}
 		public void setExcelFile(File excelFile) {
 			this.excelFile = excelFile;
 		}

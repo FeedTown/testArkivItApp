@@ -4,11 +4,16 @@ package com.arkivit.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -607,10 +612,18 @@ public class ExcelControllerFX extends Application {
 		System.out.println("Creating Session Factory.....");
 		Session session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
 		System.out.println("Creating Session Factory created!!");
-		
+		/*FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Blob blob = Hibernate.getLobCreator(session).createBlob(inputStream, file.length());
+		*/
 		try 
 		{
-			
+		
 			//create a webleverans object
 			System.out.println("Create a new object");
 			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , file, new Date());
@@ -620,11 +633,27 @@ public class ExcelControllerFX extends Application {
 			//save the object
 			System.out.println("Saving the object...");
 			session.save(webLev);
+			//blob.free();
 
 			//commit transaction
 			session.getTransaction().commit();
 			System.out.println("Done!");
 			//session.close();
+			
+			//Getting file from database
+			webLev = null;
+			session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
+			session.beginTransaction();
+			webLev = (Webbleveranser) session.get(Webbleveranser.class, 4); 
+			System.out.println("Excel file: " + webLev.getExcelFile().getName());
+			
+			//File dir = new File("/User/RobertoBlanco/Desktop/db_files/");
+			File dbFile = new File("/User/RobertoBlanco/Desktop/db_files/"); 
+			FileOutputStream out = new FileOutputStream(webLev.getExcelFile());
+			//dbFile.createNewFile();
+			out.flush();
+			
+			out.close();
 	
 		}
 		/*finally
@@ -639,6 +668,15 @@ public class ExcelControllerFX extends Application {
 		}*/
 		catch(HibernateException e) 
 		{
+			e.printStackTrace();
+		} /*catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} */ catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
