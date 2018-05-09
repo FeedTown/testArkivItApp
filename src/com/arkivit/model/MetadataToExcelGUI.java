@@ -57,7 +57,7 @@ public class MetadataToExcelGUI{
 
 		//sourceFolderPath = "C:\\Users\\Kevin\\Desktop\\test";
 		//sourceFolderPath = "F:\\Skola\\Svenska";
-		/*sourceFolderPath = "/Users/RobertoBlanco/Desktop/TestFiles";*/
+		//sourceFolderPath = "/Users/RobertoBlanco/Desktop/TestFiles";
 		//init(mapping,overwrite);
 	}
 
@@ -94,9 +94,7 @@ public class MetadataToExcelGUI{
 
 		if(mapping && !overwrite) 
 		{
-
 			copyFolder();
-
 		}
 
 		docCon.libreOfficeConnectionMethod(sourceFolderPath);
@@ -104,11 +102,12 @@ public class MetadataToExcelGUI{
 		img.convertImage(sourceFolderPath);
 		deleteIllegalImageFiles(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
+		//img.convertImage();
+
 		getAndAddFileDataToList();
 		closeLibreOffice();
 		
 	}
-
 	
 	public void deleteOfficeFiles(String officePath) 
 	{
@@ -131,8 +130,6 @@ public class MetadataToExcelGUI{
 
 
 		}
-
-
 	}
 
 	public void deleteIllegalImageFiles(String imagePath) {
@@ -205,10 +202,8 @@ public class MetadataToExcelGUI{
 
 				if(mapping)
 				{
-					//tempFile = getIllChars(tempFile,currentFileOrDir);
 					tempFile = doMapping(currentFileOrDir,false);
 				}
-
 
 				fileList.add(tempFile);
 				System.out.println("Current File : "  + tempFile.getName());
@@ -219,11 +214,9 @@ public class MetadataToExcelGUI{
 
 			else if(currentFileOrDir.isDirectory())	
 			{
-				//pathTest.add(tempFile.getAbsolutePath());
-
+				
 				if(mapping)
 				{
-					//tempFile = getIllChars(tempFile,currentFileOrDir);
 					tempFile = doMapping(currentFileOrDir,true);
 				}
 
@@ -253,8 +246,6 @@ public class MetadataToExcelGUI{
 				illegalCharFiles.add(currFileOrDir.getName());
 			}
 
-			//addToList(illegarCharMapp, illegalCharFiles, currFileOrDir.getName(),isDir);
-
 			currFile = replaceIllegalChars(currFileOrDir.getName());
 			tempFile = new File(currFileOrDir.getParentFile().getAbsolutePath(), currFile);
 
@@ -274,9 +265,6 @@ public class MetadataToExcelGUI{
 			{	
 				mappedFiles.add(tempFile);
 			}
-
-
-			//mappedFiles.add(tempFile);
 		}
 		else
 		{
@@ -288,18 +276,6 @@ public class MetadataToExcelGUI{
 		return tempFile;
 
 	}
-
-	/*private void addToList(ArrayList<String> fileList, ArrayList<String> folderList, String name, boolean isDir) {
-
-		if(isDir)
-		{
-			fileList.add(name);
-		}
-		else
-		{	
-			folderList.add(name);
-		}
-	}*/
 
 	//If String contains illegal characters they will be replaced and returned.
 	private String replaceIllegalChars(String currentString) {
@@ -401,7 +377,6 @@ public class MetadataToExcelGUI{
 
 					checkForAudioVideoDuration(file);
 
-
 					fileSize = file.length();
 					fPath = file.getParentFile().getAbsolutePath();
 					fPath = fPath.replace(sourceFolderPath, folderName);
@@ -458,27 +433,33 @@ public class MetadataToExcelGUI{
 
 		if(file.getName().endsWith(".html") || file.getName().endsWith(".css") || file.getName().endsWith(".js"))
 		{
+			
+			String fileExt = FilenameUtils.getExtension(file.getName());
 			List<String> list = new ArrayList<String>();
 			FileExtension ext;
 			ReadAndUpdateLinks br = new ReadAndUpdateLinks(file.getAbsolutePath());
 			list = br.readFileAndAddInfoToList(); 
 			int counter = 0;
-			String href = "href=\"";
-			String endLink = "\"" ;
-			String src = "src=\"" ;
-			String pathName = "";
 
 			for(File s : mappedFiles) 
 			{
 				if(!s.isDirectory())
 				{
-
-
 					ext = new FileExtension(s.getName());
 
 
+					if(ext.getHtmlCssFileExtension()) 
+					{
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, fileExt) ;
+					}
 
-					if(ext.getJsImgFileExtension()) {
+					if(ext.getJsImgFileExtension())
+					{
+						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, fileExt);
+
+					}
+
+					/*if(ext.getJsImgFileExtension()) {
 
 						if(ext.getHtmlCssFileExtension()) 
 						{
@@ -499,11 +480,15 @@ public class MetadataToExcelGUI{
 							br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, s.getParentFile().getName());
 						}
 
-					}
-					counter++;
+>>>>>>> c172337cf4fd37198bcd0331e36e0294ef96cc96
+					}*/
+
+					
 				}
-				list.clear();
+				counter++;
+				
 			}
+			list.clear();
 		}
 
 	}

@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Date;
@@ -612,7 +611,9 @@ public class ExcelControllerFX extends Application {
 		System.out.println("Creating Session Factory.....");
 		Session session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
 		System.out.println("Creating Session Factory created!!");
-		/*FileInputStream inputStream = null;
+		
+		
+		FileInputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(file);
 		} catch (FileNotFoundException e1) {
@@ -620,40 +621,40 @@ public class ExcelControllerFX extends Application {
 			e1.printStackTrace();
 		}
 		Blob blob = Hibernate.getLobCreator(session).createBlob(inputStream, file.length());
-		*/
+
+
 		try 
 		{
 		
 			//create a webleverans object
 			System.out.println("Create a new object");
-			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , file, new Date());
-			//start a transaction
-			session.beginTransaction();
+			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , blob, new Date());
 
+			//start a transaction
+			
+			session.beginTransaction();
+			
 			//save the object
 			System.out.println("Saving the object...");
 			session.save(webLev);
-			//blob.free();
+			blob.free();
 
 			//commit transaction
 			session.getTransaction().commit();
 			System.out.println("Done!");
-			//session.close();
+			
 			
 			//Getting file from database
 			webLev = null;
 			session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
 			session.beginTransaction();
-			webLev = (Webbleveranser) session.get(Webbleveranser.class, 4); 
-			System.out.println("Excel file: " + webLev.getExcelFile().getName());
+			webLev = (Webbleveranser) session.get(Webbleveranser.class, 1);
+			blob = webLev.getExcelFile();
+			byte[] blobBytes = blob.getBytes(1, (int) blob.length());
+			saveBytesToFile("H:\\Skrivbord\\exelFileTest.xlsx", blobBytes);
+			blob.free();
 			
-			//File dir = new File("/User/RobertoBlanco/Desktop/db_files/");
-			File dbFile = new File("/User/RobertoBlanco/Desktop/db_files/"); 
-			FileOutputStream out = new FileOutputStream(webLev.getExcelFile());
-			//dbFile.createNewFile();
-			out.flush();
-			
-			out.close();
+			//session.close();
 	
 		}
 		/*finally
@@ -669,16 +670,21 @@ public class ExcelControllerFX extends Application {
 		catch(HibernateException e) 
 		{
 			e.printStackTrace();
-		} /*catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} */ catch (FileNotFoundException e) {
+
+		} catch (SQLException e) {
+
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private void saveBytesToFile(String path, byte[] blobBytes) throws IOException {
+		FileOutputStream outputStream = new FileOutputStream(path);
+        outputStream.write(blobBytes);
+        outputStream.close();
 	}
 
 

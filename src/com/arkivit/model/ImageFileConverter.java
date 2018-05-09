@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import javax.imageio.ImageIO;
@@ -24,7 +23,8 @@ import org.apache.batik.transcoder.TranscoderOutput;
 public class ImageFileConverter {
 
 
-	//private MetadataToExcelGUI model;
+
+	private MetadataToExcelGUI model;
 	private String fileNameWithOutExt = "";
 	private File imgFile;
 	private ArrayList<File> imgList = new ArrayList<>();
@@ -38,7 +38,6 @@ public class ImageFileConverter {
 	public ImageFileConverter() {
 
 	}
-
 
 	@SuppressWarnings("deprecation")
 	public void convertImage(String sourceFolderPath) throws IOException{
@@ -114,7 +113,6 @@ public class ImageFileConverter {
 				
 			}
 
-
 		}
 
 	}
@@ -158,5 +156,19 @@ public class ImageFileConverter {
 	public ArrayList<File> getOrignalImageFileList() {
 		return orignalImageFileList;
 	}
+
+
+/*	public void storeOriginalImages1(File illegalExtension) throws IOException 
+	{
+		File illegalExtensionDest = new File(model.getTargetexcelFilepath() + "/" + model.getFolderName() + "_img_backup");
+		System.out.println(illegalExtension + "/" + illegalExtensionDest);
+		try {
+			FileUtils.moveFileToDirectory(illegalExtension, illegalExtensionDest, true);
+		}catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
+	}*/
 
 }
