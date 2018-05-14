@@ -39,7 +39,7 @@ public class DocumentConverter {
 	private String sOutUrl;
 
 	private File outdir;
-	private File testFile;
+	private File convertedFile;
 
 
 	File fileDirectory;
@@ -127,6 +127,8 @@ public class DocumentConverter {
 	public void traverseAndConvert(String targetPath) {
 		//ArrayList<File> fileList = new ArrayList<>(); 
 		//fileList.add(fileDirectory);
+		
+		
 		fileDirectory = new File(targetPath);
 		sOutUrl = "file:///" + fileDirectory.getAbsolutePath().replace( '\\', '/' );
 
@@ -143,7 +145,7 @@ public class DocumentConverter {
 				try 
 				{
 					// Composing the URL by replacing all backslashes
-					String testUrl = "file:///" + f.getParentFile().getAbsolutePath().replace("\\", "/");
+					String fileUrl = "file:///" + f.getParentFile().getAbsolutePath().replace("\\", "/");
 					String sUrl = "file:///"
 							+ f.getAbsolutePath().replace( '\\', '/' ); 
 
@@ -187,14 +189,14 @@ public class DocumentConverter {
 
 						String tmp = FilenameUtils.removeExtension(f.getName());
 
-						String sStoreUrl = testUrl+ "/" + tmp + "." + sExtension;  
+						String sStoreUrl = fileUrl+ "/" + tmp + "." + sExtension;  
 						xStorable.storeToURL(sStoreUrl, propertyValues);
 
 						String removeBeginningOfPath = sStoreUrl.replace("file:///", "");
-						testFile = new File(removeBeginningOfPath);
+						convertedFile = new File(removeBeginningOfPath);
 
-						fileList.add(testFile);
-						System.out.println("Converted Files " + testFile.getName());
+						fileList.add(convertedFile);
+						System.out.println("Converted Files " + convertedFile.getName());
 
 						//removeFile(fileDirectory);
 						// Closing the converted document. Use XCloseable.close if the
