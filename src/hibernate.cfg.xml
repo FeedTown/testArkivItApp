@@ -17,9 +17,6 @@
 		<property name="hibernate.current_session_context_class">thread</property>
 		<property name="hibernate.show_sql">true</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-<<<<<<< HEAD
-		<!-- <mapping resource="book.hbm.xml" /> -->
-=======
 	</session-factory>
 </hibernate-configuration>
 

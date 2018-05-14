@@ -27,11 +27,6 @@ public class Webbleveranser {
 		@Column(name="Company")
 		private String company;
 		
-		
-		@Temporal(TemporalType.DATE)
-		@Column(name="creation_date")
-		private Date creationDate;
-		
 		@Lob
 		@Column(name="Excel_File")
 		private Blob excelFile;
@@ -39,7 +34,6 @@ public class Webbleveranser {
 		@Temporal(TemporalType.DATE)
 		@Column(name="creation_date")
 		private Date date;
-
 
 
 		public Webbleveranser() {
@@ -88,7 +82,7 @@ public class Webbleveranser {
 
 		@Override
 		public String toString() {
-			return "WebLev [id=" + id + ", company=" + company + ", excelFile=" + excelFile + "date= "+ creationDate +"]";
+			return "WebLev [id=" + id + ", company=" + company + ", excelFile=" + excelFile + "date= "+ date +"]";
 		}
 
 	}

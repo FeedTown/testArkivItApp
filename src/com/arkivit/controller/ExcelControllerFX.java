@@ -628,8 +628,9 @@ public class ExcelControllerFX extends Application {
 		
 			//create a webleverans object
 			System.out.println("Create a new object");
-			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , blob, new Date());
+			String str = new String(blob.getBytes(1l, (int) blob.length()));
 
+			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , blob, new Date());
 			//start a transaction
 			
 			session.beginTransaction();
@@ -651,7 +652,8 @@ public class ExcelControllerFX extends Application {
 			webLev = (Webbleveranser) session.get(Webbleveranser.class, 1);
 			blob = webLev.getExcelFile();
 			byte[] blobBytes = blob.getBytes(1, (int) blob.length());
-			saveBytesToFile("H:\\Skrivbord\\exelFileTest.xlsx", blobBytes);
+			//saveBytesToFile("H:\\Skrivbord\\exelFileTest.xlsx", blobBytes);
+			saveBytesToFile("/Users/RobertoBlanco/Desktop/exelFileTest.xlsx", blobBytes);
 			blob.free();
 			
 			//session.close();
