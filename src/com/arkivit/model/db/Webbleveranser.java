@@ -28,8 +28,8 @@ public class Webbleveranser {
 		private String company;
 		
 		@Lob
-		@Column(name="Excel_File")
-		private Blob excelFile;
+		@Column(name="Excel_File", columnDefinition="BLOB")
+		private byte[] excelFile;
 		
 		@Temporal(TemporalType.DATE)
 		@Column(name="creation_date")
@@ -41,7 +41,7 @@ public class Webbleveranser {
 		}
 
 
-		public Webbleveranser(String company, Blob excelFile, Date date) {
+		public Webbleveranser(String company, byte[] excelFile, Date date) {
 			this.company = company;
 			this.excelFile = excelFile;
 			this.date = date;
@@ -64,11 +64,11 @@ public class Webbleveranser {
 			this.company = company;
 		}
 
-		public Blob getExcelFile() {
+		public byte[] getExcelFile() {
 			return excelFile;
 		}
 
-		public void setExcelFile(Blob excelFile) {
+		public void setExcelFile(byte[] excelFile) {
 			this.excelFile = excelFile;
 		}
 		

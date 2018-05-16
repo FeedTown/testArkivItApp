@@ -613,32 +613,49 @@ public class ExcelControllerFX extends Application {
 		System.out.println("Creating Session Factory created!!");
 		
 		
-		FileInputStream inputStream = null;
+	/*	FileOutputStream fileOutPutStream = null;
+		byte[] fileByte = new byte[( int ) file.length()];
+		
 		try {
-			inputStream = new FileInputStream(file);
+			fileOutPutStream = new FileOutputStream(file);
+			fileOutPutStream.write(fileByte);
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  */
+		
+		
+		//Blob blob = Hibernate.getLobCreator(session).createBlob(inputStream, file.length());
+		byte[] fileData = new byte[(int) file.length()];
+		 
+		try {
+		    FileInputStream fileInputStream = new FileInputStream(file);
+		    fileInputStream.read(fileData);
+		    fileInputStream.close();
+		} catch (Exception e) {
+		    e.printStackTrace();
 		}
-		Blob blob = Hibernate.getLobCreator(session).createBlob(inputStream, file.length());
-
 
 		try 
 		{
-		
+			
 			//create a webleverans object
 			System.out.println("Create a new object");
-			String str = new String(blob.getBytes(1l, (int) blob.length()));
-
-			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , blob, new Date());
+			//String str = new String(blob.getBytes(1l, (int) blob.length()));
+		
+		
+			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , fileData, new Date());
 			//start a transaction
-			
 			session.beginTransaction();
+			
 			
 			//save the object
 			System.out.println("Saving the object...");
 			session.save(webLev);
-			blob.free();
+			//blob.free();
 
 			//commit transaction
 			session.getTransaction().commit();
@@ -649,43 +666,49 @@ public class ExcelControllerFX extends Application {
 			webLev = null;
 			session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
 			session.beginTransaction();
-			webLev = (Webbleveranser) session.get(Webbleveranser.class, 1);
-			blob = webLev.getExcelFile();
-			byte[] blobBytes = blob.getBytes(1, (int) blob.length());
+			webLev = (Webbleveranser) session.get(Webbleveranser.class, 2);
+			fileData = webLev.getExcelFile();
+			//byte[] blobBytes = blob.getBytes(1, (int) blob.length());
 			//saveBytesToFile("H:\\Skrivbord\\exelFileTest.xlsx", blobBytes);
-			saveBytesToFile("/Users/RobertoBlanco/Desktop/exelFileTest.xlsx", blobBytes);
-			blob.free();
-			
+			saveBytesToFile("/Users/RobertoBlanco/Desktop/test2.xlsx", fileData);
 			//session.close();
-	
+			//fileOutPutStream.close();
 		}
-		/*finally
-		{
-			//System.out.println("Factory is about to close.....");
-			System.out.println("Session is about to close...");
-			//factory.close();
-			//session.close();
-			System.out.println("Session is closed"); 
-			//FactorySessionSingleton.getSessionFactoryInstance().close();
-			//System.out.println("Factory is closed!");
-		}*/
 		catch(HibernateException e) 
 		{
 			e.printStackTrace();
 
-		} catch (SQLException e) {
+		}
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}/*catch (SQLException e) {
 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		}*/ 
+		/*catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} */
+		/*finally
+		{
+			System.out.println("Factory is about to close.....");
+			System.out.println("Session is about to close...");
+			factory.close();
+			session.close();
+			System.out.println("Session is closed"); 
+			FactorySessionSingleton.getSessionFactoryInstance().close();
+			System.out.println("Factory is closed!"); 
+			
+		}*/ 
+	
 	}
 
-	private void saveBytesToFile(String path, byte[] blobBytes) throws IOException {
+	private void saveBytesToFile(String path, byte[] fileByte) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(path);
-        outputStream.write(blobBytes);
+        outputStream.write(fileByte);
         outputStream.close();
 	}
 
