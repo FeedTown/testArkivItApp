@@ -162,7 +162,7 @@ public class ExcelControllerFX extends Application {
 			secondScene.getSaveTxtField().setText("");
 
 		}
-		
+
 	}
 
 	/**
@@ -454,7 +454,7 @@ public class ExcelControllerFX extends Application {
 
 			@Override
 			public void handle(WorkerStateEvent arg0) {
-				
+
 				onFinish.proceed();
 				setAlert();
 				//secondScene.getPb().setVisible(false);
@@ -476,8 +476,8 @@ public class ExcelControllerFX extends Application {
 				model.setPersonalDataChecked("");
 				mapping = false;
 				overwrite = false;
-				
-				
+
+
 			}
 
 		});
@@ -511,7 +511,7 @@ public class ExcelControllerFX extends Application {
 				{
 					log.mappedLog();
 				} 
-				
+
 				secondScene.getPi().setVisible(false);
 				secondScene.getWaitLabel().setVisible(false);
 				//secondScene.getPb().setVisible(true);
@@ -567,8 +567,8 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(secondScene.getBtnConvert()))
 			{
-					createButton(event, () -> hibernateSession());
-						
+				createButton(event, () -> hibernateSession());
+
 			}
 			else if(event.getSource().equals(secondScene.getBtnBack())){
 				stage.setScene(firstScene.getFirstScene());
@@ -602,56 +602,37 @@ public class ExcelControllerFX extends Application {
 		}
 
 	}
-	
-	public void hibernateSession()  {
+
+	private void fileToByte(File tempFile, byte[] fileByte) throws IOException 
+	{
+		fileByte = new byte[(int) tempFile.length()];
+
+		FileInputStream fileInputStream = new FileInputStream(tempFile);
+		fileInputStream.read(fileByte);
+		fileInputStream.close();
 		
-		/*
-		 * Radera alla rader och nollställ auto increment: truncate ArkivIT.webbleveranser
-		 */
+	}
+
+	public void hibernateSession()  {
+
 		System.out.println("Creating Session Factory.....");
 		Session session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
 		System.out.println("Creating Session Factory created!!");
 		
-		
-	/*	FileOutputStream fileOutPutStream = null;
-		byte[] fileByte = new byte[( int ) file.length()];
-		
-		try {
-			fileOutPutStream = new FileOutputStream(file);
-			fileOutPutStream.write(fileByte);
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  */
-		
-		
-		//Blob blob = Hibernate.getLobCreator(session).createBlob(inputStream, file.length());
+		// file to byte variable
 		byte[] fileData = new byte[(int) file.length()];
-		 
-		try {
-		    FileInputStream fileInputStream = new FileInputStream(file);
-		    fileInputStream.read(fileData);
-		    fileInputStream.close();
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-
+		
 		try 
 		{
+			fileToByte(file, fileData);
 			
-			//create a webleverans object
 			System.out.println("Create a new object");
-			//String str = new String(blob.getBytes(1l, (int) blob.length()));
-		
-		
+			
 			Webbleveranser webLev = new Webbleveranser(firstScene.getLMtxt().getText() , fileData, new Date());
 			//start a transaction
 			session.beginTransaction();
-			
-			
+
+
 			//save the object
 			System.out.println("Saving the object...");
 			session.save(webLev);
@@ -660,17 +641,16 @@ public class ExcelControllerFX extends Application {
 			//commit transaction
 			session.getTransaction().commit();
 			System.out.println("Done!");
-			
-			
+
+
 			//Getting file from database
 			webLev = null;
 			session = FactorySessionSingleton.getSessionFactoryInstance().getCurrentSession();
 			session.beginTransaction();
-			webLev = (Webbleveranser) session.get(Webbleveranser.class, 2);
+			webLev = (Webbleveranser) session.get(Webbleveranser.class, 3);
 			fileData = webLev.getExcelFile();
-			//byte[] blobBytes = blob.getBytes(1, (int) blob.length());
 			//saveBytesToFile("H:\\Skrivbord\\exelFileTest.xlsx", blobBytes);
-			saveBytesToFile("/Users/RobertoBlanco/Desktop/test2.xlsx", fileData);
+			saveBytesToFile("/Users/RobertoBlanco/Desktop/test3.xlsx", fileData);
 			//session.close();
 			//fileOutPutStream.close();
 		}
@@ -683,33 +663,14 @@ public class ExcelControllerFX extends Application {
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}/*catch (SQLException e) {
+		}
 
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/ 
-		/*catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} */
-		/*finally
-		{
-			System.out.println("Factory is about to close.....");
-			System.out.println("Session is about to close...");
-			factory.close();
-			session.close();
-			System.out.println("Session is closed"); 
-			FactorySessionSingleton.getSessionFactoryInstance().close();
-			System.out.println("Factory is closed!"); 
-			
-		}*/ 
-	
 	}
 
 	private void saveBytesToFile(String path, byte[] fileByte) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(path);
-        outputStream.write(fileByte);
-        outputStream.close();
+		outputStream.write(fileByte);
+		outputStream.close();
 	}
 
 
