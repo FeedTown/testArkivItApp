@@ -149,11 +149,11 @@ public class ExcelControllerFX extends Application {
 	 */
 	private void createButton(ActionEvent event){
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
+		model.clearArrayList();
 		if(!check) {
 			progressBar();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
-			model.clearArrayList();
 			secondScene.getBtnConvert().setDisable(true);
 		}
 		else if(check){
@@ -332,10 +332,10 @@ public class ExcelControllerFX extends Application {
 			//view.getBtnSaveAs().setDisable(false);
 
 		}
-		if(selectedDir == null) {
+		/*if(selectedDir == null) {
 			//view.getOpenTxtField().setText("");
 			//view.getBtnSaveAs().setDisable(true);
-		}
+		}*/
 
 		if(e.getSource() == secondScene.getBtnOpenFile() && selectedDir != null) {
 			secondScene.getBtnSaveAs().setDisable(false);

@@ -101,9 +101,11 @@ public class MetadataToExcelGUI{
 
 		docCon.libreOfficeConnectionMethod(sourceFolderPath);
 		deleteOfficeFiles(sourceFolderPath);
-		img.convertImage(sourceFolderPath);
-		deleteIllegalImageFiles(sourceFolderPath);
+		//img.convertImage(sourceFolderPath);
+		//deleteIllegalImageFiles(sourceFolderPath);
+		
 		listOfFilesAndDirectory(sourceFolderPath);
+		
 		getAndAddFileDataToList();
 
 
@@ -201,12 +203,22 @@ public class MetadataToExcelGUI{
 
 			if(currentFileOrDir.isFile())
 			{
-
-
+				if(tempFile.getName().endsWith(".gif") || tempFile.getName().endsWith(".GIF") || 
+						tempFile.getName().endsWith(".jpg") || tempFile.getName().endsWith(".JPG") ||
+						tempFile.getName().endsWith(".bmp") || tempFile.getName().endsWith(".BMP") || 
+						tempFile.getName().endsWith(".wbmp") || tempFile.getName().endsWith("WBMP") ||
+						tempFile.getName().endsWith(".ico") || tempFile.getName().endsWith(".ICO") ||
+						tempFile.getName().endsWith(".svg") || tempFile.getName().endsWith(".SVG")) 
+				{
+					tempFile = img.convertImage1(tempFile);	
+				}
+				
 				if(mapping)
 				{
 					tempFile = doMapping(currentFileOrDir,false);
 				}
+				
+				
 
 				fileList.add(tempFile);
 				System.out.println("Current File : "  + tempFile.getName());

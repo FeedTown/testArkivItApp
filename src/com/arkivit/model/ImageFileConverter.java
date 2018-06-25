@@ -48,9 +48,9 @@ public class ImageFileConverter {
 			}
 
 			else if(s.isFile()) {
-				
+
 				orignalImageFileList.add(s);
-				
+
 				fileNameWithOutExt = FilenameUtils.removeExtension(s.getName());
 				if(s.getName().endsWith(".GIF") || s.getName().endsWith(".gif") || s.getName().endsWith(".JPG") || s.getName().endsWith(".jpg")
 						|| s.getName().endsWith(".BMP") || s.getName().endsWith(".bmp") || s.getName().endsWith(".WBMP") || s.getName().endsWith(".wbmp")) {
@@ -61,7 +61,7 @@ public class ImageFileConverter {
 					System.out.println("Image " + s.getName() + " was converted succesfully.");
 					//imgList.add(s);
 					//storeOriginalImages1(s);
-		
+
 				}
 
 				if(s.getName().endsWith(".ico") || s.getName().endsWith(".ICO")) 
@@ -73,7 +73,7 @@ public class ImageFileConverter {
 					inputStream.close();
 					//imgList.add(s);
 					//storeOriginalImages1(s);
-					
+
 
 				}
 
@@ -97,26 +97,101 @@ public class ImageFileConverter {
 					} catch (TranscoderException e) {
 						e.printStackTrace();
 					}
+
 					// flush and close the stream
 					ostream.flush();
 					ostream.close();
 					//storeOriginalImages1(s);
 				}
 				imgList.add(s);
-				
+
 			}
 
 		}
 
 	}
-	
-	
+
+	public File convertImage1(File tempFile) throws IOException{
+
+		File s = tempFile;
+		fileNameWithOutExt = FilenameUtils.removeExtension(s.getName());
+		File newFile = null;
+		if(s.getName().endsWith(".GIF") || s.getName().endsWith(".gif") || s.getName().endsWith(".JPG") || s.getName().endsWith(".jpg")
+				|| s.getName().endsWith(".BMP") || s.getName().endsWith(".bmp") || s.getName().endsWith(".WBMP") || s.getName().endsWith(".wbmp")) {
+			System.out.println("FIRDT IF BLOCK");
+			BufferedImage bi = ImageIO.read(new File(s.getAbsolutePath()));
+			
+			newFile = new File(s.getParentFile().getAbsoluteFile(), fileNameWithOutExt + ".jpeg");
+			
+			ImageIO.write(bi, "jpeg", newFile);
+
+			System.out.println("Image " + s.getName() + " was converted succesfully.");
+			//imgList.add(s);
+			//storeOriginalImages1(s);
+
+		}
+
+		if(s.getName().endsWith(".ico") || s.getName().endsWith(".ICO")) 
+		{
+
+			InputStream inputStream = new FileInputStream(s);
+			newFile = new File(s.getParentFile().getAbsoluteFile(), fileNameWithOutExt + ".png");
+			ImageIO.write(ICODecoder.read(inputStream).get(0), "png", newFile );
+			System.out.println("Ico was converted.");
+			inputStream.close();
+
+		}
+
+		if(s.getName().endsWith(".svg") || s.getName().endsWith(".SVG")) 
+		{
+			String svgURI = Paths.get(s.getAbsolutePath()).toUri().toString();
+			TranscoderInput input = new TranscoderInput(svgURI);
+			
+			newFile = new File(s.getParentFile().getAbsoluteFile(), fileNameWithOutExt + ".png");
+			
+			OutputStream ostream = new FileOutputStream(newFile);
+			TranscoderOutput output = new TranscoderOutput(ostream);
+
+			PNGTranscoder t = new PNGTranscoder();
+
+			t.addTranscodingHint(SVGAbstractTranscoder.KEY_HEIGHT, new Float(600));
+			t.addTranscodingHint(SVGAbstractTranscoder.KEY_WIDTH, new Float(600));
+
+			try {
+				t.transcode(input, output);
+				//imgList.add(s);
+			} catch (TranscoderException e) {
+				e.printStackTrace();
+			}
+
+			// flush and close the stream
+			ostream.flush();
+			ostream.close();
+			//storeOriginalImages1(s);
+		}
+		
+		removeOldImgFormatFile(tempFile);
+		
+
+		return newFile;
+
+	}
+
+
+
+	private void removeOldImgFormatFile(File tempFile) 
+	{
+		tempFile.delete();
+	}
+
 	public ArrayList<File> getOrignalImageFileList() {
 		return orignalImageFileList;
 	}
-	
-	
-	/*public void storeOriginalImages(ArrayList<File> file) throws IOException {
+
+
+	private void oldCodes()
+	{
+		/*public void storeOriginalImages(ArrayList<File> file) throws IOException {
 		for(File s: file) {
 			if(s.getName().endsWith(".GIF") || s.getName().endsWith(".gif") || s.getName().endsWith(".JPG") 
 					|| s.getName().endsWith(".jpg") || s.getName().endsWith(".BMP") 
@@ -139,7 +214,7 @@ public class ImageFileConverter {
 
 	} */
 
-	/*public void storeOriginalImages1(File illegalExtension) throws IOException 
+		/*public void storeOriginalImages1(File illegalExtension) throws IOException 
 	{
 		File illegalExtensionDest = new File(model.getTargetexcelFilepath() + "/" + model.getFolderName() + "_img_backup");
 		System.out.println(illegalExtension + "/" + illegalExtensionDest);
@@ -151,7 +226,8 @@ public class ImageFileConverter {
 		}
 
 	}  */
-	
-	
+	}
+
+
 }
 

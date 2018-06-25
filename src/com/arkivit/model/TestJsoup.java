@@ -55,13 +55,13 @@ public class TestJsoup {
 	}
 	
 	private String splitAndReturnNewString(String hrefLink, String updatedWord, String searchWord) {
-		//String[] tmp afaf;
+		
 		return hrefLink = hrefLink.replaceAll("\\b"+searchWord+"\\b", updatedWord) ;
 		
 	}
 	
 	
-	public static void main(String args[])
+	/*public static void main(String args[])
 	{
 		String linkLine = "<a href=\"Å.doc\">Å.doc</a>";
 		
@@ -81,12 +81,12 @@ public class TestJsoup {
 			System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(s, "Å.doc", "A.doc"));
 		}*/
 		
-		System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(linkLine, "Å.doc", "A.pdf"));
+		/*System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(linkLine, "Å.doc", "A.pdf"));
 		System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(scriptLine, "jävascript.js", "jaevascript.js"));
 		System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(imgLine, "gäphy.gif", "gaephy.png"));
 		System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(cssLine, "äää.css", "aeaeae.css"));
 		
 		
-	}
+	}*/
 	
 }
