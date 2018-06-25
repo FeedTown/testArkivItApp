@@ -55,11 +55,38 @@ public class TestJsoup {
 	}
 	
 	private String splitAndReturnNewString(String hrefLink, String updatedWord, String searchWord) {
-		String[] tmp;
-
-		tmp = hrefLink.split(searchWord);
+		//String[] tmp;
+		return hrefLink = hrefLink.replaceAll("\\b"+searchWord+"\\b", updatedWord) ;
 		
-		return tmp.length == 0 ? updatedWord : tmp[0] + updatedWord;
+	}
+	
+	
+	public static void main(String args[])
+	{
+		String linkLine = "<a href=\"Å.doc\">Å.doc</a>";
+		
+		String scriptLine = "<script type=\"text/javascript\" src=\"jävascript.js\"></script>";
+		String imgLine = "<img id='loadingImg' src=\"../resource/gäphy.gif\" alt=\"Loading\" width=\"200\" height=\"200\">";
+		String cssLine = "<link rel=\"stylesheet\" type=\"text/css\" href=\"äää.css\">";
+		
+		String[] tempArr = new String[4];
+		
+		tempArr[0] = linkLine;
+		tempArr[1] = scriptLine;
+		tempArr[2] = imgLine;
+		tempArr[3] = cssLine;
+		
+		/*for(String s : tempArr)
+		{
+			System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(s, "Å.doc", "A.doc"));
+		}*/
+		
+		System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(linkLine, "Å.doc", "A.pdf"));
+		System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(scriptLine, "jävascript.js", "jaevascript.js"));
+		System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(imgLine, "gäphy.gif", "gaephy.png"));
+		System.out.println(new TestJsoup().jSoupExtractElementsFromHtmlFile(cssLine, "äää.css", "aeaeae.css"));
+		
+		
 	}
 	
 }

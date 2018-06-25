@@ -147,17 +147,17 @@ public class ExcelControllerFX extends Application {
 	 * Actions that performs to create the excel file
 	 * @param event
 	 */
-	private void createButton(ActionEvent event, OnConvertFinish onFinish){
+	private void createButton(ActionEvent event){
 		boolean check = new File(model.getTargetexcelFilepath(), model.getExcelFileName()).exists();
 		if(!check) {
-			progressBar(onFinish);
+			progressBar();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
 			model.clearArrayList();
 			secondScene.getBtnConvert().setDisable(true);
 		}
 		else if(check){
-			progressBar(onFinish);
+			progressBar();
 			secondScene.getOpenTxtField().setText("");
 			secondScene.getSaveTxtField().setText("");
 
@@ -441,7 +441,7 @@ public class ExcelControllerFX extends Application {
 	 * Actions performed when tasks are succeeded
 	 * Mapping of illegal characters
 	 */
-	public void progressBar(OnConvertFinish onFinish) {
+	public void progressBar(/*OnConvertFinish onFinish*/) {
 
 		progressTask = getProgress();
 		secondScene.getPi().setVisible(true);
@@ -455,7 +455,7 @@ public class ExcelControllerFX extends Application {
 			@Override
 			public void handle(WorkerStateEvent arg0) {
 				
-				onFinish.proceed();
+				//onFinish.proceed();
 				setAlert();
 				//secondScene.getPb().setVisible(false);
 				stage.setScene(firstScene.getFirstScene());
@@ -567,7 +567,7 @@ public class ExcelControllerFX extends Application {
 			}
 			else if(event.getSource().equals(secondScene.getBtnConvert()))
 			{
-					createButton(event, () -> hibernateSession());
+					createButton(event);
 						
 			}
 			else if(event.getSource().equals(secondScene.getBtnBack())){
@@ -602,6 +602,7 @@ public class ExcelControllerFX extends Application {
 
 	}
 	
+	//DB-management disabled because server is down.
 	public void hibernateSession()  {
 		
 		/*
