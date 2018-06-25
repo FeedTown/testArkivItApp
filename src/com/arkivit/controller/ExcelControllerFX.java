@@ -696,7 +696,7 @@ public class ExcelControllerFX extends Application {
 			webLev = (Webbleveranser) session.get(Webbleveranser.class, 1);
 			blob = webLev.getExcelFile();
 			byte[] blobBytes = blob.getBytes(1, (int) blob.length());
-			saveBytesToFile("H:\\Skrivbord\\exelFileTest.xlsx", blobBytes);
+			saveBytesToFile(file.getParentFile().getAbsolutePath()+"\\Blob_"+file.getName(), blobBytes);
 			blob.free();
 			
 			//session.close();
