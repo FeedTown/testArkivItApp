@@ -59,22 +59,11 @@ public class DocumentConverter {
 
 	public void libreOfficeConnectionMethod(String targetPath) {
 
-<<<<<<< HEAD
 
-		//String libreOfficePath = "C:/Program Files (x86)/LibreOffice/program/soffice.exe";
-		//String libreOfficePath = "C:/Program Files/LibreOffice/program/soffice.exe";
-		//String libreOfficePath = "/Applications/LibreOffice.app/Contents/MacOS/";
-
-		//String libreOfficePathWin = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
-		String libreOfficePathWin = "/C:/Program Files/LibreOffice/program/soffice.exe/";
-		String libreOfficePathMac = "/Applications/LibreOffice.app/Contents/MacOS/";
-
-=======
 		//String libreOfficePath = "/C:/Program Files (x86)/LibreOffice/program/soffice.exe/";
 		String libreOfficePathMac = "/Applications/LibreOffice.app/Contents/MacOS/";
 		String libreOfficePathWin = "C:/Program Files/LibreOffice/program/soffice.exe/";
 		
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 
 		XComponentContext xContext = null;
 
@@ -85,11 +74,7 @@ public class DocumentConverter {
 			String osName = System.getProperty("os.name");
 			if(osName.contains("Windows"))
 			{
-<<<<<<< HEAD
 
-=======
-				
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 				xContext = BootstrapSocketConnector.bootstrap(libreOfficePathWin);
 				System.out.println("Connected to a running office ...");
 			}
@@ -98,10 +83,7 @@ public class DocumentConverter {
 				xContext = BootstrapSocketConnector.bootstrap(libreOfficePathMac);
 				System.out.println("Connected to a running office ...");
 			}
-<<<<<<< HEAD
 
-=======
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 
 			// get the remote office service manager
 			XMultiComponentFactory xMCF =

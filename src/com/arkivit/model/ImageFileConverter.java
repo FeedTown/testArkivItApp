@@ -8,10 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
-
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import javax.imageio.ImageIO;
@@ -27,30 +23,16 @@ import org.apache.batik.transcoder.TranscoderOutput;
 public class ImageFileConverter {
 
 
-
-<<<<<<< HEAD
-	private MetadataToExcelGUI model;
-=======
-	//private MetadataToExcelGUI model;
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 	private String fileNameWithOutExt = "";
 	private File imgFile;
 	private ArrayList<File> imgList = new ArrayList<>();
 	private ArrayList<File> orignalImageFileList = new ArrayList<>();
 
 
-	/*public ImageFileConverter(MetadataToExcelGUI model) {
-		this.model = model;
-	}*/
-
 	public ImageFileConverter() {
 
 	}
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 	@SuppressWarnings("deprecation")
 	public void convertImage(String sourceFolderPath) throws IOException{
 
@@ -63,10 +45,6 @@ public class ImageFileConverter {
 			{
 
 				convertImage(s.getAbsolutePath());
-<<<<<<< HEAD
-
-=======
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 			}
 
 			else if(s.isFile()) {
@@ -131,7 +109,13 @@ public class ImageFileConverter {
 		}
 
 	}
-
+	
+	
+	public ArrayList<File> getOrignalImageFileList() {
+		return orignalImageFileList;
+	}
+	
+	
 	/*public void storeOriginalImages(ArrayList<File> file) throws IOException {
 		for(File s: file) {
 			if(s.getName().endsWith(".GIF") || s.getName().endsWith(".gif") || s.getName().endsWith(".JPG") 
@@ -168,25 +152,6 @@ public class ImageFileConverter {
 
 	}  */
 	
-	public ArrayList<File> getOrignalImageFileList() {
-		return orignalImageFileList;
-	}
-
-<<<<<<< HEAD
-
-/*	public void storeOriginalImages1(File illegalExtension) throws IOException 
-	{
-		File illegalExtensionDest = new File(model.getTargetexcelFilepath() + "/" + model.getFolderName() + "_img_backup");
-		System.out.println(illegalExtension + "/" + illegalExtensionDest);
-		try {
-			FileUtils.moveFileToDirectory(illegalExtension, illegalExtensionDest, true);
-		}catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-
-	}*/
-
-=======
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
+	
 }
+

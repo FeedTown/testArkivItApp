@@ -44,15 +44,9 @@ public class MetadataToExcelGUI{
 	private String duration, fPath, currentFileName, tempString, tempPath, newFileString;
 	private CharsetDetector checkDecoder = new CharsetDetector();
 	private GeneralBean generalBean = new GeneralBean();
-<<<<<<< HEAD
-	private DocumentConverter docCon = new DocumentConverter();
-	private ImageFileConverter img = new ImageFileConverter();
-=======
-
 	private DocumentConverter docCon = new DocumentConverter();
 	private ImageFileConverter img = new ImageFileConverter();
 	private FileExtension officeFileEx = new FileExtension();
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 	private boolean mapping = false;
 	private boolean overwrite = false;
 	private boolean isLibreOfficeOpen = false;
@@ -110,11 +104,8 @@ public class MetadataToExcelGUI{
 		img.convertImage(sourceFolderPath);
 		deleteIllegalImageFiles(sourceFolderPath);
 		listOfFilesAndDirectory(sourceFolderPath);
-<<<<<<< HEAD
-		//img.convertImage();
-=======
 		getAndAddFileDataToList();
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
+
 
 		getAndAddFileDataToList();
 		closeLibreOffice();
@@ -142,10 +133,6 @@ public class MetadataToExcelGUI{
 
 
 		}
-<<<<<<< HEAD
-=======
-
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 	}
 
 	public void deleteIllegalImageFiles(String imagePath) {
@@ -463,10 +450,6 @@ public class MetadataToExcelGUI{
 				{
 					ext = new FileExtension(s.getName());
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 					if(ext.getHtmlCssFileExtension()) 
 					{
 						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, fileExt) ;
@@ -475,36 +458,9 @@ public class MetadataToExcelGUI{
 					if(ext.getJsImgFileExtension())
 					{
 						br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, fileExt);
-<<<<<<< HEAD
 
 					}
 
-					/*if(ext.getJsImgFileExtension()) {
-
-						if(ext.getHtmlCssFileExtension()) 
-						{
-							if(!s.getParentFile().getName().equals(folderName))
-							{
-								pathName = s.getParentFile().getName();
-							}
-							br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, pathName) ;
-						}
-
-						if(ext.getJsImgFileExtension())
-						{
-							if(!s.getParentFile().getName().equals(folderName))
-							{
-								pathName = s.getParentFile().getName();
-							}
-
-							br.updateInfoInFile(illegalCharFiles.get(counter), s.getName(), list, s.getParentFile().getName());
-						}
-
->>>>>>> c172337cf4fd37198bcd0331e36e0294ef96cc96
-					}*/
-=======
-					}
->>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 
 					
 				}
