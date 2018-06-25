@@ -13,7 +13,7 @@ import Test.code.TestJsoup;
 public class ReadAndUpdateLinks {
 
 	private String filePath;
-	//private UpdateStringForHtml htmlWordUpdater = new UpdateStringForHtml();
+	private UpdateStringForHtml htmlWordUpdater = new UpdateStringForHtml();
 	private TestJsoup tJsoup = new TestJsoup();
 
 	public ReadAndUpdateLinks(String filePath) {
@@ -58,6 +58,7 @@ public class ReadAndUpdateLinks {
 				else
 				{
 					word = tJsoup.jSoupExtractElementsFromHtmlFile(brList.get(i), searchWord, updatedWord);
+					//htmlWordUpdater.updateWordInString(brList.get(i), searchWord, updatedWord);
 				}
 				
 				brList.set(i, word);

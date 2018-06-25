@@ -177,6 +177,7 @@ public class ExcelControllerFX extends Application {
 		alert.showAndWait();
 
 	}
+<<<<<<< HEAD
 
 	private void sweLangButton(ActionEvent event) {
 		firstScene.getBAL().setText("*Beskrivning av leverans:");
@@ -221,6 +222,9 @@ public class ExcelControllerFX extends Application {
 		secondScene.getBtnSaveAs().setText("Save as...");
 		secondScene.getBtnConvert().setText("Create");
 	}
+=======
+	
+>>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 
 	/**
 	 * Action that performs to save content in directory
@@ -642,13 +646,6 @@ public class ExcelControllerFX extends Application {
 			else if(event.getSource().equals(secondScene.getPersonalDataBox())) {
 				personalDataBox();
 			}
-			else if(event.getSource().equals(firstScene.getSweBtn())){
-				sweLangButton(event);
-			}
-			else if(event.getSource().equals(firstScene.getEngBtn())) {
-				engLangButton(event);
-			}
-
 		}
 
 	}

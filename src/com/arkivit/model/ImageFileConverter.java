@@ -8,6 +8,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import javax.imageio.ImageIO;
@@ -24,7 +28,11 @@ public class ImageFileConverter {
 
 
 
+<<<<<<< HEAD
 	private MetadataToExcelGUI model;
+=======
+	//private MetadataToExcelGUI model;
+>>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 	private String fileNameWithOutExt = "";
 	private File imgFile;
 	private ArrayList<File> imgList = new ArrayList<>();
@@ -39,6 +47,10 @@ public class ImageFileConverter {
 
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 	@SuppressWarnings("deprecation")
 	public void convertImage(String sourceFolderPath) throws IOException{
 
@@ -51,7 +63,10 @@ public class ImageFileConverter {
 			{
 
 				convertImage(s.getAbsolutePath());
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 			}
 
 			else if(s.isFile()) {
@@ -157,6 +172,7 @@ public class ImageFileConverter {
 		return orignalImageFileList;
 	}
 
+<<<<<<< HEAD
 
 /*	public void storeOriginalImages1(File illegalExtension) throws IOException 
 	{
@@ -171,4 +187,6 @@ public class ImageFileConverter {
 
 	}*/
 
+=======
+>>>>>>> 8bd1b1429743db5e63993d8fde01e11b55364513
 }
